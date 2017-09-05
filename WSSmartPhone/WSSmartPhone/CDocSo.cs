@@ -65,6 +65,8 @@ namespace WSSmartPhone
             int tieuthu = 0;
             try
             {
+                _DAL_Test.Connect();
+
                 SqlCommand cmd = new SqlCommand("calTieuTHu", _DAL_Test.connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -1089,7 +1091,7 @@ namespace WSSmartPhone
             }
         }
 
-        public bool ThemHinhDHN(string DanhBo, string CreateBy, string imageStr)
+        public bool ThemHinhDHN(string DanhBo, string CreateBy, string imageStr,string Latitude, string Longitude)
         {
             //int ID = 0;
             //if (int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select COUNT(ID) from HinhDHN").Rows[0][0].ToString()) == 0)
@@ -1112,6 +1114,8 @@ namespace WSSmartPhone
 
                 entity.DanhBo = DanhBo;
                 entity.Image = image;
+                entity.Latitude = Latitude;
+                entity.Longitude = Longitude;
                 entity.CreateBy = int.Parse(CreateBy);
                 entity.CreateDate = DateTime.Now;
                 db.HinhDHNs.InsertOnSubmit(entity);

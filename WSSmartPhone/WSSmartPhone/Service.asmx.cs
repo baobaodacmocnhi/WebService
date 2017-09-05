@@ -158,9 +158,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool DS_ThemHinhDHN(string DanhBo, string CreateBy, string imageStr)
+        public bool DS_ThemHinhDHN(string DanhBo, string CreateBy, string imageStr, string Latitude, string Longitude)
         {
-            return _cDocSo.ThemHinhDHN(DanhBo, CreateBy, imageStr);
+            return _cDocSo.ThemHinhDHN(DanhBo, CreateBy, imageStr, Latitude,  Longitude);
         }
 
         #endregion

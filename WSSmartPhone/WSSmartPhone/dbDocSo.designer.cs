@@ -86,6 +86,10 @@ namespace WSSmartPhone
 		
 		private System.Data.Linq.Binary _Image;
 		
+		private string _Latitude;
+		
+		private string _Longitude;
+		
 		private System.Nullable<int> _CreateBy;
 		
 		private System.Nullable<System.DateTime> _CreateDate;
@@ -100,6 +104,10 @@ namespace WSSmartPhone
     partial void OnDanhBoChanged();
     partial void OnImageChanging(System.Data.Linq.Binary value);
     partial void OnImageChanged();
+    partial void OnLatitudeChanging(string value);
+    partial void OnLatitudeChanged();
+    partial void OnLongitudeChanging(string value);
+    partial void OnLongitudeChanged();
     partial void OnCreateByChanging(System.Nullable<int> value);
     partial void OnCreateByChanged();
     partial void OnCreateDateChanging(System.Nullable<System.DateTime> value);
@@ -167,6 +175,46 @@ namespace WSSmartPhone
 					this._Image = value;
 					this.SendPropertyChanged("Image");
 					this.OnImageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Latitude", DbType="VarChar(50)")]
+		public string Latitude
+		{
+			get
+			{
+				return this._Latitude;
+			}
+			set
+			{
+				if ((this._Latitude != value))
+				{
+					this.OnLatitudeChanging(value);
+					this.SendPropertyChanging();
+					this._Latitude = value;
+					this.SendPropertyChanged("Latitude");
+					this.OnLatitudeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Longitude", DbType="VarChar(50)")]
+		public string Longitude
+		{
+			get
+			{
+				return this._Longitude;
+			}
+			set
+			{
+				if ((this._Longitude != value))
+				{
+					this.OnLongitudeChanging(value);
+					this.SendPropertyChanging();
+					this._Longitude = value;
+					this.SendPropertyChanged("Longitude");
+					this.OnLongitudeChanged();
 				}
 			}
 		}
