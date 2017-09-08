@@ -146,15 +146,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public int DS_TinhTienNuoc(string DanhBo, string GiaBieu, string DinhMuc, string TieuThu, out string ChiTiet)
+        public void DS_TinhTienNuoc(string DanhBo, string GiaBieu, string DinhMuc, string TieuThu, out int GiaBan, out int PhiBVMT, out int ThueGTGT, out int TongCong, out string ChiTiet)
         {
-            return _cDocSo.TinhTienNuoc(DanhBo, int.Parse(GiaBieu), int.Parse(DinhMuc), int.Parse(TieuThu), out ChiTiet);
+            _cDocSo.TinhTienNuoc(DanhBo, int.Parse(GiaBieu), int.Parse(DinhMuc), int.Parse(TieuThu), out GiaBan, out PhiBVMT, out ThueGTGT, out TongCong, out ChiTiet);
         }
 
         [WebMethod]
-        public bool DS_CapNhat(string ID, string CodeMoi, string TTDHNMoi, string CSMoi, string TieuThuMoi, string TienNuoc, string ChiTiet)
+        public bool DS_CapNhat(string ID, string CodeMoi, string TTDHNMoi, string CSMoi, string TieuThuMoi, string GiaBan, string PhiBVMT, string ThueGTGT, string TongCong, string ChiTiet, string Latitude, string Longitude)
         {
-            return _cDocSo.CapNhat(ID, CodeMoi, TTDHNMoi, CSMoi, TieuThuMoi, TienNuoc, ChiTiet);
+            return _cDocSo.CapNhat(ID, CodeMoi, TTDHNMoi, CSMoi, TieuThuMoi, GiaBan, PhiBVMT, ThueGTGT, TongCong, ChiTiet, Latitude, Longitude);
         }
 
         [WebMethod]
