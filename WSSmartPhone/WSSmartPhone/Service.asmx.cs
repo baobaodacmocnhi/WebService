@@ -152,9 +152,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool DS_CapNhat(string ID, string CodeMoi, string TTDHNMoi, string CSMoi, string TieuThuMoi, string GiaBan, string PhiBVMT, string ThueGTGT, string TongCong, string ChiTiet, string Latitude, string Longitude)
+        public bool DS_CapNhat(string ID, string DanhBo,string Nam,string Ky, string CodeMoi, string TTDHNMoi, string CSMoi, string GiaBieu,string DinhMuc, string Latitude, string Longitude,out int TieuThu,out int TongCong)
         {
-            return _cDocSo.CapNhat(ID, CodeMoi, TTDHNMoi, CSMoi, TieuThuMoi, GiaBan, PhiBVMT, ThueGTGT, TongCong, ChiTiet, Latitude, Longitude);
+           return _cDocSo.CapNhat(ID, DanhBo, int.Parse(Nam), int.Parse(Ky), CodeMoi, TTDHNMoi, int.Parse(CSMoi), int.Parse(GiaBieu), int.Parse(DinhMuc), Latitude, Longitude,out TieuThu,out TongCong);
         }
 
         [WebMethod]
