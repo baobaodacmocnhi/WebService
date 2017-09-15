@@ -44,7 +44,7 @@ namespace WSSmartPhone
 
         public DataTable GetDSCode()
         {
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TTDHN order by STT asc");
+            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TTDHN where vitri is not null order by vitri asc");
         }
 
         public DataTable GetDSDocSo(string Nam, string Ky, string Dot, string May)
