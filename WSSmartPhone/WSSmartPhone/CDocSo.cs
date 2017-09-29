@@ -13,7 +13,8 @@ namespace WSSmartPhone
     class CDocSo
     {
         Connection _DAL = new Connection(ConfigurationManager.AppSettings["DocSo"].ToString());
-        Connection _DAL_Test = new Connection("Data Source=192.168.1.8\\KD;Initial Catalog=DocSoSP01;Persist Security Info=True;User ID=sa;Password=123@tanhoa");
+        //Connection _DAL_Test = new Connection("Data Source=192.168.1.8\\KD;Initial Catalog=DocSoSP01;Persist Security Info=True;User ID=sa;Password=123@tanhoa");
+        CThuTien _cThuTien = new CThuTien();
 
         public bool CapNhat(string ID, string DanhBo, int Nam, int Ky, string CodeMoi, string TTDHNMoi, int CSMoi, int GiaBieu, int DinhMuc, string Latitude, string Longitude, out int TieuThu, out int TongCong)
         {
@@ -29,7 +30,8 @@ namespace WSSmartPhone
             TongCong = GiaBan + PhiBVMT + ThueGTGT;
             string sql = "update DocSo set NVGHI='nvds',GIOGHI=getdate(),SOLANGHI=1,GPSDATA='0',CSMoi=" + CSMoi + ",CodeMoi='" + CodeMoi + "',TTDHNMoi='" + TTDHNMoi + "',TieuThuMoi=" + TieuThu + ",TienNuoc=" + GiaBan + ",BVMT=" + PhiBVMT + ",Thue=" + ThueGTGT + ",TongTien=" + TongCong + ","
                 + "ChiTiet='" + ChiTiet + "',Latitude='" + Latitude + "',Longitude='" + Longitude + "',NgayDS=getdate() where DocSoID=" + ID + " and (NgayDS is null or Cast(NgayDS as date)='1900-01-01' or Cast(NgayDS as date)=Cast(getdate() as date))";
-            return _DAL_Test.ExecuteNonQuery(sql);
+            //return _DAL_Test.ExecuteNonQuery(sql);
+            return _DAL.ExecuteNonQuery(sql);
         }
 
         public bool CheckDangNhap(string TaiKhoan, string MatKhau)
@@ -86,7 +88,8 @@ namespace WSSmartPhone
             sql += " left join"
                 + " (select DanhBa,HoTen=TenKH from KhachHang) d on a.DanhBa=d.DanhBa"
                 + " order by MLT1 asc";
-            return _DAL_Test.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            //return _DAL_Test.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
         }
 
         public int TinhTieuThu(string DanhBo, int nam, int ky, string code, int csmoi)
@@ -94,9 +97,11 @@ namespace WSSmartPhone
             int tieuthu = 0;
             try
             {
-                _DAL_Test.Connect();
+                //_DAL_Test.Connect();
+                _DAL.Connect();
 
-                SqlCommand cmd = new SqlCommand("calTieuTHu", _DAL_Test.connection);
+                //SqlCommand cmd = new SqlCommand("calTieuTHu", _DAL_Test.connection);
+                SqlCommand cmd = new SqlCommand("calTieuTHu", _DAL.connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter _db = cmd.Parameters.Add("@DANHBO", SqlDbType.VarChar);
@@ -133,7 +138,8 @@ namespace WSSmartPhone
             }
             finally
             {
-                _DAL_Test.Disconnect();
+                //_DAL_Test.Disconnect();
+                _DAL.Disconnect();
             }
             return tieuthu;
         }
@@ -155,7 +161,7 @@ namespace WSSmartPhone
         {
             try
             {
-                HOADON hoadon = CThuTien.GetMoiNhat(DanhBo);
+                HOADON hoadon = _cThuTien.GetMoiNhat(DanhBo);
 
                 KDDataContext db = new KDDataContext();
                 List<GiaNuoc> lstGiaNuoc = db.GiaNuocs.ToList();
@@ -1121,7 +1127,7 @@ namespace WSSmartPhone
                 ThueGTGT = (int)(GiaBan * 0.05);
                 TongCong = GiaBan + PhiBVMT + ThueGTGT;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show(ex.Message, "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 GiaBan = 0;
@@ -1136,7 +1142,7 @@ namespace WSSmartPhone
         {
             try
             {
-                HOADON hoadon = CThuTien.GetMoiNhat(DanhBo);
+                HOADON hoadon = _cThuTien.GetMoiNhat(DanhBo);
 
                 KDDataContext db = new KDDataContext();
                 List<GiaNuoc> lstGiaNuoc = db.GiaNuocs.ToList();
@@ -2094,7 +2100,7 @@ namespace WSSmartPhone
                 }
                 return GiaBan;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //MessageBox.Show(ex.Message, "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 ChiTiet = "";

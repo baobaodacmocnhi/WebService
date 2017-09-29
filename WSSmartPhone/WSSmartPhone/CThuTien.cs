@@ -11,14 +11,20 @@ namespace WSSmartPhone
 {
     class CThuTien
     {
-        Connection _DAL = new Connection(ConfigurationManager.AppSettings["BaoBao"].ToString());
-        
+        Connection _DAL = new Connection(ConfigurationManager.AppSettings["ThuTien"].ToString());
+        HDDataContext _db = new HDDataContext();
+
         public DataTable GetDSHoaDon(string DanhBo)
         {
-           return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where DANHBA='" + DanhBo + "er by ID_HOADON desc");
+            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
         }
 
-        public static HOADON Copy(HOADON a, TT_HoaDonCu b)
+        public DataTable GetDSHoaDon(string Nam, string Ky, string Dot, string MaNV_HanhThu)
+        {
+            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and MaNV_HanhThu=" + MaNV_HanhThu + " order by ID_HOADON desc");
+        }
+
+        public HOADON Copy(HOADON a, TT_HoaDonCu b)
         {
             a.ChanTienDu = b.ChanTienDu;
             a.ChuyenNoKhoDoi = b.ChuyenNoKhoDoi;
@@ -109,25 +115,23 @@ namespace WSSmartPhone
             return a;
         }
 
-        public static HOADON GetMoiNhat(string DanhBo)
+        public HOADON GetMoiNhat(string DanhBo)
         {
-            HDDataContext db = new HDDataContext();
             HOADON a = new HOADON();
-            if (db.HOADONs.Any(item => item.DANHBA == DanhBo))
-                return db.HOADONs.Where(item => item.DANHBA == DanhBo).OrderByDescending(item => item.ID_HOADON).First();
+            if (_db.HOADONs.Any(item => item.DANHBA == DanhBo))
+                return _db.HOADONs.Where(item => item.DANHBA == DanhBo).OrderByDescending(item => item.ID_HOADON).First();
             else
-                if (db.TT_HoaDonCus.Any(item => item.DANHBA == DanhBo))
-                    return Copy(a, db.TT_HoaDonCus.Where(item => item.DANHBA == DanhBo).OrderByDescending(item => item.ID_HOADON).First());
+                if (_db.TT_HoaDonCus.Any(item => item.DANHBA == DanhBo))
+                    return Copy(a, _db.TT_HoaDonCus.Where(item => item.DANHBA == DanhBo).OrderByDescending(item => item.ID_HOADON).First());
                 else
                     return null;
         }
 
-
-        public static GiaNuoc GetN(int MaGN)
-        {
-            KDDataContext db = new KDDataContext();
-            return db.GiaNuocs.SingleOrDefault(itemGN => itemGN.MaGN == MaGN);
-        }
+        //public GiaNuoc GetN(int MaGN)
+        //{
+        //    KDDataContext db = new KDDataContext();
+        //    return db.GiaNuocs.SingleOrDefault(itemGN => itemGN.MaGN == MaGN);
+        //}
 
 
 

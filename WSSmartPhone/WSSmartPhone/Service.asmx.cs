@@ -165,5 +165,15 @@ namespace WSSmartPhone
 
         #endregion
 
+        #region ThuTien
+
+        [WebMethod]
+        public DataTable TT_GetDSHoaDon(string Nam, string Ky, string Dot, string MaNV_HanhThu)
+        {
+            return _cThuTien.GetDSHoaDon(Nam, Ky, Dot, MaNV_HanhThu);
+        }
+
+        #endregion
+
     }
 }
