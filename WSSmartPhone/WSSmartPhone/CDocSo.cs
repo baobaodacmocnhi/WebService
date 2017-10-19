@@ -42,6 +42,12 @@ namespace WSSmartPhone
                 return false;
         }
 
+        public object GetCurrentVersion()
+        {
+            return _DAL.ExecuteQuery_ReturnOneValue("select Value from Configure where Name='CurrentVersion'");
+
+        }
+
         public DataTable DangNhap(string TaiKhoan, string MatKhau)
         {
             return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from NguoiDung where TaiKhoan='" + TaiKhoan + "' and MatKhau='" + MatKhau + "'");

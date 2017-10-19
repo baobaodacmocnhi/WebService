@@ -116,6 +116,12 @@ namespace WSSmartPhone
         #region DocSo
 
         [WebMethod]
+        public object DS_GetCurrentVersion()
+        {
+            return _cDocSo.GetCurrentVersion();
+        }
+
+        [WebMethod]
         public bool DS_CheckDangNhap(string TaiKhoan, string MatKhau)
         {
             return _cDocSo.CheckDangNhap(TaiKhoan, MatKhau);
