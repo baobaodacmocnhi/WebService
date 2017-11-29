@@ -22,15 +22,15 @@ namespace WSSmartPhone
         #region BaoBao
 
         [WebMethod]
-        public bool ThemKhachHang(string HoTen, string GioiTinh, string MaPhong)
+        public bool ThemKhachHang(string HoTen,  string GioiTinh, string DienThoai, string BienSoXe,string MaPhong)
         {
-            return _cBaoBao.ThemKhachHang(HoTen, GioiTinh, MaPhong);
+            return _cBaoBao.ThemKhachHang(HoTen, GioiTinh, DienThoai, BienSoXe, MaPhong);
         }
 
         [WebMethod]
-        public bool SuaKhachHang(string ID, string HoTen, string GioiTinh, string MaPhong)
+        public bool SuaKhachHang(string ID, string HoTen, string GioiTinh, string DienThoai, string BienSoXe,string MaPhong)
         {
-            return _cBaoBao.SuaKhachHang(ID, HoTen, GioiTinh, MaPhong);
+            return _cBaoBao.SuaKhachHang(ID, HoTen, GioiTinh, DienThoai, BienSoXe, MaPhong);
         }
 
         [WebMethod]

@@ -14,20 +14,20 @@ namespace WSSmartPhone
     {
         Connection _DAL = new Connection(ConfigurationManager.AppSettings["BaoBao"].ToString());
 
-        public bool ThemKhachHang(string HoTen, string GioiTinh,string MaPhong)
+        public bool ThemKhachHang(string HoTen, string GioiTinh,string DienThoai, string BienSoXe,string MaPhong)
         {
             int ID = 0;
             if (int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select COUNT(ID) from KhachHang").Rows[0][0].ToString()) == 0)
                 ID = 1;
             else
                 ID = int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select MAX(ID)+1 from KhachHang").Rows[0][0].ToString());
-            string sql = "insert into KhachHang(ID,HoTen,GioiTinh,MaPhong,CreateDate)values(" + ID + ",N'" + HoTen + "'," + GioiTinh + ","+MaPhong+",GETDATE())";
+            string sql = "insert into KhachHang(ID,HoTen,GioiTinh,DienThoai,BienSoXe,MaPhong,CreateDate)values(" + ID + ",N'" + HoTen + "'," + GioiTinh + ",'"+DienThoai+"','"+BienSoXe+"',"+MaPhong+",GETDATE())";
             return _DAL.ExecuteNonQuery(sql);
         }
 
-        public bool SuaKhachHang(string ID, string HoTen, string GioiTinh, string MaPhong)
+        public bool SuaKhachHang(string ID, string HoTen, string GioiTinh, string DienThoai, string BienSoXe,string MaPhong)
         {
-            string sql = "update KhachHang set HoTen=N'" + HoTen + "',GioiTinh=" + GioiTinh + ",MaPhong="+MaPhong+" where ID=" + ID;
+            string sql = "update KhachHang set HoTen=N'" + HoTen + "',GioiTinh=" + GioiTinh + ",DienThoai='" + DienThoai + "',BienSoXe='" + BienSoXe + "',MaPhong=" + MaPhong + " where ID=" + ID;
             return _DAL.ExecuteNonQuery(sql);
         }
 
