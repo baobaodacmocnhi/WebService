@@ -43,15 +43,16 @@ namespace WSSmartPhone
             return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
         }
 
-        public bool SuaPhong(string ID, string Name, string GiaTien,string SoNKNuoc, string ChiSoDien, string ChiSoNuoc)
+        public bool SuaPhong(string ID, string Name, string GiaTien,string SoNKNuoc, string ChiSoDien, string ChiSoNuoc,string NgayThue,string Thue)
         {
-            string sql = "update Phong set Name=N'" + Name + "',GiaTien=" + GiaTien + ",SoNKNuoc="+SoNKNuoc+",ChiSoDien=" + ChiSoDien + ",ChiSoNuoc=" + ChiSoNuoc + " where ID=" + ID;
+            string[] date = NgayThue.Split('/');
+            string sql = "update Phong set Name=N'" + Name + "',GiaTien=" + GiaTien + ",SoNKNuoc=" + SoNKNuoc + ",ChiSoDien=" + ChiSoDien + ",ChiSoNuoc=" + ChiSoNuoc + ",NgayThue='" + date[2] + "-" + date[1] + "-" + date[0] + "',Thue="+Thue+" where ID=" + ID;
             return _DAL.ExecuteNonQuery(sql);
         }
 
         public DataTable GetDSPhong()
         {
-            string sql = "select * from Phong";
+            string sql = "select ID,Name,GiaTien,Thue,NgayThue=CONVERT(varchar(10), NgayThue, 103),ChiSoDienOld,ChiSoDien,SoNKNuoc,ChiSoNuocOld,ChiSoNuoc from Phong";
             return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
         }
 
@@ -191,7 +192,7 @@ namespace WSSmartPhone
                     bool flag = true;
                     int MaPhong = (int)_DAL.ExecuteQuery_ReturnOneValue("select MaPhong from HoaDon where ID=" + ID);
                     
-                    string sql = "update Phong set ChiSoDien=ChiSoDienOld,ChiSoDienOld=NULL,ChiSoNuoc=ChiSoNuocOld,ChiSoNuocOld=NULL where ID=" + ID;
+                    string sql = "update Phong set ChiSoDien=ChiSoDienOld,ChiSoDienOld=0,ChiSoNuoc=ChiSoNuocOld,ChiSoNuocOld=0 where ID=" + ID;
                     if (_DAL.ExecuteNonQuery(sql) == false)
                         flag = false;
 
@@ -290,6 +291,7 @@ namespace WSSmartPhone
                                 }
 
             TienDien = (int)(TienDien * 1.10);
+            ///tỷ lệ hao hụt
             TienDien += (int)Math.Round(TienDien * double.Parse(dtGiaDien.Rows[6]["GiaTien"].ToString()) / 100);
             return TienDien;
         }

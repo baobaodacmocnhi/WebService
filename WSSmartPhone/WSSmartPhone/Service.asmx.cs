@@ -46,9 +46,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool SuaPhong(string ID, string Name, string GiaTien,string SoNKNuoc, string ChiSoDien, string ChiSoNuoc)
+        public bool SuaPhong(string ID, string Name, string GiaTien, string SoNKNuoc, string ChiSoDien, string ChiSoNuoc, string NgayThue,string Thue)
         {
-            return _cBaoBao.SuaPhong(ID, Name, GiaTien,SoNKNuoc, ChiSoDien, ChiSoNuoc);
+            return _cBaoBao.SuaPhong(ID, Name, GiaTien,SoNKNuoc, ChiSoDien, ChiSoNuoc,NgayThue,Thue);
         }
 
         [WebMethod]
