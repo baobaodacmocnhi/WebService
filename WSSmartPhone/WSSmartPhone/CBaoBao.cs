@@ -12,7 +12,7 @@ namespace WSSmartPhone
 {
     class CBaoBao
     {
-        Connection _DAL = new Connection(ConfigurationManager.AppSettings["BaoBao"].ToString());
+        Connection _DAL = new Connection("Data Source=192.168.90.9;Initial Catalog=BaoBao;Persist Security Info=True;User ID=sa;Password=P@ssW012d9");
 
         public bool ThemKhachHang(string HoTen, string GioiTinh,string DienThoai, string BienSoXe,string MaPhong)
         {

@@ -62,6 +62,7 @@
   <ItemGroup>
     <Compile Include="CBaoBao.cs" />
     <Compile Include="CDocSo.cs" />
+    <Compile Include="CKinhDoanh.cs" />
     <Compile Include="CThuTien.cs" />
     <Compile Include="Connection.cs" />
     <Compile Include="dbDocSo.designer.cs">
@@ -69,15 +70,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dbDocSo.dbml</DependentUpon>
     </Compile>
-    <Compile Include="HOADON.designer.cs">
+    <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>HOADON.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="KinhDoanh.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>KinhDoanh.dbml</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Service.asmx.cs">
       <DependentUpon>Service.asmx</DependentUpon>
@@ -91,29 +87,13 @@
       <LastGenOutput>dbDocSo.designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </None>
-    <None Include="HOADON.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>HOADON.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="KinhDoanh.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>KinhDoanh.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="HOADON.dbml.layout">
-      <DependentUpon>HOADON.dbml</DependentUpon>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="KinhDoanh.dbml.layout">
-      <DependentUpon>KinhDoanh.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="dbDocSo.dbml.layout">
