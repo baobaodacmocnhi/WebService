@@ -174,9 +174,10 @@ namespace WSSmartPhone
         #region ThuTien
 
         [WebMethod]
-        public DataTable TT_DangNhap(string Username,string Password)
+        public string TT_DangNhap(string Username,string Password)
         {
-            return _cThuTien.DangNhap(Username,Password);
+            //return _cThuTien.DangNhap(Username,Password);
+            return _cThuTien.DangNhap(Username, Password);
         }
 
         [WebMethod]
@@ -186,7 +187,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public DataTable TT_GetDSHoaDon(string Nam, string Ky, string Dot, string MaNV_HanhThu)
+        public string TT_GetDSHoaDon(string Nam, string Ky, string Dot, string MaNV_HanhThu)
         {
             return _cThuTien.GetDSHoaDon(Nam, Ky, Dot, MaNV_HanhThu);
         }

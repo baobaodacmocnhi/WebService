@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Configuration;
+using System.Web.Script.Serialization;
 
 namespace WSSmartPhone
 {
@@ -13,9 +14,26 @@ namespace WSSmartPhone
     {
         Connection _DAL = new Connection("Data Source=192.168.90.9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=P@ssW012d9");
 
-        public DataTable DangNhap(string Username, string Password)
+        public string DataTableToJSON(DataTable table)
         {
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TT_NguoiDung where TaiKhoan='"+Username+"' and MatKhau='"+Password+"' and An=0");
+            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in table.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in table.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+            return jsSerializer.Serialize(parentRow);
+        } 
+
+        public string DangNhap(string Username, string Password)
+        {
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
         }
 
         public string GetVersion()
@@ -28,9 +46,9 @@ namespace WSSmartPhone
             return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
         }
 
-        public DataTable GetDSHoaDon(string Nam, string Ky, string Dot, string MaNV_HanhThu)
+        public string GetDSHoaDon(string Nam, string Ky, string Dot, string MaNV_HanhThu)
         {
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and MaNV_HanhThu=" + MaNV_HanhThu + " order by ID_HOADON desc");
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and MaNV_HanhThu=" + MaNV_HanhThu + " order by ID_HOADON desc"));
         }
 
         public DataTable GetHDMoiNhat(string DanhBo)
