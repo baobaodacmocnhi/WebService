@@ -14,18 +14,18 @@ namespace WSSmartPhone
     {
         Connection _DAL = new Connection("Data Source=192.168.90.9;Initial Catalog=BaoBao;Persist Security Info=True;User ID=sa;Password=P@ssW012d9");
 
-        public bool ThemKhachHang(string HoTen, string GioiTinh,string DienThoai, string BienSoXe,string MaPhong)
+        public bool ThemKhachHang(string HoTen, string GioiTinh, string DienThoai, string BienSoXe, string MaPhong)
         {
             int ID = 0;
             if (int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select COUNT(ID) from KhachHang").Rows[0][0].ToString()) == 0)
                 ID = 1;
             else
                 ID = int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select MAX(ID)+1 from KhachHang").Rows[0][0].ToString());
-            string sql = "insert into KhachHang(ID,HoTen,GioiTinh,DienThoai,BienSoXe,MaPhong,CreateDate)values(" + ID + ",N'" + HoTen + "'," + GioiTinh + ",'"+DienThoai+"','"+BienSoXe+"',"+MaPhong+",GETDATE())";
+            string sql = "insert into KhachHang(ID,HoTen,GioiTinh,DienThoai,BienSoXe,MaPhong,CreateDate)values(" + ID + ",N'" + HoTen + "'," + GioiTinh + ",'" + DienThoai + "','" + BienSoXe + "'," + MaPhong + ",GETDATE())";
             return _DAL.ExecuteNonQuery(sql);
         }
 
-        public bool SuaKhachHang(string ID, string HoTen, string GioiTinh, string DienThoai, string BienSoXe,string MaPhong)
+        public bool SuaKhachHang(string ID, string HoTen, string GioiTinh, string DienThoai, string BienSoXe, string MaPhong)
         {
             string sql = "update KhachHang set HoTen=N'" + HoTen + "',GioiTinh=" + GioiTinh + ",DienThoai='" + DienThoai + "',BienSoXe='" + BienSoXe + "',MaPhong=" + MaPhong + " where ID=" + ID;
             return _DAL.ExecuteNonQuery(sql);
@@ -43,10 +43,10 @@ namespace WSSmartPhone
             return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
         }
 
-        public bool SuaPhong(string ID, string Name, string GiaTien,string SoNKNuoc, string ChiSoDien, string ChiSoNuoc,string NgayThue,string Thue)
+        public bool SuaPhong(string ID, string Name, string GiaTien, string SoNKNuoc, string ChiSoDien, string ChiSoNuoc, string NgayThue, string Thue)
         {
             string[] date = NgayThue.Split('/');
-            string sql = "update Phong set Name=N'" + Name + "',GiaTien=" + GiaTien + ",SoNKNuoc=" + SoNKNuoc + ",ChiSoDien=" + ChiSoDien + ",ChiSoNuoc=" + ChiSoNuoc + ",NgayThue='" + date[2] + "-" + date[1] + "-" + date[0] + "',Thue="+Thue+" where ID=" + ID;
+            string sql = "update Phong set Name=N'" + Name + "',GiaTien=" + GiaTien + ",SoNKNuoc=" + SoNKNuoc + ",ChiSoDien=" + ChiSoDien + ",ChiSoNuoc=" + ChiSoNuoc + ",NgayThue='" + date[2] + "-" + date[1] + "-" + date[0] + "',Thue=" + Thue + " where ID=" + ID;
             return _DAL.ExecuteNonQuery(sql);
         }
 
@@ -109,7 +109,7 @@ namespace WSSmartPhone
                         ID = 1;
                     else
                         ID = int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select MAX(ID)+1 from HoaDon").Rows[0][0].ToString());
-                    string sql = "insert into HoaDon(ID,MaPhong,ChiSoDienOld,ChiSoDienNew,TieuThuDien,TienDien,ChiTietDien,ChiSoNuocOld,ChiSoNuocNew,TieuThuNuoc,TienNuoc,ChiTietNuoc,CreateDate)values("+ ID + "," + MaPhong + ","
+                    string sql = "insert into HoaDon(ID,MaPhong,ChiSoDienOld,ChiSoDienNew,TieuThuDien,TienDien,ChiTietDien,ChiSoNuocOld,ChiSoNuocNew,TieuThuNuoc,TienNuoc,ChiTietNuoc,CreateDate)values(" + ID + "," + MaPhong + ","
                                + ChiSoDienOld + "," + ChiSoDienNew + "," + TieuThuDien + "," + TienDien + ",'" + ChiTietDien + "',"
                                + ChiSoNuocOld + "," + ChiSoNuocNew + "," + TieuThuNuoc + "," + TienNuoc + ",'" + ChiTietNuoc + "',GETDATE())";
 
@@ -191,8 +191,8 @@ namespace WSSmartPhone
                 {
                     bool flag = true;
                     int MaPhong = (int)_DAL.ExecuteQuery_ReturnOneValue("select MaPhong from HoaDon where ID=" + ID);
-                    
-                    string sql = "update Phong set ChiSoDien=ChiSoDienOld,ChiSoDienOld=0,ChiSoNuoc=ChiSoNuocOld,ChiSoNuocOld=0 where ID=" + ID;
+
+                    string sql = "update Phong set ChiSoDien=ChiSoDienOld,ChiSoDienOld=0,ChiSoNuoc=ChiSoNuocOld,ChiSoNuocOld=0 where ID=" + MaPhong;
                     if (_DAL.ExecuteNonQuery(sql) == false)
                         flag = false;
 
@@ -213,7 +213,7 @@ namespace WSSmartPhone
             {
                 return false;
             }
-            
+
         }
 
         public DataTable GetDSHoaDon()
@@ -299,13 +299,34 @@ namespace WSSmartPhone
         public int TinhTienNuoc(int DinhMuc, int TieuThu, out string ChiTiet)
         {
             DataTable dtGiaNuoc = _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from GiaNuoc");
-            int TienNuoc = (DinhMuc * (int)dtGiaNuoc.Rows[0]["GiaTien"]) 
-                + ((int)Math.Round((double)DinhMuc / 2) * (int)dtGiaNuoc.Rows[1]["GiaTien"]) 
-                + ((TieuThu - DinhMuc - (int)Math.Round((double)DinhMuc / 2)) * (int)dtGiaNuoc.Rows[2]["GiaTien"]);
+            int TienNuoc = 0;
+            if (TieuThu <= DinhMuc)
+            {
+                TienNuoc = (TieuThu * (int)dtGiaNuoc.Rows[0]["GiaTien"]);
 
-            ChiTiet = DinhMuc + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[0]["GiaTien"]) + "\r\n"
-                       + (int)Math.Round((double)DinhMuc / 2) + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[1]["GiaTien"]) + "\r\n"
-                       + (TieuThu - DinhMuc - (int)Math.Round((double)DinhMuc / 2)) + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[2]["GiaTien"]);
+                ChiTiet = TieuThu + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[0]["GiaTien"]);
+            }
+            else
+            {
+                if (TieuThu - DinhMuc <= Math.Round((double)DinhMuc / 2))
+                {
+                    TienNuoc = (DinhMuc * (int)dtGiaNuoc.Rows[0]["GiaTien"])
+                            + (TieuThu-(int)Math.Round((double)DinhMuc / 2) * (int)dtGiaNuoc.Rows[1]["GiaTien"]);
+
+                    ChiTiet = DinhMuc + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[0]["GiaTien"]) + "\r\n"
+                               + (TieuThu-(int)Math.Round((double)DinhMuc / 2)) + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[1]["GiaTien"]);
+                }
+                else
+                {
+                    TienNuoc = (DinhMuc * (int)dtGiaNuoc.Rows[0]["GiaTien"])
+                            + ((int)Math.Round((double)DinhMuc / 2) * (int)dtGiaNuoc.Rows[1]["GiaTien"])
+                            + ((TieuThu - DinhMuc - (int)Math.Round((double)DinhMuc / 2)) * (int)dtGiaNuoc.Rows[2]["GiaTien"]);
+
+                    ChiTiet = DinhMuc + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[0]["GiaTien"]) + "\r\n"
+                               + (int)Math.Round((double)DinhMuc / 2) + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[1]["GiaTien"]) + "\r\n"
+                               + (TieuThu - DinhMuc - (int)Math.Round((double)DinhMuc / 2)) + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaNuoc.Rows[2]["GiaTien"]);
+                }
+            }
 
             TienNuoc = (int)(TienNuoc * 1.15);
             TienNuoc += (int)Math.Round(TienNuoc * double.Parse(dtGiaNuoc.Rows[3]["GiaTien"].ToString()) / 100);

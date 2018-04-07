@@ -174,10 +174,15 @@ namespace WSSmartPhone
         #region ThuTien
 
         [WebMethod]
-        public string TT_DangNhap(string Username,string Password)
+        public string TT_DangNhap(string Username,string Password,string UID)
         {
-            //return _cThuTien.DangNhap(Username,Password);
-            return _cThuTien.DangNhap(Username, Password);
+            return _cThuTien.DangNhap(Username, Password,UID);
+        }
+
+        [WebMethod]
+        public bool TT_DangXuat(string Username)
+        {
+                        return _cThuTien.DangXuat(Username);
         }
 
         [WebMethod]
@@ -187,9 +192,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string TT_GetDSHoaDon(string Nam, string Ky, string Dot, string MaNV_HanhThu)
+        public bool TT_UpdateUID(string MaNV,string UID)
         {
-            return _cThuTien.GetDSHoaDon(Nam, Ky, Dot, MaNV_HanhThu);
+            return _cThuTien.UpdateUID(MaNV, UID);
+        }
+
+        [WebMethod]
+        public string TT_GetDSHoaDon(string Nam, string Ky, string FromDot,string ToDot, string MaNV_HanhThu)
+        {
+            return _cThuTien.GetDSHoaDon(Nam, Ky, FromDot,ToDot, MaNV_HanhThu);
         }
 
         #endregion

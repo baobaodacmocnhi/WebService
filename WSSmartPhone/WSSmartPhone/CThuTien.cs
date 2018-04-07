@@ -31,9 +31,20 @@ namespace WSSmartPhone
             return jsSerializer.Serialize(parentRow);
         } 
 
-        public string DangNhap(string Username, string Password)
+        public string DangNhap(string Username, string Password,string UID)
         {
+            _DAL.ExecuteQuery_SqlDataAdapter_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
+        }
+
+        public bool DangXuat(string Username)
+        {
+           return _DAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'");
+        }
+
+        public bool UpdateUID(string MaNV, string UID)
+        {
+            return _DAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
         }
 
         public string GetVersion()
@@ -41,14 +52,14 @@ namespace WSSmartPhone
             return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select Version from TT_ConfigAndroid").Rows[0]["Version"].ToString();
         }
 
-        public DataTable GetDSHoaDon(string DanhBo)
+        public string GetDSHoaDon(string DanhBo)
         {
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc"));
         }
 
-        public string GetDSHoaDon(string Nam, string Ky, string Dot, string MaNV_HanhThu)
+        public string GetDSHoaDon(string Nam, string Ky, string FromDot,string ToDot, string MaNV_HanhThu)
         {
-            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and MaNV_HanhThu=" + MaNV_HanhThu + " order by ID_HOADON desc"));
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where Nam=" + Nam + " and Ky=" + Ky + " and Dot>=" + FromDot + " and Dot<="+ToDot+" and MaNV_HanhThu=" + MaNV_HanhThu + " order by ID_HOADON desc"));
         }
 
         public DataTable GetHDMoiNhat(string DanhBo)
