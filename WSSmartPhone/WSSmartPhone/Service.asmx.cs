@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.Services;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 
 namespace WSSmartPhone
 {
@@ -18,17 +19,17 @@ namespace WSSmartPhone
         CBaoBao _cBaoBao = new CBaoBao();
         CDocSo _cDocSo = new CDocSo();
         CThuTien _cThuTien = new CThuTien();
-        
+
         #region BaoBao
 
         [WebMethod]
-        public bool ThemKhachHang(string HoTen,  string GioiTinh, string DienThoai, string BienSoXe,string MaPhong)
+        public bool ThemKhachHang(string HoTen, string GioiTinh, string DienThoai, string BienSoXe, string MaPhong)
         {
             return _cBaoBao.ThemKhachHang(HoTen, GioiTinh, DienThoai, BienSoXe, MaPhong);
         }
 
         [WebMethod]
-        public bool SuaKhachHang(string ID, string HoTen, string GioiTinh, string DienThoai, string BienSoXe,string MaPhong)
+        public bool SuaKhachHang(string ID, string HoTen, string GioiTinh, string DienThoai, string BienSoXe, string MaPhong)
         {
             return _cBaoBao.SuaKhachHang(ID, HoTen, GioiTinh, DienThoai, BienSoXe, MaPhong);
         }
@@ -46,9 +47,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool SuaPhong(string ID, string Name, string GiaTien, string SoNKNuoc, string ChiSoDien, string ChiSoNuoc, string NgayThue,string Thue)
+        public bool SuaPhong(string ID, string Name, string GiaTien, string SoNKNuoc, string ChiSoDien, string ChiSoNuoc, string NgayThue, string Thue)
         {
-            return _cBaoBao.SuaPhong(ID, Name, GiaTien,SoNKNuoc, ChiSoDien, ChiSoNuoc,NgayThue,Thue);
+            return _cBaoBao.SuaPhong(ID, Name, GiaTien, SoNKNuoc, ChiSoDien, ChiSoNuoc, NgayThue, Thue);
         }
 
         [WebMethod]
@@ -174,15 +175,15 @@ namespace WSSmartPhone
         #region ThuTien
 
         [WebMethod]
-        public string TT_DangNhap(string Username,string Password,string UID)
+        public string TT_DangNhap(string Username, string Password, string UID)
         {
-            return _cThuTien.DangNhap(Username, Password,UID);
+            return _cThuTien.DangNhap(Username, Password, UID);
         }
 
         [WebMethod]
         public bool TT_DangXuat(string Username)
         {
-                        return _cThuTien.DangXuat(Username);
+            return _cThuTien.DangXuat(Username);
         }
 
         [WebMethod]
@@ -192,15 +193,27 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool TT_UpdateUID(string MaNV,string UID)
+        public bool TT_UpdateUID(string MaNV, string UID)
         {
             return _cThuTien.UpdateUID(MaNV, UID);
         }
 
         [WebMethod]
-        public string TT_GetDSHoaDon(string Nam, string Ky, string FromDot,string ToDot, string MaNV_HanhThu)
+        public string TT_GetDSHoaDon(string Nam, string Ky, string FromDot, string ToDot, string MaNV_HanhThu)
         {
-            return _cThuTien.GetDSHoaDon(Nam, Ky, FromDot,ToDot, MaNV_HanhThu);
+            return _cThuTien.GetDSHoaDon(Nam, Ky, FromDot, ToDot, MaNV_HanhThu);
+        }
+
+        [WebMethod]
+        public string TT_SendNotificationToClient(string Title, string Content, string MaNV, string SoHoaDon)
+        {
+            return _cThuTien.SendNotificationToClient(Title, Content, MaNV, SoHoaDon);
+        }
+
+        [WebMethod]
+        public string TT_GetDSDongNuoc(string MaNV_DongNuoc, string FromNgayGiao, string ToNgayGiao)
+        {
+            return _cThuTien.GetDSDongNuoc(MaNV_DongNuoc, DateTime.ParseExact(FromNgayGiao, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayGiao, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
         #endregion

@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Configuration;
+using System.IO;
+using System.Net;
 using System.Web.Script.Serialization;
 
 namespace WSSmartPhone
@@ -62,11 +64,82 @@ namespace WSSmartPhone
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where Nam=" + Nam + " and Ky=" + Ky + " and Dot>=" + FromDot + " and Dot<="+ToDot+" and MaNV_HanhThu=" + MaNV_HanhThu + " order by ID_HOADON desc"));
         }
 
-        public DataTable GetHDMoiNhat(string DanhBo)
+        public string SendNotificationToClient(string Title,string Content,string MaNV,string SoHoaDon)
         {
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select top 1 * from HOADON where DANHBA='"+DanhBo+"' order by ID_HOADON desc");
+            string response;
+            try
+            {
+                // From: https://console.firebase.google.com/project/x.y.z/settings/general/android:x.y.z
+
+                // Projekt-ID: x.y.z
+                // Web-API-Key: A...Y (39 chars)
+                // App-ID: 1:...:android:...
+
+                // From https://console.firebase.google.com/project/x.y.z/settings/
+                // cloudmessaging/android:x,y,z
+                // Server-Key: AAAA0...    ...._4
+
+                string serverKey = "AAAAYRLMnTg:APA91bH00qfWWWjIilUlB6gcazcdSUyXnU_SnsSpt8X141z4Kcboqw_qjIpsORxtaOAAGzz-RL-biPz-280wWQhJQu_Pq9JH9hCFfCgF2LNzLakEWA381KWlhoV1zsmG7z3kECf_ePdt"; // Something very long
+                string senderId = "416927227192";
+                string deviceId = (string)_DAL.ExecuteQuery_ReturnOneValue("select UID from TT_NguoiDung where MaND="+MaNV); // Also something very long, 
+                // got from android
+                //string deviceId = "//topics/all";             // Use this to notify all devices, 
+                // but App must be subscribed to 
+                // topic notification
+                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+
+                tRequest.Method = "post";
+                tRequest.ContentType = "application/json";
+                var data = new
+                {
+                    to = deviceId,
+                    data = new
+                    {
+                        title = Title,
+                        body = Content,
+                        SoHoaDon=SoHoaDon,
+                    }
+                };
+
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(data);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", serverKey));
+                tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
+                tRequest.ContentLength = byteArray.Length;
+
+                using (Stream dataStream = tRequest.GetRequestStream())
+                {
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    using (WebResponse tResponse = tRequest.GetResponse())
+                    {
+                        using (Stream dataStreamResponse = tResponse.GetResponseStream())
+                        {
+                            using (StreamReader tReader = new StreamReader(dataStreamResponse))
+                            {
+                                String sResponseFromServer = tReader.ReadToEnd();
+                                response = sResponseFromServer;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                response = ex.Message;
+            }
+            return response;
         }
 
+        public string GetDSDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
+        {
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select MaDN,DanhBo,HoTen,DiaChi,MLT from TT_DongNuoc where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)>='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"));
+        }
+
+        public DataTable GetHDMoiNhat(string DanhBo)
+        {
+            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select top 1 * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+        }
 
     }
 }
