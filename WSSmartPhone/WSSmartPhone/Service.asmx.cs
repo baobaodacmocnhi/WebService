@@ -216,6 +216,16 @@ namespace WSSmartPhone
             return _cThuTien.GetDSDongNuoc(MaNV_DongNuoc, DateTime.ParseExact(FromNgayGiao, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayGiao, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
+        [WebMethod]
+        public string TT_KiemTraHoaDon_DongNuoc(string MaDN)
+        {
+            if (_cThuTien.KiemTraHoaDon_DongNuoc(MaDN) == true)
+                return "ĐÃ GIẢI TRÁCH";
+            else
+                return "CÒN TỒN";
+        }
+
+
         #endregion
 
     }

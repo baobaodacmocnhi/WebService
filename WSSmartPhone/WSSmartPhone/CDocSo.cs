@@ -12,7 +12,7 @@ namespace WSSmartPhone
 {
     class CDocSo
     {
-        Connection _DAL = new Connection("Data Source=192.168.90.8\\KD;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=P@ssW012d9");
+        Connection _DAL = new Connection("Data Source=192.168.90.8\\KD;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=P@ssW012d");
         CThuTien _cThuTien = new CThuTien();
         CKinhDoanh _cKinhDoanh = new CKinhDoanh();
 

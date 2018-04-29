@@ -133,8 +133,33 @@ namespace WSSmartPhone
 
         public string GetDSDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
-            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select MaDN,DanhBo,HoTen,DiaChi,MLT from TT_DongNuoc where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)>='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"));
+            string query = "select dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
+                            + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " SoThan=case when kqdn.SoThan is not null then kqdn.SoThan else (select SoThan=ttkh.SOTHANDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " kqdn.NgayChuyenDN,kqdn.ChiSoDN,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.LyDo"
+                            + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
+                            + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'";
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(query));
         }
+
+        public bool KiemTraHoaDon_DongNuoc(string MaDN)
+        {
+            DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select ctdn.*,hd.NGAYGIAITRACH from TT_CTDongNuoc ctdn, HOADON hd where MaDN=" + MaDN + " and ctdn.MaHD=hd.ID_HOADON");
+            int CountGiaiTrach = 0;
+            foreach (DataRow item in dt.Rows)
+                if (item["NgayGiaiTrach"].ToString() != "")
+                {
+                    CountGiaiTrach++;
+                }
+            if (CountGiaiTrach == dt.Rows.Count)
+                return true;
+            return false;
+        }
+
+
+
+
 
         public DataTable GetHDMoiNhat(string DanhBo)
         {
