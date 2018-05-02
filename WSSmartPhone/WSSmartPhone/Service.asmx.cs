@@ -225,6 +225,20 @@ namespace WSSmartPhone
                 return "CÒN TỒN";
         }
 
+        [WebMethod]
+        public bool TT_CheckExist_KQDongNuoc(string MaDN)
+        {
+            return _cThuTien.CheckExist_KQDongNuoc(MaDN);
+        }
+
+        [WebMethod]
+        public string TT_ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, string NgayDN, string ChiSoDN, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
+        {
+            if (_cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy) == true)
+                return "Thành Công";
+            else
+                return "Thất Bại";
+        }
 
         #endregion
 

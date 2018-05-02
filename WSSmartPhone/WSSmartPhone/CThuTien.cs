@@ -157,7 +157,21 @@ namespace WSSmartPhone
             return false;
         }
 
+        public bool CheckExist_KQDongNuoc(string MaDN)
+        {
+            if (int.Parse(_DAL.ExecuteQuery_ReturnOneValue("select COUNT(MaKQDN) from TT_KQDongNuoc where MaDN=" + MaDN).ToString()) == 0)
+                return false;
+            else
+                return true;
+        }
 
+        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, DateTime NgayDN, string ChiSoDN, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
+        {
+            string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
+                + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,CONVERT(VARBINARY(max), '" + HinhDN + "')"
+                + ",'" + NgayDN.ToString("yyyy-MM-dd") +" "+ DateTime.Now.ToString("HH:mm:ss.fff")+"',getDate()," + ChiSoDN + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
+            return _DAL.ExecuteNonQuery(sql);
+        }
 
 
 
