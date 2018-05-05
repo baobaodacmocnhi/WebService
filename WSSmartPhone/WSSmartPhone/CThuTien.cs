@@ -61,7 +61,7 @@ namespace WSSmartPhone
 
         public string GetDSHoaDon(string Nam, string Ky, string FromDot,string ToDot, string MaNV_HanhThu)
         {
-            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where Nam=" + Nam + " and Ky=" + Ky + " and Dot>=" + FromDot + " and Dot<="+ToDot+" and MaNV_HanhThu=" + MaNV_HanhThu + " order by ID_HOADON desc"));
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from HOADON where Nam=" + Nam + " and Ky=" + Ky + " and Dot>=" + FromDot + " and Dot<="+ToDot+" and MaNV_HanhThu=" + MaNV_HanhThu + " order by MALOTRINH asc"));
         }
 
         public string SendNotificationToClient(string Title,string Content,string MaNV,string SoHoaDon)
@@ -137,9 +137,10 @@ namespace WSSmartPhone
                             + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " SoThan=case when kqdn.SoThan is not null then kqdn.SoThan else (select SoThan=ttkh.SOTHANDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
-                            + " kqdn.NgayChuyenDN,kqdn.ChiSoDN,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.LyDo"
+                            + " kqdn.NgayDN,kqdn.ChiSoDN,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.LyDo,kqdn.NgayMN,kqdn.ChiSoMN"
                             + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
-                            + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'";
+                            + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"
+                            + " order by dn.MLT";
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(query));
         }
 
@@ -157,9 +158,9 @@ namespace WSSmartPhone
             return false;
         }
 
-        public bool CheckExist_KQDongNuoc(string MaDN)
+        public bool CheckExist_DongNuoc(string MaDN)
         {
-            if (int.Parse(_DAL.ExecuteQuery_ReturnOneValue("select COUNT(MaKQDN) from TT_KQDongNuoc where MaDN=" + MaDN).ToString()) == 0)
+            if (int.Parse(_DAL.ExecuteQuery_ReturnOneValue("select COUNT(MaKQDN) from TT_KQDongNuoc where DongNuoc=1 MaDN=" + MaDN).ToString()) == 0)
                 return false;
             else
                 return true;
@@ -172,6 +173,21 @@ namespace WSSmartPhone
                 + ",'" + NgayDN.ToString("yyyy-MM-dd") +" "+ DateTime.Now.ToString("HH:mm:ss.fff")+"',getDate()," + ChiSoDN + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
             return _DAL.ExecuteNonQuery(sql);
         }
+
+        public bool CheckExist_MoNuoc(string MaDN)
+        {
+            if (int.Parse(_DAL.ExecuteQuery_ReturnOneValue("select COUNT(MaKQDN) from TT_KQDongNuoc where MoNuoc=0 and MaDN=" + MaDN).ToString()) == 0)
+                return false;
+            else
+                return true;
+        }
+
+        public bool ThemMoNuoc(string MaDN,  string HinhMN, DateTime NgayMN, string ChiSoMN, string CreateBy)
+        {
+            string sql = "update TT_KQDongNuoc set HinhMN=CONVERT(VARBINARY(max), '" + HinhMN + "'),NgayMN='" + NgayMN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy="+CreateBy+",ModifyDate=getDate() where MaDN=" + MaDN;
+            return _DAL.ExecuteNonQuery(sql);
+        }
+
 
 
 
