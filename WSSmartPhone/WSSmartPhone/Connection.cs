@@ -58,6 +58,25 @@ namespace WSSmartPhone
             }
         }
 
+        public bool ExecuteNonQuery(SqlCommand command)
+        {
+            try
+            {
+                Connect();
+                command.Connection = connection;
+                int rowsAffected = command.ExecuteNonQuery();
+                if (rowsAffected >= 1)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
+        }
+
         public object ExecuteQuery_ReturnOneValue(string sql)
         {
             try

@@ -144,7 +144,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(query));
         }
 
-        public bool KiemTraHoaDon_DongNuoc(string MaDN)
+        public bool CheckHoaDon_DongNuoc(string MaDN)
         {
             DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select ctdn.*,hd.NGAYGIAITRACH from TT_CTDongNuoc ctdn, HOADON hd where MaDN=" + MaDN + " and ctdn.MaHD=hd.ID_HOADON");
             int CountGiaiTrach = 0;
@@ -160,18 +160,20 @@ namespace WSSmartPhone
 
         public bool CheckExist_DongNuoc(string MaDN)
         {
-            if (int.Parse(_DAL.ExecuteQuery_ReturnOneValue("select COUNT(MaKQDN) from TT_KQDongNuoc where DongNuoc=1 MaDN=" + MaDN).ToString()) == 0)
+            if (int.Parse(_DAL.ExecuteQuery_ReturnOneValue("select COUNT(MaKQDN) from TT_KQDongNuoc where DongNuoc=1 and MaDN=" + MaDN).ToString()) == 0)
                 return false;
-            else
                 return true;
         }
 
         public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, DateTime NgayDN, string ChiSoDN, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
             string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
-                + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,CONVERT(VARBINARY(max), '" + HinhDN + "')"
-                + ",'" + NgayDN.ToString("yyyy-MM-dd") +" "+ DateTime.Now.ToString("HH:mm:ss.fff")+"',getDate()," + ChiSoDN + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
-            return _DAL.ExecuteNonQuery(sql);
+                + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
+                + ",'" + NgayDN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
+            Byte[] image = System.Convert.FromBase64String(HinhDN);
+            SqlCommand command = new SqlCommand(sql);
+            command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = image;
+            return _DAL.ExecuteNonQuery(command);
         }
 
         public bool CheckExist_MoNuoc(string MaDN)
@@ -184,8 +186,11 @@ namespace WSSmartPhone
 
         public bool ThemMoNuoc(string MaDN,  string HinhMN, DateTime NgayMN, string ChiSoMN, string CreateBy)
         {
-            string sql = "update TT_KQDongNuoc set HinhMN=CONVERT(VARBINARY(max), '" + HinhMN + "'),NgayMN='" + NgayMN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy="+CreateBy+",ModifyDate=getDate() where MaDN=" + MaDN;
-            return _DAL.ExecuteNonQuery(sql);
+            string sql = "update TT_KQDongNuoc set HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
+            Byte[] image = System.Convert.FromBase64String(HinhMN);
+            SqlCommand command = new SqlCommand(sql);
+            command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = image;
+            return _DAL.ExecuteNonQuery(command);
         }
 
 
