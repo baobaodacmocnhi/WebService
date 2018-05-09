@@ -199,9 +199,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string TT_GetDSHoaDon(string Nam, string Ky, string FromDot, string ToDot, string MaNV_HanhThu)
+        public string TT_GetDSHoaDonTon(string MaNV,string NgayDi)
         {
-            return _cThuTien.GetDSHoaDon(Nam, Ky, FromDot, ToDot, MaNV_HanhThu);
+            return _cThuTien.GetDSHoaDonTon(MaNV, DateTime.ParseExact(NgayDi, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
         [WebMethod]
@@ -253,6 +253,21 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public bool TT_SuaDongNuoc(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ChiMatSo, string ChiKhoaGoc, string LyDo,string CreateBy)
+        {
+            if (_cThuTien.SuaDongNuoc(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy) == true)
+            {
+                //result_message = "THÀNH CÔNG";
+                return true;
+            }
+            else
+            {
+                //result_message = "THẤT BẠI";
+                return false;
+            }
+        }
+
+        [WebMethod]
         public bool TT_CheckExist_MoNuoc(string MaDN)
         {
             return _cThuTien.CheckExist_MoNuoc(MaDN);
@@ -262,6 +277,21 @@ namespace WSSmartPhone
         public bool TT_ThemMoNuoc(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy)
         {
             if (_cThuTien.ThemMoNuoc(MaDN, HinhMN, DateTime.ParseExact(NgayMN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoMN, CreateBy) == true)
+            {
+                //result_message = "THÀNH CÔNG";
+                return true;
+            }
+            else
+            {
+                //result_message = "THẤT BẠI";
+                return false;
+            }
+        }
+
+        [WebMethod]
+        public bool TT_SuaMoNuoc(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy)
+        {
+            if (_cThuTien.SuaMoNuoc(MaDN, HinhMN, DateTime.ParseExact(NgayMN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoMN, CreateBy) == true)
             {
                 //result_message = "THÀNH CÔNG";
                 return true;
