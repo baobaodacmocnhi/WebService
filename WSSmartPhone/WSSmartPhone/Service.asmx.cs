@@ -205,9 +205,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string TT_SendNotificationToClient(string Title, string Content, string MaNV, string SoHoaDon)
+        public string TT_SendNotificationToClient(string Title, string Content, string MaNV,string Action,string ActionDetail, string ID)
         {
-            return _cThuTien.SendNotificationToClient(Title, Content, MaNV, SoHoaDon);
+            return _cThuTien.SendNotificationToClient(Title, Content, MaNV, Action, ActionDetail, ID);
         }
 
         [WebMethod]

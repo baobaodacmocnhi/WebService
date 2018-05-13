@@ -54,16 +54,18 @@ namespace WSSmartPhone
             return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select Version from TT_ConfigAndroid").Rows[0]["Version"].ToString();
         }
 
-        public string GetDSHoaDonTon(string MaNV,DateTime NgayDi)
+        public string GetDSHoaDonTon(string MaNV, DateTime NgayDi)
         {
-            string sql = "select MaHD=ID_HOADON,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,hd.NgayGiaiTrach,"
+            string sql = "select ID=ID_HOADON,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+                        + " NgayGiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
                         + " DichVuThu=case when exists(select SOHOADON from TT_DichVuThu where SOHOADON=hd.SOHOADON) then 'true' else 'false' end,"
                         + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
-                        + " from TT_GiaoHDDienThoai ghd,HOADON hd where MaNV="+MaNV+" and NgayDi='"+NgayDi.ToString("yyyy-MM-dd")+"' and ghd.MaHD=hd.ID_HOADON";
+                        + " from TT_GiaoHDDienThoai ghd,HOADON hd where MaNV=" + MaNV + " and NgayDi='" + NgayDi.ToString("yyyy-MM-dd") + "' and ghd.MaHD=hd.ID_HOADON"
+                        + " order by MALOTRINH";
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
 
-        public string SendNotificationToClient(string Title, string Content, string MaNV, string SoHoaDon)
+        public string SendNotificationToClient(string Title, string Content, string MaNV, string Action, string ActionDetail, string ID)
         {
             string response;
             try
@@ -96,7 +98,9 @@ namespace WSSmartPhone
                     {
                         title = Title,
                         body = Content,
-                        SoHoaDon = SoHoaDon,
+                        Action = Action,
+                        ActionDetail = ActionDetail,
+                        ID = ID,
                     }
                 };
 
@@ -132,15 +136,39 @@ namespace WSSmartPhone
 
         public string GetDSDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
-            string query = "select dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
+            string query = "select ID=dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
                             + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " SoThan=case when kqdn.SoThan is not null then kqdn.SoThan else (select SoThan=ttkh.SOTHANDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
-                            + " kqdn.NgayDN,kqdn.ChiSoDN,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.LyDo,kqdn.NgayMN,kqdn.ChiSoMN"
+                            + " kqdn.DongNuoc,kqdn.NgayDN,kqdn.ChiSoDN,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.LyDo,kqdn.MoNuoc,kqdn.NgayMN,kqdn.ChiSoMN,NgayGiaiTrach='false',DichVuThu='false',TamThu='false',HoaDon=''"
                             + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"
                             + " order by dn.MLT";
-            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(query));
+            DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable(query);
+            foreach (DataRow item in dt.Rows)
+            {
+                DataTable dtCT = _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select ctdn.Ky,hd.TongCong,hd.NgayGiaiTrach from TT_CTDongNuoc ctdn,HOADON hd where MaDN=" + item["ID"].ToString() + " and ctdn.MaHD=hd.ID_HOADON");
+                string str = "";
+                long TongCong = 0;
+                bool NgayGiaiTrach = true;
+                foreach (DataRow itemCT in dtCT.Rows)
+                {
+                    if (String.IsNullOrEmpty(itemCT["NgayGiaiTrach"].ToString()) == true)
+                    {
+                        NgayGiaiTrach = false;
+                        TongCong += int.Parse(itemCT["TongCong"].ToString());
+                    }
+                    else
+                        if (String.IsNullOrEmpty(str) == true)
+                            str += itemCT["Ky"].ToString() + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", long.Parse(itemCT["TongCong"].ToString()));
+                        else
+                            str += "\n" + itemCT["Ky"].ToString() + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", long.Parse(itemCT["TongCong"].ToString()));
+                }
+                item["NgayGiaiTrach"] = NgayGiaiTrach.ToString();
+                item["HoaDon"] = str;
+                item["HoaDon"] += "\nTổng Cộng : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong);
+            }
+            return DataTableToJSON(dt);
         }
 
         public bool CheckHoaDon_DongNuoc(string MaDN)
@@ -169,7 +197,7 @@ namespace WSSmartPhone
             string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
                 + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
                 + ",'" + NgayDN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
-            
+
             Byte[] image = System.Convert.FromBase64String(HinhDN);
             SqlCommand command = new SqlCommand(sql);
             command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = image;
@@ -198,7 +226,7 @@ namespace WSSmartPhone
         public bool ThemMoNuoc(string MaDN, string HinhMN, DateTime NgayMN, string ChiSoMN, string CreateBy)
         {
             string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
-            
+
             Byte[] image = System.Convert.FromBase64String(HinhMN);
             SqlCommand command = new SqlCommand(sql);
             command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = image;
@@ -208,7 +236,7 @@ namespace WSSmartPhone
         public bool SuaMoNuoc(string MaDN, string HinhMN, DateTime NgayMN, string ChiSoMN, string CreateBy)
         {
             string sql = "update TT_KQDongNuoc set HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where CAST(NgayMN_ThucTe as date)=CAST(getDate() as date) and MaDN=" + MaDN;
-            
+
             Byte[] image = System.Convert.FromBase64String(HinhMN);
             SqlCommand command = new SqlCommand(sql);
             command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = image;
