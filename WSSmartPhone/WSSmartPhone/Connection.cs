@@ -46,6 +46,7 @@ namespace WSSmartPhone
                 Connect();
                 command = new SqlCommand(sql, connection);
                 int rowsAffected = command.ExecuteNonQuery();
+                Disconnect();
                 if (rowsAffected >= 1)
                     return true;
                 else
@@ -65,6 +66,7 @@ namespace WSSmartPhone
                 Connect();
                 command.Connection = connection;
                 int rowsAffected = command.ExecuteNonQuery();
+                Disconnect();
                 if (rowsAffected >= 1)
                     return true;
                 else
@@ -83,7 +85,9 @@ namespace WSSmartPhone
             {
                 Connect();
                 command = new SqlCommand(sql, connection);
-                return command.ExecuteScalar();
+                object result= command.ExecuteScalar();
+                Disconnect();
+                return result;
             }
             catch (Exception)
             {

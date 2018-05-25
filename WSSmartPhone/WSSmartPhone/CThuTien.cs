@@ -51,7 +51,7 @@ namespace WSSmartPhone
 
         public string GetVersion()
         {
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select Version from TT_ConfigAndroid").Rows[0]["Version"].ToString();
+            return _DAL.ExecuteQuery_ReturnOneValue("select Version from TT_ConfigAndroid").ToString();
         }
 
         public string GetDSHoaDonTon(string MaNV, DateTime NgayDi)
@@ -64,9 +64,21 @@ namespace WSSmartPhone
             //            + " order by MALOTRINH";
             string sql = "select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
                         + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
-                        + " ThuHo=case when exists(select SOHOADON from TT_DichVuThu where SOHOADON=hd.SOHOADON) then 'true' else 'false' end,"
+                        + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                         + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
-                        + " from HOADON hd where MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null"
+                        + " from HOADON hd where MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0)"
+                        + " order by MALOTRINH";
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
+        }
+
+        public string GetDSHoaDonTon(string MaNV, string FromDot,string ToDot)
+        {
+            string sql = "select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+                        + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
+                        + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
+                        + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
+                        + " from HOADON hd where MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null and DOT>=" + FromDot + " and DOT<=" + ToDot
+                        + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0)"
                         + " order by MALOTRINH";
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
@@ -140,7 +152,7 @@ namespace WSSmartPhone
             return response;
         }
 
-        public string GetDSDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
+        public string GetDSDongNuoc_old(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
             string query = "select ID=dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
                             + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
@@ -177,18 +189,37 @@ namespace WSSmartPhone
             return DataTableToJSON(dt);
         }
 
-        public bool CheckHoaDon_DongNuoc(string MaDN)
+        public string GetDSDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
-            DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select ctdn.*,hd.NGAYGIAITRACH from TT_CTDongNuoc ctdn, HOADON hd where MaDN=" + MaDN + " and ctdn.MaHD=hd.ID_HOADON");
-            int CountGiaiTrach = 0;
-            foreach (DataRow item in dt.Rows)
-                if (item["NgayGiaiTrach"].ToString() != "")
-                {
-                    CountGiaiTrach++;
-                }
-            if (CountGiaiTrach == dt.Rows.Count)
-                return true;
-            return false;
+            string query = "select ID=dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
+                            + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " SoThan=case when kqdn.SoThan is not null then kqdn.SoThan else (select SoThan=ttkh.SOTHANDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " kqdn.DongNuoc,kqdn.NgayDN,kqdn.ChiSoDN,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.LyDo,kqdn.MoNuoc,kqdn.NgayMN,kqdn.ChiSoMN,GiaiTrach='false',ThuHo='false',TamThu='false',HoaDon=''"
+                            + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
+                            + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"
+                            + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
+                            + " or kqdn.MoNuoc=0)"
+                            + " order by dn.MLT";
+            DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable(query);
+
+            return DataTableToJSON(dt);
+        }
+
+        public string GetDSCTDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
+        {
+            string query = "select ID=dn.MaDN,MaHD,Ky,TongCong,"
+                            + " GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
+                            + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
+                            + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=ctdn.MaHD) then 'true' else 'false' end"
+                            + " from TT_DongNuoc dn left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
+                            + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"
+                            + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
+                            + " or kqdn.MoNuoc=0)"
+                            + " order by dn.MLT";
+            DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable(query);
+
+            return DataTableToJSON(dt);
         }
 
         public bool CheckExist_DongNuoc(string MaDN)
@@ -198,11 +229,18 @@ namespace WSSmartPhone
             return true;
         }
 
+        public bool CheckExist_DongNuoc2(string MaDN)
+        {
+            if (int.Parse(_DAL.ExecuteQuery_ReturnOneValue("select COUNT(MaKQDN) from TT_KQDongNuoc where DongNuoc2=1 and MaDN=" + MaDN).ToString()) == 0)
+                return false;
+            return true;
+        }
+
         public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, DateTime NgayDN, string ChiSoDN, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
             string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
-                + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
-                + ",'" + NgayDN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
+                        + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
+                        + ",'" + NgayDN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
 
             Byte[] image = System.Convert.FromBase64String(HinhDN);
             SqlCommand command = new SqlCommand(sql);
@@ -214,6 +252,19 @@ namespace WSSmartPhone
         {
             string sql = "update TT_KQDongNuoc set HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ","
                 + "ChiMatSo=N'" + ChiMatSo + "',ChiKhoaGoc=N'" + ChiKhoaGoc + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate() where CAST(NgayDN_ThucTe as date)=CAST(getDate() as date) and MaDN=" + MaDN;
+
+            Byte[] image = System.Convert.FromBase64String(HinhDN);
+            SqlCommand command = new SqlCommand(sql);
+            command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = image;
+            return _DAL.ExecuteNonQuery(command);
+        }
+
+        public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string CreateBy)
+        {
+            string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,"
+                        + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyy-MM-dd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + NgayDN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
+                        + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN"
+                        + " where DongNuoc2=0 and MaDN=" + MaDN;
 
             Byte[] image = System.Convert.FromBase64String(HinhDN);
             SqlCommand command = new SqlCommand(sql);

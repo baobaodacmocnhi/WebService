@@ -205,6 +205,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string TT_GetDSHoaDonTon_Dot(string MaNV, string FromDot,string ToDot)
+        {
+            return _cThuTien.GetDSHoaDonTon(MaNV, FromDot, ToDot);
+        }
+
+        [WebMethod]
         public string TT_SendNotificationToClient(string Title, string Content, string MaNV,string Action,string ActionDetail, string ID)
         {
             return _cThuTien.SendNotificationToClient(Title, Content, MaNV, Action, ActionDetail, ID);
@@ -217,24 +223,21 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool TT_CheckHoaDon_DongNuoc(string MaDN)
+        public string TT_GetDSCTDongNuoc(string MaNV_DongNuoc, string FromNgayGiao, string ToNgayGiao)
         {
-            if (_cThuTien.CheckHoaDon_DongNuoc(MaDN) == true)
-            {
-                //result_message = "ĐÃ GIẢI TRÁCH";
-                return true;
-            }
-            else
-            {
-                //result_message = "CÒN TỒN";
-                return false;
-            }
+            return _cThuTien.GetDSCTDongNuoc(MaNV_DongNuoc, DateTime.ParseExact(FromNgayGiao, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayGiao, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
         [WebMethod]
         public bool TT_CheckExist_DongNuoc(string MaDN)
         {
             return _cThuTien.CheckExist_DongNuoc(MaDN);
+        }
+
+        [WebMethod]
+        public bool TT_CheckExist_DongNuoc2(string MaDN)
+        {
+            return _cThuTien.CheckExist_DongNuoc2(MaDN);
         }
 
         [WebMethod]
@@ -256,6 +259,21 @@ namespace WSSmartPhone
         public bool TT_SuaDongNuoc(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ChiMatSo, string ChiKhoaGoc, string LyDo,string CreateBy)
         {
             if (_cThuTien.SuaDongNuoc(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy) == true)
+            {
+                //result_message = "THÀNH CÔNG";
+                return true;
+            }
+            else
+            {
+                //result_message = "THẤT BẠI";
+                return false;
+            }
+        }
+
+        [WebMethod]
+        public bool TT_ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string CreateBy)
+        {
+            if (_cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, CreateBy) == true)
             {
                 //result_message = "THÀNH CÔNG";
                 return true;
