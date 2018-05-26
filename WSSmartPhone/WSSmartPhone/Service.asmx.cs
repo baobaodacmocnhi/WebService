@@ -199,19 +199,19 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string TT_GetDSHoaDonTon(string MaNV,string NgayDi)
+        public string TT_GetDSHoaDonTon(string MaNV, string NgayDi)
         {
             return _cThuTien.GetDSHoaDonTon(MaNV, DateTime.ParseExact(NgayDi, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
         [WebMethod]
-        public string TT_GetDSHoaDonTon_Dot(string MaNV, string FromDot,string ToDot)
+        public string TT_GetDSHoaDonTon_Dot(string MaNV, string FromDot, string ToDot)
         {
             return _cThuTien.GetDSHoaDonTon(MaNV, FromDot, ToDot);
         }
 
         [WebMethod]
-        public string TT_SendNotificationToClient(string Title, string Content, string MaNV,string Action,string ActionDetail, string ID)
+        public string TT_SendNotificationToClient(string Title, string Content, string MaNV, string Action, string ActionDetail, string ID)
         {
             return _cThuTien.SendNotificationToClient(Title, Content, MaNV, Action, ActionDetail, ID);
         }
@@ -243,46 +243,19 @@ namespace WSSmartPhone
         [WebMethod]
         public bool TT_ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, string NgayDN, string ChiSoDN, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
-            if (_cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy) == true)
-            {
-                //result_message = "THÀNH CÔNG";
-                return true;
-            }
-            else
-            {
-                //result_message = "THẤT BẠI";
-                return false;
-            }
+            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy);
         }
 
         [WebMethod]
-        public bool TT_SuaDongNuoc(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ChiMatSo, string ChiKhoaGoc, string LyDo,string CreateBy)
+        public bool TT_SuaDongNuoc(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
-            if (_cThuTien.SuaDongNuoc(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy) == true)
-            {
-                //result_message = "THÀNH CÔNG";
-                return true;
-            }
-            else
-            {
-                //result_message = "THẤT BẠI";
-                return false;
-            }
+            return _cThuTien.SuaDongNuoc(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy);
         }
 
         [WebMethod]
         public bool TT_ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string CreateBy)
         {
-            if (_cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, CreateBy) == true)
-            {
-                //result_message = "THÀNH CÔNG";
-                return true;
-            }
-            else
-            {
-                //result_message = "THẤT BẠI";
-                return false;
-            }
+            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, CreateBy);
         }
 
         [WebMethod]
@@ -294,31 +267,19 @@ namespace WSSmartPhone
         [WebMethod]
         public bool TT_ThemMoNuoc(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy)
         {
-            if (_cThuTien.ThemMoNuoc(MaDN, HinhMN, DateTime.ParseExact(NgayMN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoMN, CreateBy) == true)
-            {
-                //result_message = "THÀNH CÔNG";
-                return true;
-            }
-            else
-            {
-                //result_message = "THẤT BẠI";
-                return false;
-            }
+            return _cThuTien.ThemMoNuoc(MaDN, HinhMN, DateTime.ParseExact(NgayMN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoMN, CreateBy);
         }
 
         [WebMethod]
         public bool TT_SuaMoNuoc(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy)
         {
-            if (_cThuTien.SuaMoNuoc(MaDN, HinhMN, DateTime.ParseExact(NgayMN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoMN, CreateBy) == true)
-            {
-                //result_message = "THÀNH CÔNG";
-                return true;
-            }
-            else
-            {
-                //result_message = "THẤT BẠI";
-                return false;
-            }
+            return _cThuTien.SuaMoNuoc(MaDN, HinhMN, DateTime.ParseExact(NgayMN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoMN, CreateBy);
+        }
+
+        [WebMethod]
+        public bool TT_DangNganDongNuoc(string MaNV, string MaHDs)
+        {
+            return _cThuTien.DangNganDongNuoc(MaNV, MaHDs);
         }
 
         #endregion

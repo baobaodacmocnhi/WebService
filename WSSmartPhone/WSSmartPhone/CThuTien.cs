@@ -9,6 +9,7 @@ using System.Configuration;
 using System.IO;
 using System.Net;
 using System.Web.Script.Serialization;
+using System.Transactions;
 
 namespace WSSmartPhone
 {
@@ -216,7 +217,7 @@ namespace WSSmartPhone
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"
                             + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
                             + " or kqdn.MoNuoc=0)"
-                            + " order by dn.MLT";
+                            + " order by dn.MLT,ctdn.MaHD";
             DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable(query);
 
             return DataTableToJSON(dt);
@@ -300,7 +301,29 @@ namespace WSSmartPhone
             return _DAL.ExecuteNonQuery(command);
         }
 
-
+        public bool DangNganDongNuoc(string MaNV_DangNgan, string MaHDs)
+        {
+            try
+            {
+                string[] MaHD = MaHDs.Split(',');
+                using (var scope = new TransactionScope())
+                {
+                    for (int i = 0; i < MaHD.Length; i++)
+                    {
+                        string sql = "update HOADON set DangNgan_Ton=1,MaNV_DangNgan=" + MaNV_DangNgan + ",NGAYGIAITRACH=getDate(),ModifyBy=" + MaNV_DangNgan + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
+                        if (_DAL.ExecuteNonQuery(sql) == false)
+                            return false;
+                    }
+                    scope.Complete();
+                    scope.Dispose();
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
         public DataTable GetHDMoiNhat(string DanhBo)
         {
