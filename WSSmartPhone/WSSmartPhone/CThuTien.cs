@@ -36,6 +36,12 @@ namespace WSSmartPhone
 
         public string DangNhap(string Username, string Password, string UID)
         {
+            string UID_old = (string)_DAL.ExecuteQuery_ReturnOneValue("select UID from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+            if (String.IsNullOrEmpty(UID_old) != true && UID_old != "NULL")
+            {
+                string MaNV = _DAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
+                SendNotificationToClient("Thông Báo", "Tài khoản của bạn đã được đăng nhập ở máy khác, Bạn bị đăng xuất tại thiết bị này",MaNV,"DangXuat","","");
+            }
             _DAL.ExecuteQuery_SqlDataAdapter_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
         }
@@ -109,7 +115,7 @@ namespace WSSmartPhone
                 WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
 
                 tRequest.Method = "post";
-                tRequest.ContentType = "application/json";
+                tRequest.ContentType = "application/json;charset=UTF-8";
                 var data = new
                 {
                     to = deviceId,
