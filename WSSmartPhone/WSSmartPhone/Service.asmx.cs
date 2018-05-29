@@ -181,9 +181,21 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string TT_DangNhaps(string Username, string Password, string UID)
+        {
+            return _cThuTien.DangNhaps(Username, Password, UID);
+        }
+
+        [WebMethod]
         public bool TT_DangXuat(string Username)
         {
             return _cThuTien.DangXuat(Username);
+        }
+
+        [WebMethod]
+        public bool TT_DangXuats(string Username, string UID)
+        {
+            return _cThuTien.DangXuats(Username, UID);
         }
 
         [WebMethod]

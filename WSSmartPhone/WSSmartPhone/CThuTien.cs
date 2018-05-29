@@ -36,7 +36,9 @@ namespace WSSmartPhone
 
         public string DangNhap(string Username, string Password, string UID)
         {
-            string UID_old = (string)_DAL.ExecuteQuery_ReturnOneValue("select UID from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+            try
+            {
+            string UID_old = _DAL.ExecuteQuery_ReturnOneValue("select UID from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
             if (String.IsNullOrEmpty(UID_old) != true && UID_old != "NULL")
             {
                 string MaNV = _DAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
@@ -44,11 +46,59 @@ namespace WSSmartPhone
             }
             _DAL.ExecuteQuery_SqlDataAdapter_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
+            }
+            catch (Exception)
+            {
+                return "[]";
+            }
+        }
+
+        public string DangNhaps(string Username, string Password, string UID)
+        {
+            try
+            {
+                string MaNV = _DAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
+                int MaNV_UID = (int)_DAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_SignedDevice where MaNV='" + MaNV + "' and UID='" + UID + "'");
+
+                if (MaNV_UID == 0)
+                    _DAL.ExecuteQuery_SqlDataAdapter_DataTable("insert TT_SignedDevice(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+
+                _DAL.ExecuteQuery_SqlDataAdapter_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+
+                return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
+            }
+            catch (Exception)
+            {
+                return "[]";
+            }
         }
 
         public bool DangXuat(string Username)
         {
-            return _DAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'");
+            try
+            {
+                return _DAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'");
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public bool DangXuats(string Username, string UID)
+        {
+            try
+            {
+                string MaNV = _DAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
+
+                _DAL.ExecuteQuery_SqlDataAdapter_DataTable("delete TT_SignedDevice where MaNV=" + MaNV + " and UID='" + UID + "'");
+
+                return _DAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'");
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         public bool UpdateUID(string MaNV, string UID)
@@ -69,24 +119,29 @@ namespace WSSmartPhone
             //            + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
             //            + " from TT_GiaoHDDienThoai ghd,HOADON hd where MaNV=" + MaNV + " and NgayDi='" + NgayDi.ToString("yyyy-MM-dd") + "' and ghd.MaHD=hd.ID_HOADON"
             //            + " order by MALOTRINH";
-            string sql = "select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
-                        + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
-                        + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
-                        + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
-                        + " from HOADON hd where MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0)"
-                        + " order by MALOTRINH";
+            string sql = "select * from"
+	                        + " (select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+	                        + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
+	                        + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
+	                        + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
+	                        + " from HOADON hd where NgayGiaiTrach is null and MaNV_HanhThu="+MaNV
+	                        + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0))t1"
+                        + " where t1.ID not in (select MaHD from TT_LenhHuy)"
+                        + " order by t1.MLT";
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
 
         public string GetDSHoaDonTon(string MaNV, string FromDot,string ToDot)
         {
-            string sql = "select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
-                        + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
-                        + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
-                        + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
-                        + " from HOADON hd where MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null and DOT>=" + FromDot + " and DOT<=" + ToDot
-                        + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0)"
-                        + " order by MALOTRINH";
+            string sql = "select * from"
+                          + " (select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+                          + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
+                          + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
+                          + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
+                          + " from HOADON hd where NgayGiaiTrach is null and MaNV_HanhThu=" + MaNV+" and DOT>=" + FromDot + " and DOT<=" + ToDot
+                          + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0))t1"
+                      + " where t1.ID not in (select MaHD from TT_LenhHuy)"
+                      + " order by t1.MLT";
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
 
@@ -205,7 +260,7 @@ namespace WSSmartPhone
                             + " kqdn.DongNuoc,kqdn.NgayDN,kqdn.ChiSoDN,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.LyDo,kqdn.MoNuoc,kqdn.NgayMN,kqdn.ChiSoMN,GiaiTrach='false',ThuHo='false',TamThu='false',HoaDon=''"
                             + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"
-                            + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
+                            + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null and ctdn.MaHD not in (select MaHD from TT_LenhHuy))"
                             + " or kqdn.MoNuoc=0)"
                             + " order by dn.MLT";
             DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable(query);
@@ -221,7 +276,7 @@ namespace WSSmartPhone
                             + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=ctdn.MaHD) then 'true' else 'false' end"
                             + " from TT_DongNuoc dn left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyy-MM-dd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyy-MM-dd") + "'"
-                            + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
+                            + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null and ctdn.MaHD not in (select MaHD from TT_LenhHuy))"
                             + " or kqdn.MoNuoc=0)"
                             + " order by dn.MLT,ctdn.MaHD";
             DataTable dt = _DAL.ExecuteQuery_SqlDataAdapter_DataTable(query);
