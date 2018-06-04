@@ -294,6 +294,18 @@ namespace WSSmartPhone
             return _cThuTien.DangNganDongNuoc(MaNV, MaHDs);
         }
 
+        [WebMethod]
+        public string TT_GetDSHoaDon_DanhBo(string DanhBo)
+        {
+            return _cThuTien.GetDSHoaDon(DanhBo);
+        }
+
+        [WebMethod]
+        public string TT_GetDSHoaDon_TTKH(string HoTen,string SoNha,string TenDuong)
+        {
+            return _cThuTien.GetDSHoaDon(HoTen,SoNha,TenDuong);
+        }
+
         #endregion
 
     }
