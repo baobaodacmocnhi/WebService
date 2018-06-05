@@ -295,6 +295,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string TT_GetDSHoaDonTon_DongNuoc(string MaNV, string MaHDs)
+        {
+            return _cThuTien.GetDSHoaDonTon_DongNuoc(MaNV, MaHDs);
+        }
+
+        [WebMethod]
         public string TT_GetDSHoaDon_DanhBo(string DanhBo)
         {
             return _cThuTien.GetDSHoaDon(DanhBo);

@@ -151,7 +151,7 @@ namespace WSSmartPhone
 
         public string SendNotificationToClient(string Title, string Content, string UID, string Action, string ActionDetail, string ID)
         {
-            string response;
+            string responseMess="";
             try
             {
                 // From: https://console.firebase.google.com/project/x.y.z/settings/general/android:x.y.z
@@ -172,51 +172,67 @@ namespace WSSmartPhone
                 //string deviceId = "//topics/all";             // Use this to notify all devices, 
                 // but App must be subscribed to 
                 // topic notification
-                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
 
-                tRequest.Method = "post";
-                tRequest.ContentType = "application/json;charset=UTF-8";
-                var data = new
+                //WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+
+                HttpWebRequest tRequest = (HttpWebRequest)WebRequest.Create("http://www.bing.com");
+                tRequest.Timeout = 5000;
+                HttpWebResponse response = (HttpWebResponse)tRequest.GetResponse();
+
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    to = deviceId,
-                    data = new
+                    response.Close();
+                    tRequest.Method = "post";
+                    tRequest.ContentType = "application/json;charset=UTF-8";
+                    var data = new
                     {
-                        title = Title,
-                        body = Content,
-                        Action = Action,
-                        ActionDetail = ActionDetail,
-                        ID = ID,
-                    }
-                };
-
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(data);
-                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
-                tRequest.Headers.Add(string.Format("Authorization: key={0}", serverKey));
-                tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
-                tRequest.ContentLength = byteArray.Length;
-
-                using (Stream dataStream = tRequest.GetRequestStream())
-                {
-                    dataStream.Write(byteArray, 0, byteArray.Length);
-                    using (WebResponse tResponse = tRequest.GetResponse())
-                    {
-                        using (Stream dataStreamResponse = tResponse.GetResponseStream())
+                        to = deviceId,
+                        data = new
                         {
-                            using (StreamReader tReader = new StreamReader(dataStreamResponse))
+                            title = Title,
+                            body = Content,
+                            Action = Action,
+                            ActionDetail = ActionDetail,
+                            ID = ID,
+                        }
+                    };
+
+                    var serializer = new JavaScriptSerializer();
+                    var json = serializer.Serialize(data);
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                    tRequest.Headers.Add(string.Format("Authorization: key={0}", serverKey));
+                    tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
+                    tRequest.ContentLength = byteArray.Length;
+
+                    using (Stream dataStream = tRequest.GetRequestStream())
+                    {
+                        dataStream.Write(byteArray, 0, byteArray.Length);
+                        using (WebResponse tResponse = tRequest.GetResponse())
+                        {
+                            using (Stream dataStreamResponse = tResponse.GetResponseStream())
                             {
-                                String sResponseFromServer = tReader.ReadToEnd();
-                                response = sResponseFromServer;
+                                using (StreamReader tReader = new StreamReader(dataStreamResponse))
+                                {
+                                    String sResponseFromServer = tReader.ReadToEnd();
+                                    responseMess = sResponseFromServer;
+                                }
                             }
                         }
                     }
                 }
+                else
+                {
+                    response.Close();
+                  
+                }
+
+                
             }
             catch (Exception ex)
             {
-                response = ex.Message;
+                responseMess = ex.Message;
             }
-            return response;
+            return responseMess;
         }
 
         public string GetDSDongNuoc_old(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
@@ -405,6 +421,12 @@ namespace WSSmartPhone
             {
                 return false;
             }
+        }
+
+        public string GetDSHoaDonTon_DongNuoc(string DanhBo,string MaHDs)
+        {
+            string sql = "select MaHD=ID_HOADON,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),TONGCONG from HOADON where DANHBA='" + DanhBo + "' and NGAYGIAITRACH is null and ID_HOADON not in (" + MaHDs + ")";
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
 
         public string GetDSHoaDon(string DanhBo)
