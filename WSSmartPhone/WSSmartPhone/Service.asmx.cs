@@ -223,9 +223,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string TT_SendNotificationToClient(string Title, string Content, string UID, string Action, string ActionDetail, string ID)
+        public string TT_SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)
         {
-            return _cThuTien.SendNotificationToClient(Title, Content, UID, Action, ActionDetail, ID);
+            return _cThuTien.SendNotificationToClient(Title, Content, UID, Action, NameUpdate, ValueUpdate, ID);
         }
 
         [WebMethod]
@@ -295,9 +295,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string TT_GetDSHoaDonTon_DongNuoc(string MaNV, string MaHDs)
+        public string TT_GetDSHoaDonTon_DongNuoc(string DanhBo, string MaHDs)
         {
-            return _cThuTien.GetDSHoaDonTon_DongNuoc(MaNV, MaHDs);
+            return _cThuTien.GetDSHoaDonTon_DongNuoc(DanhBo, MaHDs);
         }
 
         [WebMethod]

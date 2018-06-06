@@ -42,7 +42,7 @@ namespace WSSmartPhone
                 if (String.IsNullOrEmpty(UID_old) != true && UID_old != "NULL")
                 {
                     string MaNV = _DAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
-                    SendNotificationToClient("Thông Báo", "Tài khoản của bạn đã được đăng nhập ở máy khác, Bạn bị đăng xuất tại thiết bị này", MaNV, "DangXuat", "", "");
+                    SendNotificationToClient("Thông Báo", "Tài khoản của bạn đã được đăng nhập ở máy khác, Bạn bị đăng xuất tại thiết bị này", MaNV, "DangXuat", "","", "");
                 }
                 _DAL.ExecuteQuery_SqlDataAdapter_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
                 return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
@@ -149,7 +149,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
 
-        public string SendNotificationToClient(string Title, string Content, string UID, string Action, string ActionDetail, string ID)
+        public string SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)
         {
             string responseMess="";
             try
@@ -192,7 +192,8 @@ namespace WSSmartPhone
                             title = Title,
                             body = Content,
                             Action = Action,
-                            ActionDetail = ActionDetail,
+                            NameUpdate = NameUpdate,
+                            ValueUpdate = ValueUpdate,
                             ID = ID,
                         }
                     };
@@ -425,16 +426,18 @@ namespace WSSmartPhone
 
         public string GetDSHoaDonTon_DongNuoc(string DanhBo,string MaHDs)
         {
-            string sql = "select MaHD=ID_HOADON,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),TONGCONG from HOADON where DANHBA='" + DanhBo + "' and NGAYGIAITRACH is null and ID_HOADON not in (" + MaHDs + ")";
+            string sql = "select MaHD=ID_HOADON,Ky=CAST(KY as varchar)+'/'+CAST(NAM as varchar),TongCong from HOADON where DANHBA='" + DanhBo + "' and NGAYGIAITRACH is null and ID_HOADON not in (" + MaHDs + ")";
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
 
         public string GetDSHoaDon(string DanhBo)
         {
-            string sql = "select top 12 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,"
-                         + " Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),TieuThu,TongCong,NgayGiaiTrach=CONVERT(varchar(10),NgayGiaiTrach,103)"
-                         + " from HOADON where DANHBA='" + DanhBo+"'"
-                         + " order by ID_HOADON desc";
+            //string sql = "select top 12 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,"
+            //             + " Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),TieuThu,TongCong,NgayGiaiTrach=CONVERT(varchar(10),NgayGiaiTrach,103)"
+            //             + " from HOADON where DANHBA='" + DanhBo+"'"
+            //             + " order by ID_HOADON desc";
+
+            string sql = "select * from fnGetDSHoaDon(" + DanhBo + ")";
 
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
