@@ -211,15 +211,21 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string TT_GetDSNhanVien(string MaTo)
+        {
+            return _cThuTien.GetDSNhanVien(MaTo);
+        }
+
+        [WebMethod]
         public string TT_GetDSHoaDonTon(string MaNV, string NgayDi)
         {
             return _cThuTien.GetDSHoaDonTon(MaNV, DateTime.ParseExact(NgayDi, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
         [WebMethod]
-        public string TT_GetDSHoaDonTon_Dot(string MaNV, string FromDot, string ToDot)
+        public string TT_GetDSHoaDonTon_Dot(string MaNV, string Nam, string Ky,string FromDot, string ToDot)
         {
-            return _cThuTien.GetDSHoaDonTon(MaNV, FromDot, ToDot);
+            return _cThuTien.GetDSHoaDonTon(MaNV, Nam, Ky, FromDot, ToDot);
         }
 
         [WebMethod]

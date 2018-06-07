@@ -69,7 +69,7 @@ namespace WSSmartPhone
 
                 _DAL.ExecuteQuery_SqlDataAdapter_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
 
-                return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
+                return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,ToTruong,MaTo from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
             }
             catch (Exception)
             {
@@ -108,6 +108,12 @@ namespace WSSmartPhone
         public bool UpdateUID(string MaNV, string UID)
         {
             return _DAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
+        }
+
+        public string GetDSNhanVien(string MaTo)
+        {
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc from TT_NguoiDung where MaTo="+MaTo+ " and An=0";
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
 
         public string GetVersion()
@@ -149,9 +155,45 @@ namespace WSSmartPhone
             return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
         }
 
+        public string GetDSHoaDonTon(string MaNV, string Nam,string Ky,string FromDot, string ToDot)
+        {
+            string sql = "select * from"
+                          + " (select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+                          + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
+                          + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
+                          + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
+                          + " from HOADON hd where NgayGiaiTrach is null and (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and MaNV_HanhThu=" + MaNV + " and DOT>=" + FromDot + " and DOT<=" + ToDot
+                          + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0))t1"
+                      + " where t1.ID not in (select MaHD from TT_LenhHuy)"
+                      + " order by t1.MLT";
+            return DataTableToJSON(_DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
+        }
+
+        public bool CheckConnection_Firebase()
+        {
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+            myRequest.Timeout = 5000;
+            HttpWebResponse response = (HttpWebResponse)myRequest.GetResponse();
+
+            if (response.StatusCode == HttpStatusCode.OK)
+            {
+                response.Close();
+                return true;
+            }
+            else
+            {
+                response.Close();
+                return false;
+            }
+        }
+
         public string SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)
         {
-            string responseMess="";
+            //if (CheckConnection_Firebase() == false)
+            //{
+            //    return "Không có kết nối Internet";
+            //}
+            string responseMess = "";
             try
             {
                 // From: https://console.firebase.google.com/project/x.y.z/settings/general/android:x.y.z
@@ -173,61 +215,46 @@ namespace WSSmartPhone
                 // but App must be subscribed to 
                 // topic notification
 
-                //WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+                WebRequest tRequest = WebRequest.Create("https://fcm.googleapis.com/fcm/send");
 
-                HttpWebRequest tRequest = (HttpWebRequest)WebRequest.Create("http://www.bing.com");
-                tRequest.Timeout = 5000;
-                HttpWebResponse response = (HttpWebResponse)tRequest.GetResponse();
-
-                if (response.StatusCode == HttpStatusCode.OK)
+                tRequest.Method = "post";
+                tRequest.ContentType = "application/json;charset=UTF-8";
+                var data = new
                 {
-                    response.Close();
-                    tRequest.Method = "post";
-                    tRequest.ContentType = "application/json;charset=UTF-8";
-                    var data = new
+                    to = deviceId,
+                    data = new
                     {
-                        to = deviceId,
-                        data = new
-                        {
-                            title = Title,
-                            body = Content,
-                            Action = Action,
-                            NameUpdate = NameUpdate,
-                            ValueUpdate = ValueUpdate,
-                            ID = ID,
-                        }
-                    };
+                        title = Title,
+                        body = Content,
+                        Action = Action,
+                        NameUpdate = NameUpdate,
+                        ValueUpdate = ValueUpdate,
+                        ID = ID,
+                    }
+                };
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(data);
-                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
-                    tRequest.Headers.Add(string.Format("Authorization: key={0}", serverKey));
-                    tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
-                    tRequest.ContentLength = byteArray.Length;
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(data);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                tRequest.Headers.Add(string.Format("Authorization: key={0}", serverKey));
+                tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
+                tRequest.ContentLength = (long)byteArray.Length;
 
-                    using (Stream dataStream = tRequest.GetRequestStream())
+                using (Stream dataStream = tRequest.GetRequestStream())
+                {
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    using (WebResponse tResponse = tRequest.GetResponse())
                     {
-                        dataStream.Write(byteArray, 0, byteArray.Length);
-                        using (WebResponse tResponse = tRequest.GetResponse())
+                        using (Stream dataStreamResponse = tResponse.GetResponseStream())
                         {
-                            using (Stream dataStreamResponse = tResponse.GetResponseStream())
+                            using (StreamReader tReader = new StreamReader(dataStreamResponse))
                             {
-                                using (StreamReader tReader = new StreamReader(dataStreamResponse))
-                                {
-                                    String sResponseFromServer = tReader.ReadToEnd();
-                                    responseMess = sResponseFromServer;
-                                }
+                                String sResponseFromServer = tReader.ReadToEnd();
+                                responseMess = sResponseFromServer;
                             }
                         }
                     }
                 }
-                else
-                {
-                    response.Close();
-                  
-                }
-
-                
             }
             catch (Exception ex)
             {
