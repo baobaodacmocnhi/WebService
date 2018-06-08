@@ -9,7 +9,7 @@ namespace WSSmartPhone
 {
     class Connection
     {
-        protected static string _connectionString;  // Chuỗi kết nối
+        protected string _connectionString;  // Chuỗi kết nối
         public SqlConnection connection;         // Đối tượng kết nối
         protected SqlDataAdapter adapter;           // Đối tượng adapter chứa dữ liệu
         protected SqlCommand command;               // Đối tượng command thực thi truy vấn
