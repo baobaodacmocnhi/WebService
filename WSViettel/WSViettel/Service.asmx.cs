@@ -80,7 +80,7 @@ namespace WSViettel
                         {
                             try
                             {
-                                string sql = "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,Phi,TienDu,TenDichVu,TenNganHang,ID_GiaoDich,CreateDate)"
+                                string sql = "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,Phi,TienDu,TenDichVu,TenNganHang,IDGiaoDich,CreateDate)"
                                     +"(select ID_HOADON,SoHoaDon,DanhBa,Nam,Ky,TongCong,'','','VIETTEL','VIETTEL','"+ma_giaodich+"',getdate() from HOADON where ID_HOADON="+s[i]+")";
                                 cDAL.ExecuteNonQuery(sql);
                             }
@@ -113,7 +113,7 @@ namespace WSViettel
                 {
                     string sql = "SELECT MaHD AS IDKey,DANHBA as DBo,TENKH as KHang,SO as DChi1,DUONG as DChi2,GB as GBieu,DM as DMuc,hd.KY as KyHD,hd.NAM as NamHD,hd.PHI as PBVMT,hd.THUE as TGTGT,TONGCONG,"
                             + "TIEUTHU as TThu,hd.SOHOADON as SHDon,dvt.CreateDate AS NGAYTHANHTOAN,TenDichVu as MANH "
-                            + " FROM TT_DichVuThu dvt,HOADON hd WHERE (ID_GiaoDich = '" + ma_gd + "') and hd.ID_HOADON=dvt.MaHD";
+                            + " FROM TT_DichVuThu dvt,HOADON hd WHERE (IDGiaoDich = '" + ma_gd + "') and hd.ID_HOADON=dvt.MaHD";
                     //bangNo.Tables.Add(cDAL.ExecuteQuery_SqlDataAdapter_DataTable(sql));
                     bangNo = cDAL.ExecuteQuery_SqlDataAdapter_DataSet(sql);
                 }
