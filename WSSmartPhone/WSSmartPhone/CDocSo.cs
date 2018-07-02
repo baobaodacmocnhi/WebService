@@ -12,7 +12,7 @@ namespace WSSmartPhone
 {
     class CDocSo
     {
-        Connection _DAL = new Connection("Data Source=192.168.90.8\\KD;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=P@ssW012d");
+        CConnection _DAL = new CConnection("Data Source=192.168.90.8\\KD;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=P@ssW012d");
         CThuTien _cThuTien = new CThuTien();
         CKinhDoanh _cKinhDoanh = new CKinhDoanh();
 
@@ -50,12 +50,12 @@ namespace WSSmartPhone
 
         public DataTable DangNhap(string TaiKhoan, string MatKhau)
         {
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from NguoiDung where TaiKhoan='" + TaiKhoan + "' and MatKhau='" + MatKhau + "'");
+            return _DAL.ExecuteQuery_DataTable("select * from NguoiDung where TaiKhoan='" + TaiKhoan + "' and MatKhau='" + MatKhau + "'");
         }
 
         public DataTable GetDSCode()
         {
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from TTDHN where vitri is not null order by vitri asc");
+            return _DAL.ExecuteQuery_DataTable("select * from TTDHN where vitri is not null order by vitri asc");
         }
 
         public DataTable GetDSDocSo(string Nam, string Ky, string Dot, string May)
@@ -94,8 +94,8 @@ namespace WSSmartPhone
             sql += " left join"
                 + " (select DanhBa,HoTen=TenKH from KhachHang) d on a.DanhBa=d.DanhBa"
                 + " order by MLT1 asc";
-            //return _DAL_Test.ExecuteQuery_SqlDataAdapter_DataTable(sql);
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            //return _DAL_Test.ExecuteQuery_DataTable(sql);
+            return _DAL.ExecuteQuery_DataTable(sql);
         }
 
         public int TinhTieuThu(string DanhBo, int nam, int ky, string code, int csmoi)
@@ -107,7 +107,7 @@ namespace WSSmartPhone
                 _DAL.Connect();
 
                 //SqlCommand cmd = new SqlCommand("calTieuTHu", _DAL_Test.connection);
-                SqlCommand cmd = new SqlCommand("calTieuTHu", _DAL.connection);
+                SqlCommand cmd = new SqlCommand("calTieuTHu", _DAL.Connection);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 SqlParameter _db = cmd.Parameters.Add("@DANHBO", SqlDbType.VarChar);
@@ -2115,32 +2115,32 @@ namespace WSSmartPhone
         public bool ThemHinhDHN(string DanhBo, string CreateBy, string imageStr,string Latitude, string Longitude)
         {
             //int ID = 0;
-            //if (int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select COUNT(ID) from HinhDHN").Rows[0][0].ToString()) == 0)
+            //if (int.Parse(_DAL.ExecuteQuery_DataTable("select COUNT(ID) from HinhDHN").Rows[0][0].ToString()) == 0)
             //    ID = 1;
             //else
-            //    ID = int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select MAX(ID)+1 from HinhDHN").Rows[0][0].ToString());
+            //    ID = int.Parse(_DAL.ExecuteQuery_DataTable("select MAX(ID)+1 from HinhDHN").Rows[0][0].ToString());
             //string sql = "insert into HinhDHN(ID,DanhBo,Hinh,CreateBy,CreateDate)values(" + ID + ",'" + DanhBo + "'," + image + "," + CreateBy + ",GETDATE())";
             //return _DAL.ExecuteNonQuery(sql);
 
             try
             {
-                dbDocSoDataContext db = new dbDocSoDataContext();
-                Byte[] image = System.Convert.FromBase64String(imageStr);
+                //dbDocSoDataContext db = new dbDocSoDataContext();
+                //Byte[] image = System.Convert.FromBase64String(imageStr);
 
-                HinhDHN entity = new HinhDHN();
-                if (db.HinhDHNs.Count() == 0)
-                    entity.ID = 1;
-                else
-                    entity.ID = db.HinhDHNs.Max(item => item.ID) + 1;
+                //HinhDHN entity = new HinhDHN();
+                //if (db.HinhDHNs.Count() == 0)
+                //    entity.ID = 1;
+                //else
+                //    entity.ID = db.HinhDHNs.Max(item => item.ID) + 1;
 
-                entity.DanhBo = DanhBo;
-                entity.Image = image;
-                entity.Latitude = Latitude;
-                entity.Longitude = Longitude;
-                entity.CreateBy = int.Parse(CreateBy);
-                entity.CreateDate = DateTime.Now;
-                db.HinhDHNs.InsertOnSubmit(entity);
-                db.SubmitChanges();
+                //entity.DanhBo = DanhBo;
+                //entity.Image = image;
+                //entity.Latitude = Latitude;
+                //entity.Longitude = Longitude;
+                //entity.CreateBy = int.Parse(CreateBy);
+                //entity.CreateDate = DateTime.Now;
+                //db.HinhDHNs.InsertOnSubmit(entity);
+                //db.SubmitChanges();
                 return true;
             }
             catch (Exception)

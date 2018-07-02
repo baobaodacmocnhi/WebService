@@ -7,24 +7,31 @@ using System.Data.SqlClient;
 
 namespace WSSmartPhone
 {
-    class Connection
+    class CConnection
     {
-        protected string _connectionString;  // Chuỗi kết nối
-        public SqlConnection connection;         // Đối tượng kết nối
-        protected SqlDataAdapter adapter;           // Đối tượng adapter chứa dữ liệu
-        protected SqlCommand command;               // Đối tượng command thực thi truy vấn
-        //protected SqlTransaction transaction;       // Đối tượng transaction
+        private string connectionString;          // Chuỗi kết nối
+        private SqlConnection connection;         // Đối tượng kết nối
+        private SqlDataAdapter adapter;           // Đối tượng adapter chứa dữ liệu
+        private SqlCommand command;               // Đối tượng command thực thi truy vấn
+        private SqlTransaction transaction;       // Đối tượng transaction
 
-        public Connection(String connectionString)
+        public CConnection(String connectionString)
         {
             try
             {
-                _connectionString = connectionString;
-                connection = new SqlConnection(_connectionString);
+                this.connectionString = connectionString;
+                connection = new SqlConnection(connectionString);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                throw ex;
             }
+        }
+
+        public SqlConnection Connection
+        {
+            get { return connection; }
+            set { connection = value; }
         }
 
         public void Connect()
@@ -37,6 +44,39 @@ namespace WSSmartPhone
         {
             if (connection.State == ConnectionState.Open)
                 connection.Close();
+        }
+
+        public void BeginTransaction()
+        {
+            try
+            {
+                Connect();
+                transaction = connection.BeginTransaction();
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        public void CommitTransaction()
+        {
+            try
+            {
+                transaction.Commit();
+                transaction.Dispose();
+                Disconnect();
+            }
+            catch (Exception ex) { throw ex; }
+        }
+
+        public void RollbackTransaction()
+        {
+            try
+            {
+                transaction.Rollback();
+                transaction.Dispose();
+
+                Disconnect();
+            }
+            catch (Exception ex) { throw ex; }
         }
 
         public bool ExecuteNonQuery(string sql)
@@ -52,10 +92,27 @@ namespace WSSmartPhone
                 else
                     return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
-                throw;
+                Disconnect();
+                throw ex; 
+            }
+        }
+
+        public bool ExecuteNonQuery_Transaction(string sql)
+        {
+            try
+            {
+                command = new SqlCommand(sql, connection,transaction);
+                int rowsAffected = command.ExecuteNonQuery();
+                if (rowsAffected >= 1)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
 
@@ -72,10 +129,10 @@ namespace WSSmartPhone
                 else
                     return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
-                throw;
+                Disconnect();
+                throw ex;
             }
         }
 
@@ -89,53 +146,25 @@ namespace WSSmartPhone
                 Disconnect();
                 return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
-                throw;
+                Disconnect();
+                throw ex;
             }
         }
 
-        /// <summary>
-        /// Hàm thực thi các câu truy vấn lấy thông tin dữ liệu như Select
-        /// </summary>
-        /// <param name="sqlString"> Câu truy vấn (Select) cần thực thi </param>
-        /// <returns> Hàm trả về một đối tượng SqlDataReader chứa thông tin dữ liệu trả về </returns>
-        public SqlDataReader ExecuteQuery_SqlDataReader(string sql)
+        public object ExecuteQuery_ReturnOneValue_Transaction(string sql)
         {
             try
             {
-                Connect();
-                command = new SqlCommand(sql, connection);
-                SqlDataReader reader = command.ExecuteReader();
-                //Disconnect();
-                return reader;
+                command = new SqlCommand(sql, connection,transaction);
+                object result = command.ExecuteScalar();
+                return result;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Disconnect();
-                return null;
+                throw ex;
             }
-        }
-
-        public DataTable ExecuteQuery_SqlDataReader_DataTable(string sql)
-        {
-            try
-            {
-                DataTable dt = new DataTable();
-                Connect();
-                command = new SqlCommand(sql, connection);
-                SqlDataReader reader = command.ExecuteReader();
-                if (reader.HasRows)
-                    dt.Load(reader);
-                Disconnect();
-                return dt;
-            }
-            catch (Exception)
-            {
-                Disconnect();
-                return null;
-            }  
         }
 
         /// <summary>
@@ -143,48 +172,52 @@ namespace WSSmartPhone
         /// </summary>
         /// <param name="strSelect">Câu truy vấn cần thực thi lấy dữ liệu</param>
         /// <returns>Đối tượng dataset chứa dữ liệu kết quả câu truy vấn</returns>
-        public DataSet ExecuteQuery_SqlDataAdapter_DataSet(string sql)
+        public DataTable ExecuteQuery_DataTable(string sql)
         {
             try
             {
                 Connect();
-                DataSet dataset = new DataSet();
-                command = new SqlCommand();
-                command.Connection = this.connection;
-                adapter = new SqlDataAdapter(sql, connection);
+                DataTable dt = new DataTable();
+                command = new SqlCommand(sql, connection);
+                adapter = new SqlDataAdapter(command);
                 try
                 {
-                    adapter.Fill(dataset);
+                    adapter.Fill(dt);
                 }
                 catch (SqlException e)
                 {
                     throw e;
                 }
                 Disconnect();
-                return dataset;
+                return dt;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Disconnect();
-                return null;
+                throw ex;
             }
         }
 
-        /// <summary>
-        /// Thực thi câu truy vấn SQL trả về một đối tượng DataTable chứa kết quả trả về
-        /// </summary>
-        /// <param name="strSelect">Câu truy vấn cần thực thi lấy dữ liệu</param>
-        /// <returns>Đối tượng datatable chứa dữ liệu kết quả câu truy vấn</returns>
-        public DataTable ExecuteQuery_SqlDataAdapter_DataTable(string sql)
+        public DataTable ExecuteQuery_DataTable_Transaction(string sql)
         {
             try
             {
-                return ExecuteQuery_SqlDataAdapter_DataSet(sql).Tables[0];
+                DataTable dt = new DataTable();
+                command = new SqlCommand(sql, connection,transaction);
+                adapter = new SqlDataAdapter(command);
+                try
+                {
+                    adapter.Fill(dt);
+                }
+                catch (SqlException e)
+                {
+                    throw e;
+                }
+                return dt;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Disconnect();
-                return null;
+                throw ex;
             }
         }
 

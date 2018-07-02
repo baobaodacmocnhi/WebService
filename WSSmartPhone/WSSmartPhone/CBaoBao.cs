@@ -12,15 +12,15 @@ namespace WSSmartPhone
 {
     class CBaoBao
     {
-        Connection _DAL = new Connection("Data Source=192.168.90.9;Initial Catalog=BaoBao;Persist Security Info=True;User ID=sa;Password=P@ssW012d9");
+        CConnection _DAL = new CConnection("Data Source=192.168.90.9;Initial Catalog=BaoBao;Persist Security Info=True;User ID=sa;Password=P@ssW012d9");
 
         public bool ThemKhachHang(string HoTen, string GioiTinh, string DienThoai, string BienSoXe, string MaPhong)
         {
             int ID = 0;
-            if (int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select COUNT(ID) from KhachHang").Rows[0][0].ToString()) == 0)
+            if (int.Parse(_DAL.ExecuteQuery_DataTable("select COUNT(ID) from KhachHang").Rows[0][0].ToString()) == 0)
                 ID = 1;
             else
-                ID = int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select MAX(ID)+1 from KhachHang").Rows[0][0].ToString());
+                ID = int.Parse(_DAL.ExecuteQuery_DataTable("select MAX(ID)+1 from KhachHang").Rows[0][0].ToString());
             string sql = "insert into KhachHang(ID,HoTen,GioiTinh,DienThoai,BienSoXe,MaPhong,CreateDate)values(" + ID + ",N'" + HoTen + "'," + GioiTinh + ",'" + DienThoai + "','" + BienSoXe + "'," + MaPhong + ",GETDATE())";
             return _DAL.ExecuteNonQuery(sql);
         }
@@ -40,7 +40,7 @@ namespace WSSmartPhone
         public DataTable GetDSKhachHang()
         {
             string sql = "select a.*,TenPhong=Name from KhachHang a left join Phong b on a.MaPhong=b.ID";
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            return _DAL.ExecuteQuery_DataTable(sql);
         }
 
         public bool SuaPhong(string ID, string Name, string GiaTien, string SoNKNuoc, string ChiSoDien, string ChiSoNuoc, string NgayThue, string Thue)
@@ -53,7 +53,7 @@ namespace WSSmartPhone
         public DataTable GetDSPhong()
         {
             string sql = "select ID,Name,GiaTien,Thue,NgayThue=CONVERT(varchar(10), NgayThue, 103),ChiSoDienOld,ChiSoDien,SoNKNuoc,ChiSoNuocOld,ChiSoNuoc from Phong";
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            return _DAL.ExecuteQuery_DataTable(sql);
         }
 
         public bool SuaGiaDien(string ID, string Name, string GiaTien)
@@ -65,7 +65,7 @@ namespace WSSmartPhone
         public DataTable GetDSGiaDien()
         {
             string sql = "select * from GiaDien";
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            return _DAL.ExecuteQuery_DataTable(sql);
         }
 
         public bool SuaGiaNuoc(string ID, string Name, string GiaTien)
@@ -77,7 +77,7 @@ namespace WSSmartPhone
         public DataTable GetDSGiaNuoc()
         {
             string sql = "select * from GiaNuoc";
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            return _DAL.ExecuteQuery_DataTable(sql);
         }
 
         public bool ThemHoaDon(string MaPhong, int ChiSoDienNew, int ChiSoNuocNew)
@@ -105,10 +105,10 @@ namespace WSSmartPhone
                     int TienNuoc = TinhTienNuoc(DinhMucNuoc, TieuThuNuoc, out ChiTietNuoc);
 
                     int ID = 0;
-                    if (int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select COUNT(ID) from HoaDon").Rows[0][0].ToString()) == 0)
+                    if (int.Parse(_DAL.ExecuteQuery_DataTable("select COUNT(ID) from HoaDon").Rows[0][0].ToString()) == 0)
                         ID = 1;
                     else
-                        ID = int.Parse(_DAL.ExecuteQuery_SqlDataAdapter_DataTable("select MAX(ID)+1 from HoaDon").Rows[0][0].ToString());
+                        ID = int.Parse(_DAL.ExecuteQuery_DataTable("select MAX(ID)+1 from HoaDon").Rows[0][0].ToString());
                     string sql = "insert into HoaDon(ID,MaPhong,ChiSoDienOld,ChiSoDienNew,TieuThuDien,TienDien,ChiTietDien,ChiSoNuocOld,ChiSoNuocNew,TieuThuNuoc,TienNuoc,ChiTietNuoc,CreateDate)values(" + ID + "," + MaPhong + ","
                                + ChiSoDienOld + "," + ChiSoDienNew + "," + TieuThuDien + "," + TienDien + ",'" + ChiTietDien + "',"
                                + ChiSoNuocOld + "," + ChiSoNuocNew + "," + TieuThuNuoc + "," + TienNuoc + ",'" + ChiTietNuoc + "',GETDATE())";
@@ -219,13 +219,13 @@ namespace WSSmartPhone
         public DataTable GetDSHoaDon()
         {
             string sql = "select a.*,TenPhong=Name from HoaDon a left join Phong b on a.MaPhong=b.ID";
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            return _DAL.ExecuteQuery_DataTable(sql);
         }
 
         public DataTable GetDSHoaDon(string MaPhong)
         {
             string sql = "select a.*,TenPhong=Name from HoaDon a left join Phong b on a.MaPhong=b.ID where MaPhong=" + MaPhong;
-            return _DAL.ExecuteQuery_SqlDataAdapter_DataTable(sql);
+            return _DAL.ExecuteQuery_DataTable(sql);
         }
 
         public int TinhTienDien(int SoNKDien, int TieuThu, out string ChiTiet)
@@ -236,7 +236,7 @@ namespace WSSmartPhone
             int B4 = (int)Math.Round(300 * ((double)SoNKDien / 4), 1);
             int B5 = (int)Math.Round(400 * ((double)SoNKDien / 4), 1);
 
-            DataTable dtGiaDien = _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from GiaDien");
+            DataTable dtGiaDien = _DAL.ExecuteQuery_DataTable("select * from GiaDien");
             int TienDien = 0;
             ChiTiet = "";
             if (TieuThu <= B1)
@@ -298,7 +298,7 @@ namespace WSSmartPhone
 
         public int TinhTienNuoc(int DinhMuc, int TieuThu, out string ChiTiet)
         {
-            DataTable dtGiaNuoc = _DAL.ExecuteQuery_SqlDataAdapter_DataTable("select * from GiaNuoc");
+            DataTable dtGiaNuoc = _DAL.ExecuteQuery_DataTable("select * from GiaNuoc");
             int TienNuoc = 0;
             if (TieuThu <= DinhMuc)
             {
