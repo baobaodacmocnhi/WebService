@@ -69,7 +69,7 @@ namespace WSSmartPhone
 
                 _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
 
-                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,ToTruong,MaTo from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
+                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Doi,ToTruong,MaTo from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
             }
             catch (Exception)
             {
@@ -108,6 +108,18 @@ namespace WSSmartPhone
         public bool UpdateUID(string MaNV, string UID)
         {
             return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
+        }
+
+        public string GetDSTo()
+        {
+            string sql = "select MaTo,TenTo from TT_To";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string GetDSNhanVien()
+        {
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc from TT_NguoiDung where An=0";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
         public string GetDSNhanVien(string MaTo)

@@ -57,7 +57,19 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetDSNhanVien(string MaTo)
+        public string GetDSTo()
+        {
+            return _cThuTien.GetDSTo();
+        }
+
+        [WebMethod]
+        public string GetDSNhanVienDoi()
+        {
+            return _cThuTien.GetDSNhanVien();
+        }
+
+        [WebMethod]
+        public string GetDSNhanVienTo(string MaTo)
         {
             return _cThuTien.GetDSNhanVien(MaTo);
         }
