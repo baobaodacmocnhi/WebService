@@ -21,6 +21,12 @@ namespace WSSmartPhone
         CThuTien _cThuTien = new CThuTien();
 
         [WebMethod]
+        public bool UpdateUID(string MaNV, string UID)
+        {
+            return _cThuTien.UpdateUID(MaNV, UID);
+        }
+
+        [WebMethod]
         public string DangNhap(string Username, string Password, string UID)
         {
             return _cThuTien.DangNhap(Username, Password, UID);
@@ -48,12 +54,6 @@ namespace WSSmartPhone
         public string GetVersion()
         {
             return _cThuTien.GetVersion();
-        }
-
-        [WebMethod]
-        public bool UpdateUID(string MaNV, string UID)
-        {
-            return _cThuTien.UpdateUID(MaNV, UID);
         }
 
         [WebMethod]
@@ -176,6 +176,16 @@ namespace WSSmartPhone
             return _cThuTien.GetDSHoaDon(HoTen, SoNha, TenDuong);
         }
 
+        [WebMethod]
+        public string GetTongGiaoHoaDon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
+        {
+            return _cThuTien.GetTongGiaoHoaDon( MaTo,  Nam,  Ky,  FromDot,  ToDot);
+        }
 
+        [WebMethod]
+        public string GetTongDangNgan(string MaTo, string FromNgayGiaiTrach, string ToNgayGiaiTrach)
+        {
+            return _cThuTien.GetTongDangNgan(MaTo, DateTime.ParseExact(FromNgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+        }
     }
 }

@@ -34,6 +34,11 @@ namespace WSSmartPhone
             return jsSerializer.Serialize(parentRow);
         }
 
+        public string GetVersion()
+        {
+            return _cDAL.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig").ToString();
+        }
+
         public string DangNhap(string Username, string Password, string UID)
         {
             try
@@ -112,25 +117,20 @@ namespace WSSmartPhone
 
         public string GetDSTo()
         {
-            string sql = "select MaTo,TenTo from TT_To";
+            string sql = "select MaTo,TenTo,HanhThu from TT_To";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
         public string GetDSNhanVien()
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc from TT_NguoiDung where An=0";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo from TT_NguoiDung where MaND!=0 and An=0";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
         public string GetDSNhanVien(string MaTo)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc from TT_NguoiDung where MaTo=" + MaTo + " and An=0";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
-        }
-
-        public string GetVersion()
-        {
-            return _cDAL.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig").ToString();
         }
 
         public string GetDSHoaDonTon(string MaNV, DateTime NgayDi)
@@ -545,6 +545,28 @@ namespace WSSmartPhone
         {
             string sql = "select * from TimKiemTTKH('" + HoTen + "','" + SoNha + "','" + TenDuong + "')";
 
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string GetTongGiaoHoaDon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
+        {
+            string sql = "select t1.*,t2.HoTen from"
+                        + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
+                        + " where NAM=" + Nam + " and KY=" + Ky + " and DOT>=" + FromDot + " and DOT<=" + ToDot
+                        + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
+                        + " group by MaNV_HanhThu) t1,TT_NguoiDung t2"
+                        + " where t1.MaNV_HanhThu=t2.MaND";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string GetTongDangNgan(string MaTo, DateTime FromNgayGiaiTrach,DateTime ToNgayGiaiTrach)
+        {
+            string sql = "select t1.*,t2.HoTen from"
+                        + " (select MaNV_DangNgan,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
+                        + " where CAST(NGAYGIAITRACH as date)>=" + FromNgayGiaiTrach.ToString("yyyyMMdd") + " and CAST(NGAYGIAITRACH as date)<=" + ToNgayGiaiTrach.ToString("yyyyMMdd")
+                        + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
+                        + " group by MaNV_DangNgan) t1,TT_NguoiDung t2"
+                        + " where t1.MaNV_DangNgan=t2.MaND";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
