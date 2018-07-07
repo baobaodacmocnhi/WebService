@@ -123,13 +123,13 @@ namespace WSSmartPhone
 
         public string GetDSNhanVien()
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo from TT_NguoiDung where MaND!=0 and An=0";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo from TT_NguoiDung where MaND!=0 and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
         public string GetDSNhanVien(string MaTo)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
@@ -555,7 +555,8 @@ namespace WSSmartPhone
                         + " where NAM=" + Nam + " and KY=" + Ky + " and DOT>=" + FromDot + " and DOT<=" + ToDot
                         + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
                         + " group by MaNV_HanhThu) t1,TT_NguoiDung t2"
-                        + " where t1.MaNV_HanhThu=t2.MaND";
+                        + " where t1.MaNV_HanhThu=t2.MaND"
+                        + " order by t2.STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
@@ -563,10 +564,11 @@ namespace WSSmartPhone
         {
             string sql = "select t1.*,t2.HoTen from"
                         + " (select MaNV_DangNgan,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
-                        + " where CAST(NGAYGIAITRACH as date)>=" + FromNgayGiaiTrach.ToString("yyyyMMdd") + " and CAST(NGAYGIAITRACH as date)<=" + ToNgayGiaiTrach.ToString("yyyyMMdd")
-                        + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
+                        + " where CAST(NGAYGIAITRACH as date)>='" + FromNgayGiaiTrach.ToString("yyyyMMdd") + "' and CAST(NGAYGIAITRACH as date)<='" + ToNgayGiaiTrach.ToString("yyyyMMdd")+"'"
+                        + " and (select MaTo from TT_NguoiDung where MaND=MaNV_DangNgan)="+MaTo
                         + " group by MaNV_DangNgan) t1,TT_NguoiDung t2"
-                        + " where t1.MaNV_DangNgan=t2.MaND";
+                        + " where t1.MaNV_DangNgan=t2.MaND"
+                        + " order by t2.STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
