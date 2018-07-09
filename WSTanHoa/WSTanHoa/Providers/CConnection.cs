@@ -60,9 +60,12 @@ namespace WSTanHoa
         {
             try
             {
-                transaction.Commit();
-                transaction.Dispose();
-                Disconnect();
+                if (transaction != null)
+                {
+                    transaction.Commit();
+                    transaction.Dispose();
+                    Disconnect();
+                }
             }
             catch (Exception ex) { throw ex; }
         }
@@ -71,10 +74,13 @@ namespace WSTanHoa
         {
             try
             {
-                transaction.Rollback();
-                transaction.Dispose();
+                if (transaction != null)
+                {
+                    transaction.Rollback();
+                    transaction.Dispose();
 
-                Disconnect();
+                    Disconnect();
+                }
             }
             catch (Exception ex) { throw ex; }
         }

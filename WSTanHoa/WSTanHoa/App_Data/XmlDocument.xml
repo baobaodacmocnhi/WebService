@@ -505,6 +505,10 @@
         <member name="M:WSTanHoa.Controllers.ThuHoController.insertThuHo(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
             <summary>
             Lưu Giao Dịch thực hiện
+            Bước 1: gọi hàm lấy hóa đơn tồn
+            Bước 2: gọi hàm lấy phí mở nước
+            Bước 3: gọi hàm lấy tiền dư
+            Bước 4: gọi hàm insertThuHo
             </summary>
             <param name="DanhBo"></param>
             <param name="MaHDs">chuổi Mã Hóa Đơn. ví dụ new string {MaHD1,MaHD2,MaHD3}</param>

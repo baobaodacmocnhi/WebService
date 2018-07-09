@@ -83,7 +83,7 @@ namespace WSTanHoa.Areas.HelpPage
 
             config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
             //config.Filters.Add(new CustomExceptionFilter());
-            config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
+            //config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
         }
 
 #if Handle_PageResultOfT
