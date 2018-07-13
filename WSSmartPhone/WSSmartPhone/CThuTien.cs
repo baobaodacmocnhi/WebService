@@ -452,8 +452,8 @@ namespace WSSmartPhone
         public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string CreateBy)
         {
             string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,"
-                        + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + NgayDN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
-                        + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN"
+                        + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
+                        + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=NULL,NgayChuyenDN=NULL"
                         + " where DongNuoc2=0 and MaDN=" + MaDN;
 
             SqlCommand command = new SqlCommand(sql);
@@ -568,6 +568,18 @@ namespace WSSmartPhone
                         + " and (select MaTo from TT_NguoiDung where MaND=MaNV_DangNgan)="+MaTo
                         + " group by MaNV_DangNgan) t1,TT_NguoiDung t2"
                         + " where t1.MaNV_DangNgan=t2.MaND"
+                        + " order by t2.STT asc";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string GetTongTon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
+        {
+            string sql = "select t1.*,t2.HoTen from"
+                        + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
+                        + " where NgayGiaiTrach is null and (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot
+                        + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
+                        + " group by MaNV_HanhThu) t1,TT_NguoiDung t2"
+                        + " where t1.MaNV_HanhThu=t2.MaND"
                         + " order by t2.STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }

@@ -187,5 +187,11 @@ namespace WSSmartPhone
         {
             return _cThuTien.GetTongDangNgan(MaTo, DateTime.ParseExact(FromNgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
+
+        [WebMethod]
+        public string GetTongTon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
+        {
+            return _cThuTien.GetTongTon(MaTo, Nam, Ky, FromDot, ToDot);
+        }
     }
 }
