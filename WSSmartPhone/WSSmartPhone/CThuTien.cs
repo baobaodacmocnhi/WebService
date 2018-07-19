@@ -584,6 +584,40 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
+        public string GetTongDongMoNuoc(bool DongNuoc, string MaTo, DateTime FromNgayDN, DateTime ToNgayDN)
+        {
+            string sql = "";
+            if (DongNuoc == true)
+                sql = "select t1.*,t2.HoTen from"
+                            + " (select dn.MaNV_DongNuoc,TongHD=COUNT(kqdn.MaDN) from TT_KQDongNuoc kqdn,TT_DongNuoc dn"
+                            + " where CAST(kqdn.NgayDN as date)>='" + FromNgayDN.ToString("yyyyMMdd") + "' and CAST(kqdn.NgayDN as date)<='" + ToNgayDN.ToString("yyyyMMdd") + "' and kqdn.MaDN=dn.MaDN"
+                            + " and (select MaTo from TT_NguoiDung where MaND=dn.MaNV_DongNuoc)=" + MaTo
+                            + " group by dn.MaNV_DongNuoc) t1,TT_NguoiDung t2"
+                            + " where t1.MaNV_DongNuoc=t2.MaND"
+                            + " order by t2.STT asc";
+            else
+                sql = "select t1.*,t2.HoTen from"
+                            + " (select dn.MaNV_DongNuoc,TongHD=COUNT(kqdn.MaDN) from TT_KQDongNuoc kqdn,TT_DongNuoc dn"
+                            + " where CAST(kqdn.NgayMN as date)>='" + FromNgayDN.ToString("yyyyMMdd") + "' and CAST(kqdn.NgayMN as date)<='" + ToNgayDN.ToString("yyyyMMdd") + "' and kqdn.MaDN=dn.MaDN"
+                            + " and (select MaTo from TT_NguoiDung where MaND=dn.MaNV_DongNuoc)=" + MaTo
+                            + " group by dn.MaNV_DongNuoc) t1,TT_NguoiDung t2"
+                            + " where t1.MaNV_DongNuoc=t2.MaND"
+                            + " order by t2.STT asc";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string GetTongThuHo(string MaTo, DateTime FromCreateDate, DateTime ToCreateDate)
+        {
+            string sql = "select t1.*,t2.HoTen from"
+                        + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from TT_DichVuThu dvt,HOADON hd"
+                        + " where CAST(dvt.CreateDate as date)>='" + FromCreateDate.ToString("yyyyMMdd") + "' and CAST(dvt.CreateDate as date)<='" + ToCreateDate.ToString("yyyyMMdd") + "' and dvt.MaHD=hd.ID_HOADON"
+                        + " and (select MaTo from TT_NguoiDung where MaND=MaNV_HanhThu)=" + MaTo
+                        + " group by MaNV_HanhThu) t1,TT_NguoiDung t2"
+                        + " where t1.MaNV_HanhThu=t2.MaND"
+                        + " order by t2.STT asc";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
         public DataTable GetHDMoiNhat(string DanhBo)
         {
             return _cDAL.ExecuteQuery_DataTable("select top 1 * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
