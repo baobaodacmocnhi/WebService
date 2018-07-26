@@ -12,7 +12,7 @@ namespace WSSmartPhone
 {
     class CBaoBao
     {
-        CConnection _DAL = new CConnection("Data Source=192.168.90.9;Initial Catalog=BaoBao;Persist Security Info=True;User ID=sa;Password=P@ssW012d9");
+        CConnection _DAL = new CConnection("Data Source=server9;Initial Catalog=BaoBao;Persist Security Info=True;User ID=tanhoa;Password=tanhoavn@9");
 
         public bool ThemKhachHang(string HoTen, string GioiTinh, string DienThoai, string BienSoXe, string MaPhong)
         {
