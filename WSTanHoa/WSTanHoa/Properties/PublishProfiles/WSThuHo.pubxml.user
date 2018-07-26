@@ -13,7 +13,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2018 15:34:34</publishTime>
     </File>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>07/09/2018 21:46:47</publishTime>
+      <publishTime>07/24/2018 15:27:01</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>06/29/2018 15:34:26</publishTime>
@@ -85,10 +85,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2018 15:34:34</publishTime>
     </File>
     <File Include="bin/App_global.asax.compiled">
-      <publishTime>07/02/2018 19:19:29</publishTime>
+      <publishTime>02/07/2018 19:19:29</publishTime>
     </File>
     <File Include="bin/App_global.asax.dll">
-      <publishTime>07/02/2018 19:19:29</publishTime>
+      <publishTime>02/07/2018 19:19:29</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>03/02/2015 09:32:26</publishTime>
@@ -238,7 +238,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>07/09/2018 21:47:38</publishTime>
+      <publishTime>07/26/2018 16:00:15</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>06/29/2018 15:34:22</publishTime>
@@ -271,7 +271,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/02/2018 10:47:11</publishTime>
     </File>
     <File Include="PrecompiledApp.config">
-      <publishTime>07/02/2018 19:19:24</publishTime>
+      <publishTime>02/07/2018 19:19:24</publishTime>
     </File>
     <File Include="Scripts/ai.0.22.9-build00167.js">
       <publishTime>06/29/2018 15:34:34</publishTime>
@@ -334,7 +334,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2018 15:34:20</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/04/2018 10:07:52</publishTime>
+      <publishTime>07/24/2018 15:54:29</publishTime>
     </File>
   </ItemGroup>
 </Project>

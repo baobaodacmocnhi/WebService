@@ -13,7 +13,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuHo")]
     public class ThuHoController : ApiController
     {
-        CConnection _cDAL = new CConnection("Data Source=192.168.90.11;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=capnuoctanhoa789");
+        CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=tanhoa;Password=tanhoavn@9");
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -23,36 +23,38 @@ namespace WSTanHoa.Controllers
         [Route("getHoaDonTon")]
         public IList<HoaDon> getHoaDonTon(string DanhBo)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    List<HoaDon> hoadons = new List<HoaDon>();
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        HoaDon entity = new HoaDon();
-                        entity.MaHD = int.Parse(item["MaHD"].ToString());
-                        entity.SoHoaDon = item["SoHoaDon"].ToString();
-                        entity.DanhBo = (string)item["DanhBo"];
-                        entity.Nam = int.Parse(item["Nam"].ToString());
-                        entity.Ky = int.Parse(item["Ky"].ToString());
-                        entity.GiaBan = int.Parse(item["GiaBan"].ToString());
-                        entity.ThueGTGT = int.Parse(item["ThueGTGT"].ToString());
-                        entity.PhiBVMT = int.Parse(item["PhiBVMT"].ToString());
-                        entity.TongCong = int.Parse(item["TongCong"].ToString());
-                        hoadons.Add(entity);
-                    }
-                    return hoadons;
-                }
-                else
-                {
-                    throw new Exception("Khách Hàng Hết Nợ hoặc Danh Bộ không đúng");
-                }
+                dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message));
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+            }
+            //
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                List<HoaDon> hoadons = new List<HoaDon>();
+                foreach (DataRow item in dt.Rows)
+                {
+                    HoaDon entity = new HoaDon();
+                    entity.MaHD = int.Parse(item["MaHD"].ToString());
+                    entity.SoHoaDon = item["SoHoaDon"].ToString();
+                    entity.DanhBo = (string)item["DanhBo"];
+                    entity.Nam = int.Parse(item["Nam"].ToString());
+                    entity.Ky = int.Parse(item["Ky"].ToString());
+                    entity.GiaBan = int.Parse(item["GiaBan"].ToString());
+                    entity.ThueGTGT = int.Parse(item["ThueGTGT"].ToString());
+                    entity.PhiBVMT = int.Parse(item["PhiBVMT"].ToString());
+                    entity.TongCong = int.Parse(item["TongCong"].ToString());
+                    hoadons.Add(entity);
+                }
+                return hoadons;
+            }
+            else
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Khách Hàng Hết Nợ hoặc Danh Bộ không đúng"));
             }
         }
 
@@ -70,7 +72,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message));
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
         }
 
@@ -88,7 +90,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message));
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
         }
 
@@ -111,11 +113,21 @@ namespace WSTanHoa.Controllers
         [Route("insertThuHo")]
         public bool insertThuHo(string DanhBo, string MaHDs, int SoTien, int PhiMoNuoc, int TienDu, int TongCong, string TenDichVu, string IDGiaoDich)
         {
+            int checkExist = 0;
             try
             {
-                int checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                if (checkExist > 0)
-                    throw new Exception("IDGiaoDich này đã tồn tại");
+                checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+            }
+            //
+            if (checkExist > 0)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Found, "IDGiaoDich này đã tồn tại"));
+            //
+            try
+            {
                 _cDAL.BeginTransaction();
                 int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
                 string[] arrayMaHD = MaHDs.Split(',');
@@ -140,7 +152,8 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 _cDAL.RollbackTransaction();
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message));
+                return false;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
         }
 
@@ -153,20 +166,31 @@ namespace WSTanHoa.Controllers
         [Route("deleteThuHo")]
         public bool deleteThuHo(string TenDichVu, string IDGiaoDich)
         {
+            int checkExist = 0;
             try
             {
-                int checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                if (checkExist == 0)
-                    throw new Exception("IDGiaoDich không tồn tại");
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                for (int i = 0; i < dt.Rows.Count; i++)
+                checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+            }
+            catch (Exception ex)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+            }
+            //
+            if (checkExist == 0)
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "IDGiaoDich không tồn tại"));
+
+            DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
+                if (count > 0)
                 {
-                    int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
-                    if (count > 0)
-                    {
-                        throw new Exception("Hóa đơn đã Giải Trách. Không xóa được");
-                    }
+                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Hóa đơn đã Giải Trách. Không xóa được"));
                 }
+            }
+            //
+            try
+            {
                 _cDAL.BeginTransaction();
                 _cDAL.ExecuteNonQuery_Transaction("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
                 _cDAL.ExecuteNonQuery_Transaction("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
@@ -178,7 +202,8 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 _cDAL.RollbackTransaction();
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message));
+                return false;
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
         }
 
@@ -191,33 +216,36 @@ namespace WSTanHoa.Controllers
         [Route("getThuHo")]
         public IList<ThuHoChiTiet> getThuHo(string TenDichVu, string IDGiaoDich)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                if (dt != null&&dt.Rows.Count>0)
-                {
-                    List<ThuHoChiTiet> thuhochitiet = new List<ThuHoChiTiet>();
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        ThuHoChiTiet entity = new ThuHoChiTiet();
-                        entity.MaHD = int.Parse(item["MaHD"].ToString());
-                        entity.SoHoaDon = item["SoHoaDon"].ToString();
-                        entity.DanhBo = item["DanhBo"].ToString();
-                        entity.Nam = int.Parse(item["Nam"].ToString());
-                        entity.Ky = int.Parse(item["Ky"].ToString());
-                        entity.SoTien = int.Parse(item["SoTien"].ToString());
-                        entity.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
-                        thuhochitiet.Add(entity);
-                    }
-                        return thuhochitiet;
-                }
-                else
-                    throw new Exception("IDGiaoDich không tồn tại");
+                dt = _cDAL.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message));
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
+            //
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                List<ThuHoChiTiet> thuhochitiet = new List<ThuHoChiTiet>();
+                foreach (DataRow item in dt.Rows)
+                {
+                    ThuHoChiTiet entity = new ThuHoChiTiet();
+                    entity.MaHD = int.Parse(item["MaHD"].ToString());
+                    entity.SoHoaDon = item["SoHoaDon"].ToString();
+                    entity.DanhBo = item["DanhBo"].ToString();
+                    entity.Nam = int.Parse(item["Nam"].ToString());
+                    entity.Ky = int.Parse(item["Ky"].ToString());
+                    entity.SoTien = int.Parse(item["SoTien"].ToString());
+                    entity.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
+                    thuhochitiet.Add(entity);
+                }
+                return thuhochitiet;
+            }
+            else
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "IDGiaoDich không tồn tại"));
+
         }
 
         /// <summary>
@@ -229,34 +257,36 @@ namespace WSTanHoa.Controllers
         [Route("getThuHoTong")]
         public IList<ThuHoTong> getThuHoTong(string TenDichVu, string IDGiaoDich)
         {
+            DataTable dt = new DataTable();
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    List<ThuHoTong> thuhotong = new List<ThuHoTong>();
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        ThuHoTong entity = new ThuHoTong();
-                        entity.DanhBo = item["DanhBo"].ToString();
-                        entity.MaHDs = item["MaHDs"].ToString();
-                        entity.SoHoaDons = item["SoHoaDons"].ToString();
-                        entity.SoTien = int.Parse(item["SoTien"].ToString());
-                        entity.PhiMoNuoc = int.Parse(item["PhiMoNuoc"].ToString());
-                        entity.TienDu = int.Parse(item["TienDu"].ToString());
-                        entity.TongCong = int.Parse(item["TongCong"].ToString());
-                        entity.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
-                        thuhotong.Add(entity);
-                    }
-                        return thuhotong;
-                }
-                else
-                    throw new Exception("IDGiaoDich không tồn tại");
+                dt = _cDAL.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, ex.Message));
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
             }
+            //
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                List<ThuHoTong> thuhotong = new List<ThuHoTong>();
+                foreach (DataRow item in dt.Rows)
+                {
+                    ThuHoTong entity = new ThuHoTong();
+                    entity.DanhBo = item["DanhBo"].ToString();
+                    entity.MaHDs = item["MaHDs"].ToString();
+                    entity.SoHoaDons = item["SoHoaDons"].ToString();
+                    entity.SoTien = int.Parse(item["SoTien"].ToString());
+                    entity.PhiMoNuoc = int.Parse(item["PhiMoNuoc"].ToString());
+                    entity.TienDu = int.Parse(item["TienDu"].ToString());
+                    entity.TongCong = int.Parse(item["TongCong"].ToString());
+                    entity.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
+                    thuhotong.Add(entity);
+                }
+                return thuhotong;
+            }
+            else
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "IDGiaoDich không tồn tại"));
         }
 
     }
