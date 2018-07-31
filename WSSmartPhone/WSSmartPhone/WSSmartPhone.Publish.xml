@@ -3,9 +3,9 @@
   <publishProfile publishUrl="\\192.168.90.11\WSSmartPhone$" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
     <file relUrl="wsThuTien.asmx" publishTime="06/27/2018 08:17:45" />
     <file relUrl="Service.asmx" publishTime="12/22/2017 09:29:04" />
-    <file relUrl="Web.config" publishTime="07/26/2018 15:58:03" />
+    <file relUrl="Web.config" publishTime="07/30/2018 16:44:09" />
     <file relUrl="wsTanHoa.asmx" publishTime="06/27/2018 08:33:59" />
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="07/26/2018 15:57:59" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="07/26/2018 15:57:59" />
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="07/30/2018 16:43:54" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="07/30/2018 16:43:55" />
   </publishProfile>
 </publishData>
