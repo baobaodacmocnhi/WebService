@@ -40,7 +40,10 @@ namespace WSSmartPhone
         public DataTable GetDSKhachHang()
         {
             string sql = "select a.*,TenPhong=Name from KhachHang a left join Phong b on a.MaPhong=b.ID";
-            return _DAL.ExecuteQuery_DataTable(sql);
+            DataTable dt = new DataTable();
+            dt = _DAL.ExecuteQuery_DataTable(sql);
+            dt.TableName = "MyTableName";
+            return dt;
         }
 
         public bool SuaPhong(string ID, string Name, string GiaTien, string SoNKNuoc, string ChiSoDien, string ChiSoNuoc, string NgayThue, string Thue)
@@ -53,7 +56,10 @@ namespace WSSmartPhone
         public DataTable GetDSPhong()
         {
             string sql = "select ID,Name,GiaTien,Thue,NgayThue=CONVERT(varchar(10), NgayThue, 103),ChiSoDienOld,ChiSoDien,SoNKNuoc,ChiSoNuocOld,ChiSoNuoc from Phong";
-            return _DAL.ExecuteQuery_DataTable(sql);
+            DataTable dt = new DataTable();
+            dt = _DAL.ExecuteQuery_DataTable(sql);
+            dt.TableName = "MyTableName";
+            return dt;
         }
 
         public bool SuaGiaDien(string ID, string Name, string GiaTien)
@@ -65,7 +71,10 @@ namespace WSSmartPhone
         public DataTable GetDSGiaDien()
         {
             string sql = "select * from GiaDien";
-            return _DAL.ExecuteQuery_DataTable(sql);
+            DataTable dt = new DataTable();
+            dt = _DAL.ExecuteQuery_DataTable(sql);
+            dt.TableName = "MyTableName";
+            return dt;
         }
 
         public bool SuaGiaNuoc(string ID, string Name, string GiaTien)
@@ -77,7 +86,10 @@ namespace WSSmartPhone
         public DataTable GetDSGiaNuoc()
         {
             string sql = "select * from GiaNuoc";
-            return _DAL.ExecuteQuery_DataTable(sql);
+            DataTable dt = new DataTable();
+            dt = _DAL.ExecuteQuery_DataTable(sql);
+            dt.TableName = "MyTableName";
+            return dt;
         }
 
         public bool ThemHoaDon(string MaPhong, int ChiSoDienNew, int ChiSoNuocNew)
@@ -110,8 +122,8 @@ namespace WSSmartPhone
                     else
                         ID = int.Parse(_DAL.ExecuteQuery_DataTable("select MAX(ID)+1 from HoaDon").Rows[0][0].ToString());
                     string sql = "insert into HoaDon(ID,MaPhong,ChiSoDienOld,ChiSoDienNew,TieuThuDien,TienDien,ChiTietDien,ChiSoNuocOld,ChiSoNuocNew,TieuThuNuoc,TienNuoc,ChiTietNuoc,CreateDate)values(" + ID + "," + MaPhong + ","
-                               + ChiSoDienOld + "," + ChiSoDienNew + "," + TieuThuDien + "," + TienDien + ",'" + ChiTietDien + "',"
-                               + ChiSoNuocOld + "," + ChiSoNuocNew + "," + TieuThuNuoc + "," + TienNuoc + ",'" + ChiTietNuoc + "',GETDATE())";
+                               + ChiSoDienOld + "," + ChiSoDienNew + "," + TieuThuDien + "," + TienDien + ",N'" + ChiTietDien + "',"
+                               + ChiSoNuocOld + "," + ChiSoNuocNew + "," + TieuThuNuoc + "," + TienNuoc + ",N'" + ChiTietNuoc + "',GETDATE())";
 
                     if (_DAL.ExecuteNonQuery(sql) == false)
                         flag = false;
@@ -219,13 +231,19 @@ namespace WSSmartPhone
         public DataTable GetDSHoaDon()
         {
             string sql = "select a.*,TenPhong=Name from HoaDon a left join Phong b on a.MaPhong=b.ID";
-            return _DAL.ExecuteQuery_DataTable(sql);
+            DataTable dt = new DataTable();
+            dt = _DAL.ExecuteQuery_DataTable(sql);
+            dt.TableName = "MyTableName";
+            return dt;
         }
 
         public DataTable GetDSHoaDon(string MaPhong)
         {
             string sql = "select a.*,TenPhong=Name from HoaDon a left join Phong b on a.MaPhong=b.ID where MaPhong=" + MaPhong;
-            return _DAL.ExecuteQuery_DataTable(sql);
+            DataTable dt = new DataTable();
+            dt = _DAL.ExecuteQuery_DataTable(sql);
+            dt.TableName = "MyTableName";
+            return dt;
         }
 
         public int TinhTienDien(int SoNKDien, int TieuThu, out string ChiTiet)
@@ -289,10 +307,12 @@ namespace WSSmartPhone
                                              + B5 + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaDien.Rows[4]["GiaTien"]) + "\r\n"
                                              + (TieuThu - B5).ToString() + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", (int)dtGiaDien.Rows[5]["GiaTien"]);
                                 }
-
+            
             TienDien = (int)(TienDien * 1.10);
+            ChiTiet += "\r\nThuế 10% " + ((int)(TienDien * 0.10)).ToString();
             ///tỷ lệ hao hụt
             TienDien += (int)Math.Round(TienDien * double.Parse(dtGiaDien.Rows[6]["GiaTien"].ToString()) / 100);
+            ChiTiet += "\r\nTỷ lệ hao hụt " + dtGiaDien.Rows[6]["GiaTien"].ToString() + "% " + (int)Math.Round(TienDien * double.Parse(dtGiaDien.Rows[6]["GiaTien"].ToString()) / 100);
             return TienDien;
         }
 
@@ -329,7 +349,9 @@ namespace WSSmartPhone
             }
 
             TienNuoc = (int)(TienNuoc * 1.15);
+            ChiTiet += "\r\nThuế 15% " + ((int)(TienNuoc * 0.15)).ToString();
             TienNuoc += (int)Math.Round(TienNuoc * double.Parse(dtGiaNuoc.Rows[3]["GiaTien"].ToString()) / 100);
+            ChiTiet += "\r\nTỷ lệ hao hụt " + dtGiaNuoc.Rows[3]["GiaTien"].ToString() + "% " + (int)Math.Round(TienNuoc * double.Parse(dtGiaNuoc.Rows[3]["GiaTien"].ToString()) / 100);
             return TienNuoc;
         }
 
