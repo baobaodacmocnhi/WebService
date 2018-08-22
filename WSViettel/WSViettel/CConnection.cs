@@ -18,7 +18,7 @@ namespace WSViettel
         {
             try
             {
-                _connectionString = "Data Source=192.168.90.9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=P@ssW012d9";
+                _connectionString = "Data Source=192.168.90.9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
                 connection = new SqlConnection(_connectionString);
             }
             catch (Exception)
