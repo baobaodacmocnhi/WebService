@@ -13,7 +13,8 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuHo")]
     public class ThuHoController : ApiController
     {
-        CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=tanhoa;Password=tanhoavn@9");
+        //CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
+        CConnection _cDAL = new CConnection("Data Source=serverg8-01;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db11@tanhoa");
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
