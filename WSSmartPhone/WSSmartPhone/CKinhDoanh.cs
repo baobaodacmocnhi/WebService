@@ -8,7 +8,7 @@ namespace WSSmartPhone
 {
     public class CKinhDoanh
     {
-        CConnection _DAL = new CConnection("Data Source=serverg8-01;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=tanhoa;Password=tanhoavn@11");
+        CConnection _DAL = new CConnection("Data Source=serverg8-01;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa");
 
         public DataTable GetDSGiaNuoc()
         {

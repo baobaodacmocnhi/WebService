@@ -15,7 +15,7 @@ namespace WSSmartPhone
 {
     class CThuTien
     {
-        CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=tanhoa;Password=tanhoavn@9");
+        CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
 
         public string DataTableToJSON(DataTable table)
         {
