@@ -15,6 +15,24 @@ namespace WSTanHoa.Controllers
     {
         //CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         CConnection _cDAL = new CConnection("Data Source=serverg8-01;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db11@tanhoa");
+        class ErrorResponse
+        {
+            public string message { get; set; }
+            public int code { get; set; }
+            public ErrorResponse(string message, int code)
+            {
+                this.message = message;
+                this.code = code;
+            }
+        }
+
+        const int errorCodeSQL = -1;
+        const int errorCodeKhongDung = 1000;
+        const int errorCodeHetNo = 1001;
+        const int errorCodeIDGiaoDichKhongTonTai = 1002;
+        const int errorCodeIDGiaoDichTonTai = 1003;
+        const int errorCodeGiaiTrach = 1004;
+        const int errorCodePhiMoNuoc = 1005;
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -25,13 +43,31 @@ namespace WSTanHoa.Controllers
         public IList<HoaDon> getHoaDonTon(string DanhBo)
         {
             DataTable dt = new DataTable();
+            int count = 0;
+            //check exist
+            try
+            {
+                count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where DANHBA='" + DanhBo + "'");
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
+            }
+            if (count == 0)
+            {
+                ErrorResponse error = new ErrorResponse("Danh Bộ không đúng", errorCodeKhongDung);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
+            }
+            //get hoadon tồn
             try
             {
                 dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             //
             if (dt != null && dt.Rows.Count > 0)
@@ -40,6 +76,8 @@ namespace WSTanHoa.Controllers
                 foreach (DataRow item in dt.Rows)
                 {
                     HoaDon entity = new HoaDon();
+                    entity.HoTen = item["HoTen"].ToString();
+                    entity.DiaChi = item["DiaChi"].ToString();
                     entity.MaHD = int.Parse(item["MaHD"].ToString());
                     entity.SoHoaDon = item["SoHoaDon"].ToString();
                     entity.DanhBo = (string)item["DanhBo"];
@@ -49,13 +87,16 @@ namespace WSTanHoa.Controllers
                     entity.ThueGTGT = int.Parse(item["ThueGTGT"].ToString());
                     entity.PhiBVMT = int.Parse(item["PhiBVMT"].ToString());
                     entity.TongCong = int.Parse(item["TongCong"].ToString());
+                    entity.PhiMoNuoc = int.Parse(item["PhiMoNuoc"].ToString());
+                    entity.TienDu = int.Parse(item["TienDu"].ToString());
                     hoadons.Add(entity);
                 }
                 return hoadons;
             }
             else
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "Khách Hàng Hết Nợ hoặc Danh Bộ không đúng"));
+                ErrorResponse error = new ErrorResponse("Khách Hàng Hết Nợ", errorCodeHetNo);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound,error ));
             }
         }
 
@@ -73,7 +114,8 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
 
@@ -91,7 +133,8 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
 
@@ -121,11 +164,15 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             //
             if (checkExist > 0)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Found, "IDGiaoDich này đã tồn tại"));
+            {
+                ErrorResponse error = new ErrorResponse("IDGiaoDich này đã tồn tại", errorCodeIDGiaoDichTonTai);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found,error ));
+            }
             //
             try
             {
@@ -153,8 +200,9 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 _cDAL.RollbackTransaction();
-                return false;
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                //return false;
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
 
@@ -174,20 +222,47 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
+            }
+            if (checkExist == 0)
+            {
+                ErrorResponse error = new ErrorResponse("IDGiaoDich không tồn tại", errorCodeIDGiaoDichKhongTonTai);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
             //
-            if (checkExist == 0)
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "IDGiaoDich không tồn tại"));
-
-            DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-            for (int i = 0; i < dt.Rows.Count; i++)
+            try
             {
-                int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
-                if (count > 0)
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Hóa đơn đã Giải Trách. Không xóa được"));
+                    int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
+                    if (count > 0)
+                    {
+                        ErrorResponse error = new ErrorResponse("Hóa đơn đã Giải Trách. Không xóa được", errorCodeGiaiTrach);
+                        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
+            }
+            //
+            try
+            {
+                int phimonuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                if (phimonuoc > 0)
+                {
+                    ErrorResponse error = new ErrorResponse("Hóa đơn có Phí Mở Nước. Không xóa được", errorCodePhiMoNuoc);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             //
             try
@@ -203,8 +278,9 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 _cDAL.RollbackTransaction();
-                return false;
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                //return false;
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
 
@@ -224,7 +300,8 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError,error));
             }
             //
             if (dt != null && dt.Rows.Count > 0)
@@ -245,8 +322,10 @@ namespace WSTanHoa.Controllers
                 return thuhochitiet;
             }
             else
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "IDGiaoDich không tồn tại"));
-
+            {
+                ErrorResponse error = new ErrorResponse("IDGiaoDich không tồn tại", errorCodeIDGiaoDichKhongTonTai);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
+            }
         }
 
         /// <summary>
@@ -265,7 +344,8 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.InternalServerError, ex.Message));
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             //
             if (dt != null && dt.Rows.Count > 0)
@@ -287,7 +367,10 @@ namespace WSTanHoa.Controllers
                 return thuhotong;
             }
             else
-                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.NotFound, "IDGiaoDich không tồn tại"));
+            {
+                ErrorResponse error = new ErrorResponse("IDGiaoDich không tồn tại", errorCodeIDGiaoDichKhongTonTai);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
+            }
         }
 
     }

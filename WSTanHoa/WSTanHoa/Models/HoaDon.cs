@@ -7,6 +7,8 @@ namespace WSTanHoa.Models
 {
     public class HoaDon
     {
+        public string HoTen { get; set; }
+        public string DiaChi { get; set; }
         public int MaHD { get; set; }
         public string SoHoaDon { get; set; }
         public string DanhBo { get; set; }
@@ -16,5 +18,8 @@ namespace WSTanHoa.Models
         public int ThueGTGT { get; set; }
         public int PhiBVMT { get; set; }
         public int TongCong { get; set; }
+        public int PhiMoNuoc { get; set; }
+        public int TienDu { get; set; }
+        
     }
 }

@@ -82,6 +82,7 @@ namespace WSTanHoa.Areas.HelpPage
             //config.SetActualResponseType(typeof(string), "Values", "Post");
 
             config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
+            //config.Formatters.XmlFormatter.UseXmlSerializer = false;
             //config.Filters.Add(new CustomExceptionFilter());
             //config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
         }
