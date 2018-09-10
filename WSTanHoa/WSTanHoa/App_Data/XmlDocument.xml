@@ -502,7 +502,7 @@
             <param name="DanhBo"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.insertThuHo(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String)">
+        <member name="M:WSTanHoa.Controllers.ThuHoController.insertThuHo(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String)">
             <summary>
             Lưu Giao Dịch thực hiện
             Bước 1: gọi hàm lấy hóa đơn tồn
@@ -520,7 +520,7 @@
             <param name="IDGiaoDich">ID Đơn Vị Thu tạo cho từng giao dịch để quản lý</param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.deleteThuHo(System.String,System.String)">
+        <member name="M:WSTanHoa.Controllers.ThuHoController.deleteThuHo(System.String,System.String,System.String)">
             <summary>
             Xóa Giao Dịch đã thực hiện
             </summary>

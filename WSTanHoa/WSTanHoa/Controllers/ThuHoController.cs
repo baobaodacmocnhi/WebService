@@ -4,6 +4,8 @@ using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Cryptography;
+using System.Text;
 using System.Web.Http;
 using WSTanHoa.Models;
 using WSTanHoa.Providers;
@@ -33,6 +35,7 @@ namespace WSTanHoa.Controllers
         const int errorCodeIDGiaoDichTonTai = 1003;
         const int errorCodeGiaiTrach = 1004;
         const int errorCodePhiMoNuoc = 1005;
+        const int errorCodePassword = 1010;
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -155,8 +158,24 @@ namespace WSTanHoa.Controllers
         /// <param name="IDGiaoDich">ID Đơn Vị Thu tạo cho từng giao dịch để quản lý</param>
         /// <returns></returns>
         [Route("insertThuHo")]
-        public bool insertThuHo(string DanhBo, string MaHDs, int SoTien, int PhiMoNuoc, int TienDu, int TongCong, string TenDichVu, string IDGiaoDich)
+        public bool insertThuHo(string DanhBo, string MaHDs, int SoTien, int PhiMoNuoc, int TienDu, int TongCong, string TenDichVu, string IDGiaoDich,string checksum)
         {
+            string PasswordSQL = "";
+            try
+            {
+                PasswordSQL = (string)_cDAL.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
+            }
+            if(getSHA256(DanhBo+MaHDs+SoTien+PhiMoNuoc+TienDu+TongCong+TenDichVu+IDGiaoDich+PasswordSQL) != checksum)
+            {
+                ErrorResponse error = new ErrorResponse("Sai Mã kiểm tra", errorCodePassword);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
+            }
+            //
             int checkExist = 0;
             try
             {
@@ -213,8 +232,23 @@ namespace WSTanHoa.Controllers
         /// <param name="IDGiaoDich"></param>
         /// <returns></returns>
         [Route("deleteThuHo")]
-        public bool deleteThuHo(string TenDichVu, string IDGiaoDich)
+        public bool deleteThuHo(string TenDichVu, string IDGiaoDich,string checksum)
         {
+            string PasswordSQL = "";
+            try
+            {
+                PasswordSQL = (string)_cDAL.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
+            }
+            if (getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
+            {
+                ErrorResponse error = new ErrorResponse("Sai Mã kiểm tra", errorCodePassword);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
+            }
             int checkExist = 0;
             try
             {
@@ -250,19 +284,20 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             //
+            int phimonuoc = 0;
             try
             {
-                int phimonuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                if (phimonuoc > 0)
-                {
-                    ErrorResponse error = new ErrorResponse("Hóa đơn có Phí Mở Nước. Không xóa được", errorCodePhiMoNuoc);
-                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
-                }
+                phimonuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
+            }
+            if (phimonuoc > 0)
+            {
+                ErrorResponse error = new ErrorResponse("Hóa đơn có Phí Mở Nước. Không xóa được", errorCodePhiMoNuoc);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
             //
             try
@@ -373,5 +408,16 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        private string getSHA256(string strData)
+        {
+            SHA256Managed crypt = new SHA256Managed();
+            System.Text.StringBuilder hash = new System.Text.StringBuilder();
+            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(strData), 0, Encoding.UTF8.GetByteCount(strData));
+            foreach (byte theByte in crypto)
+            {
+                hash.Append(theByte.ToString("x2"));
+            }
+            return hash.ToString().ToLower();
+        }
     }
 }
