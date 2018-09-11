@@ -98,7 +98,7 @@ namespace WSTanHoa.Controllers
             }
             else
             {
-                ErrorResponse error = new ErrorResponse("Khách Hàng Hết Nợ", errorCodeHetNo);
+                ErrorResponse error = new ErrorResponse("Khách Hàng hết nợ", errorCodeHetNo);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound,error ));
             }
         }
@@ -273,7 +273,7 @@ namespace WSTanHoa.Controllers
                     int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
                     if (count > 0)
                     {
-                        ErrorResponse error = new ErrorResponse("Hóa đơn đã Giải Trách. Không xóa được", errorCodeGiaiTrach);
+                        ErrorResponse error = new ErrorResponse("Hóa Đơn đã Giải Trách. Không xóa được", errorCodeGiaiTrach);
                         throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
                     }
                 }
@@ -296,7 +296,7 @@ namespace WSTanHoa.Controllers
             }
             if (phimonuoc > 0)
             {
-                ErrorResponse error = new ErrorResponse("Hóa đơn có Phí Mở Nước. Không xóa được", errorCodePhiMoNuoc);
+                ErrorResponse error = new ErrorResponse("Hóa Đơn có Phí Mở Nước. Không xóa được", errorCodePhiMoNuoc);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
             //
