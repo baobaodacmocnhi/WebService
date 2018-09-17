@@ -232,6 +232,7 @@ namespace WSTanHoa.Controllers
         /// <param name="IDGiaoDich"></param>
         /// <returns></returns>
         [Route("deleteThuHo")]
+        [HttpPost]
         public bool deleteThuHo(string TenDichVu, string IDGiaoDich,string checksum)
         {
             string PasswordSQL = "";
