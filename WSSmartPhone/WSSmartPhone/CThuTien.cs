@@ -421,11 +421,16 @@ namespace WSSmartPhone
             return true;
         }
 
-        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, DateTime NgayDN, string ChiSoDN, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
+        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, DateTime NgayDN, string ChiSoDN,string NiemChi, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
-            string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
+            if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi).ToString()) == 0)
+                return false;
+            if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi+" and SuDung=1").ToString()) == 1)
+                return false;
+
+            string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
                         + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
-                        + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
+                        + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + ","+NiemChi+",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
 
             SqlCommand command = new SqlCommand(sql);
             if (HinhDN == "NULL")
@@ -450,10 +455,15 @@ namespace WSSmartPhone
             return _cDAL.ExecuteNonQuery(command);
         }
 
-        public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string CreateBy)
+        public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN,string NiemChi, string CreateBy)
         {
-            string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,"
-                        + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
+            if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi).ToString()) == 0)
+                return false;
+            if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi + " and SuDung=1").ToString()) == 1)
+                return false;
+
+            string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi"
+                        + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi="+NiemChi+",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
                         + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
                         + " where DongNuoc2=0 and MaDN=" + MaDN;
 
@@ -623,93 +633,6 @@ namespace WSSmartPhone
         {
             return _cDAL.ExecuteQuery_DataTable("select top 1 * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
         }
-
-        #region Thu Hộ
-
-        public DataTable getHoaDonTon(string DanhBo)
-        {
-            return _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
-        }
-
-        public int getPhiMoNuoc(string DanhBo)
-        {
-            return (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
-        }
-
-        public int getTienDu(string DanhBo)
-        {
-            return (int)_cDAL.ExecuteQuery_ReturnOneValue("select TienDu=dbo.fnGetTienDu(" + DanhBo + ")");
-        }
-
-        public bool insertThuHo(string DanhBo, string MaHDs, int SoTien, int PhiMoNuoc, int TienDu, string TenDichVu, string IDGiaoDich)
-        {
-            try
-            {
-                _cDAL.BeginTransaction();
-                int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThu_Tong");
-                string[] arrayMaHD = MaHDs.Split(',');
-                string SoHoaDons = "", sql = "";
-                for (int i = 0; i < arrayMaHD.Length; i++)
-                {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable_Transaction("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
-                    sql = "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
-                        +" values("+dt.Rows[0]["MaHD"]+",'"+dt.Rows[0]["SoHoaDon"]+"','"+dt.Rows[0]["DanhBo"]+"',"+dt.Rows[0]["Nam"]+","+dt.Rows[0]["Ky"]+","+dt.Rows[0]["TongCong"]+",N'"+TenDichVu+"',"+ID+",'"+IDGiaoDich+"',getdate())";
-                    _cDAL.ExecuteNonQuery_Transaction(sql);
-                    if (string.IsNullOrEmpty(SoHoaDons) == true)
-                        SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
-                    else
-                        SoHoaDons += ","+dt.Rows[0]["SoHoaDon"];
-                }
-                sql = "insert into TT_DichVuThu_Tong(ID,DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TenDichVu,IDGiaoDich,CreateDate)"
-                            + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "'," + SoTien + "," + PhiMoNuoc + "," + TienDu + ",N'" + TenDichVu + "','" + IDGiaoDich + "',getdate())";
-                _cDAL.ExecuteNonQuery_Transaction(sql);
-                _cDAL.CommitTransaction();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _cDAL.RollbackTransaction();
-                throw ex;
-            }
-        }
-
-        public bool deleteThuHo(string TenDichVu, string IDGiaoDich)
-        {
-            try
-            {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                for (int i = 0; i < dt.Rows.Count; i++)
-                {
-                    int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
-                    if (count > 0)
-                    {
-                        throw new Exception("Hóa đơn đã giải trách. Không xóa được");
-                    }
-                }
-                _cDAL.BeginTransaction();
-                _cDAL.ExecuteNonQuery_Transaction("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                _cDAL.ExecuteNonQuery_Transaction("delete TT_DichVuThu_Tong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                _cDAL.CommitTransaction();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                _cDAL.RollbackTransaction();
-                throw ex;
-            }
-        }
-
-        public DataTable getThuHo(string TenDichVu, string IDGiaoDich)
-        {
-            return _cDAL.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-        }
-
-        public DataTable getThuHoTong(string TenDichVu, string IDGiaoDich)
-        {
-            return _cDAL.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,CreateDate from TT_DichVuThu_Tong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-        }
-
-        #endregion
 
     }
 }
