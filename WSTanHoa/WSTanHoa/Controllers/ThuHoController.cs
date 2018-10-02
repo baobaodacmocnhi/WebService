@@ -175,7 +175,7 @@ namespace WSTanHoa.Controllers
                 ErrorResponse error = new ErrorResponse("Sai Mã kiểm tra", errorCodePassword);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
-            //
+            //kiểm tra đã insert theo TenDichVu & IDGiaoDich
             int checkExist = 0;
             try
             {
@@ -186,18 +186,39 @@ namespace WSTanHoa.Controllers
                 ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
-            //
             if (checkExist > 0)
             {
                 ErrorResponse error = new ErrorResponse("IDGiaoDich này đã tồn tại", errorCodeIDGiaoDichTonTai);
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found,error ));
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
             }
-            //
+
+            //kiểm tra đã insert theo TenDichVu & IDGiaoDich
+            string[] arrayMaHD = MaHDs.Split(',');
+            checkExist = 0;
+            for (int i = 0; i < arrayMaHD.Length; i++)
+            {
+                try
+                {
+                    checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where MaHD=" + arrayMaHD[i]);
+                }
+                catch (Exception ex)
+                {
+                    ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
+                }
+                if (checkExist > 0)
+                {
+                    ErrorResponse error = new ErrorResponse("Khách Hàng hết nợ", errorCodeHetNo);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
+                }
+            }
+            
+            //insert Database
             try
             {
                 _cDAL.BeginTransaction();
                 int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
-                string[] arrayMaHD = MaHDs.Split(',');
+                
                 string SoHoaDons = "", sql = "";
                 for (int i = 0; i < arrayMaHD.Length; i++)
                 {
