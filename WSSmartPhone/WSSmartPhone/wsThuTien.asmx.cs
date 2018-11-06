@@ -117,9 +117,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, string NgayDN, string ChiSoDN,string NiemChi, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
+        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
-            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN,NiemChi, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy);
+            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ButChi, KhoaTu, NiemChi, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy);
         }
 
         [WebMethod]
@@ -129,9 +129,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN,string NiemChi, string CreateBy)
+        public bool ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string KhoaTu, string NiemChi, string CreateBy)
         {
-            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN,NiemChi, CreateBy);
+            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN,KhoaTu,NiemChi, CreateBy);
         }
 
         [WebMethod]
@@ -165,15 +165,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetDSHoaDon_DanhBo(string DanhBo)
+        public string GetDSTimKiem(string DanhBo)
         {
-            return _cThuTien.GetDSHoaDon(DanhBo);
+            return _cThuTien.GetDSTimKiem(DanhBo);
         }
 
         [WebMethod]
-        public string GetDSHoaDon_TTKH(string HoTen, string SoNha, string TenDuong)
+        public string GetDSTimKiemTTKH(string HoTen, string SoNha, string TenDuong)
         {
-            return _cThuTien.GetDSHoaDon(HoTen, SoNha, TenDuong);
+            return _cThuTien.GetDSTimKiemTTKH(HoTen, SoNha, TenDuong);
         }
 
         [WebMethod]
