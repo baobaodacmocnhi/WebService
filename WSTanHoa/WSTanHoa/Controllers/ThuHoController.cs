@@ -16,28 +16,7 @@ namespace WSTanHoa.Controllers
     public class ThuHoController : ApiController
     {
         CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
-        //CConnection _cDAL = new CConnection("Data Source=serverg8-01;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db11@tanhoa");
-        class ErrorResponse
-        {
-            public string message { get; set; }
-            public int code { get; set; }
-            public ErrorResponse(string message, int code)
-            {
-                this.message = message;
-                this.code = code;
-            }
-        }
-
-        const int errorCodeSQL = -1; 
-        const int errorCodeKhongDung = 1000; const string errorKhongDung = "Danh Bộ không đúng";
-        const int errorCodeHetNo = 1001; const string errorHetNo = "Khách Hàng hết nợ";
-        const int errorCodeIDGiaoDichKhongTonTai = 1002; const string errorIDGiaoDichKhongTonTai = "IDGiaoDich không tồn tại";
-        const int errorCodeIDGiaoDichTonTai = 1003; const string errorIDGiaoDichTonTai = "IDGiaoDich này đã tồn tại";
-        const int errorCodeGiaiTrach = 1004; const string errorGiaiTrach = "Hóa Đơn đã Giải Trách. Không xóa được";
-        const int errorCodePhiMoNuoc = 1005; const string errorPhiMoNuoc = "Hóa Đơn có Phí Mở Nước. Không xóa được";
-        const int errorCodeHoaDon = 1006; const string errorHoaDon = "Phải thanh toán hết Hóa Đơn Tồn";
-        const int errorCodeSoTien = 1007; const string errorSoTien = "Số Tiền không đúng";
-        const int errorCodePassword = 1010; const string errorPassword = "Sai Mã kiểm tra";
+        //CConnection _cDAL = new CConnection("Data Source=serverg8-01;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db11@tanhoa");    
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -56,12 +35,12 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (count == 0)
             {
-                ErrorResponse error = new ErrorResponse(errorKhongDung, errorCodeKhongDung);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorKhongDung, ErrorResponse.ErrorCodeKhongDung);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
             //get hoadon tồn
@@ -71,7 +50,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             //
@@ -100,7 +79,7 @@ namespace WSTanHoa.Controllers
             }
             else
             {
-                ErrorResponse error = new ErrorResponse(errorHetNo, errorCodeHetNo);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound,error ));
             }
         }
@@ -119,7 +98,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
@@ -138,7 +117,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
@@ -169,19 +148,19 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if(getSHA256(DanhBo+MaHDs+SoTien+PhiMoNuoc+TienDu+TongCong+TenDichVu+IDGiaoDich+PasswordSQL) != checksum)
             {
-                ErrorResponse error = new ErrorResponse(errorPassword, errorCodePassword);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
             //kiểm tra TenDichVu & IDGiaoDich
             if(TenDichVu == "" || IDGiaoDich == "")
             {
-                ErrorResponse error = new ErrorResponse(errorIDGiaoDichKhongTonTai, errorCodeIDGiaoDichKhongTonTai);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -192,26 +171,36 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (checkExist > 0)
             {
-                ErrorResponse error = new ErrorResponse(errorIDGiaoDichTonTai, errorCodeIDGiaoDichTonTai);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichTonTai, ErrorResponse.ErrorCodeIDGiaoDichTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
             }
 
             //kiểm tra Danh Bộ, Hóa Đơn, Số Tiền
             IList<HoaDon> lstHD = getHoaDonTon(DanhBo);
-            string[] arrayMaHD = MaHDs.Split(',');
+            string[] arrayMaHD;
+            try
+            {
+                arrayMaHD = MaHDs.Split(',');
+            }
+            catch
+            {
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorMaHD, ErrorResponse.ErrorCodeMaHD);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
+            }
+            
             if (lstHD.Count != arrayMaHD.Count())
             {
-                ErrorResponse error = new ErrorResponse(errorHoaDon, errorCodeHoaDon);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHoaDon, ErrorResponse.ErrorCodeHoaDon);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
             if ((lstHD.Sum(item => item.TongCong) + lstHD[0].PhiMoNuoc - lstHD[0].TienDu) != (SoTien + PhiMoNuoc - TienDu) || (SoTien + PhiMoNuoc - TienDu) != TongCong)
             {
-                ErrorResponse error = new ErrorResponse(errorSoTien, errorCodeSoTien);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorSoTien, ErrorResponse.ErrorCodeSoTien);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
@@ -242,7 +231,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 _cDAL.RollbackTransaction();
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 //return false;
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
@@ -265,20 +254,20 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
 
             if (getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
-                ErrorResponse error = new ErrorResponse(errorPassword, errorCodePassword);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
             //kiểm tra TenDichVu & IDGiaoDich
             if (TenDichVu == "" || IDGiaoDich == "")
             {
-                ErrorResponse error = new ErrorResponse(errorIDGiaoDichKhongTonTai, errorCodeIDGiaoDichKhongTonTai);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -289,12 +278,12 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (checkExist == 0)
             {
-                ErrorResponse error = new ErrorResponse(errorIDGiaoDichKhongTonTai, errorCodeIDGiaoDichKhongTonTai);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -307,14 +296,14 @@ namespace WSTanHoa.Controllers
                     int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
                     if (count > 0)
                     {
-                        ErrorResponse error = new ErrorResponse(errorGiaiTrach, errorCodeGiaiTrach);
+                        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorGiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
                         throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
                     }
                 }
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
 
@@ -326,12 +315,12 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (phimonuoc > 0)
             {
-                ErrorResponse error = new ErrorResponse(errorPhiMoNuoc, errorCodePhiMoNuoc);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPhiMoNuoc, ErrorResponse.ErrorCodePhiMoNuoc);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
@@ -349,7 +338,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 _cDAL.RollbackTransaction();
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 //return false;
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
@@ -367,7 +356,7 @@ namespace WSTanHoa.Controllers
             //kiểm tra TenDichVu & IDGiaoDich
             if (TenDichVu == "" || IDGiaoDich == "")
             {
-                ErrorResponse error = new ErrorResponse(errorIDGiaoDichKhongTonTai, errorCodeIDGiaoDichKhongTonTai);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -378,7 +367,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError,error));
             }
 
@@ -401,7 +390,7 @@ namespace WSTanHoa.Controllers
             }
             else
             {
-                ErrorResponse error = new ErrorResponse(errorIDGiaoDichKhongTonTai, errorCodeIDGiaoDichKhongTonTai);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
         }
@@ -418,7 +407,7 @@ namespace WSTanHoa.Controllers
             //kiểm tra TenDichVu & IDGiaoDich
             if (TenDichVu==""||IDGiaoDich == "")
             {
-                ErrorResponse error = new ErrorResponse(errorIDGiaoDichKhongTonTai, errorCodeIDGiaoDichKhongTonTai);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -429,7 +418,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                ErrorResponse error = new ErrorResponse(ex.Message, errorCodeSQL);
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
 
@@ -453,7 +442,7 @@ namespace WSTanHoa.Controllers
             }
             else
             {
-                ErrorResponse error = new ErrorResponse(errorIDGiaoDichKhongTonTai ,errorCodeIDGiaoDichKhongTonTai);
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
         }
