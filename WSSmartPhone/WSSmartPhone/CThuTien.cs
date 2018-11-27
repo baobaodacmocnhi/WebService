@@ -442,25 +442,39 @@ namespace WSSmartPhone
             if (bool.Parse(KhoaTu) == true)
                 flagButChi = 1;
 
-            if (NiemChi != "NULL")
+            try
             {
-                string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
-
-                if (_cDAL.ExecuteNonQuery(sqlNiemChi) == false)
-                    return false;
-            }
-
-            string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
+                string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
                         + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
                         + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
 
-            SqlCommand command = new SqlCommand(sql);
-            if (HinhDN == "NULL")
-                command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
-            else
-                command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
+                SqlCommand command = new SqlCommand(sql);
+                if (HinhDN == "NULL")
+                    command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
+                else
+                    command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
 
-            return _cDAL.ExecuteNonQuery(command);
+                if (_cDAL.ExecuteNonQuery(command) == true)
+                {
+                    if (NiemChi != "NULL")
+                    {
+                        string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
+
+                        if (_cDAL.ExecuteNonQuery(sqlNiemChi) == false)
+                        {
+                            _cDAL.RollbackTransaction();
+                            return false;
+                        }
+                    }
+                }
+                _cDAL.CommitTransaction();
+                return true;
+            }
+            catch (Exception)
+            {
+                _cDAL.RollbackTransaction();
+                return false;
+            }    
         }
 
         public bool SuaDongNuoc(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
@@ -477,44 +491,58 @@ namespace WSSmartPhone
             return _cDAL.ExecuteNonQuery(command);
         }
 
-        public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN,string KhoaTu,string NiemChi, string CreateBy)
+        public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string KhoaTu, string NiemChi, string CreateBy)
         {
-             int flagKhoaTu=0;
-             if (bool.Parse(KhoaTu) == false)
-             {
-                 if (NiemChi == "")
-                     return false;
-                 if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi).ToString()) == 0)
-                     return false;
-                 if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi + " and SuDung=1").ToString()) == 1)
-                     return false;
-             }
-             else
-             {
-                 flagKhoaTu = 1;
-                 NiemChi = "NULL";
-             }
-
-             if (NiemChi != "NULL")
-             {
-                 string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
-
-                 if(_cDAL.ExecuteNonQuery(sqlNiemChi)==false)
-                 return false;
-             }
-
-            string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi"
-                        + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi="+NiemChi+",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
-                        + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
-                        + " where DongNuoc2=0 and MaDN=" + MaDN;
-
-            SqlCommand command = new SqlCommand(sql);
-            if (HinhDN == "NULL")
-                command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
+            int flagKhoaTu = 0;
+            if (bool.Parse(KhoaTu) == false)
+            {
+                if (NiemChi == "")
+                    return false;
+                if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi).ToString()) == 0)
+                    return false;
+                if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi + " and SuDung=1").ToString()) == 1)
+                    return false;
+            }
             else
-                command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
+            {
+                flagKhoaTu = 1;
+                NiemChi = "NULL";
+            }
 
-            return _cDAL.ExecuteNonQuery(command);
+            try
+            {
+                string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,"
+                            + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
+                            + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
+                            + " where DongNuoc2=0 and MaDN=" + MaDN;
+
+                SqlCommand command = new SqlCommand(sql);
+                if (HinhDN == "NULL")
+                    command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
+                else
+                    command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
+
+                if (_cDAL.ExecuteNonQuery(command) == true)
+                {
+                    if (NiemChi != "NULL")
+                    {
+                        string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
+
+                        if (_cDAL.ExecuteNonQuery(sqlNiemChi) == false)
+                        {
+                            _cDAL.RollbackTransaction();
+                            return false;
+                        }
+                    }
+                }
+                _cDAL.CommitTransaction();
+                return true;
+            }
+            catch (Exception)
+            {
+                _cDAL.RollbackTransaction();
+                return false;
+            }
         }
 
         public bool CheckExist_MoNuoc(string MaDN)
