@@ -129,9 +129,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string KhoaTu, string NiemChi, string CreateBy)
+        public bool ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string CreateBy)
         {
-            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN,KhoaTu,NiemChi, CreateBy);
+            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ButChi, KhoaTu, NiemChi, CreateBy);
         }
 
         [WebMethod]
@@ -179,7 +179,7 @@ namespace WSSmartPhone
         [WebMethod]
         public string GetTongGiaoHoaDon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
-            return _cThuTien.GetTongGiaoHoaDon( MaTo,  Nam,  Ky,  FromDot,  ToDot);
+            return _cThuTien.GetTongGiaoHoaDon(MaTo, Nam, Ky, FromDot, ToDot);
         }
 
         [WebMethod]
@@ -195,7 +195,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetTongDongMoNuoc(string DongNuoc,string MaTo, string FromNgayDN, string ToNgayDN)
+        public string GetTongDongMoNuoc(string DongNuoc, string MaTo, string FromNgayDN, string ToNgayDN)
         {
             return _cThuTien.GetTongDongMoNuoc(Boolean.Parse(DongNuoc), MaTo, DateTime.ParseExact(FromNgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }

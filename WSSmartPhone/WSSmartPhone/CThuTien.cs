@@ -423,8 +423,8 @@ namespace WSSmartPhone
 
         public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, DateTime NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
-            int flagKhoaTu = 0;
             int flagButChi = 0;
+            int flagKhoaTu = 0;
             if (bool.Parse(KhoaTu) == false)
             {
                 if (NiemChi == "")
@@ -439,12 +439,13 @@ namespace WSSmartPhone
                 flagKhoaTu = 1;
                 NiemChi = "NULL";
             }
-            if (bool.Parse(KhoaTu) == true)
+            if (bool.Parse(ButChi) == true)
                 flagButChi = 1;
 
             try
             {
-                string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
+                //_cDAL.BeginTransaction();
+               string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
                         + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
                         + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
 
@@ -462,17 +463,17 @@ namespace WSSmartPhone
 
                         if (_cDAL.ExecuteNonQuery(sqlNiemChi) == false)
                         {
-                            _cDAL.RollbackTransaction();
+                            //_cDAL.RollbackTransaction();
                             return false;
                         }
                     }
                 }
-                _cDAL.CommitTransaction();
+                //_cDAL.CommitTransaction();
                 return true;
             }
             catch (Exception)
             {
-                _cDAL.RollbackTransaction();
+                //_cDAL.RollbackTransaction();
                 return false;
             }    
         }
@@ -491,8 +492,9 @@ namespace WSSmartPhone
             return _cDAL.ExecuteNonQuery(command);
         }
 
-        public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string KhoaTu, string NiemChi, string CreateBy)
+        public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string CreateBy)
         {
+            int flagButChi = 0;
             int flagKhoaTu = 0;
             if (bool.Parse(KhoaTu) == false)
             {
@@ -508,9 +510,12 @@ namespace WSSmartPhone
                 flagKhoaTu = 1;
                 NiemChi = "NULL";
             }
+            if (bool.Parse(ButChi) == true)
+                flagButChi = 1;
 
             try
             {
+                //_cDAL.BeginTransaction();
                 string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,"
                             + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
                             + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
@@ -530,17 +535,17 @@ namespace WSSmartPhone
 
                         if (_cDAL.ExecuteNonQuery(sqlNiemChi) == false)
                         {
-                            _cDAL.RollbackTransaction();
+                            //_cDAL.RollbackTransaction();
                             return false;
                         }
                     }
                 }
-                _cDAL.CommitTransaction();
+                //_cDAL.CommitTransaction();
                 return true;
             }
             catch (Exception)
             {
-                _cDAL.RollbackTransaction();
+                //_cDAL.RollbackTransaction();
                 return false;
             }
         }
