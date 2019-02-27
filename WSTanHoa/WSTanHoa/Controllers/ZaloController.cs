@@ -18,6 +18,7 @@ namespace WSTanHoa.Controllers
         // GET: Zalo
         public async Task<ActionResult> Index(int? id)
         {
+           
             if (id != null && id != 0)
                 Session["IDZalo"] = id;
             return View(await db.Zaloes.Where(item => item.IDZalo == id).ToListAsync());

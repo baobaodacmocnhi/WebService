@@ -3,9 +3,31 @@
 @{
     ViewBag.Title = "Index";
 }
-<body>
-    <h2>Danh sách danh bộ đã đăng ký</h2>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="https://zjs.zdn.vn/zalo/Zalo.Extensions.min.js"></script>
+<script type="text/javascript">
+    function getContext() {
+        ZaloExtensions.getContext({ "oaId": 513683145569486355 },
+        function success(thread_context) {
+            console.log(thread_context);
+            alert(JSON.stringify(thread_context))
+        },
+                function error(err) {
+                    console.log(err);
+                    alert(JSON.stringify(err))
+                });
+    }
+    $(document).ready(function () {
+        $("p").click(function () {
+            getContext();
+        });
+    });
+</script>
 
+<body>
+
+    <h2>Danh sách danh bộ đã đăng ký</h2>
+    <p>Click on this paragraph.</p>
     <p>
         @Html.ActionLink("Đăng ký mới", "Create")
     </p>
