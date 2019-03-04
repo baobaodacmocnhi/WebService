@@ -3,73 +3,74 @@
 @{
     ViewBag.Title = "Index";
 }
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/zalo")
 <script src="https://zjs.zdn.vn/zalo/Zalo.Extensions.min.js"></script>
+
 <script type="text/javascript">
-    function getContext() {
-        ZaloExtensions.getContext({ "oaId": 513683145569486355 },
-        function success(thread_context) {
-            console.log(thread_context);
-            alert(JSON.stringify(thread_context))
-        },
-                function error(err) {
-                    console.log(err);
-                    alert(JSON.stringify(err))
-                });
-    }
+
     $(document).ready(function () {
-        $("p").click(function () {
+        if ($('#IDZalo').val() == "") {
             getContext();
-        });
+            $('#submit').click();
+        }
     });
 </script>
 
 <body>
+    @using (Html.BeginForm("Index", "Zalo", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = ViewBag.IDZalo, @class = "form-control" } })
+            <input id="submit" type="submit" value="Load" class="btn btn-default" style="display:none" />
+        </div>
 
-    <h2>Danh sách danh bộ đã đăng ký</h2>
-    <p>Click on this paragraph.</p>
-    <p>
-        @Html.ActionLink("Đăng ký mới", "Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DanhBo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HoTen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiaChi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreateDate)
-            </th>
-            <th></th>
-        </tr>
+        <h2>Danh sách danh bộ đã đăng ký</h2>
 
-        @foreach (var item in Model)
-        {
+        <p>
+            @Html.ActionLink("Đăng ký mới", "Create")
+        </p>
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DanhBo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HoTen)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DiaChi)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreateDate)
-                </td>
-                <td>
-                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                    @Html.ActionLink("Xóa", "Delete", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.DanhBo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HoTen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.DiaChi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.CreateDate)
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DanhBo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HoTen)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DiaChi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreateDate)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+                        @Html.ActionLink("Xóa", "Delete", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
 </body>

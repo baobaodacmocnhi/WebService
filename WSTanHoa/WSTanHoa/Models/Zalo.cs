@@ -10,16 +10,15 @@
     public partial class Zalo
     {
         [Key]
-        [Column(Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Column(Order = 0, TypeName = "numeric")]
         [Display(Name = "ID Zalo")]
-        public int IDZalo { get; set; }
+        public decimal IDZalo { get; set; }
 
         [Key]
         [Column(Order = 1)]
-        [StringLength(11,MinimumLength =11,ErrorMessage ="Danh bộ gồm 11 ký tự")]
+        [StringLength(11, MinimumLength = 11, ErrorMessage = "Danh bộ gồm 11 ký tự")]
         [Required(ErrorMessage = "Nhập danh bộ")]
-        
+
         [Display(Name = "Danh bộ")]
         public string DanhBo { get; set; }
 

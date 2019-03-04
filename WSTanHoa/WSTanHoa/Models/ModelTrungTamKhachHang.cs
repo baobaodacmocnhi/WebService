@@ -17,6 +17,10 @@ namespace WSTanHoa.Models
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Zalo>()
+                .Property(e => e.IDZalo)
+                .HasPrecision(18, 0);
+
+            modelBuilder.Entity<Zalo>()
                 .Property(e => e.DanhBo)
                 .IsFixedLength()
                 .IsUnicode(false);
