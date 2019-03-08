@@ -18,7 +18,7 @@ namespace WSTanHoa.Models
         {
             modelBuilder.Entity<Zalo>()
                 .Property(e => e.IDZalo)
-                .HasPrecision(18, 0);
+                .HasPrecision(20, 0);
 
             modelBuilder.Entity<Zalo>()
                 .Property(e => e.DanhBo)

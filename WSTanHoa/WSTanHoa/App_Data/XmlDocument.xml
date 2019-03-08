@@ -481,28 +481,28 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.getHoaDonTon(System.String)">
+        <member name="M:WSTanHoa.Controllers.apiThuHoController.getHoaDonTon(System.String)">
             <summary>
             Lấy Tất Cả Hóa Đơn Tồn
             </summary>
             <param name="DanhBo"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.getPhiMoNuoc(System.String)">
+        <member name="M:WSTanHoa.Controllers.apiThuHoController.getPhiMoNuoc(System.String)">
             <summary>
             Lấy Phí Mở Nước nếu có, mặc định return 0
             </summary>
             <param name="DanhBo"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.getTienDu(System.String)">
+        <member name="M:WSTanHoa.Controllers.apiThuHoController.getTienDu(System.String)">
             <summary>
             Lấy Tiền Dư của khách hàng nếu có, mặc định return 0
             </summary>
             <param name="DanhBo"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.insertThuHo(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String)">
+        <member name="M:WSTanHoa.Controllers.apiThuHoController.insertThuHo(System.String,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.String,System.String)">
             <summary>
             Lưu Giao Dịch thực hiện
             Bước 1: gọi hàm lấy hóa đơn tồn
@@ -520,7 +520,7 @@
             <param name="IDGiaoDich">ID Đơn Vị Thu tạo cho từng giao dịch để quản lý</param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.deleteThuHo(System.String,System.String,System.String)">
+        <member name="M:WSTanHoa.Controllers.apiThuHoController.deleteThuHo(System.String,System.String,System.String)">
             <summary>
             Xóa Giao Dịch đã thực hiện
             </summary>
@@ -528,7 +528,7 @@
             <param name="IDGiaoDich"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.getThuHo(System.String,System.String)">
+        <member name="M:WSTanHoa.Controllers.apiThuHoController.getThuHo(System.String,System.String)">
             <summary>
             Lấy Thông Tin Hóa Đơn đã thu trong Giao Dịch đã thực hiện
             </summary>
@@ -536,12 +536,19 @@
             <param name="IDGiaoDich"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.ThuHoController.getThuHoTong(System.String,System.String)">
+        <member name="M:WSTanHoa.Controllers.apiThuHoController.getThuHoTong(System.String,System.String)">
             <summary>
             Lấy Thông Tin Giao Dịch đã thực hiện
             </summary>
             <param name="TenDichVu"></param>
             <param name="IDGiaoDich"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiZaloController.sendMessage(System.String)">
+            <summary>
+            Gửi tin nhắn
+            </summary>
+            <param name="message"></param>
             <returns></returns>
         </member>
     </members>

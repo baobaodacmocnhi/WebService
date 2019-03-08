@@ -13,7 +13,7 @@ using WSTanHoa.Providers;
 namespace WSTanHoa.Controllers
 {
     [RoutePrefix("api/ThuHo")]
-    public class ThuHoController : ApiController
+    public class apiThuHoController : ApiController
     {
         //CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         CConnection _cDAL = new CConnection("Data Source=serverg8-01;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db11@tanhoa");

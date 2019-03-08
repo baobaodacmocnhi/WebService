@@ -21,6 +21,7 @@ namespace WSTanHoa.Models
         public int PhiMoNuoc { get; set; }
         public int TienDu { get; set; }
         public DateTime? NgayGiaiTrach { get; set; }
+        public string KyHD { get; set; }
 
         public HoaDon()
         {
@@ -38,6 +39,7 @@ namespace WSTanHoa.Models
             PhiMoNuoc = 0;
             TienDu = 0;
             NgayGiaiTrach = null;
+            KyHD = "";
         }
 
     }

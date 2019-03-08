@@ -7,6 +7,6 @@ namespace WSTanHoa.Providers
 {
     public class CConstantVariable
     {
-        public static decimal? IDZalo = null;
+        public static decimal IDZalo = -1;
     }
 }

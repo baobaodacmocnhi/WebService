@@ -22,11 +22,16 @@ namespace WSTanHoa.Controllers
         {
             if (id != null && id != -1)
             {
-                CConstantVariable.IDZalo = id;
+                CConstantVariable.IDZalo = id.Value;
                 ViewBag.IDZalo = CConstantVariable.IDZalo;
             }
+            else
+                if(id == -1)
+                ViewBag.IDZalo = "-1";
+            else
+                ViewBag.IDZalo = "";
             return View(await db.Zaloes.Where(item => item.IDZalo == CConstantVariable.IDZalo).ToListAsync());
-        }  
+        }
 
         // GET: Zalo/Details/5
         public async Task<ActionResult> Details(decimal? id)
@@ -44,21 +49,10 @@ namespace WSTanHoa.Controllers
         }
 
         // GET: Zalo/Create
-        public ActionResult Create(string DanhBo)
+        public ActionResult Create()
         {
             ViewBag.IDZalo = CConstantVariable.IDZalo;
-            if (DanhBo != null && DanhBo != "")
-            {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
-                if (dt.Rows.Count > 0)
-                {
-                    Zalo en = new Zalo();
-                    en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-                    en.HoTen = dt.Rows[0]["HoTen"].ToString();
-                    en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                    return View(en);
-                }
-            }
+
             return View();
         }
 
@@ -67,19 +61,53 @@ namespace WSTanHoa.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi")] Zalo zalo)
+        public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi")] Zalo zalo, string Loai)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(Loai))
             {
-                if (zalo.IDZalo != null || zalo.IDZalo != -1 || zalo.IDZalo != 0)
+                ViewBag.IDZalo = CConstantVariable.IDZalo;
+                switch (Loai)
                 {
-                    zalo.CreateDate = DateTime.Now;
-                    db.Zaloes.Add(zalo);
-                    await db.SaveChangesAsync();
-                    return RedirectToAction("Index");
+                    case "Kiểm Tra":
+                        if (zalo.DanhBo != null && zalo.DanhBo != "")
+                        {
+                            DataTable dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
+                            if (dt.Rows.Count > 0)
+                            {
+                                Zalo en = new Zalo();
+                                en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                                en.HoTen = dt.Rows[0]["HoTen"].ToString();
+                                en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                                return View(en);
+                            }
+                        }
+                        break;
+                    case "Đăng Ký":
+                        if (CConstantVariable.IDZalo != -1)
+                        {
+                            if (db.Zaloes.Count(item => item.IDZalo == zalo.IDZalo && item.DanhBo == zalo.DanhBo) == 0)
+                            {
+                                zalo.IDZalo = CConstantVariable.IDZalo;
+                                if (zalo.HoTen == null || zalo.HoTen == "")
+                                {
+                                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
+                                    if (dt.Rows.Count > 0)
+                                    {
+                                        zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                                        zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
+                                        zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                                    }
+                                }
+                                zalo.CreateDate = DateTime.Now;
+                                db.Zaloes.Add(zalo);
+                                await db.SaveChangesAsync();
+                                return RedirectToAction("Index");
+                            }
+                        }
+                        break;
                 }
-            }
 
+            }
             return View(zalo);
         }
 
@@ -175,6 +203,6 @@ namespace WSTanHoa.Controllers
             base.Dispose(disposing);
         }
 
-         
+
     }
 }
