@@ -16,31 +16,84 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/Zalo")]
     public class apiZaloController : ApiController
     {
-        CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
+        CConnection _cDAL_ThuTien = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
+        CConnection _cDAL_TrungTam = new CConnection("Data Source=serverg8-01;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa");
 
-        //public string Webhook(string fromuid, string msgid, string @event, string message, string oaid, string mac, string timestamp)
-        //{
-        //    try
-        //    {
-        //        sendMessage(fromuid);
-        //        return fromuid;
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
+        /// <summary>
+        /// nhận webhook từ zalo
+        /// </summary>
+        /// <param name="fromuid"></param>
+        /// <param name="msgid"></param>
+        /// <param name="event"></param>
+        /// <param name="message"></param>
+        /// <param name="oaid"></param>
+        /// <param name="mac"></param>
+        /// <param name="timestamp"></param>
+        /// <returns></returns>
+        [Route("webhook")]
+        [HttpGet]
+        public string webhook(string fromuid, string msgid, string @event, string message, string oaid, string mac, string timestamp)
+        {
+            string strResponse = "success";
+            try
+            {
+
+                //if (mac == getSHA256(oaid + fromuid + msgid + message + timestamp + "cCBBIsEx7UDj42KA1N5Y"))
+                if (@event == "sendmsg")
+                    if (message == "#get12kyhoadon")
+                    {
+                        DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + fromuid + "");
+                        if (dt_DanhBo != null && dt_DanhBo.Rows.Count > 0)
+                            foreach (DataRow item in dt_DanhBo.Rows)
+                            {
+                                string content = item["DanhBo"].ToString() + "\n";
+                                DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
+                                if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                                    foreach (DataRow itemHD in dt_HoaDon.Rows)
+                                    {
+                                        content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                    }
+                                strResponse = sendMessage(fromuid, content);
+                            }
+                    }
+                    else
+                        if (message == "#gethoadonton")
+                    {
+                        DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + fromuid + "");
+                        if (dt_DanhBo != null && dt_DanhBo.Rows.Count > 0)
+                            foreach (DataRow item in dt_DanhBo.Rows)
+                            {
+                                string content = item["DanhBo"].ToString() + "\n";
+                                DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
+                                if (dt_HoaDon!=null&&dt_HoaDon.Rows.Count > 0)
+                                    foreach (DataRow itemHD in dt_HoaDon.Rows)
+                                    {
+                                        content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                    }
+                                else
+                                    content += "Hết Nợ";
+                                strResponse = sendMessage(fromuid, content);
+                            }
+                    }
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
 
         /// <summary>
         /// Gửi tin nhắn
         /// </summary>
+        /// <param name="IDZalo"></param>
         /// <param name="message"></param>
         /// <returns></returns>
         [Route("sendMessage")]
         [HttpGet]
-        public string sendMessage(string message)
+        public string sendMessage(string IDZalo,string message)
         {
-            string responseMess = "";
+            string strResponse = "success";
             try
             {
                 string access_token = "SVFT5EqUDLzm_zGKw1KzNN7rtXJb0bSiSPxaEQeWH0zgYU4ViIf52764tH-41qCROhNg4FiUKHanz_aByHvDGn2WzLpCCd9d8gxi8CWr2GeXdReSoNO9D1_LgGpsQ2uv6_IX2_Li0XDhWeGhYGa45bNzkW2RL0S_3kgaUEnAB6Xpr8judaywOs3btN-lT3euRPoTAhGlVon8miKUrtHDAZZbysVL3njiBBd_8BDJ7Z9-lA4VdKWq2W6WoHRRAI034RU1D-9UCsHbMQpPq7xk13vJ";
@@ -51,7 +104,7 @@ namespace WSTanHoa.Controllers
 
                 var data = new
                 {
-                    recipient = new { user_id = 4276209776391262580 },
+                    recipient = new { user_id = IDZalo },
                     message = new { text = message }
                 };
 
@@ -68,21 +121,21 @@ namespace WSTanHoa.Controllers
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
                     StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    responseMess = read.ReadToEnd();
+                    strResponse = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
                 }
                 else
                 {
-                    responseMess = "Error: " + respuesta.StatusCode;
+                    strResponse = "Error: " + respuesta.StatusCode;
                 }
-                return responseMess;
+                return strResponse;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                strResponse = ex.Message;
             }
-
+            return strResponse;
             //DataTable dt = new DataTable();
             //int count = 0;
             ////check exist
