@@ -195,15 +195,21 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetTongDongMoNuoc(string DongNuoc, string MaTo, string FromNgayDN, string ToNgayDN)
+        public string GetTongDongMoNuoc_Tong(string DongNuoc, string MaTo, string FromNgayDN, string ToNgayDN)
         {
-            return _cThuTien.GetTongDongMoNuoc(Boolean.Parse(DongNuoc), MaTo, DateTime.ParseExact(FromNgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+            return _cThuTien.GetTongDongMoNuoc_Tong(Boolean.Parse(DongNuoc), MaTo, DateTime.ParseExact(FromNgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
         [WebMethod]
-        public string GetTongThuHo(string MaTo, string FromCreateDate, string ToCreateDate)
+        public string GetTongDongMoNuoc_ChiTiet(string DongNuoc, string MaTo, string FromNgayDN, string ToNgayDN)
         {
-            return _cThuTien.GetTongThuHo(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+            return _cThuTien.GetTongDongMoNuoc_ChiTiet(Boolean.Parse(DongNuoc), MaTo, DateTime.ParseExact(FromNgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+        }
+
+        [WebMethod]
+        public string GetTongThuHo(string MaTo, string FromCreateDate, string ToCreateDate,string Loai)
+        {
+            return _cThuTien.GetTongThuHo(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),Loai);
         }
     }
 }
