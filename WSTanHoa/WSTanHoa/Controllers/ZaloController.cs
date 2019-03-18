@@ -14,8 +14,8 @@ namespace WSTanHoa.Controllers
 {
     public class ZaloController : Controller
     {
-        private ModelTrungTamKhachHang db = new ModelTrungTamKhachHang();
-        CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
+        ModelTrungTamKhachHang db = new ModelTrungTamKhachHang();
+        CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
 
         // GET: Zalo
         public async Task<ActionResult> Index(decimal? id)
@@ -71,7 +71,7 @@ namespace WSTanHoa.Controllers
                     case "Kiểm Tra":
                         if (zalo.DanhBo != null && zalo.DanhBo != "")
                         {
-                            DataTable dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
+                            DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
                             if (dt.Rows.Count > 0)
                             {
                                 Zalo en = new Zalo();
@@ -90,7 +90,7 @@ namespace WSTanHoa.Controllers
                                 zalo.IDZalo = CConstantVariable.IDZalo;
                                 if (zalo.HoTen == null || zalo.HoTen == "")
                                 {
-                                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
+                                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
                                     if (dt.Rows.Count > 0)
                                     {
                                         zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();

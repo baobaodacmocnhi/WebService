@@ -15,8 +15,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuHo")]
     public class apiThuHoController : ApiController
     {
-        //CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
-        CConnection _cDAL = new CConnection("Data Source=serverg8-01;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db11@tanhoa");
+        CConnection _cDAL = new CConnection(CConstantVariable.ThuTien);
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -137,9 +136,10 @@ namespace WSTanHoa.Controllers
         /// <param name="TongCong">Số Tiền Tổng Cộng thu của Khách Hàng (TongCong=SoTien+PhiMoNuoc-TienDu)</param>
         /// <param name="TenDichVu">Tên Đơn Vị Thu</param>
         /// <param name="IDGiaoDich">ID Đơn Vị Thu tạo cho từng giao dịch để quản lý</param>
+        /// <param name="checksum">SHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL)</param>
         /// <returns></returns>
         [Route("insertThuHo")]
-        public bool insertThuHo(string DanhBo, string MaHDs, int SoTien, int PhiMoNuoc, int TienDu, int TongCong, string TenDichVu, string IDGiaoDich,string checksum)
+        public bool insertThuHo(string DanhBo, string MaHDs, int SoTien, int PhiMoNuoc, int TienDu, int TongCong, string TenDichVu, string IDGiaoDich, string checksum)
         {
             string PasswordSQL = "";
             try
@@ -151,14 +151,14 @@ namespace WSTanHoa.Controllers
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
-            if(getSHA256(DanhBo+MaHDs+SoTien+PhiMoNuoc+TienDu+TongCong+TenDichVu+IDGiaoDich+PasswordSQL) != checksum)
+            if (getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
             //kiểm tra TenDichVu & IDGiaoDich
-            if(TenDichVu == "" || IDGiaoDich == "")
+            if (TenDichVu == "" || IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
@@ -192,7 +192,7 @@ namespace WSTanHoa.Controllers
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorMaHD, ErrorResponse.ErrorCodeMaHD);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
-            
+
             if (lstHD.Count != arrayMaHD.Count())
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHoaDon, ErrorResponse.ErrorCodeHoaDon);
@@ -209,7 +209,7 @@ namespace WSTanHoa.Controllers
             {
                 _cDAL.BeginTransaction();
                 int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
-                
+
                 string SoHoaDons = "", sql = "";
                 for (int i = 0; i < arrayMaHD.Length; i++)
                 {
@@ -242,6 +242,7 @@ namespace WSTanHoa.Controllers
         /// </summary>
         /// <param name="TenDichVu"></param>
         /// <param name="IDGiaoDich"></param>
+        /// <param name="checksum">SHA256(TenDichVu + IDGiaoDich + PasswordSQL)</param>
         /// <returns></returns>
         [Route("deleteThuHo")]
         [HttpPost]

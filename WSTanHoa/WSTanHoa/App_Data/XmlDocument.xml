@@ -518,6 +518,7 @@
             <param name="TongCong">Số Tiền Tổng Cộng thu của Khách Hàng (TongCong=SoTien+PhiMoNuoc-TienDu)</param>
             <param name="TenDichVu">Tên Đơn Vị Thu</param>
             <param name="IDGiaoDich">ID Đơn Vị Thu tạo cho từng giao dịch để quản lý</param>
+            <param name="checksum">SHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL)</param>
             <returns></returns>
         </member>
         <member name="M:WSTanHoa.Controllers.apiThuHoController.deleteThuHo(System.String,System.String,System.String)">
@@ -526,6 +527,7 @@
             </summary>
             <param name="TenDichVu"></param>
             <param name="IDGiaoDich"></param>
+            <param name="checksum">SHA256(TenDichVu + IDGiaoDich + PasswordSQL)</param>
             <returns></returns>
         </member>
         <member name="M:WSTanHoa.Controllers.apiThuHoController.getThuHo(System.String,System.String)">
