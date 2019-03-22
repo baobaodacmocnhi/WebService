@@ -207,9 +207,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetTongThuHo(string MaTo, string FromCreateDate, string ToCreateDate,string Loai)
+        public string GetTongThuHo_Tong(string MaTo, string FromCreateDate, string ToCreateDate,string Loai)
         {
-            return _cThuTien.GetTongThuHo(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),Loai);
+            return _cThuTien.GetTongThuHo_Tong(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),Loai);
+        }
+
+        [WebMethod]
+        public string GetTongThuHo_ChiTiet(string MaTo, string FromCreateDate, string ToCreateDate, string Loai)
+        {
+            return _cThuTien.GetTongThuHo_ChiTiet(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), Loai);
         }
     }
 }
