@@ -15,6 +15,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuHo")]
     public class apiThuHoController : ApiController
     {
+        static readonly log4net.ILog _log = log4net.LogManager.GetLogger("File");
         CConnection _cDAL = new CConnection(CConstantVariable.ThuTien);
 
         /// <summary>
@@ -35,11 +36,13 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (count == 0)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorKhongDung, ErrorResponse.ErrorCodeKhongDung);
+                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
             //get hoadon tồn
@@ -50,6 +53,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             //
@@ -79,6 +83,7 @@ namespace WSTanHoa.Controllers
             else
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo);
+                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound,error ));
             }
         }
@@ -98,6 +103,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("getPhiMoNuoc " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
@@ -117,6 +123,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("getTienDu " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
@@ -149,11 +156,13 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+               _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
@@ -161,6 +170,7 @@ namespace WSTanHoa.Controllers
             if (TenDichVu == "" || IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
+               _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -172,11 +182,13 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+               _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (checkExist > 0)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichTonTai, ErrorResponse.ErrorCodeIDGiaoDichTonTai);
+               _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
             }
 
@@ -190,17 +202,20 @@ namespace WSTanHoa.Controllers
             catch
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorMaHD, ErrorResponse.ErrorCodeMaHD);
+               _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
             if (lstHD.Count != arrayMaHD.Count())
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHoaDon, ErrorResponse.ErrorCodeHoaDon);
+               _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
             if ((lstHD.Sum(item => item.TongCong) + lstHD[0].PhiMoNuoc - lstHD[0].TienDu) != (SoTien + PhiMoNuoc - TienDu) || (SoTien + PhiMoNuoc - TienDu) != TongCong)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorSoTien, ErrorResponse.ErrorCodeSoTien);
+               _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
@@ -232,7 +247,7 @@ namespace WSTanHoa.Controllers
             {
                 _cDAL.RollbackTransaction();
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                //return false;
+               _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
@@ -256,12 +271,14 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
 
             if (getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
@@ -269,6 +286,7 @@ namespace WSTanHoa.Controllers
             if (TenDichVu == "" || IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -280,11 +298,13 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (checkExist == 0)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -298,6 +318,7 @@ namespace WSTanHoa.Controllers
                     if (count > 0)
                     {
                         ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorGiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
+                        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                         throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
                     }
                 }
@@ -305,6 +326,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
 
@@ -317,11 +339,13 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
             if (phimonuoc > 0)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPhiMoNuoc, ErrorResponse.ErrorCodePhiMoNuoc);
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
@@ -340,7 +364,7 @@ namespace WSTanHoa.Controllers
             {
                 _cDAL.RollbackTransaction();
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                //return false;
+                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
         }
@@ -358,6 +382,7 @@ namespace WSTanHoa.Controllers
             if (TenDichVu == "" || IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
+                _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -369,6 +394,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError,error));
             }
 
@@ -392,6 +418,7 @@ namespace WSTanHoa.Controllers
             else
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
+                _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
         }
@@ -409,6 +436,7 @@ namespace WSTanHoa.Controllers
             if (TenDichVu==""||IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
+                _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
 
@@ -420,6 +448,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
 
@@ -444,6 +473,7 @@ namespace WSTanHoa.Controllers
             else
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
+                _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
             }
         }

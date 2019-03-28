@@ -26,10 +26,17 @@ namespace WSTanHoa.Controllers
                 ViewBag.IDZalo = CConstantVariable.IDZalo;
             }
             else
-                if(id == -1)
+                if (id == -1)
                 ViewBag.IDZalo = "-1";
             else
                 ViewBag.IDZalo = "";
+            //if (id != null)
+            //{
+            //    CConstantVariable.IDZalo = id.Value;
+            //    ViewBag.IDZalo = CConstantVariable.IDZalo;
+            //}
+            //else
+            //    ViewBag.IDZalo = "";
             return View(await db.Zaloes.Where(item => item.IDZalo == CConstantVariable.IDZalo).ToListAsync());
         }
 

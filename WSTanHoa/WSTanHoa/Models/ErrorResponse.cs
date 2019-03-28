@@ -14,6 +14,10 @@ namespace WSTanHoa.Models
             this.message = message;
             this.code = code;
         }
+        public override string ToString()
+        {
+            return code.ToString() + " : " + message;
+        }
 
         const int errorCodeSQL = -1;
         const int errorCodeKhongDung = 1000; const string errorKhongDung = "Danh Bộ không đúng";
@@ -28,7 +32,7 @@ namespace WSTanHoa.Models
         const int errorCodeTBDongNuoc = 1009; const string errorTBDongNuoc = "Hóa Đơn có Thông Báo Đóng Nước. Không xóa được";
         const int errorCodePassword = 1010; const string errorPassword = "Sai Mã kiểm tra";
 
-        const int successCode = 1;const string success = "Thành Công";
+        const int successCode = 1; const string success = "Thành Công";
         const int failCode = 0; const string fail = "Thất Bại";
 
         public static int ErrorCodeSQL
