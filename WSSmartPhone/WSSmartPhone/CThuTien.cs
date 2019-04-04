@@ -646,7 +646,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public string GetTongDangNgan(string MaTo, DateTime FromNgayGiaiTrach,DateTime ToNgayGiaiTrach)
+        public string GetTongDangNgan(string MaTo, DateTime FromNgayGiaiTrach, DateTime ToNgayGiaiTrach)
         {
             //string sql = "select t1.*,t2.HoTen from"
             //            + " (select MaNV_DangNgan,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
@@ -655,13 +655,28 @@ namespace WSSmartPhone
             //            + " group by MaNV_DangNgan) t1,TT_NguoiDung t2"
             //            + " where t1.MaNV_DangNgan=t2.MaND"
             //            + " order by t2.STT asc";
-            string sql = "select MaNV_DangNgan=t1.MaND,t1.HoTen,TongHD=case when t2.TongHD is null then 0 else t2.TongHD end,TongCong=case when t2.TongCong is null then 0 else t2.TongCong end from"
+            string sql = "declare @HanhThu bit;"
+                        + " select @HanhThu=HanhThu from TT_To where MaTo=" + MaTo
+                        + " if(@HanhThu=1)"
+                        + " begin"
+                        + " select MaNV_DangNgan=t1.MaND,t1.HoTen,TongHD=case when t2.TongHD is null then 0 else t2.TongHD end,TongCong=case when t2.TongCong is null then 0 else t2.TongCong end from"
                         + " (select MaND,STT,HoTen from TT_NguoiDung where HanhThu=1 and MaTo=" + MaTo + ")t1"
                         + " left join"
                         + " (select MaNV_DangNgan,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
                         + " where CAST(NGAYGIAITRACH as date)>='" + FromNgayGiaiTrach.ToString("yyyyMMdd") + "' and CAST(NGAYGIAITRACH as date)<='" + ToNgayGiaiTrach.ToString("yyyyMMdd") + "'"
                         + " group by MaNV_DangNgan) t2 on t1.MaND=t2.MaNV_DangNgan"
-                        + " order by t1.STT asc";
+                        + " order by t1.STT asc"
+                        + " end"
+                        + " else"
+                        + " begin"
+                        + " select MaNV_DangNgan=t1.MaND,t1.HoTen,TongHD=case when t2.TongHD is null then 0 else t2.TongHD end,TongCong=case when t2.TongCong is null then 0 else t2.TongCong end from"
+                        + " (select MaND,STT,HoTen from TT_NguoiDung where HanhThuVanPhong=1 and MaTo=" + MaTo + ")t1"
+                        + " left join"
+                        + " (select MaNV_DangNgan,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
+                        + " where CAST(NGAYGIAITRACH as date)>='" + FromNgayGiaiTrach.ToString("yyyyMMdd") + "' and CAST(NGAYGIAITRACH as date)<='" + ToNgayGiaiTrach.ToString("yyyyMMdd") + "'"
+                        + " group by MaNV_DangNgan) t2 on t1.MaND=t2.MaNV_DangNgan"
+                        + " order by t1.STT asc"
+                        + " end";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
