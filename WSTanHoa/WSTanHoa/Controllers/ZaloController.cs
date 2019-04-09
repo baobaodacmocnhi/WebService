@@ -23,13 +23,16 @@ namespace WSTanHoa.Controllers
             if (id != null && id != -1)
             {
                 CConstantVariable.IDZalo = id.Value;
-                ViewBag.IDZalo = CConstantVariable.IDZalo;
+                ViewBag.IDZalo = id.Value;
             }
             else
+            {
+                CConstantVariable.IDZalo = -1;
                 if (id == -1)
-                ViewBag.IDZalo = "-1";
-            else
-                ViewBag.IDZalo = "";
+                    ViewBag.IDZalo = "-1";
+                else
+                    ViewBag.IDZalo = "";
+            }
             //if (id != null)
             //{
             //    CConstantVariable.IDZalo = id.Value;
