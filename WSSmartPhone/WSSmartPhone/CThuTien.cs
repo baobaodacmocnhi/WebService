@@ -458,6 +458,7 @@ namespace WSSmartPhone
 
                 if (_cDAL.ExecuteNonQuery(command) == true)
                 {
+
                     if (NiemChi != "NULL")
                     {
                         string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
