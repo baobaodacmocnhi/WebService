@@ -83,20 +83,22 @@ namespace WSTanHoa.Controllers
             }
             else
             {
-                try
-                {
-                    dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
-                }
-                catch (Exception ex)
-                {
-                    ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                    _log.Error("getHoaDonTon " + error1.ToString() + " (" + DanhBo + ")");
-                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error1));
-                }
+                //try
+                //{
+                //    dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                //}
+                //catch (Exception ex)
+                //{
+                //    ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                //    _log.Error("getHoaDonTon " + error1.ToString() + " (" + DanhBo + ")");
+                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error1));
+                //}
 
-                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo, dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["HoTen"].ToString(), dt.Rows[0]["DiaChi"].ToString());
+                //ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo, dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["HoTen"].ToString(), dt.Rows[0]["DiaChi"].ToString());
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo);
                 _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
+                //throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
             }
         }
 
