@@ -1,0 +1,16 @@
+<publishData>
+  <publishTarget publishUrl="G:\DATA\TAN HOA\PROJECT\ServiceTH\RunBill\">
+    <file relUrl="Default.aspx" publishTime="10/16/2014 13:41:09" />
+    <file relUrl="Stylesheet1.css" publishTime="06/10/2014 14:13:31" />
+    <file relUrl="bin/TestServices.pdb" publishTime="06/02/2016 08:40:46" />
+    <file relUrl="bin/TestServices.dll" publishTime="06/02/2016 08:40:46" />
+    <file relUrl="Web.config" publishTime="06/02/2016 08:40:42" />
+  </publishTarget>
+  <publishTarget publishUrl="C:\Users\LETANDAT\Desktop\ServiceTH\RunBill\">
+    <file relUrl="Default.aspx" publishTime="06/25/2014 13:51:43" />
+    <file relUrl="Stylesheet1.css" publishTime="06/10/2014 14:13:31" />
+    <file relUrl="bin/TestServices.pdb" publishTime="06/25/2014 13:52:05" />
+    <file relUrl="bin/TestServices.dll" publishTime="06/25/2014 13:52:05" />
+    <file relUrl="Web.config" publishTime="06/25/2014 13:39:19" />
+  </publishTarget>
+</publishData>

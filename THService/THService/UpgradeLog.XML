@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="THService">
+</Property><Property Name="Solution File" Value="D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\THService.sln">
+</Property><Property Name="User Options File" Value="D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\THService.suo">
+</Property><Property Name="Date" Value="Thursday, August 17, 2017">
+</Property><Property Name="Time" Value="8:43 AM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="THService.sln" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService.sln">
+</Event><Event ErrorLevel="0" Project="" Source="THService.suo" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService.suo">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\THService.csproj" Description="Project file successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\THService.csproj">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\THService.csproj.user" Description="Project user file successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\THService.csproj.user">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\LinQ\HoaDonTH.designer.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\LinQ\HoaDonTH.designer.cs">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\LinQ\KinhDoanh.designer.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\LinQ\KinhDoanh.designer.cs">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\LinQ\LinQConnection.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\LinQ\LinQConnection.cs">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\THService.asmx.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\THService.asmx.cs">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\Properties\AssemblyInfo.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\LinQ\HoaDonTH.dbml" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\LinQ\HoaDonTH.dbml">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\LinQ\HoaDonTH.dbml.layout" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\LinQ\HoaDonTH.dbml.layout">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\LinQ\KinhDoanh.dbml" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\LinQ\KinhDoanh.dbml">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\LinQ\KinhDoanh.dbml.layout" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\LinQ\KinhDoanh.dbml.layout">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\THService.asmx" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\THService.asmx">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\Web.config" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\THService\Web.config">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\THService.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="THService" Source="THService\THService.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\TestServices.csproj" Description="Project file successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\TestServices.csproj">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\TestServices.csproj.user" Description="Project user file successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\TestServices.csproj.user">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Default.aspx.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Default.aspx.cs">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Default.aspx.designer.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Default.aspx.designer.cs">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Properties\AssemblyInfo.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Properties\Settings.Designer.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Properties\Settings.Designer.cs">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Web References\WSTH\Reference.cs" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Web References\WSTH\Reference.cs">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Properties\Settings.settings" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Properties\Settings.settings">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Web References\WSTH\Reference.map" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Web References\WSTH\Reference.map">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Web References\WSTH\THService.wsdl" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Web References\WSTH\THService.wsdl">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Default.aspx" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Default.aspx">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Stylesheet1.css" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Stylesheet1.css">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\Web.config" Description="File successfully backed up as D:\DATA\TAN HOA\PROJECT\ServiceTH\THService\Backup\TestServices\Web.config">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\TestServices.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="TestServices" Source="TestServices\TestServices.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="THService.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="THService.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="THService" Source="THService\THService.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event><Event ErrorLevel="0" Project="TestServices" Source="TestServices\TestServices.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>
