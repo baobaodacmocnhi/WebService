@@ -29,9 +29,9 @@ namespace WSAgribank
         [WebMethod]
         public DataSet getCustomerInfo(string db, string ten, string matkhau)
         {
-            string sql = "SELECT TOP(1) hd.DANHBA, hd.TENKH, SO as SONHA,DUONG as TENDUONG  ";
-            sql += " FROM HOADON hd WHERE  hd.DANHBA='" + db + "' AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
-            sql += " ORDER BY NAM DESC, KY DESC";
+            string sql = "SELECT TOP(1) hd.DANHBA, hd.TENKH, SO as SONHA,DUONG as TENDUONG  "
+            + " FROM HOADON hd WHERE  hd.DANHBA='" + db + "' AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' "
+            + " ORDER BY NAM DESC, KY DESC";
 
             return _cDAL.ExecuteQuery_DataSet(sql);
         }
@@ -39,17 +39,12 @@ namespace WSAgribank
         [WebMethod]
         public DataSet W_Bill(string db, string ten, string matkhau)
         {
-            string sql = "SELECT ID_HOADON AS IDkey, hd.DANHBA, hd.TENKH, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KyHD, hd.NAM as NamHD, hd.PHI as PBVMT, hd.THUE as TGTGT,hd.GIABAN as TNuoc,hd.TONGCONG as TONGCONG  ";
-            sql += " FROM HOADON hd ";
-            sql += " WHERE NGAYGIAITRACH IS NULL AND hd.DANHBA='" + db + "' AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
-            sql += "   AND hd.DANHBA NOT IN (SELECT DANHBA FROM BGW_HOADON WHERE BGW_HOADON.KY=hd.KY and BGW_HOADON.NAM=hd.NAM AND BGW_HOADON.DANHBA=hd.DANHBA) ";
-            sql += "  AND hd.DANHBA NOT IN (SELECT Dbo FROM ThuOnline WHERE ThuOnline.KyHD=hd.KY and ThuOnline.NamHD=hd.NAM AND ThuOnline.Dbo=hd.DANHBA) ";
-            sql += " AND hd.DANHBA NOT IN (SELECT Dbo FROM SimpayDB WHERE SimpayDB.KyHD=hd.KY and SimpayDB.NamHD=hd.NAM AND SimpayDB.Dbo=hd.DANHBA)   ";
-            sql += " AND hd.DANHBA NOT IN (SELECT DANHBA FROM Agribank_THUTAM WHERE Agribank_THUTAM.KyHD=hd.KY and Agribank_THUTAM.NamHD=hd.NAM AND Agribank_THUTAM.DANHBO=hd.DANHBA ) ";
-            sql += " AND hd.DANHBA NOT IN (SELECT DANHBA FROM dbo_VNPAY WHERE dbo_VNPAY.KY=hd.KY and dbo_VNPAY.NAM=hd.NAM AND dbo_VNPAY.DANHBA=hd.DANHBA) ";
-            sql += " AND hd.DANHBA NOT IN (SELECT DANHBO FROM MOMO_SERVICE WHERE MOMO_SERVICE.KY=hd.KY and MOMO_SERVICE.NAM=hd.NAM AND MOMO_SERVICE.DANHBO=hd.DANHBA)  ";
-
-            sql += " ORDER BY NAM DESC, KY DESC ";
+            string sql = "SELECT ID_HOADON AS IDkey, hd.DANHBA, hd.TENKH, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KyHD, hd.NAM as NamHD, hd.PHI as PBVMT, hd.THUE as TGTGT,hd.GIABAN as TNuoc,hd.TONGCONG as TONGCONG  "
+            + " FROM HOADON hd "
+            + " WHERE NGAYGIAITRACH IS NULL AND hd.DANHBA='" + db + "' AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' "
+            + " AND hd.DANHBA NOT IN (SELECT DanhBo FROM TT_DichVuThu WHERE TT_DichVuThu.Ky=hd.KY and TT_DichVuThu.Nam=hd.NAM AND TT_DichVuThu.DanhBo=hd.DANHBA) "
+            //+ " AND hd.DANHBA NOT IN (SELECT Dbo FROM SimpayDB WHERE SimpayDB.KyHD=hd.KY and SimpayDB.NamHD=hd.NAM AND SimpayDB.Dbo=hd.DANHBA)   "
+            + " ORDER BY NAM DESC, KY DESC ";
 
             return _cDAL.ExecuteQuery_DataSet(sql);
         }
@@ -59,94 +54,79 @@ namespace WSAgribank
         {
             try
             {
-                string sql = " INSERT INTO Agribank_THUTAM (ID_HOADON, DANHBO, KHACHHANG, SONHA, TENDUONG, GB, DM, DOT, KYHD, NAMHD, GIABAN, THUE, PBVMT, TONGCONG, SOHOADON, MAGIAODICH, NGAYTHANHTOAN, GACHNO)";
-                sql += " SELECT ID_HOADON , hd.DANHBA, hd.TENKH as KHACHHANG, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KYHD, hd.NAM as NAMHD,hd.GIABAN,hd.THUE, hd.PHI as PBVMT, hd.TONGCONG,hd.SOHOADON, '" + ten + "' AS MAGIAODICH,GETDATE() as  NGAYTHANHTOAN, '1' as GACHNO ";
-                sql += " FROM HOADON hd";
-                sql += " WHERE  hd.ID_HOADON IN (" + id.Replace("#", ",") + ") AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
+                string sql = " INSERT INTO Agribank_THUTAM (ID_HOADON, DANHBO, KHACHHANG, SONHA, TENDUONG, GB, DM, DOT, KYHD, NAMHD, GIABAN, THUE, PBVMT, TONGCONG, SOHOADON, MAGIAODICH, NGAYTHANHTOAN, GACHNO)"
+                + " SELECT ID_HOADON , hd.DANHBA, hd.TENKH as KHACHHANG, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KYHD, hd.NAM as NAMHD,hd.GIABAN,hd.THUE, hd.PHI as PBVMT, hd.TONGCONG,hd.SOHOADON, '" + ten + "' AS MAGIAODICH,GETDATE() as  NGAYTHANHTOAN, '1' as GACHNO "
+                + " FROM HOADON hd"
+                + " WHERE  hd.ID_HOADON IN (" + id.Replace("#", ",") + ") AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
 
-                return _cDAL.ExecuteNonQuery(sql);
+                //string sql2 = "insert into TT_DichVuThu(SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,TenNganHang,CreateDate) "
+                //+ " SELECT SOHOADON AS  SoHoaDon , hd.DANHBA AS DanhBo, hd.NAM as Nam,  hd.KY as Ky,hd.TONGCONG AS SoTien ,'AGRIBANK' AS TenDichVu,'AGRIBANK' AS TenNganHang, GETDATE() as CreateDate "
+                //+ " FROM HOADON hd "
+                //+ " WHERE  hd.ID_HOADON IN (" + id.Replace("#", ",") + ") AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
+
+                if (_cDAL.ExecuteNonQuery(sql) == true)
+                {
+                    _cDAL.BeginTransaction();
+                    int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
+
+                    string[] arrayMaHD = id.Split('#');
+                    string MaHDs="", SoHoaDons = "", sql_ChiTiet = "",DanhBo="";
+                    int TongCong = 0;
+                    for (int i = 0; i < arrayMaHD.Length; i++)
+                    {
+                        DataTable dt = _cDAL.ExecuteQuery_DataTable_Transaction("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
+                        sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
+                            + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'AGRIBANK'," + ID + ",'" + "AGRIBANK" + matkhau + "',getdate()) ";
+                        //_cDAL.ExecuteNonQuery_Transaction(sql);
+                        if (string.IsNullOrEmpty(SoHoaDons) == true)
+                        {
+                            MaHDs = dt.Rows[0]["MaHD"].ToString();
+                            SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
+                            TongCong += int.Parse(dt.Rows[0]["TongCong"].ToString());
+                        }
+                        else
+                        {
+                            MaHDs += "," + dt.Rows[0]["MaHD"];
+                            SoHoaDons += "," + dt.Rows[0]["SoHoaDon"];
+                            TongCong += int.Parse(dt.Rows[0]["TongCong"].ToString());
+                        }
+                        DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                    }
+                    string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
+                                + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "'," + TongCong + ",0,0," + TongCong + ",N'AGRIBANK','" + "AGRIBANK" + matkhau + "',getdate())";
+                    _cDAL.ExecuteNonQuery_Transaction(sql_Tong);
+                    _cDAL.ExecuteNonQuery_Transaction(sql_ChiTiet);
+                    _cDAL.CommitTransaction();
+                    return true;
+                }
+                else
+                    return false;
             }
             catch (Exception)
             {
                 return false;
             }
-            //return true;
         }
 
         [WebMethod]
         public DataSet checkPay_Bill(string id, string ten, string matkhau)
         {
 
-            string sql = " SELECT ID_HOADON AS IDkey, DANHBO, KHACHHANG, SONHA, TENDUONG, GB, DM, DOT, KYHD, NAMHD, GIABAN, THUE, PBVMT, TONGCONG ";
-            sql += " FROM Agribank_THUTAM hd ";
-            sql += " WHERE GACHNO ='1' AND hd.ID_HOADON='" + id + "' AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
-            sql += " ORDER BY NAM DESC, KY DESC ";
+            string sql = " SELECT ID_HOADON AS IDkey, DANHBO, KHACHHANG, SONHA, TENDUONG, GB, DM, DOT, KYHD, NAMHD, GIABAN, THUE, PBVMT, TONGCONG "
+            + " FROM Agribank_THUTAM hd "
+            + " WHERE GACHNO ='1' AND hd.ID_HOADON='" + id + "' AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' "
+            + " ORDER BY NAM DESC, KY DESC ";
 
             return _cDAL.ExecuteQuery_DataSet(sql);
         }
 
-        /// <summary>
-        /// Ghi lại hóa đơn được thu lúc nào, dịch vụ nào, ngân hàng nào
-        /// </summary>
-        /// <param name="SoHoaDon"></param>
-        /// <param name="DanhBo"></param>
-        /// <param name="Nam"></param>
-        /// <param name="Ky"></param>
-        /// <param name="SoTien"></param>
-        /// <param name="TenDichVu"></param>
-        /// <param name="TenNganHang"></param>
-        /// <returns></returns>
         [WebMethod]
-        public bool Insert_DichVuThu(string SoHoaDon, string DanhBo, int Nam, int Ky, int SoTien, int Phi, string TenDichVu, string TenNganHang)
-        {
-            try
-            {
-                string sql = "insert into TT_DichVuThu(SoHoaDon,DanhBo,Nam,Ky,SoTien,Phi,TenDichVu,TenNganHang,CreateDate)"
-                               + "values('" + SoHoaDon + "','" + DanhBo + "'," + Nam + "," + Ky + "," + SoTien + "," + Phi + ",N'" + TenDichVu + "',N'" + TenNganHang + "','" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff", CultureInfo.InvariantCulture) + "')";
-
-                return _cDAL.ExecuteNonQuery(sql);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Kiểm tra Kỳ hóa đơn có được dịch vụ nào thu chưa
-        /// </summary>
-        /// <param name="DanhBo"></param>
-        /// <param name="Nam"></param>
-        /// <param name="Ky"></param>
-        /// <returns></returns>
-        [WebMethod]
-        public bool Check_DichVuThu(string DanhBo, int Nam, int Ky)
-        {
-            try
-            {
-                string sql = "select * from TT_DichVuThu where DanhBo='" + DanhBo + "' and Nam=" + Nam + " and Ky=" + Ky;
-
-                return _cDAL.ExecuteNonQuery(sql);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Kiểm tra danh bộ có phí phát sinh thêm không
-        /// </summary>
-        /// <param name="DanhBo"></param>
-        /// <param name="PhiMoNuoc"></param>
-        /// <returns></returns>
-        [WebMethod]
-        public bool Check_Phi(string DanhBo, out int Phi)
+        public bool Check_PhiDN(string DanhBo, out int Phi)
         {
             Phi = 0;
             try
             {
-                string sqlPhiMoNuoc = "select PhiMoNuoc from TT_KQDongNuoc kqdn where DanhBo='" + DanhBo + "' and kqdn.DongNuoc=1 and kqdn.MoNuoc=0 and kqdn.TroNgaiMN=0";
+                string sqlPhiMoNuoc = "select PhiMoNuoc from TT_KQDongNuoc kqdn where DanhBo='" + DanhBo + "' and kqdn.DongNuoc=1 and kqdn.MoNuoc=0 and kqdn.TroNgaiMN=0 ";
                 DataTable dt = _cDAL.ExecuteQuery_DataTable(sqlPhiMoNuoc);
 
                 if (dt.Rows.Count == 0)
