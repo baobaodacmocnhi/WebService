@@ -17,7 +17,7 @@ namespace WSTanHoa.Controllers
     public class apiThuHoController : ApiController
     {
         static readonly log4net.ILog _log = log4net.LogManager.GetLogger("File");
-        CConnection _cDAL = new CConnection(CConstantVariable.ThuTien_test);
+        CConnection _cDAL = new CConnection(CConstantVariable.ThuTien);
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn

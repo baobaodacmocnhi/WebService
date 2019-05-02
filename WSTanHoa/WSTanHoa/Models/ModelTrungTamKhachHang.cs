@@ -14,6 +14,8 @@ namespace WSTanHoa.Models
 
         public virtual DbSet<Zalo> Zaloes { get; set; }
 
+        public virtual DbSet<KhieuNai> KhieuNais { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Zalo>()
@@ -24,6 +26,19 @@ namespace WSTanHoa.Models
                 .Property(e => e.DanhBo)
                 .IsFixedLength()
                 .IsUnicode(false);
+
+            modelBuilder.Entity<KhieuNai>()
+               .Property(e => e.DanhBo)
+               .IsFixedLength()
+               .IsUnicode(false);
+
+            modelBuilder.Entity<KhieuNai>()
+                .Property(e => e.DienThoai)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<KhieuNai>()
+                .Property(e => e.IDZalo)
+                .HasPrecision(20, 0);
         }
     }
 }

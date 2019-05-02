@@ -71,7 +71,7 @@ namespace WSTanHoa.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi")] Zalo zalo, string Loai)
+        public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo zalo, string Loai)
         {
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(Loai))
             {
@@ -90,6 +90,11 @@ namespace WSTanHoa.Controllers
                                 en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
                                 return View(en);
                             }
+                            else
+                            {
+                                ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
+                                return View(zalo);
+                            }
                         }
                         break;
                     case "Đăng Ký":
@@ -106,6 +111,11 @@ namespace WSTanHoa.Controllers
                                         zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                                         zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
                                         zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                                    }
+                                    else
+                                    {
+                                        ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
+                                        return View(zalo);
                                     }
                                 }
                                 zalo.CreateDate = DateTime.Now;
@@ -141,7 +151,7 @@ namespace WSTanHoa.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi")] Zalo zalo)
+        public async Task<ActionResult> Edit([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo zalo)
         {
             if (ModelState.IsValid)
             {

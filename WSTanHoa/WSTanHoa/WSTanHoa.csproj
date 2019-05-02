@@ -246,6 +246,7 @@
     <Compile Include="Controllers\apiThuHoController.cs" />
     <Compile Include="Controllers\apiZaloController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KhieuNaiController.cs" />
     <Compile Include="Controllers\ZaloController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -253,6 +254,7 @@
     <Compile Include="Models\ErrorResponse.cs" />
     <Compile Include="Models\HoaDon.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\KhieuNai.cs" />
     <Compile Include="Models\LichCupNuoc.cs" />
     <Compile Include="Models\ModelTrungTamKhachHang.cs" />
     <Compile Include="Models\ThuHo.cs" />
@@ -336,6 +338,11 @@
     <Content Include="Views\Zalo\Details.cshtml" />
     <Content Include="Views\Zalo\Edit.cshtml" />
     <Content Include="Views\Zalo\Index.cshtml" />
+    <Content Include="Views\KhieuNai\Create.cshtml" />
+    <Content Include="Views\KhieuNai\Delete.cshtml" />
+    <Content Include="Views\KhieuNai\Details.cshtml" />
+    <Content Include="Views\KhieuNai\Edit.cshtml" />
+    <Content Include="Views\KhieuNai\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
