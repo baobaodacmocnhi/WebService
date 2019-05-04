@@ -9,32 +9,15 @@ namespace WSTanHoa.Models
     {
         public string message { get; set; }
         public int code { get; set; }
-        public string DanhBo { get; set; }
-        public string HoTen { get; set; }
-        public string DiaChi { get; set; }
         public ErrorResponse(string message, int code)
         {
             this.message = message;
             this.code = code;
-            this.DanhBo = "";
-            this.HoTen = "";
-            this.DiaChi = "";
-        }
-        public ErrorResponse(string message, int code, string DanhBo, string HoTen, string DiaChi)
-        {
-            this.message = message;
-            this.code = code;
-            this.DanhBo = DanhBo;
-            this.HoTen = HoTen;
-            this.DiaChi = DiaChi;
         }
 
         public override string ToString()
         {
-            if(DanhBo=="")
-            return code.ToString() + " : " + message;
-            else
-                return code.ToString() + " : " + message + " : " + DanhBo + " : " + HoTen + " : " + DiaChi;
+                return code.ToString() + " : " + message;
         }
 
         const int errorCodeSQL = -1;
@@ -219,6 +202,27 @@ namespace WSTanHoa.Models
             {
                 return errorPassword;
             }
+        }
+    }
+
+    public class ErrorResponseDetail
+    {
+        public string message { get; set; }
+        public int code { get; set; }
+        public string DanhBo { get; set; }
+        public string HoTen { get; set; }
+        public string DiaChi { get; set; }
+        public ErrorResponseDetail(string message, int code, string DanhBo, string HoTen, string DiaChi)
+        {
+            this.message = message;
+            this.code = code;
+            this.DanhBo = DanhBo;
+            this.HoTen = HoTen;
+            this.DiaChi = DiaChi;
+        }
+        public override string ToString()
+        {
+            return code.ToString() + " : " + message + " : " + DanhBo + " : " + HoTen + " : " + DiaChi;
         }
     }
 }

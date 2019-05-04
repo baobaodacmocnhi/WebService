@@ -52,29 +52,52 @@ namespace WSTanHoa.Controllers
                         if (message == "#get12kyhoadon")
                             foreach (DataRow item in dt_DanhBo.Rows)
                             {
-                                string content = item["DanhBo"].ToString() + "\n";
                                 DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
                                 if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                                {
+                                    string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
+                                                + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
+                                                + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
+                                                + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                                                + "Danh sách 12 kỳ hóa đơn\n";
                                     foreach (DataRow itemHD in dt_HoaDon.Rows)
                                     {
-                                        content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                        content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
                                     }
-                                strResponse = sendMessage(fromuid, content);
+                                    strResponse = sendMessage(fromuid, content);
+                                }
                             }
                         else
                         if (message == "#gethoadonton")
                             foreach (DataRow item in dt_DanhBo.Rows)
                             {
-                                string content = item["DanhBo"].ToString() + "\n";
                                 DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
                                 if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                                {
+                                    string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
+                                                + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
+                                                + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
+                                                + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n"
+                                                + "Hiện đang còn nợ\n\n";
                                     foreach (DataRow itemHD in dt_HoaDon.Rows)
                                     {
-                                        content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                        content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
                                     }
+                                    strResponse = sendMessage(fromuid, content);
+                                }
                                 else
-                                    content += "Hết Nợ";
-                                strResponse = sendMessage(fromuid, content);
+                                {
+                                    DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                                    string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
+                                                + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
+                                                + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
+                                                + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n"
+                                                + "Hiện đang Hết Nợ";
+                                    strResponse = sendMessage(fromuid, content);
+                                }
                             }
                     }
                 }

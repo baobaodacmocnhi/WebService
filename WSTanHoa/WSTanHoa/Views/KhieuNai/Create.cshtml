@@ -4,24 +4,38 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+@Scripts.Render("~/bundles/jquery")
+@Scripts.Render("~/bundles/zalo")
+<script src="https://zjs.zdn.vn/zalo/Zalo.Extensions.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        if ($('#IDZalo').val() == "") {
+            getContext();
+            $('#submit').click();
+        }
+    });
 
 
-@using (Html.BeginForm()) 
+</script>
+
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
-        <h4>KhieuNai</h4>
+        <h4>Gửi Thông Tin Khiếu Nại</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @*<div class="form-group">
-            @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.ID, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ID, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             @Html.LabelFor(model => model.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -71,21 +85,22 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" style="display:none">
             @Html.LabelFor(model => model.IDZalo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.IDZalo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.IDZalo, "", new { @class = "text-danger" })
+                @*@Html.EditorFor(model => model.IDZalo, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.IDZalo, "", new { @class = "text-danger" })*@
+                @Html.Editor("IDZalo", new { htmlAttributes = new { id = "IDZalo", @Value = ViewBag.IDZalo, @class = "form-control" } })
             </div>
         </div>
 
         @*<div class="form-group">
-            @Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.CreateDate, "", new { @class = "text-danger" })
-            </div>
-        </div>*@
+                @Html.LabelFor(model => model.CreateDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.CreateDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.CreateDate, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
@@ -96,7 +111,7 @@
 }
 
 <div>
-    @*@Html.ActionLink("Back to List", "Index")*@
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {
