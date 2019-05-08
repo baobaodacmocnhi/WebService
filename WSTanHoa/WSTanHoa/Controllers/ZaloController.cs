@@ -59,10 +59,27 @@ namespace WSTanHoa.Controllers
         }
 
         // GET: Zalo/Create
-        public ActionResult Create()
+        public ActionResult Create(string DanhBo)
         {
+            if(ViewBag==null)
             ViewBag.IDZalo = CConstantVariable.IDZalo;
-
+            if(DanhBo!=null)
+            {
+                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                if (dt.Rows.Count > 0)
+                {
+                    Zalo en = new Zalo();
+                    en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                    en.HoTen = dt.Rows[0]["HoTen"].ToString();
+                    en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                    return View(en);
+                }
+                else
+                {
+                    ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
+                    return View();
+                }
+            }
             return View();
         }
 
@@ -74,71 +91,75 @@ namespace WSTanHoa.Controllers
         public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo zalo, string Loai)
         {
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(Loai))
-            {
-                ViewBag.IDZalo = CConstantVariable.IDZalo;
-                switch (Loai)
+                if (CConstantVariable.IDZalo != -1)
                 {
-                    case "Kiểm Tra":
-                        if (zalo.DanhBo != null && zalo.DanhBo != "")
-                        {
-                            DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
-                            if (dt.Rows.Count > 0)
+                    ViewBag.IDZalo = CConstantVariable.IDZalo;
+                    switch (Loai)
+                    {
+                        case "Kiểm Tra":
+                            if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
-                                Zalo en = new Zalo();
-                                en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-                                en.HoTen = dt.Rows[0]["HoTen"].ToString();
-                                en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                                return View(en);
-                            }
-                            else
-                            {
-                                ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
-                                return View(zalo);
-                            }
-                        }
-                        break;
-                    case "Đăng Ký":
-                        if (CConstantVariable.IDZalo != -1)
-                        {
-                            if (db.Zaloes.Count(item => item.IDZalo == zalo.IDZalo && item.DanhBo == zalo.DanhBo) == 0)
-                            {
-                                zalo.IDZalo = CConstantVariable.IDZalo;
-                                if (zalo.HoTen == null || zalo.HoTen == "")
+                                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
+                                if (dt.Rows.Count > 0)
                                 {
-                                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
-                                    if (dt.Rows.Count > 0)
+                                    Zalo zalo1 = await db.Zaloes.FindAsync(1, "13051375570");
+                                    //Zalo en = new Zalo();
+                                    //en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                                    zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
+                                    zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                                    return View(zalo1);
+                                }
+                                else
+                                {
+                                    ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
+                                    return View(zalo);
+                                }
+                            }
+                            break;
+                        case "Đăng Ký":
+                            if (zalo.DanhBo != null && zalo.DanhBo != "")
+                                if (db.Zaloes.Count(item => item.IDZalo == zalo.IDZalo && item.DanhBo == zalo.DanhBo) == 0)
+                                {
+                                    if (zalo.DienThoai == null || zalo.DienThoai == "")
                                     {
-                                        zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-                                        zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
-                                        zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                                    }
-                                    else
-                                    {
-                                        ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
+                                        ModelState.AddModelError("DienThoai", "Vui lòng nhập số điện thoại");
                                         return View(zalo);
                                     }
+                                    zalo.IDZalo = CConstantVariable.IDZalo;
+                                    if (zalo.HoTen == null || zalo.HoTen == "")
+                                    {
+                                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
+                                        if (dt.Rows.Count > 0)
+                                        {
+                                            zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                                            zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
+                                            zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                                        }
+                                        else
+                                        {
+                                            ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
+                                            return View(zalo);
+                                        }
+                                    }
+                                    zalo.CreateDate = DateTime.Now;
+                                    db.Zaloes.Add(zalo);
+                                    await db.SaveChangesAsync();
+                                    return RedirectToAction("Index");
                                 }
-                                zalo.CreateDate = DateTime.Now;
-                                db.Zaloes.Add(zalo);
-                                await db.SaveChangesAsync();
-                                return RedirectToAction("Index");
-                            }
-                        }
-                        break;
+                            break;
+                    }
                 }
-
-            }
             return View(zalo);
         }
 
         // GET: Zalo/Edit/5
-        public async Task<ActionResult> Edit(decimal? id)
+        public async Task<ActionResult> Edit(decimal? IDZalo, string DanhBo)
         {
-            if (id == null)
+            if (IDZalo == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zalo zalo = await db.Zaloes.FindAsync(id);
+            Zalo zalo = await db.Zaloes.FindAsync(IDZalo, DanhBo);
             if (zalo == null)
             {
                 return HttpNotFound();

@@ -78,7 +78,7 @@
                     </td>
                     <td>
                         @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
+    @Html.ActionLink("Edit", "Edit", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }) |*@
                         @Html.ActionLink("Xóa", "Delete", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
                     </td>
                 </tr>

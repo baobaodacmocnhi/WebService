@@ -30,7 +30,7 @@
         public string DiaChi { get; set; }
 
         [StringLength(10)]
-        [Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
+        //[Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [Display(Name = "Điện Thoại")]
         public string DienThoai { get; set; }
 
