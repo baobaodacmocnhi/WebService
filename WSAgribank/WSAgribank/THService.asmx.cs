@@ -76,7 +76,7 @@ namespace WSAgribank
                     {
                         DataTable dt = _cDAL.ExecuteQuery_DataTable_Transaction("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
                         sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
-                            + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'AGRIBANK'," + ID + ",'" + "AGRIBANK" + matkhau + "',getdate()) ";
+                            + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'AGRIBANK'," + ID + ",'" + "AGRIBANK" + ID + "',getdate()) ";
                         //_cDAL.ExecuteNonQuery_Transaction(sql);
                         if (string.IsNullOrEmpty(SoHoaDons) == true)
                         {
@@ -93,7 +93,7 @@ namespace WSAgribank
                         DanhBo = dt.Rows[0]["DanhBo"].ToString();
                     }
                     string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
-                                + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "'," + TongCong + ",0,0," + TongCong + ",N'AGRIBANK','" + "AGRIBANK" + matkhau + "',getdate())";
+                                + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "'," + TongCong + ",0,0," + TongCong + ",N'AGRIBANK','" + "AGRIBANK" + ID + "',getdate())";
                     _cDAL.ExecuteNonQuery_Transaction(sql_Tong);
                     _cDAL.ExecuteNonQuery_Transaction(sql_ChiTiet);
                     _cDAL.CommitTransaction();
