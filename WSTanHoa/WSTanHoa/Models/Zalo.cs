@@ -16,7 +16,7 @@
 
         [Key]
         [Column(Order = 1)]
-        [StringLength(11, MinimumLength = 11, ErrorMessage = "Danh bộ gồm 11 ký tự")]
+        [StringLength(13, MinimumLength = 11, ErrorMessage = "Danh bộ gồm 11 ký tự")]
         [Required(ErrorMessage = "Vui lòng nhập danh bộ")]
         [Display(Name = "Danh bộ")]
         public string DanhBo { get; set; }
@@ -36,5 +36,23 @@
 
         [Display(Name = "Ngày tạo")]
         public DateTime? CreateDate { get; set; }
+    }
+
+    public class ViewZalo
+    {
+        public IEnumerable<Zalo> vlstZalo { get; set; }
+        public Zalo vZalo { get; set; }
+
+        public ViewZalo()
+        {
+            vlstZalo = null;
+            vZalo = null;
+        }
+
+        public ViewZalo(IEnumerable<Zalo> _vlstZalo, Zalo _vZalo)
+        {
+            vlstZalo = _vlstZalo;
+            vZalo = _vZalo;
+        }
     }
 }

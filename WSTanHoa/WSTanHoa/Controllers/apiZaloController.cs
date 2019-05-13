@@ -42,63 +42,75 @@ namespace WSTanHoa.Controllers
                 //if (mac == getSHA256(oaid + fromuid + msgid + message + timestamp + "cCBBIsEx7UDj42KA1N5Y"))
                 if (@event == "sendmsg")
                 {
-                    DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + fromuid + "");
-                    if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
+                    //gửi tin nhắn đăng ký
+                    if (message == "#dangkythongtin")
                     {
                         strResponse = sendMessageDangKy(fromuid);
                     }
                     else
                     {
-                        if (message == "#get12kyhoadon")
-                            foreach (DataRow item in dt_DanhBo.Rows)
-                            {
-                                DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
-                                if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
-                                {
-                                    string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
-                                                + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
-                                                + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
-                                                + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
-                                                + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n\n"
-                                                + "Danh sách 12 kỳ hóa đơn\n";
-                                    foreach (DataRow itemHD in dt_HoaDon.Rows)
-                                    {
-                                        content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
-                                    }
-                                    strResponse = sendMessage(fromuid, content);
-                                }
-                            }
+                        //xét id chưa đăng ký
+                        DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + fromuid + "");
+                        if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
+                        {
+                            strResponse = sendMessageDangKy(fromuid);
+                        }
                         else
-                        if (message == "#gethoadonton")
-                            foreach (DataRow item in dt_DanhBo.Rows)
-                            {
-                                DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
-                                if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                        //bắt đầu gửi tin nhắn tra cứu
+                        {
+                            //lấy 12 kỳ hóa đơn gần nhất
+                            if (message == "#get12kyhoadon")
+                                foreach (DataRow item in dt_DanhBo.Rows)
                                 {
-                                    string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
-                                                + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
-                                                + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
-                                                + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
-                                                + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n"
-                                                + "Hiện đang còn nợ\n\n";
-                                    foreach (DataRow itemHD in dt_HoaDon.Rows)
+                                    DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
+                                    if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                                     {
-                                        content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                        string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
+                                                    + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
+                                                    + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
+                                                    + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                    + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                                                    + "Danh sách 12 kỳ hóa đơn\n";
+                                        foreach (DataRow itemHD in dt_HoaDon.Rows)
+                                        {
+                                            content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                        }
+                                        strResponse = sendMessage(fromuid, content);
                                     }
-                                    strResponse = sendMessage(fromuid, content);
                                 }
-                                else
+                            else
+                            //lấy hóa đơn tồn
+                            if (message == "#gethoadonton")
+                                foreach (DataRow item in dt_DanhBo.Rows)
                                 {
-                                    DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
-                                    string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
-                                                + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
-                                                + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
-                                                + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
-                                                + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n"
-                                                + "Hiện đang Hết Nợ";
-                                    strResponse = sendMessage(fromuid, content);
+                                    DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
+                                    if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                                    {
+                                        string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
+                                                    + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
+                                                    + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
+                                                    + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                    + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n"
+                                                    + "Hiện đang còn nợ\n\n";
+                                        foreach (DataRow itemHD in dt_HoaDon.Rows)
+                                        {
+                                            content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                        }
+                                        strResponse = sendMessage(fromuid, content);
+                                    }
+                                    else
+                                    {
+                                        DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                                        string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
+                                                    + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
+                                                    + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
+                                                    + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                    + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n"
+                                                    + "Hiện đang Hết Nợ";
+                                        strResponse = sendMessage(fromuid, content);
+                                    }
                                 }
-                            }
+                        }
                     }
                 }
             }
@@ -189,29 +201,29 @@ namespace WSTanHoa.Controllers
 
                 string data = "{"
                             + "\"recipient\":{"
-                            + "\"user_id\":\""+IDZalo+"\""
+                            + "\"user_id\":\"" + IDZalo + "\""
                             + "},"
                             + "\"message\":{"
                             + "\"attachment\":{"
-                            +"\"type\":\"template\","
-                            +"\"payload\":{"
-                            +"\"template_type\":\"list\","
-                            +"\"elements\":[{"
-                            + "\"title\":\"BẠN CHƯA ĐĂNG KÝ THÔNG TIN\","
-                            + "\"subtitle\":\"Để sử dụng dịch vụ, bạn cần phải đăng ký ít nhất một mã khách hàng (Danh Bộ)\","
+                            + "\"type\":\"template\","
+                            + "\"payload\":{"
+                            + "\"template_type\":\"list\","
+                            + "\"elements\":[{"
+                            + "\"title\":\"QUÝ KHÁCH HÀNG CHƯA ĐĂNG KÝ THÔNG TIN\","
+                            + "\"subtitle\":\"Để sử dụng dịch vụ, Quý Khách Hàng cần phải đăng ký ít nhất một mã khách hàng (Danh Bộ)\","
                             + "\"image_url\":\"http://www.capnuoctanhoa.com.vn/uploads/page/logoctycp.jpg\","
                             + "\"default_action\":{"
                             + "\"type\":\"oa.open.url\","
-                            + "\"url\":\"https://service.capnuoctanhoa.com.vn:1011/Zalo\""
+                            + "\"url\":\"http://service.capnuoctanhoa.com.vn:1010/Zalo?id=" + IDZalo + "\""
                             + "}"
-                            +"},"
-                            +"{"
+                            + "},"
+                            + "{"
                             + "\"title\":\"Click vào đây để đăng ký\","
                             + "\"subtitle\":\"Click vào đây để đăng ký\","
                             + "\"image_url\":\"http://www.capnuoctanhoa.com.vn/uploads/page/logoctycp.jpg\","
                             + "\"default_action\":{"
-                            +"\"type\":\"oa.open.url\","
-                            + "\"url\":\"https://service.capnuoctanhoa.com.vn:1011/Zalo\""
+                            + "\"type\":\"oa.open.url\","
+                            + "\"url\":\"http://service.capnuoctanhoa.com.vn:1010/Zalo?id=" + IDZalo + "\""
                             + "}"
                             + "}]"
                             + "}"
