@@ -10,7 +10,7 @@ namespace WSTanHoa.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
+            ViewBag.Title = "Tân Hòa Service";
 
             return View();
         }
