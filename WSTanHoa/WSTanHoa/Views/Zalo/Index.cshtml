@@ -31,8 +31,8 @@
     </script>
 
 <body>
-    @*@using (Html.BeginForm("Index", "Zalo", FormMethod.Get))*@
-    @* { *@
+    @using (Html.BeginForm("Index", "Zalo", FormMethod.Get))
+    {
     @*<div class="form-group">
             @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = ViewBag.IDZalo, @class = "form-control" } })
             <input id="submit" type="button" value="get User ID" class="btn btn-default" onClick="getUserID()" />
@@ -91,7 +91,7 @@
         }
 
     </table>
-    @* } *@
+    }
     <div>
         @*@{ Html.RenderAction("Create", "Zalo");}*@
     </div>
