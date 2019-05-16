@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="\\192.168.90.11\WSSmartPhone$" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="04/04/2019 15:55:57" />
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="05/16/2019 14:37:46" />
     <file relUrl="Service.asmx" publishTime="12/22/2017 09:29:04" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="04/04/2019 15:55:57" />
-    <file relUrl="Web.config" publishTime="03/15/2019 15:36:09" />
     <file relUrl="wsThuTien.asmx" publishTime="06/27/2018 08:17:45" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="05/16/2019 14:37:46" />
+    <file relUrl="Web.config" publishTime="03/15/2019 15:36:09" />
   </publishProfile>
 </publishData>
