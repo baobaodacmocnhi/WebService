@@ -546,32 +546,36 @@
             <param name="IDGiaoDich"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getThongTinKhachHang(System.String)">
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getThongTinKhachHang(System.String,System.String)">
             <summary>
             Lấy thông tin khách hàng
             </summary>
             <param name="DanhBo"></param>
+            <param name="checksum"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getGhiChiSo(System.String)">
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getGhiChiSo(System.String,System.String)">
             <summary>
             Lấy danh sách 12 kỳ đọc số gần nhất
             </summary>
             <param name="DanhBo"></param>
+            <param name="checksum"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getGhiChu(System.String)">
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getGhiChu(System.String,System.String)">
             <summary>
             Lấy danh sách thông tin ghi chú
             </summary>
             <param name="DanhBo"></param>
+            <param name="checksum"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getHoaDon(System.String)">
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getHoaDon(System.String,System.String)">
             <summary>
             Lấy thông tin hóa đơn
             </summary>
             <param name="DanhBo"></param>
+            <param name="checksum"></param>
             <returns></returns>
         </member>
         <member name="M:WSTanHoa.Controllers.apiZaloController.webhook(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">

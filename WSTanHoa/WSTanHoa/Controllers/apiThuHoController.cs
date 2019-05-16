@@ -5,8 +5,6 @@ using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
 using System.Web.Http;
 using WSTanHoa.Models;
 using WSTanHoa.Providers;
@@ -493,17 +491,17 @@ namespace WSTanHoa.Controllers
         //    }
         //}
 
-        private string getSHA256(string strData)
-        {
-            SHA256Managed crypt = new SHA256Managed();
-            System.Text.StringBuilder hash = new System.Text.StringBuilder();
-            byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(strData), 0, Encoding.UTF8.GetByteCount(strData));
-            foreach (byte theByte in crypto)
-            {
-                hash.Append(theByte.ToString("x2"));
-            }
-            return hash.ToString().ToLower();
-        }
+        //private string getSHA256(string strData)
+        //{
+        //    SHA256Managed crypt = new SHA256Managed();
+        //    System.Text.StringBuilder hash = new System.Text.StringBuilder();
+        //    byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(strData), 0, Encoding.UTF8.GetByteCount(strData));
+        //    foreach (byte theByte in crypto)
+        //    {
+        //        hash.Append(theByte.ToString("x2"));
+        //    }
+        //    return hash.ToString().ToLower();
+        //}
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -659,7 +657,7 @@ namespace WSTanHoa.Controllers
                 _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
-            if (getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
+            if (CConstantVariable.getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
@@ -776,7 +774,7 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
             }
 
-            if (getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
+            if (CConstantVariable.getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
