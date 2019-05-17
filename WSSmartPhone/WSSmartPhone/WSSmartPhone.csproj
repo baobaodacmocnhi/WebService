@@ -62,11 +62,13 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="wsThuTien.asmx" />
+    <Content Include="wsThuTien_test.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CBaoBao.cs" />
     <Compile Include="CDocSo.cs" />
     <Compile Include="CKinhDoanh.cs" />
+    <Compile Include="CThuTien_test.cs" />
     <Compile Include="CThuTien.cs" />
     <Compile Include="CConnection.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -81,6 +83,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="wsThuTien.asmx.cs">
       <DependentUpon>wsThuTien.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wsThuTien_test.asmx.cs">
+      <DependentUpon>wsThuTien_test.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
