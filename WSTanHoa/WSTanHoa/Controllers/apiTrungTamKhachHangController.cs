@@ -144,13 +144,13 @@ namespace WSTanHoa.Controllers
                     foreach (DataRow item in dt.Rows)
                     {
                         GhiChiSo en = new GhiChiSo();
-                        en.Ky = dt.Rows[0]["Ky"].ToString();
-                        if (dt.Rows[0]["NgayDoc"].ToString() != "")
-                            en.NgayDoc = DateTime.Parse(dt.Rows[0]["NgayDoc"].ToString());
-                        en.CodeMoi = dt.Rows[0]["CodeMoi"].ToString();
-                        en.ChiSoCu = dt.Rows[0]["ChiSoCu"].ToString();
-                        en.ChiSoMoi = dt.Rows[0]["ChiSoMoi"].ToString();
-                        en.TieuThu = dt.Rows[0]["TieuThu"].ToString();
+                        en.Ky = item["Ky"].ToString();
+                        if (item["NgayDoc"].ToString() != "")
+                            en.NgayDoc = DateTime.Parse(item["NgayDoc"].ToString());
+                        en.CodeMoi = item["CodeMoi"].ToString();
+                        en.ChiSoCu = item["ChiSoCu"].ToString();
+                        en.ChiSoMoi = item["ChiSoMoi"].ToString();
+                        en.TieuThu = item["TieuThu"].ToString();
                         lst.Add(en);
                     }
                     return lst;
@@ -191,9 +191,9 @@ namespace WSTanHoa.Controllers
                     foreach (DataRow item in dt.Rows)
                     {
                         GhiChu en = new GhiChu();
-                        en.NoiDung = dt.Rows[0]["NoiDung"].ToString();
-                        if (dt.Rows[0]["CreateDate"].ToString() != "")
-                            en.CreateDate = DateTime.Parse(dt.Rows[0]["CreateDate"].ToString());
+                        en.NoiDung = item["NoiDung"].ToString();
+                        if (item["CreateDate"].ToString() != "")
+                            en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
                         lst.Add(en);
                     }
                     return lst;
@@ -234,24 +234,24 @@ namespace WSTanHoa.Controllers
                     foreach (DataRow item in dt.Rows)
                     {
                         HoaDonThuTien en = new HoaDonThuTien();
-                        en.GiaBieu = dt.Rows[0]["GiaBieu"].ToString();
-                        en.DinhMuc = dt.Rows[0]["DinhMuc"].ToString();
-                        en.SoHoaDon = dt.Rows[0]["SoHoaDon"].ToString();
-                        en.Ky = dt.Rows[0]["Ky"].ToString();
-                        en.TieuThu = dt.Rows[0]["TieuThu"].ToString();
-                        en.GiaBan = dt.Rows[0]["GiaBan"].ToString();
-                        en.ThueGTGT = dt.Rows[0]["ThueGTGT"].ToString();
-                        en.PhiBVMT = dt.Rows[0]["PhiBVMT"].ToString();
-                        en.TongCong = dt.Rows[0]["TongCong"].ToString();
-                        if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
-                            en.NgayGiaiTrach = DateTime.Parse(dt.Rows[0]["NgayGiaiTrach"].ToString());
-                        en.DangNgan = dt.Rows[0]["DangNgan"].ToString();
-                        en.HanhThu = dt.Rows[0]["HanhThu"].ToString();
-                        en.MaDN = dt.Rows[0]["MaDN"].ToString();
-                        if (dt.Rows[0]["NgayDN"].ToString() != "")
-                            en.NgayDN = DateTime.Parse(dt.Rows[0]["NgayDN"].ToString());
-                        if (dt.Rows[0]["NgayMN"].ToString() != "")
-                            en.NgayMN = DateTime.Parse(dt.Rows[0]["NgayMN"].ToString());
+                        en.GiaBieu = item["GiaBieu"].ToString();
+                        en.DinhMuc = item["DinhMuc"].ToString();
+                        en.SoHoaDon = item["SoHoaDon"].ToString();
+                        en.Ky = item["Ky"].ToString();
+                        en.TieuThu = item["TieuThu"].ToString();
+                        en.GiaBan = item["GiaBan"].ToString();
+                        en.ThueGTGT = item["ThueGTGT"].ToString();
+                        en.PhiBVMT = item["PhiBVMT"].ToString();
+                        en.TongCong = item["TongCong"].ToString();
+                        if (item["NgayGiaiTrach"].ToString() != "")
+                            en.NgayGiaiTrach = DateTime.Parse(item["NgayGiaiTrach"].ToString());
+                        en.DangNgan = item["DangNgan"].ToString();
+                        en.HanhThu = item["HanhThu"].ToString();
+                        en.MaDN = item["MaDN"].ToString();
+                        if (item["NgayDN"].ToString() != "")
+                            en.NgayDN = DateTime.Parse(item["NgayDN"].ToString());
+                        if (item["NgayMN"].ToString() != "")
+                            en.NgayMN = DateTime.Parse(item["NgayMN"].ToString());
                         lst.Add(en);
                     }
                     return lst;
