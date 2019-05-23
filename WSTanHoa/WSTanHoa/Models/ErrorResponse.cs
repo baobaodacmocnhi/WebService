@@ -25,12 +25,12 @@ namespace WSTanHoa.Models
         const int errorCodeHetNo = 1001; const string errorHetNo = "Khách Hàng hết nợ";
         const int errorCodeIDGiaoDichKhongTonTai = 1002; const string errorIDGiaoDichKhongTonTai = "IDGiaoDich không tồn tại";
         const int errorCodeIDGiaoDichTonTai = 1003; const string errorIDGiaoDichTonTai = "IDGiaoDich này đã tồn tại";
-        const int errorCodeGiaiTrach = 1004; const string errorGiaiTrach = "Hóa Đơn đã Giải Trách. Không xóa được";
-        const int errorCodePhiMoNuoc = 1005; const string errorPhiMoNuoc = "Hóa Đơn có Phí Mở Nước. Không xóa được";
+        const int errorCodeGiaiTrach = 1004; const string errorGiaiTrach = "Hóa Đơn đã Giải Trách";
+        const int errorCodePhiMoNuoc = 1005; const string errorPhiMoNuoc = "Hóa Đơn có Phí Mở Nước";
         const int errorCodeMaHD = 1006; const string errorMaHD = "Mã Hóa Đơn thiếu";
         const int errorCodeHoaDon = 1007; const string errorHoaDon = "Phải thanh toán hết Hóa Đơn Tồn";
         const int errorCodeSoTien = 1008; const string errorSoTien = "Số Tiền không đúng";
-        const int errorCodeTBDongNuoc = 1009; const string errorTBDongNuoc = "Hóa Đơn có Thông Báo Đóng Nước. Không xóa được";
+        const int errorCodeTBDongNuoc = 1009; const string errorTBDongNuoc = "Hóa Đơn có Thông Báo Đóng Nước";
         const int errorCodePassword = 1010; const string errorPassword = "Sai Mã kiểm tra";
 
         const int successCode = 1; const string success = "Thành Công";

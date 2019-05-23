@@ -30,10 +30,6 @@ namespace WSTanHoa.Controllers
                 else
                 {
                     CConstantVariable.IDZalo = -1;
-                    if (id == -1)
-                        ViewBag.IDZalo = "-1";
-                    else
-                        ViewBag.IDZalo = "";
                 }
             }
             IEnumerable<Zalo> lstZalo = await db.Zaloes.Where(item => item.IDZalo == CConstantVariable.IDZalo).ToListAsync();

@@ -81,19 +81,19 @@ namespace WSTanHoa.Controllers
         //    }
         //    else
         //    {
-        //        //try
-        //        //{
-        //        //    dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
-        //        //}
-        //        //catch (Exception ex)
-        //        //{
-        //        //    ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        //    _log.Error("getHoaDonTon " + error1.ToString() + " (" + DanhBo + ")");
-        //        //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
-        //        //}
-        //        //ErrorResponseDetail error = new ErrorResponseDetail(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo, dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["HoTen"].ToString(), dt.Rows[0]["DiaChi"].ToString());
+        //        try
+        //        {
+        //            dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+        //            _log.Error("getHoaDonTon " + error1.ToString() + " (" + DanhBo + ")");
+        //            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
+        //        }
+        //        ErrorResponseDetail error = new ErrorResponseDetail(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo, dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["HoTen"].ToString(), dt.Rows[0]["DiaChi"].ToString());
 
-        //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo);
+        //        //ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo);
         //        _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //        //throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
@@ -171,10 +171,10 @@ namespace WSTanHoa.Controllers
         //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
-        //    if (getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
+        //    if (CConstantVariable.getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-        //       _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
 
@@ -182,7 +182,7 @@ namespace WSTanHoa.Controllers
         //    if (TenDichVu == "" || IDGiaoDich == "")
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-        //       _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
 
@@ -194,18 +194,17 @@ namespace WSTanHoa.Controllers
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //       _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
         //    if (checkExist > 0)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichTonTai, ErrorResponse.ErrorCodeIDGiaoDichTonTai);
-        //       _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
 
-        //    //kiểm tra Danh Bộ, Hóa Đơn, Số Tiền
-        //    IList<HoaDon> lstHD = getHoaDonTon(DanhBo);
+        //    //kiểm tra mã hóa đơn
         //    string[] arrayMaHD;
         //    try
         //    {
@@ -214,20 +213,85 @@ namespace WSTanHoa.Controllers
         //    catch
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorMaHD, ErrorResponse.ErrorCodeMaHD);
-        //       _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+        //    }
+        //    //lấy hóa đơn tồn
+        //    List<HoaDon> lstHD = new List<HoaDon>();
+        //    try
+        //    {
+        //        DataTable dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
+        //        if (dt != null && dt.Rows.Count > 0)
+        //        {
+        //            foreach (DataRow item in dt.Rows)
+        //            {
+        //                HoaDon entity = new HoaDon();
+        //                entity.HoTen = item["HoTen"].ToString();
+        //                entity.DiaChi = item["DiaChi"].ToString();
+        //                entity.MaHD = int.Parse(item["MaHD"].ToString());
+        //                entity.SoHoaDon = item["SoHoaDon"].ToString();
+        //                entity.DanhBo = (string)item["DanhBo"];
+        //                entity.Nam = int.Parse(item["Nam"].ToString());
+        //                entity.Ky = int.Parse(item["Ky"].ToString());
+        //                entity.GiaBan = int.Parse(item["GiaBan"].ToString());
+        //                entity.ThueGTGT = int.Parse(item["ThueGTGT"].ToString());
+        //                entity.PhiBVMT = int.Parse(item["PhiBVMT"].ToString());
+        //                entity.TongCong = int.Parse(item["TongCong"].ToString());
+        //                entity.PhiMoNuoc = int.Parse(item["PhiMoNuoc"].ToString());
+        //                entity.TienDu = int.Parse(item["TienDu"].ToString());
+        //                lstHD.Add(entity);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+        //        _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
 
+        //    //kiểm tra số hóa đơn thanh toán vs số hóa đơn tồn
         //    if (lstHD.Count != arrayMaHD.Count())
         //    {
+        //        //kiểm tra hóa đơn đã giải trách hay chưa
+        //        string checkExist_GiaiTrach = "";
+        //        for (int i = 0; i < arrayMaHD.Length; i++)
+        //        {
+        //            try
+        //            {
+        //                string sql = "select"
+        //                            + " case when(select COUNT(ID_HOADON) from HOADON where ID_HOADON = " + arrayMaHD[i] + " and NGAYGIAITRACH is not null and DangNgan_ChuyenKhoan = 0) = 1"
+        //                            + " then N'Thu Tiền Mặt'"
+        //                            + " else"
+        //                            + " (select TenDichVu from TT_DichVuThu where MaHD = " + arrayMaHD[i] + ")"
+        //                            + " end";
+        //                checkExist_GiaiTrach = _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+        //                _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
+        //            }
+        //            if (checkExist_GiaiTrach != null && checkExist_GiaiTrach != "" && checkExist_GiaiTrach != "NULL")
+        //            {
+        //                ErrorResponse error1 = new ErrorResponse(ErrorResponse.ErrorGiaiTrach + ". " + checkExist_GiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
+        //                _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
+        //            }
+        //        }
+
+        //        //return error không thanh toán đủ hóa đơn tồn
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHoaDon, ErrorResponse.ErrorCodeHoaDon);
-        //       _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
+
+        //    //kiểm tra số tiền phải thu
         //    if ((lstHD.Sum(item => item.TongCong) + lstHD[0].PhiMoNuoc - lstHD[0].TienDu) != (SoTien + PhiMoNuoc - TienDu) || (SoTien + PhiMoNuoc - TienDu) != TongCong)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorSoTien, ErrorResponse.ErrorCodeSoTien);
-        //       _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
 
@@ -260,7 +324,7 @@ namespace WSTanHoa.Controllers
         //    {
         //        _cDAL.RollbackTransaction();
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //       _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
         //}
@@ -274,7 +338,7 @@ namespace WSTanHoa.Controllers
         ///// <returns></returns>
         //[Route("deleteThuHo")]
         //[HttpPost]
-        //public bool deleteThuHo(string TenDichVu, string IDGiaoDich,string checksum)
+        //public bool deleteThuHo(string TenDichVu, string IDGiaoDich, string checksum)
         //{
         //    string PasswordSQL = "";
         //    try
@@ -288,7 +352,7 @@ namespace WSTanHoa.Controllers
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
 
-        //    if (getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
+        //    if (CConstantVariable.getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
         //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
@@ -408,7 +472,7 @@ namespace WSTanHoa.Controllers
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
         //        _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK,error));
+        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
 
         //    if (dt != null && dt.Rows.Count > 0)
@@ -446,7 +510,7 @@ namespace WSTanHoa.Controllers
         //public IList<ThuHoTong> getThuHoTong(string TenDichVu, string IDGiaoDich)
         //{
         //    //kiểm tra TenDichVu & IDGiaoDich
-        //    if (TenDichVu==""||IDGiaoDich == "")
+        //    if (TenDichVu == "" || IDGiaoDich == "")
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
         //        _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
@@ -491,17 +555,10 @@ namespace WSTanHoa.Controllers
         //    }
         //}
 
-        //private string getSHA256(string strData)
-        //{
-        //    SHA256Managed crypt = new SHA256Managed();
-        //    System.Text.StringBuilder hash = new System.Text.StringBuilder();
-        //    byte[] crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(strData), 0, Encoding.UTF8.GetByteCount(strData));
-        //    foreach (byte theByte in crypto)
-        //    {
-        //        hash.Append(theByte.ToString("x2"));
-        //    }
-        //    return hash.ToString().ToLower();
-        //}
+
+
+
+
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -690,8 +747,7 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
             }
 
-            //kiểm tra Danh Bộ, Hóa Đơn, Số Tiền
-            IList<HoaDon> lstHD = getHoaDonTon(DanhBo);
+            //kiểm tra mã hóa đơn
             string[] arrayMaHD;
             try
             {
@@ -704,12 +760,78 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
 
+            //lấy hóa đơn tồn
+            List<HoaDon> lstHD = new List<HoaDon>();
+            try
+            {
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        HoaDon entity = new HoaDon();
+                        entity.HoTen = item["HoTen"].ToString();
+                        entity.DiaChi = item["DiaChi"].ToString();
+                        entity.MaHD = int.Parse(item["MaHD"].ToString());
+                        entity.SoHoaDon = item["SoHoaDon"].ToString();
+                        entity.DanhBo = (string)item["DanhBo"];
+                        entity.Nam = int.Parse(item["Nam"].ToString());
+                        entity.Ky = int.Parse(item["Ky"].ToString());
+                        entity.GiaBan = int.Parse(item["GiaBan"].ToString());
+                        entity.ThueGTGT = int.Parse(item["ThueGTGT"].ToString());
+                        entity.PhiBVMT = int.Parse(item["PhiBVMT"].ToString());
+                        entity.TongCong = int.Parse(item["TongCong"].ToString());
+                        entity.PhiMoNuoc = int.Parse(item["PhiMoNuoc"].ToString());
+                        entity.TienDu = int.Parse(item["TienDu"].ToString());
+                        lstHD.Add(entity);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+
+            //kiểm tra số hóa đơn thanh toán vs số hóa đơn tồn
             if (lstHD.Count != arrayMaHD.Count())
             {
+                //kiểm tra hóa đơn đã giải trách hay chưa
+                string checkExist_GiaiTrach = "";
+                for (int i = 0; i < arrayMaHD.Length; i++)
+                {
+                    try
+                    {
+                        string sql = "select"
+                                    + " case when(select COUNT(ID_HOADON) from HOADON where ID_HOADON = " + arrayMaHD[i] + " and NGAYGIAITRACH is not null and DangNgan_ChuyenKhoan = 0) = 1"
+                                    + " then N'Thu Tiền Mặt'"
+                                    + " else"
+                                    + " (select TenDichVu from TT_DichVuThu where MaHD = " + arrayMaHD[i] + ")"
+                                    + " end";
+                        checkExist_GiaiTrach = _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                        _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error1));
+                    }
+                    if (checkExist_GiaiTrach != null && checkExist_GiaiTrach != "" && checkExist_GiaiTrach != "NULL")
+                    {
+                        ErrorResponse error1 = new ErrorResponse(ErrorResponse.ErrorGiaiTrach + ". " + checkExist_GiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
+                        _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error1));
+                    }
+                }
+
+                //return error không thanh toán đủ hóa đơn tồn
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHoaDon, ErrorResponse.ErrorCodeHoaDon);
                 _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
             }
+
+            //kiểm tra số tiền phải thu
             if ((lstHD.Sum(item => item.TongCong) + lstHD[0].PhiMoNuoc - lstHD[0].TienDu) != (SoTien + PhiMoNuoc - TienDu) || (SoTien + PhiMoNuoc - TienDu) != TongCong)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorSoTien, ErrorResponse.ErrorCodeSoTien);
