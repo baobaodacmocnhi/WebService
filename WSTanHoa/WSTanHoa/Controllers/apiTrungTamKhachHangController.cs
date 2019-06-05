@@ -128,7 +128,8 @@ namespace WSTanHoa.Controllers
                 }
                 DataTable dt = new DataTable();
                 string sql = "select top(12) Ky=CONVERT(char(2),Ky)+'/'+CONVERT(char(4),Nam)"
-                               + ",NgayDoc=CONVERT(char(10),DenNgay,103)"
+                               //+ ",NgayDoc=CONVERT(char(10),DenNgay,103)"
+                               + ",NgayDoc=DenNgay"
                                + ",CodeMoi"
                                + ",ChiSoCu=CSCu"
                                + ",ChiSoMoi=CSMoi"

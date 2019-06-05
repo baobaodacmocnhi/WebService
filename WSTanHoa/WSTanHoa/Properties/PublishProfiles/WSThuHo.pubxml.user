@@ -13,7 +13,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2018 15:34:34</publishTime>
     </File>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>06/03/2019 14:00:09</publishTime>
+      <publishTime>06/05/2019 09:32:42</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>06/29/2018 15:34:26</publishTime>
@@ -241,7 +241,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>06/03/2019 14:02:49</publishTime>
+      <publishTime>06/05/2019 14:32:41</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>05/14/2019 08:29:45</publishTime>
