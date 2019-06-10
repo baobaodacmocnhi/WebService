@@ -75,17 +75,37 @@ namespace WSTanHoa.Models
         /// <summary>
         /// Ngày thay ĐHN
         /// </summary>
-        public DateTime NgayThay { get; set; }
+        public DateTime? NgayThay { get; set; }
 
         /// <summary>
         /// Ngày kiểm định ĐHN
         /// </summary>
-        public DateTime NgayKiemDinh { get; set; }
+        public DateTime? NgayKiemDinh { get; set; }
 
         /// <summary>
         /// Hiệu lực
         /// </summary>
         public string HieuLuc { get; set; }
+
+        public ThongTinKhachHang()
+        {
+            DanhBo = "";
+            HoTen = "";
+            DiaChi = "";
+            HopDong = "";
+            DienThoai = "";
+            MLT = "";
+            DinhMuc = "";
+            GiaBieu = "";
+            HieuDH = "";
+            CoDH = "";
+            Cap = "";
+            SoThanDH = "";
+            ViTriDHN = "";
+            NgayThay = null;
+            NgayKiemDinh = null;
+            HieuLuc = "";
+        }
     }
 
     public class GhiChiSo
@@ -98,7 +118,7 @@ namespace WSTanHoa.Models
         /// <summary>
         /// Ngày đọc
         /// </summary>
-        public DateTime NgayDoc { get; set; }
+        public DateTime? NgayDoc { get; set; }
 
         /// <summary>
         /// Code mới
@@ -119,6 +139,16 @@ namespace WSTanHoa.Models
         /// Tiêu thụ
         /// </summary>
         public string TieuThu { get; set; }
+
+        public GhiChiSo()
+        {
+            Ky = "";
+            NgayDoc = null;
+            CodeMoi = "";
+            ChiSoCu = "";
+            ChiSoMoi = "";
+            TieuThu = "";
+        }
     }
     public class GhiChu
     {
@@ -130,7 +160,13 @@ namespace WSTanHoa.Models
         /// <summary>
         /// Ngày lập
         /// </summary>
-        public DateTime CreateDate { get; set; }
+        public DateTime? CreateDate { get; set; }
+
+        public GhiChu()
+        {
+            NoiDung = "";
+            CreateDate = null;
+        }
     }
 
     public class HoaDonThuTien
@@ -183,7 +219,7 @@ namespace WSTanHoa.Models
         /// <summary>
         /// Ngày giải trách
         /// </summary>
-        public DateTime NgayGiaiTrach { get; set; }
+        public DateTime? NgayGiaiTrach { get; set; }
 
         /// <summary>
         /// Đăng ngân
@@ -203,11 +239,30 @@ namespace WSTanHoa.Models
         /// <summary>
         /// Ngày đóng nước
         /// </summary>
-        public DateTime NgayDN { get; set; }
+        public DateTime? NgayDN { get; set; }
 
         /// <summary>
         /// Ngày mở nước
         /// </summary>
-        public DateTime NgayMN { get; set; }
+        public DateTime? NgayMN { get; set; }
+
+        public HoaDonThuTien()
+        {
+            GiaBieu = "";
+            DinhMuc = "";
+            SoHoaDon = "";
+            Ky = "";
+            TieuThu = "";
+            GiaBan = "";
+            ThueGTGT = "";
+            PhiBVMT = "";
+            TongCong = "";
+            NgayGiaiTrach = null;
+            DangNgan = "";
+            HanhThu = "";
+            MaDN = "";
+            NgayDN = null;
+
+        }
     }
 }
