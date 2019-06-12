@@ -19,7 +19,7 @@ namespace WSTanHoa.Controllers
         // GET: KhieuNai
         public async Task<ActionResult> Index(decimal? id)
         {
-            ViewBag.lstPhong = new SelectList(db.Phongs, "ID", "Name");
+            
             if (id != null && id != -1)
             {
                 CConstantVariable.IDZalo = id.Value;
@@ -83,7 +83,7 @@ namespace WSTanHoa.Controllers
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-
+            //ViewBag.lstKhachHang = new SelectList(db.Zaloes.Where(item=>item.IDZalo==CConstantVariable.IDZalo), "DanhBo", "DanhBo");
             return View(khieuNai);
         }
 

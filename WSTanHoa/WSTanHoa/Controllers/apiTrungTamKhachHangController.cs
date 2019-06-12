@@ -16,6 +16,7 @@ namespace WSTanHoa.Controllers
         CConnection _cDAL_DHN = new CConnection(CConstantVariable.DHN);
         CConnection _cDAL_DocSo = new CConnection(CConstantVariable.DocSo);
         CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
+        CConnection _cDAL_KinhDoanh = new CConnection(CConstantVariable.KinhDoanh);
         string _pass = "s@l@2019";
 
         /// <summary>
@@ -255,6 +256,59 @@ namespace WSTanHoa.Controllers
                             en.NgayMN = DateTime.Parse(item["NgayMN"].ToString());
                         lst.Add(en);
                     }
+                    return lst;
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
+
+        /// <summary>
+        /// Lấy thông tin đơn phòng kinh doanh
+        /// </summary>
+        /// <param name="DanhBo"></param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("getDonKinhDoanh")]
+        public IList<DonKinhDoanh> getDonKinhDoanh(string DanhBo, string checksum)
+        {
+            try
+            {
+                if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("exec spTimKiemByBanhBo_DonTu '" + DanhBo + "'");
+                //
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    List<DonKinhDoanh> lst = new List<DonKinhDoanh>();
+                    foreach (DataRow item in dt.Rows)
+                        if (lst.Any(itemA => itemA.MaDon == item["MaDon"].ToString()) == false)
+                        {
+                            DonKinhDoanh en = new DonKinhDoanh();
+                            en.MaDon = item["MaDon"].ToString();
+                            en.TenLD = item["TenLD"].ToString();
+                            if (item["CreateDate"].ToString() != "")
+                                en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
+                            en.DanhBo = item["DanhBo"].ToString();
+                            en.HoTen = item["HoTen"].ToString();
+                            en.DiaChi = item["DiaChi"].ToString();
+                            en.GiaBieu = item["GiaBieu"].ToString();
+                            en.DinhMuc = item["DinhMuc"].ToString();
+                            en.NoiDung = item["NoiDung"].ToString();
+
+                            lst.Add(en);
+                        }
+
+                    DataSet ds = _cDAL_KinhDoanh.ExecuteQuery_DataSet("exec spTimKiemByBanhBo_DonTuChiTiet '" + DanhBo + "'");
+
                     return lst;
                 }
                 else

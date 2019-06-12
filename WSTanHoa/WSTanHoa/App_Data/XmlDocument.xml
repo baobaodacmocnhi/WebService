@@ -578,6 +578,14 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getDonKinhDoanh(System.String,System.String)">
+            <summary>
+            Lấy thông tin đơn phòng kinh doanh
+            </summary>
+            <param name="DanhBo"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiZaloController.webhook(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             nhận webhook từ zalo
@@ -792,6 +800,821 @@
         <member name="P:WSTanHoa.Models.HoaDonThuTien.NgayMN">
             <summary>
             Ngày mở nước
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.TenLD">
+            <summary>
+            Loại đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.GiaBieu">
+            <summary>
+            Giá biểu
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.DinhMuc">
+            <summary>
+            Định mức
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.NoiDung">
+            <summary>
+            Nội dung
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.NgayKTXM">
+            <summary>
+            Ngày kiểm tra
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.NoiDungKiemTra">
+            <summary>
+            Nội dung kiểm tra
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.NoiDungDongTien">
+            <summary>
+            Nội dung đóng tiền
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.NgayDongTien">
+            <summary>
+            Ngày đóng tiền
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.SoTienDongTien">
+            <summary>
+            Số tiền đóng tiền
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.KTXM.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.NgayBC">
+            <summary>
+            Ngày bấm chì
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.TrangThaiBC">
+            <summary>
+            Trạng thái bấm chì
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.TheoYeuCau">
+            <summary>
+            Theo yêu cầu
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.BamChi.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.NgayDN">
+            <summary>
+            Ngày đóng nước
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.NgayMN">
+            <summary>
+            Ngày mở nước
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DongNuoc.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.GiaBieu">
+            <summary>
+            Giá biểu cũ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.GiaBieu_BD">
+            <summary>
+            Giá biểu mới
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.DinhMuc">
+            <summary>
+            Định mức cũ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.DinhMuc_BD">
+            <summary>
+            Định mức mới
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.HoTen_BD">
+            <summary>
+            Họ tên mới
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.DiaChi_BD">
+            <summary>
+            Địa chỉ mới
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.ThongTin">
+            <summary>
+            Thông tin
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCBD.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.GiaBieu">
+            <summary>
+            Giá biểu cũ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.GiaBieu_BD">
+            <summary>
+            Giá biểu mới
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.DinhMuc">
+            <summary>
+            Định mức cũ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.DinhMuc_BD">
+            <summary>
+            Định mức mới
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.TieuThu">
+            <summary>
+            Tiêu thụ cũ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.TieuThu_BD">
+            <summary>
+            Tiêu thụ mới
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.TongCong_Start">
+            <summary>
+            Tổng cộng trước
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.TongCong_End">
+            <summary>
+            Tổng cộng sau
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.TongCong_BD">
+            <summary>
+            Tổng cộng biến động
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.TangGiam">
+            <summary>
+            Tăng giảm
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DCHD.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.LoaiCat">
+            <summary>
+            Loại cắt
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.LyDo">
+            <summary>
+            Lý do
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.GhiChuLyDo">
+            <summary>
+            Ghi chú lý do
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.DaLapPhieu">
+            <summary>
+            Đã lập phiếu
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.SoPhieu">
+            <summary>
+            Số phiếu
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.NgayLapPhieu">
+            <summary>
+            Ngày lập phiếu
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CHDB.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.LyDo">
+            <summary>
+            Lý do
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.GhiChuLyDo">
+            <summary>
+            Ghi chú lý do
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.HieuLucKy">
+            <summary>
+            Hiệu lực kỳ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.PhieuCHDB.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.VeViec">
+            <summary>
+            Về việc
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.NoiDung">
+            <summary>
+            Nội dung
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.NoiNhan">
+            <summary>
+            Nơi nhận
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TTTL.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.NoiDungViPham">
+            <summary>
+            Nội dung vi phạm
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.TinhTrang">
+            <summary>
+            Tình trạng
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.ThanhToan1">
+            <summary>
+            Thanh toán 1
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.ThanhToan2">
+            <summary>
+            Thanh toán 2
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.ThanhToan3">
+            <summary>
+            Thanh toán 3
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.XepDon">
+            <summary>
+            Xếp đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.GianLan.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.NoiDung">
+            <summary>
+            Nội dung
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.TongTien">
+            <summary>
+            Tổng tiền
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.Tongm3BinhQuan">
+            <summary>
+            Tổng m3
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.TinhTrang">
+            <summary>
+            Tình trạng
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TruyThu.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.VeViec">
+            <summary>
+            Về việc
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.NoiDung">
+            <summary>
+            Nội dung
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ToTrinh.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.Lan">
+            <summary>
+            Lần
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.VeViec">
+            <summary>
+            Về việc
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuMoi.CreateBy">
+            <summary>
+            Người lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TienTrinh.MaDon">
+            <summary>
+            Mã đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TienTrinh.TabSTT">
+            <summary>
+            Số thứ tự Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TienTrinh.TabName">
+            <summary>
+            Tên Tab
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TienTrinh.NgayChuyen">
+            <summary>
+            Ngày chuyển
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TienTrinh.NoiChuyen">
+            <summary>
+            Nơi chuyển
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TienTrinh.NoiNhan">
+            <summary>
+            Nơi nhận
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TienTrinh.KTXM">
+            <summary>
+            KTXM
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.TienTrinh.NoiDung">
+            <summary>
+            Nội dung
             </summary>
         </member>
     </members>

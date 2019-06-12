@@ -36,7 +36,7 @@
                     @Html.ValidationMessageFor(model => model.ID, "", new { @class = "text-danger" })
                 </div>
             </div>*@
-        @Html.DropDownList("cmbPhong", ViewBag.lstPhong as SelectList, "Tất Cả", new { onchange = "this.form.submit();" })
+        @*@Html.DropDownList("cmbKhachHang", ViewBag.lstKhachHang as SelectList, "Tất Cả", new { onchange = "this.form.submit();" })*@
         <div class="form-group">
             @Html.LabelFor(model => model.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
