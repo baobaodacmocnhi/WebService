@@ -586,6 +586,24 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.searchThongTinKhachHang(System.String,System.String,System.String,System.String)">
+            <summary>
+            Tìm kiếm thông tin khách hàng bằng họ tên, số nhà, tên đường
+            </summary>
+            <param name="HoTen"></param>
+            <param name="SoNha"></param>
+            <param name="TenDuong"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.searchDanhBoByDienThoai(System.String,System.String)">
+            <summary>
+            Tìm kiếm danh bộ bằng số điện thoại
+            </summary>
+            <param name="DienThoai"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiZaloController.webhook(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
             <summary>
             nhận webhook từ zalo
@@ -845,6 +863,71 @@
         <member name="P:WSTanHoa.Models.DonKinhDoanh.NoiDung">
             <summary>
             Nội dung
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.ktxm">
+            <summary>
+            Kiểm tra xác minh
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.bamchi">
+            <summary>
+            Bấm chì
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.dongnuoc">
+            <summary>
+            Đóng nước
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.dcbd">
+            <summary>
+            Điều chỉnh biến động
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.dchd">
+            <summary>
+            Điều chỉnh hóa đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.chdb">
+            <summary>
+            Cắt hủy danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.phieuchdb">
+            <summary>
+            Phiếu cắt hủy danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.ttl">
+            <summary>
+            Thư trả lời
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.gianlan">
+            <summary>
+            Gian lận
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.truythu">
+            <summary>
+            Truy thu
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.totrinh">
+            <summary>
+            Tờ trình
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.thumoi">
+            <summary>
+            Thư mời
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.tientrinh">
+            <summary>
+            Tiến trình đơn
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.KTXM.MaDon">
@@ -1292,57 +1375,57 @@
             Người lập
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.MaDon">
+        <member name="P:WSTanHoa.Models.TTL.MaDon">
             <summary>
             Mã đơn
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.TabSTT">
+        <member name="P:WSTanHoa.Models.TTL.TabSTT">
             <summary>
             Số thứ tự Tab
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.TabName">
+        <member name="P:WSTanHoa.Models.TTL.TabName">
             <summary>
             Tên Tab
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.CreateDate">
+        <member name="P:WSTanHoa.Models.TTL.CreateDate">
             <summary>
             Ngày lập
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.DanhBo">
+        <member name="P:WSTanHoa.Models.TTL.DanhBo">
             <summary>
             Danh bộ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.HoTen">
+        <member name="P:WSTanHoa.Models.TTL.HoTen">
             <summary>
             Họ tên
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.DiaChi">
+        <member name="P:WSTanHoa.Models.TTL.DiaChi">
             <summary>
             Địa chỉ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.VeViec">
+        <member name="P:WSTanHoa.Models.TTL.VeViec">
             <summary>
             Về việc
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.NoiDung">
+        <member name="P:WSTanHoa.Models.TTL.NoiDung">
             <summary>
             Nội dung
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.NoiNhan">
+        <member name="P:WSTanHoa.Models.TTL.NoiNhan">
             <summary>
             Nơi nhận
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.TTTL.CreateBy">
+        <member name="P:WSTanHoa.Models.TTL.CreateBy">
             <summary>
             Người lập
             </summary>
@@ -1564,7 +1647,7 @@
         </member>
         <member name="P:WSTanHoa.Models.ThuMoi.Lan">
             <summary>
-            Lần
+            Lần gửi thứ
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.ThuMoi.VeViec">
@@ -1609,7 +1692,7 @@
         </member>
         <member name="P:WSTanHoa.Models.TienTrinh.KTXM">
             <summary>
-            KTXM
+            Nhân viên kiểm tra
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.TienTrinh.NoiDung">

@@ -5,6 +5,8 @@ using System.Web;
 
 namespace WSTanHoa.Models
 {
+    #region QLĐHN
+
     public class ThongTinKhachHang
     {
         /// <summary>
@@ -170,6 +172,10 @@ namespace WSTanHoa.Models
         }
     }
 
+    #endregion
+
+    #region Thu Tiền
+
     public class HoaDonThuTien
     {
         /// <summary>
@@ -267,6 +273,10 @@ namespace WSTanHoa.Models
         }
     }
 
+    #endregion
+
+    #region Phòng Kinh Doanh
+
     public class DonKinhDoanh
     {
         /// <summary>
@@ -314,6 +324,71 @@ namespace WSTanHoa.Models
         /// </summary>
         public string NoiDung { get; set; }
 
+        /// <summary>
+        /// Kiểm tra xác minh
+        /// </summary>
+        public List<KTXM> ktxm { get; set; }
+
+        /// <summary>
+        /// Bấm chì
+        /// </summary>
+        public List<BamChi> bamchi { get; set; }
+
+        /// <summary>
+        /// Đóng nước
+        /// </summary>
+        public List<DongNuoc> dongnuoc { get; set; }
+
+        /// <summary>
+        /// Điều chỉnh biến động
+        /// </summary>
+        public List<DCBD> dcbd { get; set; }
+
+        /// <summary>
+        /// Điều chỉnh hóa đơn
+        /// </summary>
+        public List<DCHD> dchd { get; set; }
+
+        /// <summary>
+        /// Cắt hủy danh bộ
+        /// </summary>
+        public List<CHDB> chdb { get; set; }
+
+        /// <summary>
+        /// Phiếu cắt hủy danh bộ
+        /// </summary>
+        public List<PhieuCHDB> phieuchdb { get; set; }
+
+        /// <summary>
+        /// Thư trả lời
+        /// </summary>
+        public List<TTL> ttl { get; set; }
+
+        /// <summary>
+        /// Gian lận
+        /// </summary>
+        public List<GianLan> gianlan { get; set; }
+
+        /// <summary>
+        /// Truy thu
+        /// </summary>
+        public List<TruyThu> truythu { get; set; }
+
+        /// <summary>
+        /// Tờ trình
+        /// </summary>
+        public List<ToTrinh> totrinh { get; set; }
+
+        /// <summary>
+        /// Thư mời
+        /// </summary>
+        public List<ThuMoi> thumoi { get; set; }
+
+        /// <summary>
+        /// Tiến trình đơn
+        /// </summary>
+        public List<TienTrinh> tientrinh { get; set; }
+
         public DonKinhDoanh()
         {
             MaDon = "";
@@ -325,6 +400,19 @@ namespace WSTanHoa.Models
             GiaBieu = "";
             DinhMuc = "";
             NoiDung = "";
+            ktxm = new List<KTXM>();
+            bamchi = new List<BamChi>();
+            dongnuoc = new List<DongNuoc>();
+            dcbd = new List<DCBD>();
+            dchd = new List<DCHD>();
+            chdb = new List<CHDB>();
+            phieuchdb = new List<PhieuCHDB>();
+            ttl = new List<TTL>();
+            gianlan = new List<GianLan>();
+            truythu = new List<TruyThu>();
+            totrinh = new List<ToTrinh>();
+            thumoi = new List<ThuMoi>();
+            tientrinh = new List<TienTrinh>();
         }
 
     }
@@ -613,6 +701,24 @@ namespace WSTanHoa.Models
         /// </summary>
         public string CreateBy { get; set; }
 
+        public DCBD()
+        {
+            MaDon = "";
+            TabSTT = "";
+            TabName = "";
+            CreateDate = null;
+            DanhBo = "";
+            HoTen = "";
+            DiaChi = "";
+            GiaBieu = "";
+            GiaBieu_BD = "";
+            DinhMuc = "";
+            DinhMuc_BD = "";
+            HoTen_BD = "";
+            DiaChi_BD = "";
+            ThongTin = "";
+            CreateBy = "";
+        }
     }
 
     public class DCHD
@@ -707,7 +813,27 @@ namespace WSTanHoa.Models
         /// </summary>
         public string CreateBy { get; set; }
 
-
+        public DCHD()
+        {
+            MaDon = "";
+            TabSTT = "";
+            TabName = "";
+            CreateDate = null;
+            DanhBo = "";
+            HoTen = "";
+            DiaChi = "";
+            GiaBieu = "";
+            GiaBieu_BD = "";
+            DinhMuc = "";
+            DinhMuc_BD = "";
+            TieuThu = "";
+            TieuThu_BD = "";
+            TongCong_Start = "";
+            TongCong_End = "";
+            TongCong_BD = "";
+            TangGiam = "";
+            CreateBy = "";
+        }
     }
 
     public class CHDB
@@ -874,7 +1000,7 @@ namespace WSTanHoa.Models
         }
     }
 
-    public class TTTL
+    public class TTL
     {
         /// <summary>
         /// Mã đơn
@@ -930,6 +1056,21 @@ namespace WSTanHoa.Models
         /// Người lập
         /// </summary>
         public string CreateBy { get; set; }
+
+        public TTL()
+        {
+            MaDon = "";
+            TabSTT = "";
+            TabName = "";
+            CreateDate = null;
+            DanhBo = "";
+            HoTen = "";
+            DiaChi = "";
+            VeViec = "";
+            NoiDung = "";
+            NoiNhan = "";
+            CreateBy = "";
+        }
     }
 
     public class GianLan
@@ -1025,22 +1166,6 @@ namespace WSTanHoa.Models
 
     public class TruyThu
     {
-        public TruyThu()
-        {
-            MaDon = "";
-            TabSTT = "";
-            TabName = "";
-            CreateDate = null;
-            DanhBo = "";
-            HoTen = "";
-            DiaChi = "";
-            NoiDung = "";
-            TongTien = "";
-            Tongm3BinhQuan = "";
-            TinhTrang = "";
-            CreateBy = "";
-        }
-
         /// <summary>
         /// Mã đơn
         /// </summary>
@@ -1100,6 +1225,22 @@ namespace WSTanHoa.Models
         /// Người lập
         /// </summary>
         public string CreateBy { get; set; }
+
+        public TruyThu()
+        {
+            MaDon = "";
+            TabSTT = "";
+            TabName = "";
+            CreateDate = null;
+            DanhBo = "";
+            HoTen = "";
+            DiaChi = "";
+            NoiDung = "";
+            TongTien = "";
+            Tongm3BinhQuan = "";
+            TinhTrang = "";
+            CreateBy = "";
+        }
     }
 
     public class ToTrinh
@@ -1153,6 +1294,20 @@ namespace WSTanHoa.Models
         /// Người lập
         /// </summary>
         public string CreateBy { get; set; }
+
+        public ToTrinh()
+        {
+            MaDon = "";
+            TabSTT = "";
+            TabName = "";
+            CreateDate = null;
+            DanhBo = "";
+            HoTen = "";
+            DiaChi = "";
+            VeViec = "";
+            NoiDung = "";
+            CreateBy = "";
+        }
     }
 
     public class ThuMoi
@@ -1193,7 +1348,7 @@ namespace WSTanHoa.Models
         public string DiaChi { get; set; }
 
         /// <summary>
-        /// Lần
+        /// Lần gửi thứ
         /// </summary>
         public string Lan { get; set; }
 
@@ -1206,6 +1361,20 @@ namespace WSTanHoa.Models
         /// Người lập
         /// </summary>
         public string CreateBy { get; set; }
+
+        public ThuMoi()
+        {
+            MaDon = "";
+            TabSTT = "";
+            TabName = "";
+            CreateDate = null;
+            DanhBo = "";
+            HoTen = "";
+            DiaChi = "";
+            Lan = "";
+            VeViec = "";
+            CreateBy = "";
+        }
     }
 
     public class TienTrinh
@@ -1241,7 +1410,7 @@ namespace WSTanHoa.Models
         public string NoiNhan { get; set; }
 
         /// <summary>
-        /// KTXM
+        /// Nhân viên kiểm tra
         /// </summary>
         public string KTXM { get; set; }
 
@@ -1249,6 +1418,21 @@ namespace WSTanHoa.Models
         /// Nội dung
         /// </summary>
         public string NoiDung { get; set; }
+
+        public TienTrinh()
+        {
+            MaDon = "";
+            TabSTT = "";
+            TabName = "";
+            NgayChuyen = null;
+            NoiChuyen = "";
+            NoiNhan = "";
+            KTXM = "";
+            NoiDung = "";
+        }
+
+        #endregion
+
     }
 
 }
