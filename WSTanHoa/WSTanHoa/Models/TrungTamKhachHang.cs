@@ -110,6 +110,32 @@ namespace WSTanHoa.Models
         }
     }
 
+    public class DocSo
+    {
+        /// <summary>
+        /// Nhân viên đọc số
+        /// </summary>
+        public string NhanVien { get; set; }
+
+        /// <summary>
+        /// Lịch ghi chỉ số
+        /// </summary>
+        public List<GhiChiSo> lstGhiChiSo { get; set; }
+
+        /// <summary>
+        /// Ghi chú
+        /// </summary>
+        public List<GhiChu> lstGhiChu { get; set; }
+
+        public DocSo()
+        {
+            NhanVien = "";
+            lstGhiChiSo = new List<GhiChiSo>();
+            lstGhiChu = new List<GhiChu>();
+        }
+
+    }
+
     public class GhiChiSo
     {
         /// <summary>
@@ -176,6 +202,25 @@ namespace WSTanHoa.Models
 
     #region Thu Tiền
 
+    public class ThuTien
+    {
+        /// <summary>
+        /// Nhân viên thu tiền
+        /// </summary>
+        public string NhanVien { get; set; }
+
+        /// <summary>
+        /// Danh sách hóa đơn
+        /// </summary>
+        public List<HoaDonThuTien> lstHoaDon { get; set; }
+
+        public ThuTien()
+        {
+            NhanVien = "";
+            lstHoaDon = new List<HoaDonThuTien>();
+        }
+    }
+
     public class HoaDonThuTien
     {
         /// <summary>
@@ -239,7 +284,7 @@ namespace WSTanHoa.Models
         public string HanhThu { get; set; }
 
         /// <summary>
-        /// Lệnh đóng nước
+        /// Lệnh đóng nước, nếu có giá trị thì tô màu vàng
         /// </summary>
         public string MaDN { get; set; }
 
@@ -252,6 +297,22 @@ namespace WSTanHoa.Models
         /// Ngày mở nước
         /// </summary>
         public DateTime? NgayMN { get; set; }
+
+        /// <summary>
+        /// Đóng nước lần 2, true => tô màu cam
+        /// </summary>
+        public bool DongNuoc2 { get; set; }
+
+        /// <summary>
+        /// Lệnh hủy, true => tô màu đỏ
+        /// </summary>
+        public bool LenhHuy { get; set; }
+
+        /// <summary>
+        /// Tờ trình cắt hủy gửi Phòng Kinh Doanh, true => tô màu xanh lá
+        /// </summary>
+        public bool ToTrinh { get; set; }
+
 
         public HoaDonThuTien()
         {
@@ -269,7 +330,9 @@ namespace WSTanHoa.Models
             HanhThu = "";
             MaDN = "";
             NgayDN = null;
-
+            DongNuoc2 = false;
+            LenhHuy = false;
+            ToTrinh = false;
         }
     }
 
@@ -325,69 +388,69 @@ namespace WSTanHoa.Models
         public string NoiDung { get; set; }
 
         /// <summary>
-        /// Kiểm tra xác minh
+        /// Danh sách Kiểm tra xác minh
         /// </summary>
-        public List<KTXM> ktxm { get; set; }
+        public List<KTXM> lstKTXM { get; set; }
 
         /// <summary>
-        /// Bấm chì
+        /// Danh sách Bấm chì
         /// </summary>
-        public List<BamChi> bamchi { get; set; }
+        public List<BamChi> lstBamChi { get; set; }
 
         /// <summary>
-        /// Đóng nước
+        /// Danh sách Đóng nước
         /// </summary>
-        public List<DongNuoc> dongnuoc { get; set; }
+        public List<DongNuoc> lstDongNuoc { get; set; }
 
         /// <summary>
-        /// Điều chỉnh biến động
+        /// Danh sách Điều chỉnh biến động
         /// </summary>
-        public List<DCBD> dcbd { get; set; }
+        public List<DCBD> lstDCBD { get; set; }
 
         /// <summary>
-        /// Điều chỉnh hóa đơn
+        /// Danh sách Điều chỉnh hóa đơn
         /// </summary>
-        public List<DCHD> dchd { get; set; }
+        public List<DCHD> lstDCHD { get; set; }
 
         /// <summary>
-        /// Cắt hủy danh bộ
+        /// Danh sách Cắt hủy danh bộ
         /// </summary>
-        public List<CHDB> chdb { get; set; }
+        public List<CHDB> lstCHDB { get; set; }
 
         /// <summary>
-        /// Phiếu cắt hủy danh bộ
+        /// Danh sách Phiếu cắt hủy danh bộ
         /// </summary>
-        public List<PhieuCHDB> phieuchdb { get; set; }
+        public List<PhieuCHDB> lstPhieuCHDB { get; set; }
 
         /// <summary>
-        /// Thư trả lời
+        /// Danh sách Thư trả lời
         /// </summary>
-        public List<TTL> ttl { get; set; }
+        public List<TTL> lstTTL { get; set; }
 
         /// <summary>
-        /// Gian lận
+        /// Danh sách Gian lận
         /// </summary>
-        public List<GianLan> gianlan { get; set; }
+        public List<GianLan> lstGianLan { get; set; }
 
         /// <summary>
-        /// Truy thu
+        /// Danh sách Truy thu
         /// </summary>
-        public List<TruyThu> truythu { get; set; }
+        public List<TruyThu> lstTruyThu { get; set; }
 
         /// <summary>
-        /// Tờ trình
+        /// Danh sách Tờ trình
         /// </summary>
-        public List<ToTrinh> totrinh { get; set; }
+        public List<ToTrinh> lstToTrinh { get; set; }
 
         /// <summary>
-        /// Thư mời
+        /// Danh sách Thư mời
         /// </summary>
-        public List<ThuMoi> thumoi { get; set; }
+        public List<ThuMoi> lstThuMoi { get; set; }
 
         /// <summary>
-        /// Tiến trình đơn
+        /// Danh sách Tiến trình đơn
         /// </summary>
-        public List<TienTrinh> tientrinh { get; set; }
+        public List<TienTrinh> lstTienTrinh { get; set; }
 
         public DonKinhDoanh()
         {
@@ -400,19 +463,19 @@ namespace WSTanHoa.Models
             GiaBieu = "";
             DinhMuc = "";
             NoiDung = "";
-            ktxm = new List<KTXM>();
-            bamchi = new List<BamChi>();
-            dongnuoc = new List<DongNuoc>();
-            dcbd = new List<DCBD>();
-            dchd = new List<DCHD>();
-            chdb = new List<CHDB>();
-            phieuchdb = new List<PhieuCHDB>();
-            ttl = new List<TTL>();
-            gianlan = new List<GianLan>();
-            truythu = new List<TruyThu>();
-            totrinh = new List<ToTrinh>();
-            thumoi = new List<ThuMoi>();
-            tientrinh = new List<TienTrinh>();
+            lstKTXM = new List<KTXM>();
+            lstBamChi = new List<BamChi>();
+            lstDongNuoc = new List<DongNuoc>();
+            lstDCBD = new List<DCBD>();
+            lstDCHD = new List<DCHD>();
+            lstCHDB = new List<CHDB>();
+            lstPhieuCHDB = new List<PhieuCHDB>();
+            lstTTL = new List<TTL>();
+            lstGianLan = new List<GianLan>();
+            lstTruyThu = new List<TruyThu>();
+            lstToTrinh = new List<ToTrinh>();
+            lstThuMoi = new List<ThuMoi>();
+            lstTienTrinh = new List<TienTrinh>();
         }
 
     }
@@ -1430,9 +1493,55 @@ namespace WSTanHoa.Models
             KTXM = "";
             NoiDung = "";
         }
-
-        #endregion
-
     }
+
+    #endregion
+
+    #region Gắn Mới
+
+    public class HoSoGanMoi
+    {
+        /// <summary>
+        /// Số hồ sơ
+        /// </summary>
+        public string SoHoSo { get; set; }
+
+        /// <summary>
+        /// Loại hồ sơ
+        /// </summary>
+        public string LoaiHoSo { get; set; }
+
+        /// <summary>
+        /// Họ tên khách hàng
+        /// </summary>
+        public string HoTen { get; set; }
+
+        /// <summary>
+        /// Địa chỉ
+        /// </summary>
+        public string DiaChi { get; set; }
+
+        /// <summary>
+        /// Ngày nhận
+        /// </summary>
+        public DateTime? CreateDate { get; set; }
+
+        /// <summary>
+        /// Tiến trình
+        /// </summary>
+        public List<GhiChu> lstGhiChu { get; set; }
+
+        public HoSoGanMoi()
+        {
+            SoHoSo = "";
+            LoaiHoSo = "";
+            HoTen = "";
+            DiaChi = "";
+            CreateDate = null;
+            lstGhiChu = new List<GhiChu>();
+        }
+    }
+
+    #endregion
 
 }

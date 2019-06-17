@@ -570,7 +570,23 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getDocSo(System.String,System.String)">
+            <summary>
+            Lấy thông tin nhân viên đọc số, lịch ghi chỉ số nước, ghi chú
+            </summary>
+            <param name="DanhBo"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getHoaDon(System.String,System.String)">
+            <summary>
+            Lấy thông tin hóa đơn
+            </summary>
+            <param name="DanhBo"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getThuTien(System.String,System.String)">
             <summary>
             Lấy thông tin hóa đơn
             </summary>
@@ -601,6 +617,14 @@
             Tìm kiếm danh bộ bằng số điện thoại
             </summary>
             <param name="DienThoai"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getHoSoGanMoi(System.String,System.String)">
+            <summary>
+            Lấy thông tin tiến trình xử lý hồ sơ gắn mới
+            </summary>
+            <param name="SoHoSo"></param>
             <param name="checksum"></param>
             <returns></returns>
         </member>
@@ -705,6 +729,21 @@
             Hiệu lực
             </summary>
         </member>
+        <member name="P:WSTanHoa.Models.DocSo.NhanVien">
+            <summary>
+            Nhân viên đọc số
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DocSo.lstGhiChiSo">
+            <summary>
+            Lịch ghi chỉ số
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DocSo.lstGhiChu">
+            <summary>
+            Ghi chú
+            </summary>
+        </member>
         <member name="P:WSTanHoa.Models.GhiChiSo.Ky">
             <summary>
             Kỳ
@@ -743,6 +782,16 @@
         <member name="P:WSTanHoa.Models.GhiChu.CreateDate">
             <summary>
             Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuTien.NhanVien">
+            <summary>
+            Nhân viên thu tiền
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuTien.lstHoaDon">
+            <summary>
+            Danh sách hóa đơn
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.HoaDonThuTien.GiaBieu">
@@ -807,7 +856,7 @@
         </member>
         <member name="P:WSTanHoa.Models.HoaDonThuTien.MaDN">
             <summary>
-            Lệnh đóng nước
+            Lệnh đóng nước, nếu có giá trị thì tô màu vàng
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.HoaDonThuTien.NgayDN">
@@ -818,6 +867,21 @@
         <member name="P:WSTanHoa.Models.HoaDonThuTien.NgayMN">
             <summary>
             Ngày mở nước
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoaDonThuTien.DongNuoc2">
+            <summary>
+            Đóng nước lần 2, true => tô màu cam
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoaDonThuTien.LenhHuy">
+            <summary>
+            Lệnh hủy, true => tô màu đỏ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoaDonThuTien.ToTrinh">
+            <summary>
+            Tờ trình cắt hủy gửi Phòng Kinh Doanh, true => tô màu xanh lá
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.DonKinhDoanh.MaDon">
@@ -865,69 +929,69 @@
             Nội dung
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.ktxm">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstKTXM">
             <summary>
-            Kiểm tra xác minh
+            Danh sách Kiểm tra xác minh
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.bamchi">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstBamChi">
             <summary>
-            Bấm chì
+            Danh sách Bấm chì
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.dongnuoc">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstDongNuoc">
             <summary>
-            Đóng nước
+            Danh sách Đóng nước
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.dcbd">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstDCBD">
             <summary>
-            Điều chỉnh biến động
+            Danh sách Điều chỉnh biến động
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.dchd">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstDCHD">
             <summary>
-            Điều chỉnh hóa đơn
+            Danh sách Điều chỉnh hóa đơn
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.chdb">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstCHDB">
             <summary>
-            Cắt hủy danh bộ
+            Danh sách Cắt hủy danh bộ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.phieuchdb">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstPhieuCHDB">
             <summary>
-            Phiếu cắt hủy danh bộ
+            Danh sách Phiếu cắt hủy danh bộ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.ttl">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstTTL">
             <summary>
-            Thư trả lời
+            Danh sách Thư trả lời
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.gianlan">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstGianLan">
             <summary>
-            Gian lận
+            Danh sách Gian lận
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.truythu">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstTruyThu">
             <summary>
-            Truy thu
+            Danh sách Truy thu
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.totrinh">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstToTrinh">
             <summary>
-            Tờ trình
+            Danh sách Tờ trình
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.thumoi">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstThuMoi">
             <summary>
-            Thư mời
+            Danh sách Thư mời
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.tientrinh">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstTienTrinh">
             <summary>
-            Tiến trình đơn
+            Danh sách Tiến trình đơn
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.KTXM.MaDon">
@@ -1698,6 +1762,36 @@
         <member name="P:WSTanHoa.Models.TienTrinh.NoiDung">
             <summary>
             Nội dung
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoGanMoi.SoHoSo">
+            <summary>
+            Số hồ sơ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoGanMoi.LoaiHoSo">
+            <summary>
+            Loại hồ sơ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoGanMoi.HoTen">
+            <summary>
+            Họ tên khách hàng
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoGanMoi.DiaChi">
+            <summary>
+            Địa chỉ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoGanMoi.CreateDate">
+            <summary>
+            Ngày nhận
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoGanMoi.lstGhiChu">
+            <summary>
+            Tiến trình
             </summary>
         </member>
     </members>
