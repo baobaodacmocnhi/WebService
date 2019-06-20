@@ -60,6 +60,7 @@ namespace WSTanHoa.Controllers
                         {
                             //lấy 12 kỳ hóa đơn gần nhất
                             if (message == "#get12kyhoadon")
+                            {
                                 foreach (DataRow item in dt_DanhBo.Rows)
                                 {
                                     DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
@@ -78,9 +79,14 @@ namespace WSTanHoa.Controllers
                                         strResponse = sendMessage(fromuid, content);
                                     }
                                 }
+                                //insert lịch sử truy vấn
+                                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",'get12kyhoadon',getdate())";
+                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                            }
                             else
                             //lấy hóa đơn tồn
                             if (message == "#gethoadonton")
+                            {
                                 foreach (DataRow item in dt_DanhBo.Rows)
                                 {
                                     DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
@@ -109,7 +115,12 @@ namespace WSTanHoa.Controllers
                                                     + "Hiện đang Hết Nợ";
                                         strResponse = sendMessage(fromuid, content);
                                     }
+
                                 }
+                                //insert lịch sử truy vấn
+                                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",'gethoadonton',getdate())";
+                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                            }
                         }
                     }
                 }

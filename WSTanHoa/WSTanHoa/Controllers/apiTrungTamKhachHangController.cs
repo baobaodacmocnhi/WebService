@@ -857,7 +857,15 @@ namespace WSTanHoa.Controllers
         [HttpGet]
         public IList<ThongTinKhachHang> searchThongTinKhachHang(string HoTen, string SoNha, string TenDuong, string checksum)
         {
-            if (CConstantVariable.getSHA256(HoTen.Replace("\"", "") + SoNha.Replace("\"", "") + TenDuong.Replace("\"", "") + _pass) != checksum)
+            string checkHoTen = "", checkSoNha = "", checkTenDuong = "";
+            
+            if (HoTen != null)
+                checkHoTen = HoTen;
+            if (SoNha != null)
+                checkSoNha = SoNha;
+            if (TenDuong != null)
+                checkTenDuong = TenDuong;
+            if (CConstantVariable.getSHA256(checkHoTen + checkSoNha + checkTenDuong + _pass) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -865,7 +873,7 @@ namespace WSTanHoa.Controllers
             DataTable dt = new DataTable();
             try
             {
-                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + HoTen.Replace("\"", "") + "','" + SoNha.Replace("\"", "") + "','" + TenDuong.Replace("\"", "") + "')");
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + checkHoTen + "','" + checkSoNha + "','" + checkTenDuong + "')");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
