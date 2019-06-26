@@ -121,6 +121,12 @@ namespace WSTanHoa.Controllers
                                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",'gethoadonton',getdate())";
                                 _cDAL_TrungTam.ExecuteNonQuery(sql);
                             }
+                            else
+                            {
+                                //insert lịch sử truy vấn
+                                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",N'"+ message + "',getdate())";
+                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                            }
                         }
                     }
                 }
@@ -198,6 +204,11 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
+        /// <summary>
+        /// Gửi tin nhắn đăng ký
+        /// </summary>
+        /// <param name="IDZalo"></param>
+        /// <returns></returns>
         [Route("sendMessageDangKy")]
         [HttpGet]
         public string sendMessageDangKy(string IDZalo)
@@ -259,6 +270,32 @@ namespace WSTanHoa.Controllers
                     strResponse = "Error: " + respuesta.StatusCode;
                 }
                 return strResponse;
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        /// <summary>
+        /// Gửi tin nhắn từ CRM cho trưởng phòng
+        /// </summary>
+        /// <param name="IDZalo"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        [Route("sendMessage_CRM")]
+        [HttpGet]
+        public string sendMessage_CRM(string KyHieuPhong, string message)
+        {
+            string strResponse = "success";
+            try
+            {
+                DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo where KyHieuPhong='" + KyHieuPhong + "'");
+                foreach (DataRow item in dt.Rows)
+                {
+                    strResponse= sendMessage(item["IDZalo"].ToString(),message);
+                }
             }
             catch (Exception ex)
             {

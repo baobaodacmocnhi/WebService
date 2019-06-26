@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -356,6 +357,7 @@ namespace WSTanHoa.Controllers
             }
             ThuTien en = new ThuTien();
             DataTable dt = new DataTable();
+            int TongNo = 0;
             try
             {
                 string sql = "select * from fnTimKiem('" + DanhBo + "','') order by MaHD desc";
@@ -378,6 +380,8 @@ namespace WSTanHoa.Controllers
                         enCT.TongCong = item["TongCong"].ToString();
                         if (item["NgayGiaiTrach"].ToString() != "")
                             enCT.NgayGiaiTrach = DateTime.Parse(item["NgayGiaiTrach"].ToString());
+                        else
+                            TongNo += int.Parse(item["TongCong"].ToString());
                         enCT.DangNgan = item["DangNgan"].ToString();
                         enCT.HanhThu = item["HanhThu"].ToString();
                         enCT.MaDN = item["MaDN"].ToString();
@@ -391,6 +395,10 @@ namespace WSTanHoa.Controllers
                         en.lstHoaDon.Add(enCT);
                     }
                 }
+                if (TongNo == 0)
+                    en.ThongTin = "Hết nợ";
+                else
+                    en.ThongTin = "Hiện còn nợ: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongNo);
                 return en;
             }
             catch (Exception ex)

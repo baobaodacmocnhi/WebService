@@ -210,6 +210,11 @@ namespace WSTanHoa.Models
         public string NhanVien { get; set; }
 
         /// <summary>
+        /// Thông tin
+        /// </summary>
+        public string ThongTin { get; set; }
+
+        /// <summary>
         /// Danh sách hóa đơn
         /// </summary>
         public List<HoaDonThuTien> lstHoaDon { get; set; }
@@ -217,6 +222,7 @@ namespace WSTanHoa.Models
         public ThuTien()
         {
             NhanVien = "";
+            ThongTin = "";
             lstHoaDon = new List<HoaDonThuTien>();
         }
     }
