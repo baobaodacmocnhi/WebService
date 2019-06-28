@@ -855,7 +855,9 @@ namespace WSSmartPhone
             sql = "select t1.*,t2.HoTen from"
                  + " (select MaNV_HanhThu=case when exists(select a.MaDN from TT_DongNuoc a, TT_CTDongNuoc b where a.MaDN=b.MaDN and a.Huy=0 and b.MaHD=dvt.MaHD)"
                  + " then (select a.MaNV_DongNuoc from TT_DongNuoc a, TT_CTDongNuoc b where a.MaDN=b.MaDN and a.Huy=0 and b.MaHD=dvt.MaHD) else hd.MaNV_HanhThu end"
-                 + " ,MLT=MALOTRINH,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG from TT_DichVuThu dvt,HOADON hd"
+                 + " ,MLT=MALOTRINH,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG"
+                 + " ,PhiMoNuoc=(select PhiMoNuoc from TT_DichVuThuTong where ID=dvt.IDDichVu)"
+                 + " from TT_DichVuThu dvt,HOADON hd"
                  + " where CAST(dvt.CreateDate as date)>='" + FromCreateDate.ToString("yyyyMMdd") + "' and CAST(dvt.CreateDate as date)<='" + ToCreateDate.ToString("yyyyMMdd") + "' and dvt.MaHD=hd.ID_HOADON";
             switch (Loai)
             {
