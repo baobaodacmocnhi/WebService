@@ -649,6 +649,21 @@
             <param name="message"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiZaloController.sendMessageDangKy(System.String)">
+            <summary>
+            Gửi tin nhắn đăng ký
+            </summary>
+            <param name="IDZalo"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiZaloController.sendMessage_CRM(System.String,System.String)">
+            <summary>
+            Gửi tin nhắn từ CRM cho trưởng phòng
+            </summary>
+            <param name="IDZalo"></param>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
         <member name="P:WSTanHoa.Models.ThongTinKhachHang.DanhBo">
             <summary>
             Danh bộ
@@ -787,6 +802,11 @@
         <member name="P:WSTanHoa.Models.ThuTien.NhanVien">
             <summary>
             Nhân viên thu tiền
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThuTien.ThongTin">
+            <summary>
+            Thông tin
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.ThuTien.lstHoaDon">

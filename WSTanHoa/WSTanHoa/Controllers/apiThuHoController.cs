@@ -301,7 +301,7 @@ namespace WSTanHoa.Controllers
                 _cDAL.BeginTransaction();
                 int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
 
-                string SoHoaDons = "", sql_ChiTiet = "";
+                string SoHoaDons = "", Kys = "", sql_ChiTiet = "";
                 for (int i = 0; i < arrayMaHD.Length; i++)
                 {
                     DataTable dt = _cDAL.ExecuteQuery_DataTable_Transaction("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
@@ -309,12 +309,18 @@ namespace WSTanHoa.Controllers
                         + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'" + TenDichVu + "'," + ID + ",'" + IDGiaoDich + "',getdate()) ";
                     //_cDAL.ExecuteNonQuery_Transaction(sql);
                     if (string.IsNullOrEmpty(SoHoaDons) == true)
+                    {
                         SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
+                        Kys= dt.Rows[0]["KY"].ToString()+"/"+dt.Rows[0]["NAM"].ToString();
+                    }
                     else
+                    {
                         SoHoaDons += "," + dt.Rows[0]["SoHoaDon"];
+                        Kys += ", " + dt.Rows[0]["KY"].ToString() + "/" + dt.Rows[0]["NAM"].ToString();
+                    }
                 }
-                string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
-                            + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "'," + SoTien + "," + PhiMoNuoc + "," + TienDu + "," + TongCong + ",N'" + TenDichVu + "','" + IDGiaoDich + "',getdate())";
+                string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
+                            + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','"+Kys+"'," + SoTien + "," + PhiMoNuoc + "," + TienDu + "," + TongCong + ",N'" + TenDichVu + "','" + IDGiaoDich + "',getdate())";
                 _cDAL.ExecuteNonQuery_Transaction(sql_Tong);
                 _cDAL.ExecuteNonQuery_Transaction(sql_ChiTiet);
                 _cDAL.CommitTransaction();
@@ -520,7 +526,7 @@ namespace WSTanHoa.Controllers
             DataTable dt = new DataTable();
             try
             {
-                dt = _cDAL.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                dt = _cDAL.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
@@ -538,6 +544,7 @@ namespace WSTanHoa.Controllers
                     entity.DanhBo = item["DanhBo"].ToString();
                     entity.MaHDs = item["MaHDs"].ToString();
                     entity.SoHoaDons = item["SoHoaDons"].ToString();
+                    entity.Kys = item["Kys"].ToString();
                     entity.SoTien = int.Parse(item["SoTien"].ToString());
                     entity.PhiMoNuoc = int.Parse(item["PhiMoNuoc"].ToString());
                     entity.TienDu = int.Parse(item["TienDu"].ToString());

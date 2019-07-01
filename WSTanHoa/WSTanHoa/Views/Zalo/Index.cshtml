@@ -17,8 +17,8 @@
             //    $('#submit').click();
             //}
             //alert($("#IDZalo1").val());
-            $("#IDZalo1").keyup(function () {
-                $('#IDZalo2').val($("#IDZalo1").val());
+            $("#DanhBo1").keyup(function () {
+                $('#DanhBo2').val($("#DanhBo1").val());
             });
         });
 
@@ -39,7 +39,7 @@
         <input id="submit" type="button" value="reload" class="btn btn-default" onClick="reloadPage()" />
     </div>*@
     <div class="form-group" >
-            @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = ViewBag.IDZalo, @class = "form-control" } })
+            @*@Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = @Session["IDZalo"], @class = "form-control" } })*@
             @*<input id="submit" type="submit" value="Load" class="btn btn-default" />*@
         </div>
 
@@ -108,7 +108,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new {  @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.vZalo.DanhBo,  new { htmlAttributes = new { @class = "form-control", @id = "IDZalo1" } })
+                    @Html.EditorFor(model => model.vZalo.DanhBo,  new { htmlAttributes = new { @class = "form-control", @id = "DanhBo1" } })
                     @Html.ValidationMessageFor(model => model.vZalo.DanhBo, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -126,7 +126,7 @@
             <div class="form-group" style="display:none">
                 @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.vZalo.DanhBo, new { htmlAttributes = new { @class = "form-control", @id = "IDZalo2" } })
+                    @Html.EditorFor(model => model.vZalo.DanhBo, new { htmlAttributes = new { @class = "form-control", @id = "DanhBo2" } })
                     @Html.ValidationMessageFor(model => model.vZalo.DanhBo, "", new { @class = "text-danger" })
                 </div>
             </div>

@@ -233,7 +233,7 @@ namespace WSTanHoa.Controllers
                             + "\"elements\":[{"
                             + "\"title\":\"QUÝ KHÁCH HÀNG CHƯA ĐĂNG KÝ THÔNG TIN\","
                             + "\"subtitle\":\"Để sử dụng dịch vụ, Quý Khách Hàng cần phải đăng ký ít nhất một mã khách hàng (Danh Bộ)\","
-                            + "\"image_url\":\"http://www.capnuoctanhoa.com.vn/uploads/page/logoctycp.jpg\","
+                            + "\"image_url\":\"http://www.capnuoctanhoa.com.vn/uploads/zalo/zaloOACover1333x750.png\","
                             + "\"default_action\":{"
                             + "\"type\":\"oa.open.url\","
                             + "\"url\":\"http://service.capnuoctanhoa.com.vn:1010/Zalo?id=" + IDZalo + "\""

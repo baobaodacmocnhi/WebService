@@ -10,6 +10,7 @@ namespace WSTanHoa.Models
         public string DanhBo { get; set; }
         public string MaHDs { get; set; }
         public string SoHoaDons { get; set; }
+        public string Kys { get; set; }
         public int SoTien { get; set; }
         public int PhiMoNuoc { get; set; }
         public int TienDu { get; set; }

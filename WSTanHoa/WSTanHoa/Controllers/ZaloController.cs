@@ -16,26 +16,39 @@ namespace WSTanHoa.Controllers
     {
         ModelTrungTamKhachHang db = new ModelTrungTamKhachHang();
         CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
+        decimal IDZalo = -1;
 
         // GET: Zalo
         public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo vZalo, string action)
         {
-            if (CConstantVariable.IDZalo == -1)
+            //if (CConstantVariable.IDZalo == -1)
+            //{
+            //    if (id != null && id != -1)
+            //    {
+            //        CConstantVariable.IDZalo = id.Value;
+            //        ViewBag.IDZalo = id.Value;
+            //    }
+            //    else
+            //    {
+            //        CConstantVariable.IDZalo = -1;
+            //    }
+            //}
+
+            if (Session["IDZalo"] == null)
             {
-                if (id != null && id != -1)
-                {
-                    CConstantVariable.IDZalo = id.Value;
-                    ViewBag.IDZalo = id.Value;
-                }
-                else
-                {
-                    CConstantVariable.IDZalo = -1;
-                }
+                if (id != null)
+                    Session["IDZalo"] = id.Value;
             }
-            IEnumerable<Zalo> lstZalo = await db.Zaloes.Where(item => item.IDZalo == CConstantVariable.IDZalo).ToListAsync();
+            //Session["IDZalo"] = 141616666237764827;
+
+            if (Session["IDZalo"] != null)
+                IDZalo = decimal.Parse(Session["IDZalo"].ToString());
+
+            IEnumerable<Zalo> lstZalo = await db.Zaloes.Where(item => item.IDZalo == IDZalo).ToListAsync();
             Zalo zalo = new Zalo();
+
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(action))
-                if (CConstantVariable.IDZalo != -1)
+                if (Session["IDZalo"] != null)
                 {
                     switch (action)
                     {
@@ -75,15 +88,15 @@ namespace WSTanHoa.Controllers
                                     return View(new ViewZalo(lstZalo, vZalo));
                                 }
                                 //kiểm tra trùng
-                                if (db.Zaloes.Count(item => item.IDZalo == CConstantVariable.IDZalo && item.DanhBo == vZalo.DanhBo.Replace(" ", "")) == 0)
+                                if (db.Zaloes.Count(item => item.IDZalo == IDZalo && item.DanhBo == vZalo.DanhBo.Replace(" ", "")) == 0)
                                 {
-                                   
+
                                     if (vZalo.DienThoai == null || vZalo.DienThoai == "")
                                     {
                                         ModelState.AddModelError("vZalo.DienThoai", "Vui lòng nhập số điện thoại");
                                         return View(new ViewZalo(lstZalo, vZalo));
                                     }
-                                    vZalo.IDZalo = CConstantVariable.IDZalo;
+                                    vZalo.IDZalo = IDZalo;
                                     //vZalo.DanhBo = vZalo.DanhBo.Replace(" ", "");
                                     vZalo.CreateDate = DateTime.Now;
                                     db.Zaloes.Add(vZalo);
@@ -121,8 +134,8 @@ namespace WSTanHoa.Controllers
         // GET: Zalo/Create
         public ActionResult Create(string DanhBo)
         {
-            if (ViewBag == null)
-                ViewBag.IDZalo = CConstantVariable.IDZalo;
+            //if (ViewBag == null)
+            //    ViewBag.IDZalo = CConstantVariable.IDZalo;
             if (DanhBo != null)
             {
                 DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
@@ -152,9 +165,9 @@ namespace WSTanHoa.Controllers
         public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo zalo, string Loai)
         {
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(Loai))
-                if (CConstantVariable.IDZalo != -1)
+                if (Session["IDZalo"] != null)
                 {
-                    ViewBag.IDZalo = CConstantVariable.IDZalo;
+                    //ViewBag.IDZalo = CConstantVariable.IDZalo;
                     switch (Loai)
                     {
                         case "Kiểm Tra":
@@ -186,7 +199,7 @@ namespace WSTanHoa.Controllers
                                         ModelState.AddModelError("DienThoai", "Vui lòng nhập số điện thoại");
                                         return View(zalo);
                                     }
-                                    zalo.IDZalo = CConstantVariable.IDZalo;
+                                    zalo.IDZalo = IDZalo;
                                     if (zalo.HoTen == null || zalo.HoTen == "")
                                     {
                                         DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");

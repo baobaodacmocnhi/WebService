@@ -9,7 +9,7 @@ namespace WSTanHoa.Providers
 {
     public class CConstantVariable
     {
-        public static decimal IDZalo = -1;
+        public static decimal IDZalo1 = -1;
         public static string DHN = "Data Source=hp_g7\\KD;Initial Catalog=CAPNUOCTANHOA;Persist Security Info=True;User ID=sa;Password=db8@tanhoa";
         public static string DocSo = "Data Source=hp_g7\\KD;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db8@tanhoa";
         public static string GanMoi = "Data Source=hp_g7\\KD;Initial Catalog=TANHOA_WATER;Persist Security Info=True;User ID=sa;Password=db8@tanhoa";

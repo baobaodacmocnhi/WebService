@@ -15,32 +15,36 @@ namespace WSTanHoa.Controllers
     public class KhieuNaiController : Controller
     {
         private ModelTrungTamKhachHang db = new ModelTrungTamKhachHang();
+        decimal IDZalo = -1;
 
         // GET: KhieuNai
         public async Task<ActionResult> Index(decimal? id)
         {
-            
-            if (id != null && id != -1)
-            {
-                CConstantVariable.IDZalo = id.Value;
-                ViewBag.IDZalo = id.Value;
-            }
-            else
-            {
-                CConstantVariable.IDZalo = -1;
-                if (id == -1)
-                    ViewBag.IDZalo = "-1";
-                else
-                    ViewBag.IDZalo = "";
-            }
-            //if (id != null)
+
+            //if (id != null && id != -1)
             //{
             //    CConstantVariable.IDZalo = id.Value;
-            //    ViewBag.IDZalo = CConstantVariable.IDZalo;
+            //    ViewBag.IDZalo = id.Value;
             //}
             //else
-            //    ViewBag.IDZalo = "";
-            return View(await db.KhieuNais.Where(item => item.IDZalo == CConstantVariable.IDZalo).ToListAsync());
+            //{
+            //    CConstantVariable.IDZalo = -1;
+            //    if (id == -1)
+            //        ViewBag.IDZalo = "-1";
+            //    else
+            //        ViewBag.IDZalo = "";
+            //}
+            if (Session["IDZalo"] == null)
+            {
+                if (id != null)
+                    Session["IDZalo"] = id.Value;
+            }
+            //Session["IDZalo"] = 141616666237764827;
+
+            if (Session["IDZalo"] != null)
+                IDZalo = decimal.Parse(Session["IDZalo"].ToString());
+
+            return View(await db.KhieuNais.Where(item => item.IDZalo == IDZalo).ToListAsync());
         }
 
         // GET: KhieuNai/Details/5
@@ -71,13 +75,13 @@ namespace WSTanHoa.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "ID,DanhBo,HoTen,DiaChi,NoiDung,NguoiBao,DienThoai,IDZalo,CreateDate")] KhieuNai khieuNai)
         {
-            if (ModelState.IsValid && khieuNai.IDZalo != null && CConstantVariable.IDZalo != 1)
+            if (ModelState.IsValid && khieuNai.IDZalo != null && Session["IDZalo"] !=null)
             {
                 if (db.KhieuNais.Count() == 0)
                     khieuNai.ID = 1;
                 else
                     khieuNai.ID = db.KhieuNais.Max(item => item.ID) + 1;
-                khieuNai.IDZalo = CConstantVariable.IDZalo;
+                khieuNai.IDZalo = IDZalo;
                 khieuNai.CreateDate = DateTime.Now;
                 db.KhieuNais.Add(khieuNai);
                 await db.SaveChangesAsync();

@@ -350,11 +350,11 @@ namespace WSTanHoa.Controllers
         [Route("getThuTien")]
         public ThuTien getThuTien(string DanhBo, string checksum)
         {
-            if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-            {
-                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-            }
+            //if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+            //{
+            //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+            //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            //}
             ThuTien en = new ThuTien();
             DataTable dt = new DataTable();
             int TongNo = 0;
@@ -395,10 +395,20 @@ namespace WSTanHoa.Controllers
                         en.lstHoaDon.Add(enCT);
                     }
                 }
-                if (TongNo == 0)
-                    en.ThongTin = "Hết nợ";
-                else
+                en.ThongTin = "Hết nợ";
+
+                if (TongNo > 0)
                     en.ThongTin = "Hiện còn nợ: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongNo);
+
+                int PhiMoNuoc = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+                if (PhiMoNuoc > 0)
+                    en.ThongTin += " ; Phí mở nước: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", PhiMoNuoc);
+
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnThuHoChuaDangNgan(" + DanhBo + ")");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    en.ThongTin += " ; Đã Thu Hộ "+ String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(dt.Rows[0]["TongCong"].ToString())) + " - Kỳ "+dt.Rows[0]["Kys"].ToString()+" - ngày "+ dt.Rows[0]["CreateDate"].ToString()+" - qua "+ dt.Rows[0]["TenDichVu"].ToString();
+                }
                 return en;
             }
             catch (Exception ex)
