@@ -85,19 +85,19 @@ namespace WSAgribank
                         {
                             MaHDs = dt.Rows[0]["MaHD"].ToString();
                             SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
-                            Kys = dt.Rows[0]["Ky"].ToString();
+                            Kys = dt.Rows[0]["Ky"].ToString()+"/"+dt.Rows[0]["Nam"].ToString();
                             TongCong += int.Parse(dt.Rows[0]["TongCong"].ToString());
                         }
                         else
                         {
                             MaHDs += "," + dt.Rows[0]["MaHD"];
                             SoHoaDons += "," + dt.Rows[0]["SoHoaDon"];
-                            Kys += "," + dt.Rows[0]["Ky"].ToString();
+                            Kys += "," + dt.Rows[0]["Ky"].ToString() + "/" + dt.Rows[0]["Nam"].ToString();
                             TongCong += int.Parse(dt.Rows[0]["TongCong"].ToString());
                         }
                         DanhBo = dt.Rows[0]["DanhBo"].ToString();
                     }
-                    int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+                    int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
                     int TongThu = TongCong + PhiMoNuoc;
                     string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
                                 + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','" + Kys + "'," + TongCong + ",0," + PhiMoNuoc + "," + TongThu + ",N'AGRIBANK','" + "AGRIBANK" + ID + "',getdate())";
