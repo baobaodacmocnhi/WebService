@@ -560,7 +560,7 @@ namespace WSTanHoa.Controllers
                                                     enCT.DinhMuc_BD = dr[j]["DinhMuc_BD"].ToString();
                                                     enCT.HoTen_BD = dr[j]["HoTen_BD"].ToString();
                                                     enCT.DiaChi_BD = dr[j]["DiaChi_BD"].ToString();
-                                                    enCT.ThongTin = dr[j]["ThongTin"].ToString();
+                                                    enCT.ThongTin = dr[j]["ThongTin"].ToString()+"; Hiệu lực: "+ dr[j]["HieuLucKy"].ToString();
                                                     enCT.CreateBy = dr[j]["CreateBy"].ToString();
 
                                                     en.lstDCBD.Add(enCT);
