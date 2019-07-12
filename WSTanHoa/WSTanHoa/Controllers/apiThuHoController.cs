@@ -259,13 +259,24 @@ namespace WSTanHoa.Controllers
                 {
                     try
                     {
-                        string sql = "select"
-                                    + " case when(select COUNT(ID_HOADON) from HOADON where ID_HOADON = " + arrayMaHD[i] + " and NGAYGIAITRACH is not null and DangNgan_ChuyenKhoan = 0) = 1"
-                                    + " then N'Thu Tiền Mặt'"
-                                    + " else"
-                                    + " (select TenDichVu from TT_DichVuThu where MaHD = " + arrayMaHD[i] + ")"
-                                    + " end";
-                        checkExist_GiaiTrach = _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
+                        string sql = "declare @MaHD int"
+                                    + " set @MaHD = " + arrayMaHD[i]
+                                    + " select"
+                                    + " 	case when(select COUNT(ID_HOADON) from HOADON where ID_HOADON = @MaHD and NGAYGIAITRACH is not null and DangNgan_ChuyenKhoan = 0) = 1"
+                                    + "     then N'Thu Tiền Mặt'"
+                                    + " 	else"
+                                    + " 		case when(select TenDichVu from TT_DichVuThu where MaHD = @MaHD ) is not null"
+                                    + "         then(select TenDichVu from TT_DichVuThu where MaHD = @MaHD )"
+                                    + " 		else"
+                                    + " 			case when(select COUNT(ID_HOADON) from HOADON where ID_HOADON = @MaHD and NGAYGIAITRACH is not null and DangNgan_ChuyenKhoan = 1) = 1"
+                                    + "             then N'Đã Khấu Trừ'"
+                                    + "             end"
+                                    + "         end"
+                                    + "     end";
+                        if (checkExist_GiaiTrach == "")
+                            checkExist_GiaiTrach += arrayMaHD[i] + " : " + _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
+                        else
+                            checkExist_GiaiTrach += " ; "+arrayMaHD[i] + " : " + _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
                     }
                     catch (Exception ex)
                     {
@@ -273,12 +284,13 @@ namespace WSTanHoa.Controllers
                         _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                         throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
                     }
-                    if (checkExist_GiaiTrach != null && checkExist_GiaiTrach != "" && checkExist_GiaiTrach != "NULL")
-                    {
-                        ErrorResponse error1 = new ErrorResponse(ErrorResponse.ErrorGiaiTrach + ". " + checkExist_GiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
-                        _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
-                        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
-                    }
+
+                }
+                if ( checkExist_GiaiTrach != "" )
+                {
+                    ErrorResponse error1 = new ErrorResponse(ErrorResponse.ErrorGiaiTrach + ". " + checkExist_GiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
+                    _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
                 }
 
                 //return error không thanh toán đủ hóa đơn tồn

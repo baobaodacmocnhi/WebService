@@ -30,11 +30,11 @@ namespace WSTanHoa.Controllers
         [Route("getThongTinKhachHang")]
         public ThongTinKhachHang getThongTinKhachHang(string DanhBo, string checksum)
         {
-            if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-            {
-                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-            }
+            //if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+            //{
+            //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+            //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            //}
             DataTable dt = new DataTable();
             try
             {
@@ -350,11 +350,11 @@ namespace WSTanHoa.Controllers
         [Route("getThuTien")]
         public ThuTien getThuTien(string DanhBo, string checksum)
         {
-            //if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-            //{
-            //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-            //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-            //}
+            if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+            {
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
             ThuTien en = new ThuTien();
             DataTable dt = new DataTable();
             int TongNo = 0;
