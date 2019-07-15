@@ -19,6 +19,7 @@ namespace WSTanHoa.Controllers
         CConnection _cDAL_GanMoi = new CConnection(CConstantVariable.GanMoi);
         CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
         CConnection _cDAL_KinhDoanh = new CConnection(CConstantVariable.KinhDoanh);
+        CConnection _cDAL_TrungTam = new CConnection(CConstantVariable.TrungTamKhachHang);
         string _pass = "s@l@2019";
 
         /// <summary>
@@ -284,6 +285,50 @@ namespace WSTanHoa.Controllers
         }
 
         /// <summary>
+        /// Lấy lịch đọc số
+        /// </summary>
+        /// <param name="DanhBo"></param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("getLichDocSo")]
+        public string getLichDocSo(string DanhBo, string checksum)
+        {
+            try
+            {
+                if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+
+                string sql_Lich = "select top 1 NoiDung=N'Kỳ hóa đơn '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103) from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c where a.ID=b.IDThuTien and c.ID=b.IDDot"
+                                + " and((c.TB1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                + " or (c.TB2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
+                                + " order by a.CreateDate desc";
+                string result_Lich = _cDAL_TrungTam.ExecuteQuery_ReturnOneValue(sql_Lich).ToString();
+
+                string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+
+                string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
+                            + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
+                            + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
+                            + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
+                            + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                            + result_Lich + "\n"
+                            + result_NhanVien;
+                return content;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
+
+        /// <summary>
         /// Lấy thông tin hóa đơn
         /// </summary>
         /// <param name="DanhBo"></param>
@@ -410,6 +455,50 @@ namespace WSTanHoa.Controllers
                     en.ThongTin += " ; Đã Thu Hộ "+ String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(dt.Rows[0]["TongCong"].ToString())) + " - Kỳ "+dt.Rows[0]["Kys"].ToString()+" - ngày "+ dt.Rows[0]["CreateDate"].ToString()+" - qua "+ dt.Rows[0]["TenDichVu"].ToString();
                 }
                 return en;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
+
+        /// <summary>
+        /// Lấy lịch thu tiền
+        /// </summary>
+        /// <param name="DanhBo"></param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("getLichThuTien")]
+        public string getLichThuTien(string DanhBo, string checksum)
+        {
+            try
+            {
+                if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+
+                string sql_Lich = "select top 1 NoiDung=N'Kỳ hóa đơn '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103) from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c where a.ID=b.IDThuTien and c.ID=b.IDDot"
+                                + " and((c.TB1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                + " or (c.TB2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
+                                + " order by a.CreateDate desc";
+                string result_Lich = _cDAL_TrungTam.ExecuteQuery_ReturnOneValue(sql_Lich).ToString();
+
+                string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+
+                string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
+                            + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
+                            + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
+                            + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
+                            + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                            + result_Lich + "\n"
+                            + result_NhanVien;
+                return content;
             }
             catch (Exception ex)
             {
@@ -969,11 +1058,11 @@ namespace WSTanHoa.Controllers
         [Route("getHoSoGanMoi")]
         public HoSoGanMoi getHoSoGanMoi(string SoHoSo, string checksum)
         {
-            if (CConstantVariable.getSHA256(SoHoSo + _pass) != checksum)
-            {
-                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-            }
+            //if (CConstantVariable.getSHA256(SoHoSo + _pass) != checksum)
+            //{
+            //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+            //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            //}
             HoSoGanMoi en = new HoSoGanMoi();
             DataTable dt = new DataTable();
             try
@@ -995,7 +1084,8 @@ namespace WSTanHoa.Controllers
                     if (dt.Rows[0]["CreateDate"].ToString() != "")
                         en.CreateDate = DateTime.Parse(dt.Rows[0]["CreateDate"].ToString());
 
-                    string sqlCT = "select NgayChuyenThietKe=NGAYCHUYEN_HOSO,"
+                    string sqlCT = "select NgayChuyenThietKe=NGAYCHUYEN_HOSO,TRONGAITHIETKE,NOIDUNGTRONGAI,NGAYHOANTATTK=(select NGAYHOANTATTK from TOTHIETKE where SOHOSO=donkh.SOHOSO),"
+                                  + " TaiXet=(select GHICHUTR from TMP_TAIXET where MAHOSO=donkh.SOHOSO),"
                                   + " NgayXinPhepDaoDuong = (select NGAYLAP from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS)),"
                                   + " NgayCoPhepDaoDuong = (select NGAYCOPHEP from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS)),"
                                   + " NgayThiCong = (select NGAYTHICONG from KH_HOSOKHACHHANG where SHS = donkh.SHS)"
@@ -1007,6 +1097,15 @@ namespace WSTanHoa.Controllers
                     if (dtCT.Rows[0]["NgayChuyenThietKe"].ToString() != "")
                         enCT.CreateDate = DateTime.Parse(dtCT.Rows[0]["NgayChuyenThietKe"].ToString());
                     en.lstGhiChu.Add(enCT);
+
+                    if(dtCT.Rows[0]["TRONGAITHIETKE"].ToString() != ""&&bool.Parse(dtCT.Rows[0]["TRONGAITHIETKE"].ToString())==true)
+                    {
+                        enCT = new GhiChu();
+                        enCT.NoiDung = "Hồ sơ trở ngại thiết kế; "+ dtCT.Rows[0]["NOIDUNGTRONGAI"].ToString()+"; Tái xét: " + dtCT.Rows[0]["TaiXet"].ToString();
+                        if (dtCT.Rows[0]["NGAYHOANTATTK"].ToString() != "")
+                            enCT.CreateDate = DateTime.Parse(dtCT.Rows[0]["NGAYHOANTATTK"].ToString());
+                        en.lstGhiChu.Add(enCT);
+                    }
 
                     enCT = new GhiChu();
                     enCT.NoiDung = "Ngày Xin Phép Đào Đường";

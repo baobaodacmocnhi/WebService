@@ -578,6 +578,14 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getLichDocSo(System.String,System.String)">
+            <summary>
+            Lấy lịch đọc số
+            </summary>
+            <param name="DanhBo"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getHoaDon(System.String,System.String)">
             <summary>
             Lấy thông tin hóa đơn
@@ -589,6 +597,14 @@
         <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getThuTien(System.String,System.String)">
             <summary>
             Lấy thông tin hóa đơn
+            </summary>
+            <param name="DanhBo"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getLichThuTien(System.String,System.String)">
+            <summary>
+            Lấy lịch thu tiền
             </summary>
             <param name="DanhBo"></param>
             <param name="checksum"></param>
