@@ -89,6 +89,8 @@ namespace WSTanHoa.Models
         /// </summary>
         public string HieuLuc { get; set; }
 
+        public string ThongTin { get; set; }
+
         public ThongTinKhachHang()
         {
             DanhBo = "";
@@ -107,6 +109,7 @@ namespace WSTanHoa.Models
             NgayThay = null;
             NgayKiemDinh = null;
             HieuLuc = "";
+            ThongTin = "";
         }
     }
 

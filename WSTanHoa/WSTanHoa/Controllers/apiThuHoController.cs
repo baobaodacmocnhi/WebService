@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Transactions;
 using System.Web.Http;
 using WSTanHoa.Models;
 using WSTanHoa.Providers;
@@ -310,37 +311,37 @@ namespace WSTanHoa.Controllers
             //insert Database
             try
             {
-                _cDAL.BeginTransaction();
-                int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
-
-                string SoHoaDons = "", Kys = "", sql_ChiTiet = "";
-                for (int i = 0; i < arrayMaHD.Length; i++)
+                using (TransactionScope ts = new TransactionScope())
                 {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable_Transaction("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
-                    sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
-                        + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'" + TenDichVu + "'," + ID + ",'" + IDGiaoDich + "',getdate()) ";
-                    //_cDAL.ExecuteNonQuery_Transaction(sql);
-                    if (string.IsNullOrEmpty(SoHoaDons) == true)
+                    int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from TT_DichVuThuTong");
+
+                    string SoHoaDons = "", Kys = "", sql_ChiTiet = "";
+                    for (int i = 0; i < arrayMaHD.Length; i++)
                     {
-                        SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
-                        Kys= dt.Rows[0]["KY"].ToString()+"/"+dt.Rows[0]["NAM"].ToString();
+                        DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
+                        sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
+                            + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'" + TenDichVu + "'," + ID + ",'" + IDGiaoDich + "',getdate()) ";
+                        if (string.IsNullOrEmpty(SoHoaDons) == true)
+                        {
+                            SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
+                            Kys = dt.Rows[0]["KY"].ToString() + "/" + dt.Rows[0]["NAM"].ToString();
+                        }
+                        else
+                        {
+                            SoHoaDons += "," + dt.Rows[0]["SoHoaDon"];
+                            Kys += ", " + dt.Rows[0]["KY"].ToString() + "/" + dt.Rows[0]["NAM"].ToString();
+                        }
                     }
-                    else
-                    {
-                        SoHoaDons += "," + dt.Rows[0]["SoHoaDon"];
-                        Kys += ", " + dt.Rows[0]["KY"].ToString() + "/" + dt.Rows[0]["NAM"].ToString();
-                    }
+                    string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
+                                + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','" + Kys + "'," + SoTien + "," + PhiMoNuoc + "," + TienDu + "," + TongCong + ",N'" + TenDichVu + "','" + IDGiaoDich + "',getdate())";
+                    _cDAL.ExecuteNonQuery(sql_Tong);
+                    _cDAL.ExecuteNonQuery(sql_ChiTiet);
+                    ts.Complete();
+                    return true;
                 }
-                string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
-                            + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','"+Kys+"'," + SoTien + "," + PhiMoNuoc + "," + TienDu + "," + TongCong + ",N'" + TenDichVu + "','" + IDGiaoDich + "',getdate())";
-                _cDAL.ExecuteNonQuery_Transaction(sql_Tong);
-                _cDAL.ExecuteNonQuery_Transaction(sql_ChiTiet);
-                _cDAL.CommitTransaction();
-                return true;
             }
             catch (Exception ex)
             {
-                _cDAL.RollbackTransaction();
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -447,17 +448,18 @@ namespace WSTanHoa.Controllers
             //delete Database
             try
             {
-                _cDAL.BeginTransaction();
-                _cDAL.ExecuteNonQuery_Transaction("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                _cDAL.ExecuteNonQuery_Transaction("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                _cDAL.ExecuteNonQuery_Transaction("insert TT_DichVuThuTong_Huy select * from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                _cDAL.ExecuteNonQuery_Transaction("delete TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                _cDAL.CommitTransaction();
-                return true;
+                using (TransactionScope ts = new TransactionScope())
+                {
+                    _cDAL.ExecuteNonQuery("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    _cDAL.ExecuteNonQuery("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    _cDAL.ExecuteNonQuery("insert TT_DichVuThuTong_Huy select * from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    _cDAL.ExecuteNonQuery("delete TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    ts.Complete();
+                    return true;
+                }
             }
             catch (Exception ex)
             {
-                _cDAL.RollbackTransaction();
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
                 _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
