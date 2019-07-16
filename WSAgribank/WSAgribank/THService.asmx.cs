@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Services;
 using System.Data;
 using System.Globalization;
+using System.Transactions;
 
 namespace WSAgribank
 {
@@ -48,7 +49,11 @@ namespace WSAgribank
             DataSet ds = _cDAL.ExecuteQuery_DataSet(sql);
             int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + db + ")");
             if (ds.Tables[0].Rows.Count > 0 && PhiMoNuoc > 0)
-                ds.Tables[0].Rows[0]["TONGCONG"] = int.Parse(ds.Tables[0].Rows[0]["TONGCONG"].ToString()) + PhiMoNuoc;
+            {
+                int TongTien = int.Parse(ds.Tables[0].Rows[0]["TONGCONG"].ToString());
+                TongTien += PhiMoNuoc;
+                ds.Tables[0].Rows[0]["TONGCONG"] = TongTien;
+            }
             return ds;
         }
 
@@ -57,57 +62,59 @@ namespace WSAgribank
         {
             try
             {
-                string sql = " INSERT INTO Agribank_THUTAM (ID_HOADON, DANHBO, KHACHHANG, SONHA, TENDUONG, GB, DM, DOT, KYHD, NAMHD, GIABAN, THUE, PBVMT, TONGCONG, SOHOADON, MAGIAODICH, NGAYTHANHTOAN, GACHNO)"
-                + " SELECT ID_HOADON , hd.DANHBA, hd.TENKH as KHACHHANG, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KYHD, hd.NAM as NAMHD,hd.GIABAN,hd.THUE, hd.PHI as PBVMT, hd.TONGCONG,hd.SOHOADON, '" + ten + "' AS MAGIAODICH,GETDATE() as  NGAYTHANHTOAN, '1' as GACHNO "
-                + " FROM HOADON hd"
-                + " WHERE  hd.ID_HOADON IN (" + id.Replace("#", ",") + ") AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
-
-                //string sql2 = "insert into TT_DichVuThu(SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,TenNganHang,CreateDate) "
-                //+ " SELECT SOHOADON AS  SoHoaDon , hd.DANHBA AS DanhBo, hd.NAM as Nam,  hd.KY as Ky,hd.TONGCONG AS SoTien ,'AGRIBANK' AS TenDichVu,'AGRIBANK' AS TenNganHang, GETDATE() as CreateDate "
-                //+ " FROM HOADON hd "
-                //+ " WHERE  hd.ID_HOADON IN (" + id.Replace("#", ",") + ") AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
-
-                if (_cDAL.ExecuteNonQuery(sql) == true)
+                using (TransactionScope ts = new TransactionScope())
                 {
-                    _cDAL.BeginTransaction();
-                    int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
+                    string sql = " INSERT INTO Agribank_THUTAM (ID_HOADON, DANHBO, KHACHHANG, SONHA, TENDUONG, GB, DM, DOT, KYHD, NAMHD, GIABAN, THUE, PBVMT, TONGCONG, SOHOADON, MAGIAODICH, NGAYTHANHTOAN, GACHNO)"
+                    + " SELECT ID_HOADON , hd.DANHBA, hd.TENKH as KHACHHANG, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KYHD, hd.NAM as NAMHD,hd.GIABAN,hd.THUE, hd.PHI as PBVMT, hd.TONGCONG,hd.SOHOADON, '" + ten + "' AS MAGIAODICH,GETDATE() as  NGAYTHANHTOAN, '1' as GACHNO "
+                    + " FROM HOADON hd"
+                    + " WHERE  hd.ID_HOADON IN (" + id.Replace("#", ",") + ") AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
 
-                    string[] arrayMaHD = id.Split('#');
-                    string MaHDs = "", SoHoaDons = "", Kys = "", sql_ChiTiet = "", DanhBo = "";
-                    int TongCong = 0;
-                    for (int i = 0; i < arrayMaHD.Length; i++)
+                    //string sql2 = "insert into TT_DichVuThu(SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,TenNganHang,CreateDate) "
+                    //+ " SELECT SOHOADON AS  SoHoaDon , hd.DANHBA AS DanhBo, hd.NAM as Nam,  hd.KY as Ky,hd.TONGCONG AS SoTien ,'AGRIBANK' AS TenDichVu,'AGRIBANK' AS TenNganHang, GETDATE() as CreateDate "
+                    //+ " FROM HOADON hd "
+                    //+ " WHERE  hd.ID_HOADON IN (" + id.Replace("#", ",") + ") AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' ";
+
+                    if (_cDAL.ExecuteNonQuery(sql) == true)
                     {
-                        DataTable dt = _cDAL.ExecuteQuery_DataTable_Transaction("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
-                        sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
-                            + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'AGRIBANK'," + ID + ",'" + "AGRIBANK" + ID + "',getdate()) ";
-                        //_cDAL.ExecuteNonQuery_Transaction(sql);
-                        if (string.IsNullOrEmpty(SoHoaDons) == true)
+                        int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from TT_DichVuThuTong");
+
+                        string[] arrayMaHD = id.Split('#');
+                        string MaHDs = "", SoHoaDons = "", Kys = "", sql_ChiTiet = "", DanhBo = "";
+                        int TongCong = 0;
+                        for (int i = 0; i < arrayMaHD.Length; i++)
                         {
-                            MaHDs = dt.Rows[0]["MaHD"].ToString();
-                            SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
-                            Kys = dt.Rows[0]["Ky"].ToString()+"/"+dt.Rows[0]["Nam"].ToString();
-                            TongCong += int.Parse(dt.Rows[0]["TongCong"].ToString());
+                            DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
+                            sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
+                                + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'AGRIBANK'," + ID + ",'" + "AGRIBANK" + ID + "',getdate()) ";
+                            //_cDAL.ExecuteNonQuery_Transaction(sql);
+                            if (string.IsNullOrEmpty(SoHoaDons) == true)
+                            {
+                                MaHDs = dt.Rows[0]["MaHD"].ToString();
+                                SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
+                                Kys = dt.Rows[0]["Ky"].ToString() + "/" + dt.Rows[0]["Nam"].ToString();
+                                TongCong += int.Parse(dt.Rows[0]["TongCong"].ToString());
+                            }
+                            else
+                            {
+                                MaHDs += "," + dt.Rows[0]["MaHD"];
+                                SoHoaDons += "," + dt.Rows[0]["SoHoaDon"];
+                                Kys += "," + dt.Rows[0]["Ky"].ToString() + "/" + dt.Rows[0]["Nam"].ToString();
+                                TongCong += int.Parse(dt.Rows[0]["TongCong"].ToString());
+                            }
+                            DanhBo = dt.Rows[0]["DanhBo"].ToString();
                         }
-                        else
-                        {
-                            MaHDs += "," + dt.Rows[0]["MaHD"];
-                            SoHoaDons += "," + dt.Rows[0]["SoHoaDon"];
-                            Kys += "," + dt.Rows[0]["Ky"].ToString() + "/" + dt.Rows[0]["Nam"].ToString();
-                            TongCong += int.Parse(dt.Rows[0]["TongCong"].ToString());
-                        }
-                        DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                        int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+                        int TongThu = TongCong + PhiMoNuoc;
+                        string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
+                                    + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','" + Kys + "'," + TongCong + ",0," + PhiMoNuoc + "," + TongThu + ",N'AGRIBANK','" + "AGRIBANK" + ID + "',getdate())";
+                        _cDAL.ExecuteNonQuery(sql_Tong);
+                        _cDAL.ExecuteNonQuery(sql_ChiTiet);
+                        ts.Complete();
+                        return true;
                     }
-                    int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
-                    int TongThu = TongCong + PhiMoNuoc;
-                    string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
-                                + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','" + Kys + "'," + TongCong + ",0," + PhiMoNuoc + "," + TongThu + ",N'AGRIBANK','" + "AGRIBANK" + ID + "',getdate())";
-                    _cDAL.ExecuteNonQuery_Transaction(sql_Tong);
-                    _cDAL.ExecuteNonQuery_Transaction(sql_ChiTiet);
-                    _cDAL.CommitTransaction();
-                    return true;
+                    else
+                        return false;
                 }
-                else
-                    return false;
             }
             catch (Exception)
             {
