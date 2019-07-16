@@ -446,37 +446,47 @@ namespace WSSmartPhone
 
             try
             {
-                //_cDAL.BeginTransaction();
-               string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
-                        + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
-                        + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
-
-                SqlCommand command = new SqlCommand(sql);
-                if (HinhDN == "NULL")
-                    command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
-                else
-                    command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
-
-                if (_cDAL.ExecuteNonQuery(command) == true)
+                using (TransactionScope scope = new TransactionScope())
                 {
+                    //insert đóng nước
+                    string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
+                             + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
+                             + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
 
-                    if (NiemChi != "NULL")
+                    SqlCommand command = new SqlCommand(sql);
+                    if (HinhDN == "NULL")
+                        command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
+                    else
+                        command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
+
+                    if (_cDAL.ExecuteNonQuery(command) == true)
                     {
-                        string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
+                        //insert table hình
+                        string sql_Hinh = "insert into TT_KQDongNuoc(MaKQDN,HinhDN,CreateBy,CreateDate)values((select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),@HinhDN," + CreateBy + ",getDate())";
+                        command = new SqlCommand(sql_Hinh);
+                        if (HinhDN == "NULL")
+                            command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
+                        else
+                            command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
+                        _cDAL.ExecuteNonQuery(command);
 
-                        if (_cDAL.ExecuteNonQuery(sqlNiemChi) == false)
+                        //insert niêm chì
+                        if (NiemChi != "NULL")
                         {
-                            //_cDAL.RollbackTransaction();
-                            return false;
+                            string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
+
+                            if (_cDAL.ExecuteNonQuery(sqlNiemChi) == true)
+                            {
+                                scope.Complete();
+                                return true;
+                            }
                         }
                     }
                 }
-                //_cDAL.CommitTransaction();
-                return true;
+                return false;
             }
             catch (Exception)
             {
-                //_cDAL.RollbackTransaction();
                 return false;
             }    
         }
@@ -518,37 +528,48 @@ namespace WSSmartPhone
 
             try
             {
-                //_cDAL.BeginTransaction();
-                string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,"
-                            + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
-                            + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
-                            + " where DongNuoc2=0 and MaDN=" + MaDN;
-
-                SqlCommand command = new SqlCommand(sql);
-                if (HinhDN == "NULL")
-                    command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
-                else
-                    command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
-
-                if (_cDAL.ExecuteNonQuery(command) == true)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    if (NiemChi != "NULL")
-                    {
-                        string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
+                    //insert đóng nước
+                    string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,"
+                                + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
+                                + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
+                                + " where DongNuoc2=0 and MaDN=" + MaDN;
 
-                        if (_cDAL.ExecuteNonQuery(sqlNiemChi) == false)
+                    SqlCommand command = new SqlCommand(sql);
+                    if (HinhDN == "NULL")
+                        command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
+                    else
+                        command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
+
+                    if (_cDAL.ExecuteNonQuery(command) == true)
+                    {
+                        //insert table hình
+                        string sql_Hinh = "update TT_KQDongNuoc set HinhDN1=HinhDN,HinhDN=@HinhDN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN" + MaDN;
+                        command = new SqlCommand(sql_Hinh);
+                        if (HinhDN == "NULL")
+                            command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
+                        else
+                            command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
+                        _cDAL.ExecuteNonQuery(command);
+
+                        //insert niêm chì
+                        if (NiemChi != "NULL")
                         {
-                            //_cDAL.RollbackTransaction();
-                            return false;
+                            string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
+
+                            if (_cDAL.ExecuteNonQuery(sqlNiemChi) == true)
+                            {
+                                scope.Complete();
+                                return true;
+                            }
                         }
                     }
                 }
-                //_cDAL.CommitTransaction();
-                return true;
+                return false;
             }
             catch (Exception)
             {
-                //_cDAL.RollbackTransaction();
                 return false;
             }
         }
@@ -563,15 +584,33 @@ namespace WSSmartPhone
 
         public bool ThemMoNuoc(string MaDN, string HinhMN, DateTime NgayMN, string ChiSoMN, string CreateBy)
         {
-            string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
+            using (TransactionScope scope = new TransactionScope())
+            {
+                string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
 
-            SqlCommand command = new SqlCommand(sql);
-            if (HinhMN == "NULL")
-                command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
-            else
-                command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMN);
+                SqlCommand command = new SqlCommand(sql);
+                if (HinhMN == "NULL")
+                    command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
+                else
+                    command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMN);
 
-            return _cDAL.ExecuteNonQuery(command);
+                if (_cDAL.ExecuteNonQuery(command) == true)
+                {
+                    //insert table hình
+                    string sql_Hinh = "update TT_KQDongNuoc set HinhMN=@HinhMN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN" + MaDN;
+                    command = new SqlCommand(sql_Hinh);
+                    if (HinhMN == "NULL")
+                        command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
+                    else
+                        command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMN);
+                    _cDAL.ExecuteNonQuery(command);
+
+                    scope.Complete();
+                    return true;
+                }
+                else
+                    return false;
+            }
         }
 
         public bool SuaMoNuoc(string MaDN, string HinhMN, DateTime NgayMN, string ChiSoMN, string CreateBy)
