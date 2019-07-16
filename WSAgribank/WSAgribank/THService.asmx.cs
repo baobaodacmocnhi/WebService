@@ -50,10 +50,9 @@ namespace WSAgribank
             int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + db + ")");
             if (ds.Tables[0].Rows.Count > 0 && PhiMoNuoc > 0)
             {
-                int TongTien = int.Parse(ds.Tables[0].Rows[0]["TONGCONG"].ToString());
-                TongTien += PhiMoNuoc;
-                ds.Tables[0].Rows[0]["TONGCONG"] = TongTien;
+                ds.Tables[0].Rows[0]["TONGCONG"] = int.Parse(ds.Tables[0].Rows[0]["TONGCONG"].ToString()) + PhiMoNuoc;
             }
+            ds.AcceptChanges();
             return ds;
         }
 
