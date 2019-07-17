@@ -448,9 +448,10 @@ namespace WSSmartPhone
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
+                    int MaKQDN = (int)_cDAL.ExecuteQuery_ReturnOneValue("select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end");
                     //insert đóng nước
                     string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
-                             + "(select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end)," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
+                             + "" + MaKQDN + "," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
                              + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
 
                     SqlCommand command = new SqlCommand(sql);
@@ -462,7 +463,7 @@ namespace WSSmartPhone
                     if (_cDAL.ExecuteNonQuery(command) == true)
                     {
                         //insert table hình
-                        string sql_Hinh = "insert into TT_KQDongNuoc(MaKQDN,HinhDN,CreateBy,CreateDate)values((select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),@HinhDN," + CreateBy + ",getDate())";
+                        string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(MaKQDN,HinhDN,CreateBy,CreateDate)values(" + MaKQDN + ",@HinhDN," + CreateBy + ",getDate())";
                         command = new SqlCommand(sql_Hinh);
                         if (HinhDN == "NULL")
                             command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
@@ -480,6 +481,11 @@ namespace WSSmartPhone
                                 scope.Complete();
                                 return true;
                             }
+                        }
+                        else
+                        {
+                            scope.Complete();
+                            return true;
                         }
                     }
                 }
@@ -545,7 +551,7 @@ namespace WSSmartPhone
                     if (_cDAL.ExecuteNonQuery(command) == true)
                     {
                         //insert table hình
-                        string sql_Hinh = "update TT_KQDongNuoc set HinhDN1=HinhDN,HinhDN=@HinhDN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN" + MaDN;
+                        string sql_Hinh = "update TT_KQDongNuoc_Hinh set HinhDN1=HinhDN,HinhDN=@HinhDN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN+")";
                         command = new SqlCommand(sql_Hinh);
                         if (HinhDN == "NULL")
                             command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
@@ -563,6 +569,11 @@ namespace WSSmartPhone
                                 scope.Complete();
                                 return true;
                             }
+                        }
+                        else
+                        {
+                            scope.Complete();
+                            return true;
                         }
                     }
                 }
@@ -597,7 +608,7 @@ namespace WSSmartPhone
                 if (_cDAL.ExecuteNonQuery(command) == true)
                 {
                     //insert table hình
-                    string sql_Hinh = "update TT_KQDongNuoc set HinhMN=@HinhMN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN" + MaDN;
+                    string sql_Hinh = "update TT_KQDongNuoc_Hinh set HinhMN=@HinhMN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + ")";
                     command = new SqlCommand(sql_Hinh);
                     if (HinhMN == "NULL")
                         command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
