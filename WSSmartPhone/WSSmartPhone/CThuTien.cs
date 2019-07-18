@@ -147,7 +147,7 @@ namespace WSSmartPhone
                             + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
                             + " from HOADON hd where NgayGiaiTrach is null and MaNV_HanhThu=" + MaNV
-                            + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0))t1"
+                            + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0 and dn.MaNV_DongNuoc is not null))t1"
                         + " where t1.ID not in (select MaHD from TT_LenhHuy)"
                         + " order by t1.MLT";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
@@ -161,7 +161,7 @@ namespace WSSmartPhone
                           + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                           + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
                           + " from HOADON hd where NgayGiaiTrach is null and MaNV_HanhThu=" + MaNV + " and DOT>=" + FromDot + " and DOT<=" + ToDot
-                          + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0))t1"
+                          + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0 and dn.MaNV_DongNuoc is not null))t1"
                       + " where t1.ID not in (select MaHD from TT_LenhHuy)"
                       + " order by t1.MLT";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
@@ -176,7 +176,7 @@ namespace WSSmartPhone
                           + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
                           + " ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end"
                           + " from HOADON hd where NgayGiaiTrach is null and (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and MaNV_HanhThu=" + MaNV + " and DOT>=" + FromDot + " and DOT<=" + ToDot
-                          + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0))t1"
+                          + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0 and dn.MaNV_DongNuoc is not null))t1"
                       + " where t1.ID not in (select MaHD from TT_LenhHuy)"
                       + " order by t1.MLT";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
@@ -427,6 +427,7 @@ namespace WSSmartPhone
         {
             int flagButChi = 0;
             int flagKhoaTu = 0;
+            int flagKhoaKhac = 0;
             if (bool.Parse(KhoaTu) == false)
             {
                 if (NiemChi == "")
@@ -443,16 +444,22 @@ namespace WSSmartPhone
             }
             if (bool.Parse(ButChi) == true)
                 flagButChi = 1;
-
+            if (bool.Parse(KhoaKhac) == true)
+            {
+                flagKhoaKhac = 1;
+                NiemChi = "NULL";
+            }
+            else
+                KhoaKhac_GhiChu = "NULL";
             try
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
                     int MaKQDN = (int)_cDAL.ExecuteQuery_ReturnOneValue("select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end");
                     //insert đóng nước
-                    string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
+                    string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,KhoaKhac,KhoaKhac_GhiChu,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
                              + "" + MaKQDN + "," + MaDN + ",'" + DanhBo + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
-                             + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + ",'" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
+                             + ",'" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + "," + flagKhoaKhac + ",N'" + KhoaKhac_GhiChu + "','" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + LyDo + "',(select top 1 PhiMoNuoc from TT_CacLoaiPhi)," + CreateBy + ",getDate())";
 
                     SqlCommand command = new SqlCommand(sql);
                     if (HinhDN == "NULL")
@@ -515,6 +522,7 @@ namespace WSSmartPhone
         {
             int flagButChi = 0;
             int flagKhoaTu = 0;
+            int flagKhoaKhac = 0;
             if (bool.Parse(KhoaTu) == false)
             {
                 if (NiemChi == "")
@@ -531,14 +539,20 @@ namespace WSSmartPhone
             }
             if (bool.Parse(ButChi) == true)
                 flagButChi = 1;
-
+            if (bool.Parse(KhoaKhac) == true)
+            {
+                flagKhoaKhac = 1;
+                NiemChi = "NULL";
+            }
+            else
+                KhoaKhac_GhiChu = "NULL";
             try
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
                     //insert đóng nước
                     string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,"
-                                + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
+                                + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",KhoaKhac_GhiChu=N'"+KhoaKhac_GhiChu+"',ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
                                 + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
                                 + " where DongNuoc2=0 and MaDN=" + MaDN;
 
