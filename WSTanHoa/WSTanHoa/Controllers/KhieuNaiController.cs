@@ -75,13 +75,13 @@ namespace WSTanHoa.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "ID,DanhBo,HoTen,DiaChi,NoiDung,NguoiBao,DienThoai,IDZalo,CreateDate")] KhieuNai khieuNai)
         {
-            if (ModelState.IsValid && khieuNai.IDZalo != null && Session["IDZalo"] !=null)
+            if (ModelState.IsValid && Session["IDZalo"] !=null)
             {
                 if (db.KhieuNais.Count() == 0)
                     khieuNai.ID = 1;
                 else
                     khieuNai.ID = db.KhieuNais.Max(item => item.ID) + 1;
-                khieuNai.IDZalo = IDZalo;
+                khieuNai.IDZalo = decimal.Parse(Session["IDZalo"].ToString());
                 khieuNai.CreateDate = DateTime.Now;
                 db.KhieuNais.Add(khieuNai);
                 await db.SaveChangesAsync();

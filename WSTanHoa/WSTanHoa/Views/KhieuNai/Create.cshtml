@@ -6,16 +6,16 @@
 
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/zalo")
-<script src="https://zjs.zdn.vn/zalo/Zalo.Extensions.min.js"></script>
+@*<script src="https://zjs.zdn.vn/zalo/Zalo.Extensions.min.js"></script>*@
 
 <script type="text/javascript">
 
-    $(document).ready(function () {
-        if ($('#IDZalo').val() == "") {
-            getContext();
-            $('#submit').click();
-        }
-    });
+    //$(document).ready(function () {
+    //    if ($('#IDZalo').val() == "") {
+    //        getContext();
+    //        $('#submit').click();
+    //    }
+    //});
 
 
 </script>
@@ -90,7 +90,7 @@
             <div class="col-md-10">
                 @*@Html.EditorFor(model => model.IDZalo, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.IDZalo, "", new { @class = "text-danger" })*@
-                @Html.Editor("IDZalo", new { htmlAttributes = new { id = "IDZalo", @Value = ViewBag.IDZalo, @class = "form-control" } })
+                @Html.Editor("IDZalo", new { htmlAttributes = new { id = "IDZalo", @Value = @Session["IDZalo"], @class = "form-control" } })
             </div>
         </div>
 

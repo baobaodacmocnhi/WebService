@@ -19,10 +19,10 @@
 
 </script>
 
-@using (Html.BeginForm("Index", "KhieuNai", FormMethod.Post))
+@using (Html.BeginForm("Index", "KhieuNai", FormMethod.Get))
 {
     <div class="form-group" style="display:none">
-        @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = ViewBag.IDZalo, @class = "form-control" } })
+        @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = @Session["IDZalo"], @class = "form-control" } })
         <input id="submit" type="submit" value="Load" class="btn btn-default" />
     </div>
 
