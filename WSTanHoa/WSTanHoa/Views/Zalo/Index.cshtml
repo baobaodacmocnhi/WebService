@@ -6,91 +6,77 @@
 }
 
 @Scripts.Render("~/bundles/jquery")
-    @*@Scripts.Render("~/bundles/zalo")
-    <script src="https://zjs.zdn.vn/zalo/Zalo.Extensions.min.js"></script>*@
+@Scripts.Render("~/bundles/zalo")
+<script src="https://zjs.zdn.vn/zalo/Zalo.Extensions.min.js"></script>
 
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-            //if ($('#IDZalo').val() == "") {
-            //    getContext();
-            //    $('#submit').click();
-            //}
-            //alert($("#IDZalo1").val());
-            $("#DanhBo1").keyup(function () {
-                $('#DanhBo2').val($("#DanhBo1").val());
-            });
-        });
-
-        function getUserID() {
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ($('#IDZalo').val() == "") {
             getContext();
+            $('#submit').click();
         }
-        function reloadPage() {
-            location.reload(true);
-        }
-    </script>
+        $("#DanhBo1").keyup(function () {
+            $('#DanhBo2').val($("#DanhBo1").val());
+        });
+    });
+</script>
 
 <body>
     @using (Html.BeginForm("Index", "Zalo", FormMethod.Get))
     {
-    @*<div class="form-group" style="display:none">
-        @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = ViewBag.IDZalo, @class = "form-control" } })
-        <input id="submit" type="button" value="get User ID" class="btn btn-default" onClick="getUserID()" />
-        <input id="submit" type="button" value="reload" class="btn btn-default" onClick="reloadPage()" />
-    </div>*@
-    <div class="form-group" >
-            @*@Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = @Session["IDZalo"], @class = "form-control" } })*@
-            @*<input id="submit" type="submit" value="Load" class="btn btn-default" />*@
+        <div class="form-group" style="display:none">
+            @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = @Session["IDZalo"], @class = "form-control" } })
+            <input id="submit" type="submit" value="Load" class="btn btn-default" />
         </div>
 
-    <h4 style="color:blue;">Danh sách danh bộ đã đăng ký</h4>
+        <h4 style="color:blue;">Danh sách danh bộ đã đăng ký</h4>
 
-    @*<h3>
-            <p>
-                @Html.ActionLink("Đăng ký mới", "Create")
-            </p>
-        </h3>*@
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.vZalo.DanhBo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.vZalo.HoTen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.vZalo.DiaChi)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.vZalo.DienThoai)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model.vlstZalo)
-            {
+        @*<h3>
+                <p>
+                    @Html.ActionLink("Đăng ký mới", "Create")
+                </p>
+            </h3>*@
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DanhBo)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HoTen)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DiaChi)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DienThoai)
-                </td>
-                <td>
-                    @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                        @Html.ActionLink("Edit", "Edit", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }) |*@
-                    @Html.ActionLink("Xóa", "Delete", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.vZalo.DanhBo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.vZalo.HoTen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.vZalo.DiaChi)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.vZalo.DienThoai)
+                </th>
+                <th></th>
             </tr>
-        }
 
-    </table>
+            @foreach (var item in Model.vlstZalo)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DanhBo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HoTen)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DiaChi)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DienThoai)
+                    </td>
+                    <td>
+                        @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                            @Html.ActionLink("Edit", "Edit", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }) |*@
+                        @Html.ActionLink("Xóa", "Delete", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
+                    </td>
+                </tr>
+            }
+
+        </table>
     }
     <div>
         @*@{ Html.RenderAction("Create", "Zalo");}*@
@@ -106,9 +92,9 @@
         {
             @Html.AntiForgeryToken()
             <div class="form-group">
-                @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new {  @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.vZalo.DanhBo,  new { htmlAttributes = new { @class = "form-control", @id = "DanhBo1" } })
+                    @Html.EditorFor(model => model.vZalo.DanhBo, new { htmlAttributes = new { @class = "form-control", @id = "DanhBo1" } })
                     @Html.ValidationMessageFor(model => model.vZalo.DanhBo, "", new { @class = "text-danger" })
                 </div>
             </div>

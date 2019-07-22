@@ -21,6 +21,7 @@
                     var objjson = JSON.parse(result);
                     alert(objjson[0]['message'])
                     $('#IDZalo').val(objjson[0]['error'])
+                    //$('#IDZalo').val('141616666237764827')
                     //var option = {
                     //    url: '/Zalo/Index',
                     //    data: JSON.stringify({ id: 1 }),

@@ -20,26 +20,11 @@ namespace WSTanHoa.Controllers
         // GET: KhieuNai
         public async Task<ActionResult> Index(decimal? id)
         {
-
-            //if (id != null && id != -1)
-            //{
-            //    CConstantVariable.IDZalo = id.Value;
-            //    ViewBag.IDZalo = id.Value;
-            //}
-            //else
-            //{
-            //    CConstantVariable.IDZalo = -1;
-            //    if (id == -1)
-            //        ViewBag.IDZalo = "-1";
-            //    else
-            //        ViewBag.IDZalo = "";
-            //}
             if (Session["IDZalo"] == null)
             {
                 if (id != null)
                     Session["IDZalo"] = id.Value;
             }
-            //Session["IDZalo"] = 141616666237764827;
 
             if (Session["IDZalo"] != null)
                 IDZalo = decimal.Parse(Session["IDZalo"].ToString());
