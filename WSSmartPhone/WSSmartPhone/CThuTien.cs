@@ -565,7 +565,12 @@ namespace WSSmartPhone
                     if (_cDAL.ExecuteNonQuery(command) == true)
                     {
                         //insert table hình
-                        string sql_Hinh = "update TT_KQDongNuoc_Hinh set HinhDN1=HinhDN,HinhDN=@HinhDN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN+")";
+                        string sql_Hinh = "declare @MaKQDN int;"
+                                        + " set @MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN="+MaDN+")"
+                                        + " if not exists (select MaKQDN from TT_KQDongNuoc_Hinh where MaKQDN=@MaKQDN)"
+                                        + " insert into TT_KQDongNuoc_Hinh(MaKQDN,HinhDN,CreateBy,CreateDate)values(@MaKQDN,@HinhDN," + CreateBy + ",getDate())"
+                                        + " else"
+                                        + " update TT_KQDongNuoc_Hinh set HinhDN1=HinhDN,HinhDN=@HinhDN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=@MaKQDN";
                         command = new SqlCommand(sql_Hinh);
                         if (HinhDN == "NULL")
                             command.Parameters.Add("@HinhDN", SqlDbType.Image).Value = DBNull.Value;
@@ -622,7 +627,12 @@ namespace WSSmartPhone
                 if (_cDAL.ExecuteNonQuery(command) == true)
                 {
                     //insert table hình
-                    string sql_Hinh = "update TT_KQDongNuoc_Hinh set HinhMN=@HinhMN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + ")";
+                    string sql_Hinh = "declare @MaKQDN int;"
+                                        + " set @MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + ")"
+                                        + " if not exists (select MaKQDN from TT_KQDongNuoc_Hinh where MaKQDN=@MaKQDN)"
+                                        + " insert into TT_KQDongNuoc_Hinh(MaKQDN,HinhMN,CreateBy,CreateDate)values(@MaKQDN,@HinhMN," + CreateBy + ",getDate())"
+                                        + " else"
+                                        + " update TT_KQDongNuoc_Hinh set HinhMN=@HinhMN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=@MaKQDN";
                     command = new SqlCommand(sql_Hinh);
                     if (HinhMN == "NULL")
                         command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
