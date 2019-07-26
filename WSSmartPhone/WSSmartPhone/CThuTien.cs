@@ -713,7 +713,7 @@ namespace WSSmartPhone
         public string GetTongGiaoHoaDon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
             string sql = "select t1.*,t2.HoTen from"
-                        + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
+                        + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG),TyLeThuDuoc=ROUND(CAST(SUM(case when NGAYGIAITRACH is not null then 1 else 0 end) as float)/COUNT(ID_HOADON)*100,2) from HOADON"
                         + " where NAM=" + Nam + " and KY=" + Ky + " and DOT>=" + FromDot + " and DOT<=" + ToDot
                         + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
                         + " group by MaNV_HanhThu) t1,TT_NguoiDung t2"
