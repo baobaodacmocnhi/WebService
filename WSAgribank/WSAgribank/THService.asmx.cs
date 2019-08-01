@@ -105,7 +105,7 @@ namespace WSAgribank
                         int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
                         int TongThu = TongCong + PhiMoNuoc;
                         string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
-                                    + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','" + Kys + "'," + TongCong + ",0," + PhiMoNuoc + "," + TongThu + ",N'AGRIBANK','" + "AGRIBANK" + ID + "',getdate())";
+                                    + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','" + Kys + "'," + TongCong + "," + PhiMoNuoc + ",0," + TongThu + ",N'AGRIBANK','" + "AGRIBANK" + ID + "',getdate())";
                         _cDAL.ExecuteNonQuery(sql_Tong);
                         _cDAL.ExecuteNonQuery(sql_ChiTiet);
                         ts.Complete();
