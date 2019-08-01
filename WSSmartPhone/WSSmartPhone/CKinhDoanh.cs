@@ -14,5 +14,23 @@ namespace WSSmartPhone
         {
             return _DAL.ExecuteQuery_DataTable("select * from GiaNuoc");
         }
+
+        public string getDanhBo_CatTam(string ID)
+        {
+            object result=_DAL.ExecuteQuery_ReturnOneValue("select DanhBo from CHDB_ChiTietCatTam where MaCTCTDB=" + ID);
+            if (result == null)
+                return "";
+            else
+                return result.ToString();
+        }
+
+        public string getDanhBo_CatHuy(string ID)
+        {
+            object result = _DAL.ExecuteQuery_ReturnOneValue("select DanhBo from CHDB_ChiTietCatHuy where MaCTCHDB=" + ID);
+            if (result == null)
+                return "";
+            else
+                return result.ToString();
+        }
     }
 }

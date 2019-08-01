@@ -16,6 +16,7 @@ namespace WSSmartPhone
     class CThuTien
     {
         CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
+        CKinhDoanh _cKinhDoanh = new CKinhDoanh();
 
         public string DataTableToJSON(DataTable table)
         {
@@ -133,6 +134,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
+        //hành thu
         public string GetDSHoaDonTon(string MaNV, DateTime NgayDi)
         {
             //string sql = "select ID=ID_HOADON,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
@@ -337,6 +339,7 @@ namespace WSSmartPhone
             return responseMess;
         }
 
+        //đóng nước
         public string GetDSDongNuoc_old(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
             string query = "select ID=dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
@@ -423,12 +426,12 @@ namespace WSSmartPhone
             return true;
         }
 
-        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, DateTime NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi,string KhoaKhac,string KhoaKhac_GhiChu, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
+        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, DateTime NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
             int flagButChi = 0;
             int flagKhoaTu = 0;
             int flagKhoaKhac = 0;
-            if (bool.Parse(KhoaTu) == false)
+            if (bool.Parse(KhoaTu) == false && bool.Parse(KhoaKhac) == false)
             {
                 if (NiemChi == "")
                     return false;
@@ -439,18 +442,22 @@ namespace WSSmartPhone
             }
             else
             {
-                flagKhoaTu = 1;
                 NiemChi = "NULL";
+                if (bool.Parse(KhoaTu) == true)
+                {
+                    flagKhoaTu = 1;
+                }
+                if (bool.Parse(KhoaKhac) == true)
+                {
+                    flagKhoaKhac = 1;
+                }
+                else
+                    KhoaKhac_GhiChu = "NULL";
             }
+
             if (bool.Parse(ButChi) == true)
                 flagButChi = 1;
-            if (bool.Parse(KhoaKhac) == true)
-            {
-                flagKhoaKhac = 1;
-                NiemChi = "NULL";
-            }
-            else
-                KhoaKhac_GhiChu = "NULL";
+
             try
             {
                 using (TransactionScope scope = new TransactionScope())
@@ -501,7 +508,7 @@ namespace WSSmartPhone
             catch (Exception)
             {
                 return false;
-            }    
+            }
         }
 
         public bool SuaDongNuoc(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
@@ -520,39 +527,43 @@ namespace WSSmartPhone
 
         public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy)
         {
-            int flagButChi = 0;
-            int flagKhoaTu = 0;
-            int flagKhoaKhac = 0;
-            if (bool.Parse(KhoaTu) == false)
-            {
-                if (NiemChi == "")
-                    return false;
-                if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi).ToString()) == 0)
-                    return false;
-                if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi + " and SuDung=1").ToString()) == 1)
-                    return false;
-            }
-            else
-            {
-                flagKhoaTu = 1;
-                NiemChi = "NULL";
-            }
-            if (bool.Parse(ButChi) == true)
-                flagButChi = 1;
-            if (bool.Parse(KhoaKhac) == true)
-            {
-                flagKhoaKhac = 1;
-                NiemChi = "NULL";
-            }
-            else
-                KhoaKhac_GhiChu = "NULL";
+            //int flagButChi = 0;
+            //int flagKhoaTu = 0;
+            //int flagKhoaKhac = 0;
+            //if (bool.Parse(KhoaTu) == false && bool.Parse(KhoaKhac) == false)
+            //{
+            //    if (NiemChi == "")
+            //        return false;
+            //    if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi).ToString()) == 0)
+            //        return false;
+            //    if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi + " and SuDung=1").ToString()) == 1)
+            //        return false;
+            //}
+            //else
+            //{
+            //    NiemChi = "NULL";
+            //    if (bool.Parse(KhoaTu) == true)
+            //    {
+            //        flagKhoaTu = 1;
+            //    }
+            //    if (bool.Parse(KhoaKhac) == true)
+            //    {
+            //        flagKhoaKhac = 1;
+            //    }
+            //    else
+            //        KhoaKhac_GhiChu = "NULL";
+            //}
+
+            //if (bool.Parse(ButChi) == true)
+            //    flagButChi = 1;
+
             try
             {
                 using (TransactionScope scope = new TransactionScope())
                 {
                     //insert đóng nước
                     string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,"
-                                + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",KhoaKhac_GhiChu=N'"+KhoaKhac_GhiChu+"',ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
+                                + "HinhDN=@HinhDN,NgayDN='" + NgayDN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",KhoaKhac_GhiChu=N'" + KhoaKhac_GhiChu + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
                                 + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
                                 + " where DongNuoc2=0 and MaDN=" + MaDN;
 
@@ -566,7 +577,7 @@ namespace WSSmartPhone
                     {
                         //insert table hình
                         string sql_Hinh = "declare @MaKQDN int;"
-                                        + " set @MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN="+MaDN+")"
+                                        + " set @MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + ")"
                                         + " if not exists (select MaKQDN from TT_KQDongNuoc_Hinh where MaKQDN=@MaKQDN)"
                                         + " insert into TT_KQDongNuoc_Hinh(MaKQDN,HinhDN,CreateBy,CreateDate)values(@MaKQDN,@HinhDN," + CreateBy + ",getDate())"
                                         + " else"
@@ -691,6 +702,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
+        //tìm kiếm
         public string GetDSTimKiem(string DanhBo)
         {
             //string sql = "select top 12 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,"
@@ -710,6 +722,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
+        //quản lý
         public string GetTongGiaoHoaDon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
             string sql = "select t1.*,t2.HoTen from"
@@ -953,6 +966,71 @@ namespace WSSmartPhone
         public DataTable GetHDMoiNhat(string DanhBo)
         {
             return _cDAL.ExecuteQuery_DataTable("select top 1 * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+        }
+
+        //lệnh hủy
+        public string GetDSHoaDon_LenhHuy(string Loai, string ID)
+        {
+            string DanhBo = "";
+            switch (Loai)
+            {
+                case "CatTam":
+                    DanhBo = _cKinhDoanh.getDanhBo_CatTam(ID);
+                    break;
+                case "CatHuy":
+                    DanhBo = _cKinhDoanh.getDanhBo_CatHuy(ID);
+                    break;
+                default:
+                    break;
+            }
+            if (DanhBo == "")
+                return "";
+            else
+                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),lh.MaHD,lh.TinhTrang,lh.Cat from TT_LenhHuy lh,HOADON hd where lh.MaHD=hd.ID_HOADON and DanhBo='" + DanhBo + "'"));
+        }
+
+        public bool SuaLenhHuy(string MaHDs, string Cat, string TinhTrang, string CreateBy)
+        {
+            //try
+            //{
+            //    string[] MaHD = MaHDs.Split(',');
+            //    using (var scope = new TransactionScope())
+            //    {
+            //        for (int i = 0; i < MaHD.Length; i++)
+            //        {
+            //            string sql = "update TT_LenhHuy set Cat=,TinhTrang=N'',ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaHD="+MaHD[i];
+            //            if (_cDAL.ExecuteNonQuery(sql) == false)
+            //                return false;
+            //        }
+            //        scope.Complete();
+            //        scope.Dispose();
+            //    }
+            //    return true;
+            //}
+            //catch (Exception)
+            //{
+            //    return false;
+            //}
+            try
+            {
+                int flagCat = 0;
+                if (bool.Parse(Cat) == true)
+                    flagCat = 1;
+                using (var scope = new TransactionScope())
+                {
+                    string sql = "update TT_LenhHuy set Cat=" + flagCat + ",TinhTrang=N'" + TinhTrang + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaHD in (" + MaHDs + ")";
+                    if (_cDAL.ExecuteNonQuery(sql) == true)
+                    {
+                        scope.Complete();
+                        scope.Dispose();
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
     }
