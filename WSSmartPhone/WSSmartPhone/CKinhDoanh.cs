@@ -17,7 +17,7 @@ namespace WSSmartPhone
 
         public string getDanhBo_CatTam(string ID)
         {
-            object result=_DAL.ExecuteQuery_ReturnOneValue("select DanhBo from CHDB_ChiTietCatTam where MaCTCTDB=" + ID);
+            object result = _DAL.ExecuteQuery_ReturnOneValue("select DanhBo from CHDB_ChiTietCatTam where MaCTCTDB=" + ID);
             if (result == null)
                 return "";
             else

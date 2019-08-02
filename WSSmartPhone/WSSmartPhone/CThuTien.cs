@@ -969,27 +969,30 @@ namespace WSSmartPhone
         }
 
         //lệnh hủy
-        public string GetDSHoaDon_LenhHuy(string Loai, string ID)
+        public string GetDSHoaDon_LenhHuy(string LoaiCat, string ID)
         {
             string DanhBo = "";
-            switch (Loai)
+            switch (LoaiCat)
             {
-                case "CatTam":
+                case "Cắt Tạm":
                     DanhBo = _cKinhDoanh.getDanhBo_CatTam(ID);
                     break;
-                case "CatHuy":
+                case "Cắt Hủy":
                     DanhBo = _cKinhDoanh.getDanhBo_CatHuy(ID);
                     break;
-                default:
+                case "Danh Bộ":
+                    DanhBo = ID;
                     break;
+                default:
+                    return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select DanhBo=hd.DANHBA,DiaChi=SO+' '+DUONG,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),lh.MaHD,lh.TinhTrang,Cat=case when lh.Cat=1 then 'true' else 'false' end from TT_LenhHuy lh,HOADON hd where lh.MaHD=hd.ID_HOADON and hd.NGAYGIAITRACH is null"));
             }
             if (DanhBo == "")
                 return "";
             else
-                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),lh.MaHD,lh.TinhTrang,lh.Cat from TT_LenhHuy lh,HOADON hd where lh.MaHD=hd.ID_HOADON and DanhBo='" + DanhBo + "'"));
+                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select DanhBo=hd.DANHBA,DiaChi=SO+' '+DUONG,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),lh.MaHD,lh.TinhTrang,Cat=case when lh.Cat=1 then 'true' else 'false' end from TT_LenhHuy lh,HOADON hd where lh.MaHD=hd.ID_HOADON and DanhBo='" + DanhBo + "' and hd.NGAYGIAITRACH is null"));
         }
 
-        public bool SuaLenhHuy(string MaHDs, string Cat, string TinhTrang, string CreateBy)
+        public bool Sua_LenhHuy(string MaHDs, string Cat, string TinhTrang, string CreateBy)
         {
             //try
             //{

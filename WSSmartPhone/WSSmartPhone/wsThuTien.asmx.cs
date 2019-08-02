@@ -74,6 +74,7 @@ namespace WSSmartPhone
             return _cThuTien.GetDSNhanVien(MaTo);
         }
 
+        //hành thu
         [WebMethod]
         public string GetDSHoaDonTon(string MaNV, string NgayDi)
         {
@@ -92,6 +93,7 @@ namespace WSSmartPhone
             return _cThuTien.SendNotificationToClient(Title, Content, UID, Action, NameUpdate, ValueUpdate, ID);
         }
 
+        //đóng nước
         [WebMethod]
         public string GetDSDongNuoc(string MaNV_DongNuoc, string FromNgayGiao, string ToNgayGiao)
         {
@@ -119,7 +121,7 @@ namespace WSSmartPhone
         [WebMethod]
         public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
-            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ButChi, KhoaTu, NiemChi,KhoaKhac,KhoaKhac_GhiChu, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy);
+            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac, KhoaKhac_GhiChu, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy);
         }
 
         [WebMethod]
@@ -131,7 +133,7 @@ namespace WSSmartPhone
         [WebMethod]
         public bool ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy)
         {
-            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac,KhoaKhac_GhiChu, CreateBy);
+            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac, KhoaKhac_GhiChu, CreateBy);
         }
 
         [WebMethod]
@@ -164,6 +166,7 @@ namespace WSSmartPhone
             return _cThuTien.GetDSHoaDonTon_DongNuoc(DanhBo, MaHDs);
         }
 
+        //tìm kiếm
         [WebMethod]
         public string GetDSTimKiem(string DanhBo)
         {
@@ -176,6 +179,7 @@ namespace WSSmartPhone
             return _cThuTien.GetDSTimKiemTTKH(HoTen, SoNha, TenDuong);
         }
 
+        //quản lý
         [WebMethod]
         public string GetTongGiaoHoaDon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
@@ -207,15 +211,28 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetTongThuHo_Tong(string MaTo, string FromCreateDate, string ToCreateDate,string Loai)
+        public string GetTongThuHo_Tong(string MaTo, string FromCreateDate, string ToCreateDate, string Loai)
         {
-            return _cThuTien.GetTongThuHo_Tong(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture),Loai);
+            return _cThuTien.GetTongThuHo_Tong(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), Loai);
         }
 
         [WebMethod]
         public string GetTongThuHo_ChiTiet(string MaTo, string FromCreateDate, string ToCreateDate, string Loai)
         {
             return _cThuTien.GetTongThuHo_ChiTiet(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), Loai);
+        }
+
+        //lệnh hủy
+        [WebMethod]
+        public string GetDSHoaDon_LenhHuy(string LoaiCat, string ID)
+        {
+            return _cThuTien.GetDSHoaDon_LenhHuy(LoaiCat, ID);
+        }
+
+        [WebMethod]
+        public bool Sua_LenhHuy(string MaHDs, string Cat, string TinhTrang, string CreateBy)
+        {
+            return _cThuTien.Sua_LenhHuy(MaHDs, Cat, TinhTrang, CreateBy);
         }
     }
 }
