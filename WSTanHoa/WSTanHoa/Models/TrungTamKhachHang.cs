@@ -352,6 +352,24 @@ namespace WSTanHoa.Models
     public class DonKinhDoanh
     {
         /// <summary>
+        /// Thông tin
+        /// </summary>
+        public string ThongTin { get; set; }
+
+        /// <summary>
+        /// Danh sách hóa đơn
+        /// </summary>
+        public List<DonTu> lstDonTu { get; set; }
+        public DonKinhDoanh()
+        {
+            ThongTin = "";
+            lstDonTu = new List<DonTu>();
+        }
+    }
+
+    public class DonTu
+    {
+        /// <summary>
         /// Mã đơn
         /// </summary>
         public string MaDon { get; set; }
@@ -461,7 +479,7 @@ namespace WSTanHoa.Models
         /// </summary>
         public List<TienTrinh> lstTienTrinh { get; set; }
 
-        public DonKinhDoanh()
+        public DonTu()
         {
             MaDon = "";
             TenLD = "";

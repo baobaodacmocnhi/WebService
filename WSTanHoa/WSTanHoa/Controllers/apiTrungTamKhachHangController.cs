@@ -540,7 +540,7 @@ namespace WSTanHoa.Controllers
         /// <param name="checksum"></param>
         /// <returns></returns>
         [Route("getDonKinhDoanh")]
-        public IList<DonKinhDoanh> getDonKinhDoanh(string DanhBo, string checksum)
+        public DonKinhDoanh getDonKinhDoanh(string DanhBo, string checksum)
         {
             if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
             {
@@ -556,11 +556,13 @@ namespace WSTanHoa.Controllers
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    List<DonKinhDoanh> lst = new List<DonKinhDoanh>();
+                    DonKinhDoanh enKD = new DonKinhDoanh();
+                    enKD.ThongTin = _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select dbo.fnCheckTinhTrangTruyThu_Ton('" + DanhBo + "')").ToString();
+
                     foreach (DataRow item in dt.Rows)
-                        if (lst.Any(itemA => itemA.MaDon == item["MaDon"].ToString()) == false)
+                        if (enKD.lstDonTu.Any(itemA => itemA.MaDon == item["MaDon"].ToString()) == false)
                         {
-                            DonKinhDoanh en = new DonKinhDoanh();
+                            DonTu en = new DonTu();
                             en.MaDon = item["MaDon"].ToString();
                             en.TenLD = item["TenLD"].ToString();
                             if (item["CreateDate"].ToString() != "")
@@ -920,10 +922,10 @@ namespace WSTanHoa.Controllers
                                     }
                                 }
 
-                            lst.Add(en);
+                            enKD.lstDonTu.Add(en);
                         }
 
-                    return lst;
+                    return enKD;
                 }
                 else
                     return null;
