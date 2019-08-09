@@ -1008,10 +1008,10 @@ namespace WSTanHoa.Controllers
             DataTable dt = new DataTable();
             try
             {
+                List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
                 dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + checkHoTen + "','" + checkSoNha + "','" + checkTenDuong + "')");
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
                     foreach (DataRow item in dt.Rows)
                     {
                         ThongTinKhachHang en = new ThongTinKhachHang();
@@ -1021,9 +1021,23 @@ namespace WSTanHoa.Controllers
 
                         lst.Add(en);
                     }
-
-                    return lst;
                 }
+                //kiếm danh bộ hủy
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG_HUYDB where HOTEN like N'%" + checkHoTen + "%' and ((SONHA like N'%" + checkSoNha + "%' and TENDUONG like N'%" + checkTenDuong + "%') or (SONHA+' '+TENDUONG like N'%" + checkSoNha + " " + checkTenDuong + "%'))");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        ThongTinKhachHang en = new ThongTinKhachHang();
+                        en.DanhBo = item["DanhBo"].ToString();
+                        en.HoTen = item["HoTen"].ToString();
+                        en.DiaChi = item["DiaChi"].ToString();
+
+                        lst.Add(en);
+                    }
+                }
+                if (lst.Count > 1)
+                    return lst;
                 else
                     return null;
             }
