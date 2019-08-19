@@ -896,112 +896,122 @@
             Tờ trình cắt hủy gửi Phòng Kinh Doanh, true => tô màu xanh lá
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.MaDon">
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.ThongTin">
+            <summary>
+            Thông tin
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstDonTu">
+            <summary>
+            Danh sách hóa đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu.MaDon">
             <summary>
             Mã đơn
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.TenLD">
+        <member name="P:WSTanHoa.Models.DonTu.TenLD">
             <summary>
             Loại đơn
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.CreateDate">
+        <member name="P:WSTanHoa.Models.DonTu.CreateDate">
             <summary>
             Ngày lập
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.DanhBo">
+        <member name="P:WSTanHoa.Models.DonTu.DanhBo">
             <summary>
             Danh bộ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.HoTen">
+        <member name="P:WSTanHoa.Models.DonTu.HoTen">
             <summary>
             Họ tên
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.DiaChi">
+        <member name="P:WSTanHoa.Models.DonTu.DiaChi">
             <summary>
             Địa chỉ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.GiaBieu">
+        <member name="P:WSTanHoa.Models.DonTu.GiaBieu">
             <summary>
             Giá biểu
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.DinhMuc">
+        <member name="P:WSTanHoa.Models.DonTu.DinhMuc">
             <summary>
             Định mức
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.NoiDung">
+        <member name="P:WSTanHoa.Models.DonTu.NoiDung">
             <summary>
             Nội dung
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstKTXM">
+        <member name="P:WSTanHoa.Models.DonTu.lstKTXM">
             <summary>
             Danh sách Kiểm tra xác minh
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstBamChi">
+        <member name="P:WSTanHoa.Models.DonTu.lstBamChi">
             <summary>
             Danh sách Bấm chì
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstDongNuoc">
+        <member name="P:WSTanHoa.Models.DonTu.lstDongNuoc">
             <summary>
             Danh sách Đóng nước
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstDCBD">
+        <member name="P:WSTanHoa.Models.DonTu.lstDCBD">
             <summary>
             Danh sách Điều chỉnh biến động
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstDCHD">
+        <member name="P:WSTanHoa.Models.DonTu.lstDCHD">
             <summary>
             Danh sách Điều chỉnh hóa đơn
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstCHDB">
+        <member name="P:WSTanHoa.Models.DonTu.lstCHDB">
             <summary>
             Danh sách Cắt hủy danh bộ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstPhieuCHDB">
+        <member name="P:WSTanHoa.Models.DonTu.lstPhieuCHDB">
             <summary>
             Danh sách Phiếu cắt hủy danh bộ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstTTL">
+        <member name="P:WSTanHoa.Models.DonTu.lstTTL">
             <summary>
             Danh sách Thư trả lời
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstGianLan">
+        <member name="P:WSTanHoa.Models.DonTu.lstGianLan">
             <summary>
             Danh sách Gian lận
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstTruyThu">
+        <member name="P:WSTanHoa.Models.DonTu.lstTruyThu">
             <summary>
             Danh sách Truy thu
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstToTrinh">
+        <member name="P:WSTanHoa.Models.DonTu.lstToTrinh">
             <summary>
             Danh sách Tờ trình
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstThuMoi">
+        <member name="P:WSTanHoa.Models.DonTu.lstThuMoi">
             <summary>
             Danh sách Thư mời
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonKinhDoanh.lstTienTrinh">
+        <member name="P:WSTanHoa.Models.DonTu.lstTienTrinh">
             <summary>
             Danh sách Tiến trình đơn
             </summary>

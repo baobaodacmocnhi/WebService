@@ -578,9 +578,6 @@ namespace WSTanHoa.Controllers
 
 
 
-
-
-
         ///// <summary>
         ///// Lấy Tất Cả Hóa Đơn Tồn
         ///// </summary>
