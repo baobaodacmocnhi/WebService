@@ -74,6 +74,13 @@ namespace WSSmartPhone
             return _cThuTien.GetDSNhanVien(MaTo);
         }
 
+        //send notification
+        [WebMethod]
+        public string SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)
+        {
+            return _cThuTien.SendNotificationToClient(Title, Content, UID, Action, NameUpdate, ValueUpdate, ID);
+        }
+
         //hành thu
         [WebMethod]
         public string GetDSHoaDonTon(string MaNV, string NgayDi)
@@ -85,12 +92,6 @@ namespace WSSmartPhone
         public string GetDSHoaDonTon_Dot(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
         {
             return _cThuTien.GetDSHoaDonTon(MaNV, Nam, Ky, FromDot, ToDot);
-        }
-
-        [WebMethod]
-        public string SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)
-        {
-            return _cThuTien.SendNotificationToClient(Title, Content, UID, Action, NameUpdate, ValueUpdate, ID);
         }
 
         //đóng nước
