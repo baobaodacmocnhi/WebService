@@ -329,11 +329,12 @@ namespace WSSmartPhone
         {
             string sql = "select * from"
                           + " (select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+                          //+ " GiaiTrach='false',ThuHo='false',TamThu='false',ModifyDate=null"
                           + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
                           + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                           + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
                           + " ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end"
-                          + " from HOADON hd where DOT>=" + FromDot + " and DOT<=" + ToDot + " and (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null"
+                          + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null"
                           + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0 and dn.MaNV_DongNuoc is not null))t1"
                       + " where t1.ID not in (select MaHD from TT_LenhHuy)"
                       + " order by t1.MLT";
