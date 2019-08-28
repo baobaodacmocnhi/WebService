@@ -43,7 +43,8 @@ namespace WSTanHoa.Controllers
                 //lấy thông tin khách hàng
                 string sql = "select DanhBo"
                              + ",HoTen"
-                             + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                             //+ ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                             + ",DiaChi=DiaChiHoaDon+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                              + ",HopDong"
                              + ",DienThoai"
                              + ",MLT=LoTrinh"
@@ -64,7 +65,8 @@ namespace WSTanHoa.Controllers
                 {
                     sql = "select DanhBo"
                                  + ",HoTen"
-                                 + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                                 //+ ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                                 + ",DiaChi=DiaChiHoaDon+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                                  + ",HopDong"
                                  + ",DienThoai=''"
                                  + ",MLT=LoTrinh"
@@ -1467,7 +1469,7 @@ namespace WSTanHoa.Controllers
                         lst.Add(en);
                     }
                 }
-                if (lst.Count > 1)
+                if (lst.Count > 0)
                     return lst;
                 else
                     return null;
