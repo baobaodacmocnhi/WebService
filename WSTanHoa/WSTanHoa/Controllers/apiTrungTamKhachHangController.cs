@@ -553,7 +553,7 @@ namespace WSTanHoa.Controllers
         public string getLichThuTien_Func(string DanhBo,string MLT)
         {
             string sql_Lich = "WITH hoadon AS (select top 1 KY,NAM from [SERVER9].[HOADON_TA].[dbo].[HOADON] where DANHBA='"+ DanhBo + "' order by ID_HOADON desc)"
-                                   + " select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103) from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c,hoadon where a.ID=b.IDThuTien and c.ID=b.IDDot and ((a.Nam>hoadon.Nam) or (a.Nam=hoadon.Nam and a.Ky>hoadon.Ky))"
+                                   + " select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103) from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c,hoadon where a.ID=b.IDThuTien and c.ID=b.IDDot and ((a.Nam>hoadon.Nam) or (a.Nam=hoadon.Nam and a.Ky>=hoadon.Ky))"
                                    + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
                                    + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
