@@ -43,8 +43,8 @@ namespace WSTanHoa.Controllers
                 //lấy thông tin khách hàng
                 string sql = "select DanhBo"
                              + ",HoTen"
-                             //+ ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
-                             + ",DiaChi=DiaChiHoaDon+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                             + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                             + ",DiaChiHoaDon=DiaChiHoaDon+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                              + ",HopDong"
                              + ",DienThoai"
                              + ",MLT=LoTrinh"
@@ -65,8 +65,8 @@ namespace WSTanHoa.Controllers
                 {
                     sql = "select DanhBo"
                                  + ",HoTen"
-                                 //+ ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
-                                 + ",DiaChi=DiaChiHoaDon+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                                 + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                                 + ",DiaChiHoaDon=DiaChiHoaDon+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                                  + ",HopDong"
                                  + ",DienThoai=''"
                                  + ",MLT=LoTrinh"
@@ -89,7 +89,10 @@ namespace WSTanHoa.Controllers
                     ThongTinKhachHang en = new ThongTinKhachHang();
                     en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                     en.HoTen = dt.Rows[0]["HoTen"].ToString();
+                    if(dt.Rows[0]["DiaChi"].ToString()== dt.Rows[0]["DiaChiHoaDon"].ToString())
                     en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                    else
+                        en.DiaChi = dt.Rows[0]["DiaChi"].ToString()+" ==HĐ: "+ dt.Rows[0]["DiaChiHoaDon"].ToString();
                     en.HopDong = dt.Rows[0]["HopDong"].ToString();
                     en.DienThoai = dt.Rows[0]["DienThoai"].ToString();
                     en.MLT = dt.Rows[0]["MLT"].ToString();
@@ -1450,25 +1453,28 @@ namespace WSTanHoa.Controllers
                         ThongTinKhachHang en = new ThongTinKhachHang();
                         en.DanhBo = item["DanhBo"].ToString();
                         en.HoTen = item["HoTen"].ToString();
+                        if(item["DiaChi"].ToString()== item["DiaChiHoaDon"].ToString())
                         en.DiaChi = item["DiaChi"].ToString();
+                        else
+                            en.DiaChi = item["DiaChi"].ToString()+" ==HĐ: "+ item["DiaChiHoaDon"].ToString();
 
                         lst.Add(en);
                     }
                 }
                 //kiếm danh bộ hủy
-                dt = _cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG_HUYDB where HOTEN like N'%" + checkHoTen + "%' and ((SONHA like N'%" + checkSoNha + "%' and TENDUONG like N'%" + checkTenDuong + "%') or (SONHA+' '+TENDUONG like N'%" + checkSoNha + " " + checkTenDuong + "%'))");
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        ThongTinKhachHang en = new ThongTinKhachHang();
-                        en.DanhBo = item["DanhBo"].ToString();
-                        en.HoTen = item["HoTen"].ToString();
-                        en.DiaChi = item["DiaChi"].ToString();
+                //dt = _cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG_HUYDB where HOTEN like N'%" + checkHoTen + "%' and ((SONHA like N'%" + checkSoNha + "%' and TENDUONG like N'%" + checkTenDuong + "%') or (SONHA+' '+TENDUONG like N'%" + checkSoNha + " " + checkTenDuong + "%'))");
+                //if (dt != null && dt.Rows.Count > 0)
+                //{
+                //    foreach (DataRow item in dt.Rows)
+                //    {
+                //        ThongTinKhachHang en = new ThongTinKhachHang();
+                //        en.DanhBo = item["DanhBo"].ToString();
+                //        en.HoTen = item["HoTen"].ToString();
+                //        en.DiaChi = item["DiaChi"].ToString();
 
-                        lst.Add(en);
-                    }
-                }
+                //        lst.Add(en);
+                //    }
+                //}
                 if (lst.Count > 0)
                     return lst;
                 else
