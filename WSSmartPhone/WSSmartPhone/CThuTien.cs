@@ -333,11 +333,12 @@ namespace WSSmartPhone
                           + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
                           + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                           + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
+                          + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                           + " ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end"
                           + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null"
                           + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0 and dn.MaNV_DongNuoc is not null))t1"
-                      + " where t1.ID not in (select MaHD from TT_LenhHuy)"
-                      + " order by t1.MLT";
+                          + " where t1.ID not in (select MaHD from TT_LenhHuy)"
+                          + " order by t1.MLT";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
    
