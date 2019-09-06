@@ -594,6 +594,14 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getHoSoScan(System.String,System.String)">
+            <summary>
+            Lấy danh sách file đã scan
+            </summary>
+            <param name="DanhBo"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.searchThongTinKhachHang(System.String,System.String,System.String,System.String)">
             <summary>
             Tìm kiếm thông tin khách hàng bằng họ tên, số nhà, tên đường
@@ -1784,6 +1792,26 @@
         <member name="P:WSTanHoa.Models.TienTrinh.NoiDung">
             <summary>
             Nội dung
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoScan.ID">
+            <summary>
+            Mã ID
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoScan.CreateDate">
+            <summary>
+            Ngày lập
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoScan.LoaiVanBan">
+            <summary>
+            Loại văn bản
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoSoScan.lstFile">
+            <summary>
+            Danh sách file
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.HoSoGanMoi.SoHoSo">

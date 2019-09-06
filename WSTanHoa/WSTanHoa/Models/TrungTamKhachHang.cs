@@ -1522,6 +1522,47 @@ namespace WSTanHoa.Models
         }
     }
 
+    public class HoSoScan
+    {
+        /// <summary>
+        /// Mã ID
+        /// </summary>
+        public int ID { get; set; }
+
+        /// <summary>
+        /// Ngày lập
+        /// </summary>
+        public DateTime? CreateDate { get; set; }
+
+        /// <summary>
+        /// Loại văn bản
+        /// </summary>
+        public string LoaiVanBan { get; set; }
+
+        /// <summary>
+        /// Danh sách file
+        /// </summary>
+        public List<HoSoScan_File> lstFile { get; set; }
+
+        public HoSoScan()
+        {
+            ID = 0;
+            CreateDate = null;
+            LoaiVanBan = "";
+            lstFile = new List<HoSoScan_File>();
+        }
+    }
+
+    public class HoSoScan_File
+    {
+        public byte[] File { get; set; }
+
+        public HoSoScan_File()
+        {
+            File = null;
+        }
+    }
+
     #endregion
 
     #region Gắn Mới
