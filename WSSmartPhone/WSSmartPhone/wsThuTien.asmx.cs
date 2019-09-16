@@ -94,6 +94,12 @@ namespace WSSmartPhone
             return _cThuTien.GetDSHoaDonTon(MaNV, Nam, Ky, FromDot, ToDot);
         }
 
+        [WebMethod]
+        public string GetDSHoaDonTon_Dot_HoaDonDienTu(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
+        {
+            return _cThuTien.GetDSHoaDonTon_HoaDonDienTu(MaNV, Nam, Ky, FromDot, ToDot);
+        }
+
         //đóng nước
         [WebMethod]
         public string GetDSDongNuoc(string MaNV_DongNuoc, string FromNgayGiao, string ToNgayGiao)
