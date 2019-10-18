@@ -347,13 +347,56 @@ namespace WSSmartPhone
                             + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end,"
-                            + " DangNgan_DienThoai,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_NgayHen,"
-                            + " TBDongNuoc_Ngay=(select a.CreateDate from TT_DongNuoc a,TT_CTDongNuoc b where a.MaDN=b.MaDN and Huy=0 and b.MaHD=hd.ID_HOADON),"
+                            + " DangNgan_DienThoai,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_Ngay,TBDongNuoc_NgayHen,"
+                //+ " TBDongNuoc_Ngay=(select a.CreateDate from TT_DongNuoc a,TT_CTDongNuoc b where a.MaDN=b.MaDN and Huy=0 and b.MaHD=hd.ID_HOADON),"
                             + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
-                            + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null"
+                            + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
+                            + " and NgayGiaiTrach is null"
                             + " order by MLT";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV_DangNgan, string MaHDs)
+        {
+            try
+            {
+                string[] MaHD = MaHDs.Split(',');
+                using (var scope = new TransactionScope())
+                {
+                    for (int i = 0; i < MaHD.Length; i++)
+                    {
+                        string sql = "";
+                        switch (LoaiXuLy)
+                        {
+                            case "HanhThu":
+                                sql = "update HOADON set DangNgan_DienThoai=1,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV_DangNgan + ",NGAYGIAITRACH=getDate(),ModifyBy=" + MaNV_DangNgan + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
+                                break;
+                            case "PhieuBao":
+                                sql = "";
+                                break;
+                            case "PhieuBao2":
+                                sql = "";
+                                break;
+                            case "TBDongNuoc":
+                                sql = "";
+                                break;
+                            default:
+                                break;
+                        }
+
+                        if (_cDAL.ExecuteNonQuery(sql) == false)
+                            return false;
+                    }
+                    scope.Complete();
+                    scope.Dispose();
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         //đóng nước
