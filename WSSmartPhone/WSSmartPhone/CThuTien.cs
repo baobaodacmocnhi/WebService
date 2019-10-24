@@ -75,7 +75,7 @@ namespace WSSmartPhone
 
                 _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
 
-                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Doi,ToTruong,MaTo from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
+                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Doi,ToTruong,MaTo,DienThoai from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
             }
             catch (Exception)
             {
@@ -124,7 +124,7 @@ namespace WSSmartPhone
 
         public string GetDSNhanVien()
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo from TT_NguoiDung where MaND!=0 and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
@@ -342,12 +342,13 @@ namespace WSSmartPhone
 
         public string GetDSHoaDonTon_HoaDonDienTu(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
         {
-            string sql = "select ID=ID_HOADON,MaHD=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+            string sql = "select ID=ID_HOADON,MaHD=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+                            + " GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,TongCong,"
                             + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
                             + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end,"
-                            + " DangNgan_DienThoai,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_Ngay,TBDongNuoc_NgayHen,"
+                            + " DangNgan_DienThoai,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_Ngay,TBDongNuoc_NgayHen,"
                 //+ " TBDongNuoc_Ngay=(select a.CreateDate from TT_DongNuoc a,TT_CTDongNuoc b where a.MaDN=b.MaDN and Huy=0 and b.MaHD=hd.ID_HOADON),"
                             + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
@@ -357,41 +358,86 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV_DangNgan, string MaHDs)
+        public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen)
         {
             try
             {
-                string[] MaHD = MaHDs.Split(',');
+                string sql = "";
+                //string[] MaHD = MaHDs.Split(',');
+                //for (int i = 0; i < MaHD.Length; i++)
+                //{
+                //    switch (LoaiXuLy)
+                //    {
+                //        case "DangNgan":
+                //            sql += " update HOADON set DangNgan_DienThoai=1,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
+                //            break;
+                //        case "PhieuBao":
+                //            sql += " update HOADON set InPhieuBao_Ngay='" + Ngay + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
+                //            break;
+                //        case "PhieuBao2":
+                //            sql += " update HOADON set InPhieuBao2_Ngay='" + Ngay + "',InPhieuBao2_NgayHen='" + NgayHen + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
+                //            break;
+                //        case "TBDongNuoc":
+                //            sql += " update HOADON set TBDongNuoc_Ngay='" + Ngay + "',TBDongNuoc_NgayHen='" + NgayHen + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
+                //            break;
+                //        case "XoaDangNgan":
+                //            sql += " update HOADON set XoaDangNgan_Ngay_DienThoai='" + Ngay + "',DangNgan_DienThoai=0,DangNgan_HanhThu=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is not null ";
+                //            break;
+                //        default:
+                //            break;
+                //    }
+                //}
+                switch (LoaiXuLy)
+                {
+                    case "DangNgan":
+                        sql += " update HOADON set DangNgan_DienThoai=1,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        break;
+                    case "PhieuBao":
+                        sql += " update HOADON set InPhieuBao_Ngay='" + Ngay + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        break;
+                    case "PhieuBao2":
+                        sql += " update HOADON set InPhieuBao2_Ngay='" + Ngay + "',InPhieuBao2_NgayHen='" + NgayHen + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        break;
+                    case "TBDongNuoc":
+                        sql += " update HOADON set TBDongNuoc_Ngay='" + Ngay + "',TBDongNuoc_NgayHen='" + NgayHen + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        break;
+                    case "XoaDangNgan":
+                        sql += " update HOADON set XoaDangNgan_Ngay_DienThoai='" + Ngay + "',DangNgan_DienThoai=0,DangNgan_HanhThu=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
+                        break;
+                    default:
+                        break;
+                }
                 using (var scope = new TransactionScope())
                 {
-                    for (int i = 0; i < MaHD.Length; i++)
+                    if (_cDAL.ExecuteNonQuery(sql) == true)
                     {
-                        string sql = "";
-                        switch (LoaiXuLy)
-                        {
-                            case "HanhThu":
-                                sql = "update HOADON set DangNgan_DienThoai=1,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV_DangNgan + ",NGAYGIAITRACH=getDate(),ModifyBy=" + MaNV_DangNgan + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
-                                break;
-                            case "PhieuBao":
-                                sql = "";
-                                break;
-                            case "PhieuBao2":
-                                sql = "";
-                                break;
-                            case "TBDongNuoc":
-                                sql = "";
-                                break;
-                            default:
-                                break;
-                        }
-
-                        if (_cDAL.ExecuteNonQuery(sql) == false)
-                            return false;
+                        scope.Complete();
+                        scope.Dispose();
                     }
-                    scope.Complete();
-                    scope.Dispose();
                 }
-                return true;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public string get_GhiChu(string DanhBo)
+        {
+            string sql = "select DanhBo,DienThoai,GiaBieu,NiemChi,DiemBe from TT_GhiChu where DanhBo='" + DanhBo + "'";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public bool update_GhiChu(string MaNV, string DanhBo, string DienThoai, string GiaBieu, string NiemChi, string DiemBe)
+        {
+            try
+            {
+                string sql = "if not exists (select 1 from TT_GhiChu where DanhBo='" + DanhBo + "')"
+                            + " 	insert into TT_GhiChu(DanhBo,DienThoai,GiaBieu,NiemChi,DiemBe,CreateBy,CreateDate)values('" + DanhBo + "','" + DienThoai + "',N'" + GiaBieu + "',N'" + NiemChi + "',N'" + DiemBe + "'," + MaNV + ",GETDATE());"
+                            + " else"
+                            + " 	update TT_GhiChu set DienThoai='" + DienThoai + "',GiaBieu=N'" + GiaBieu + "',NiemChi=N'" + NiemChi + "',DiemBe=N'" + DiemBe + "',ModifyBy=" + MaNV + ",ModifyDate=GETDATE() where DanhBo='" + DanhBo + "';";
+                return _cDAL.ExecuteNonQuery(sql);
             }
             catch (Exception)
             {

@@ -100,6 +100,24 @@ namespace WSSmartPhone
             return _cThuTien.GetDSHoaDonTon_HoaDonDienTu(MaNV, Nam, Ky, FromDot, ToDot);
         }
 
+        [WebMethod]
+        public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen)
+        {
+            return _cThuTien.XuLy_HoaDonDienTu(LoaiXuLy, MaNV, MaHDs, Ngay, NgayHen);
+        }
+
+        [WebMethod]
+        public string get_GhiChu(string DanhBo)
+        {
+            return _cThuTien.get_GhiChu(DanhBo);
+        }
+
+        [WebMethod]
+        public bool update_GhiChu(string MaNV, string DanhBo, string DienThoai, string GiaBieu, string NiemChi, string DiemBe)
+        {
+            return _cThuTien.update_GhiChu(MaNV, DanhBo, DienThoai, GiaBieu, NiemChi, DiemBe);
+        }
+
         //đóng nước
         [WebMethod]
         public string GetDSDongNuoc(string MaNV_DongNuoc, string FromNgayGiao, string ToNgayGiao)
