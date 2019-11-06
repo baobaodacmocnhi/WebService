@@ -16,7 +16,7 @@ namespace WSTanHoa.Controllers
     public class apiThuHoController : ApiController
     {
         static readonly log4net.ILog _log = log4net.LogManager.GetLogger("File");
-        CConnection _cDAL = new  CConnection(CConstantVariable.ThuTien);
+        CConnection _cDAL = new CConnection(CConstantVariable.ThuTien);
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -277,7 +277,7 @@ namespace WSTanHoa.Controllers
                         if (checkExist_GiaiTrach == "")
                             checkExist_GiaiTrach += arrayMaHD[i] + " : " + _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
                         else
-                            checkExist_GiaiTrach += " ; "+arrayMaHD[i] + " : " + _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
+                            checkExist_GiaiTrach += " ; " + arrayMaHD[i] + " : " + _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
                     }
                     catch (Exception ex)
                     {
@@ -287,7 +287,7 @@ namespace WSTanHoa.Controllers
                     }
 
                 }
-                if ( checkExist_GiaiTrach != "" )
+                if (checkExist_GiaiTrach != "")
                 {
                     ErrorResponse error1 = new ErrorResponse(ErrorResponse.ErrorGiaiTrach + ". " + checkExist_GiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
                     _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");

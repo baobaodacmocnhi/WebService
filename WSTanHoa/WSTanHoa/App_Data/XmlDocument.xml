@@ -744,6 +744,11 @@
             Hiệu lực
             </summary>
         </member>
+        <member name="P:WSTanHoa.Models.ThongTinKhachHang.ThongTin">
+            <summary>
+            Thông tin
+            </summary>
+        </member>
         <member name="P:WSTanHoa.Models.DocSo.NhanVien">
             <summary>
             Nhân viên đọc số

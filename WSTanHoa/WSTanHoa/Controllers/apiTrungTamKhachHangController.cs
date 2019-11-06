@@ -17,6 +17,7 @@ namespace WSTanHoa.Controllers
     {
         CConnection _cDAL_DHN = new CConnection(CConstantVariable.DHN);
         CConnection _cDAL_DocSo = new CConnection(CConstantVariable.DocSo);
+        CConnection _cDAL_DocSo12 = new CConnection(CConstantVariable.DocSo12);
         CConnection _cDAL_GanMoi = new CConnection(CConstantVariable.GanMoi);
         CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
         CConnection _cDAL_KinhDoanh = new CConnection(CConstantVariable.KinhDoanh);
@@ -109,6 +110,8 @@ namespace WSTanHoa.Controllers
                     if (dt.Rows[0]["NgayKiemDinh"].ToString() != "")
                         en.NgayKiemDinh = DateTime.Parse(dt.Rows[0]["NgayKiemDinh"].ToString());
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
+                    if ((int)_cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='"+ dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
+                        en.ThongTin = "Có sử dụng Giếng";
                     return en;
                 }
                 else

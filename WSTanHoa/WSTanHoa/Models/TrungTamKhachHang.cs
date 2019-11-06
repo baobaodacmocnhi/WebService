@@ -89,6 +89,9 @@ namespace WSTanHoa.Models
         /// </summary>
         public string HieuLuc { get; set; }
 
+        /// <summary>
+        /// Thông tin
+        /// </summary>
         public string ThongTin { get; set; }
 
         public ThongTinKhachHang()
