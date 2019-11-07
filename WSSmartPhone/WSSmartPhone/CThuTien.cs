@@ -359,7 +359,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen)
+        public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, DateTime Ngay, DateTime NgayHen)
         {
             try
             {
@@ -391,19 +391,19 @@ namespace WSSmartPhone
                 switch (LoaiXuLy)
                 {
                     case "DangNgan":
-                        sql += " update HOADON set DangNgan_DienThoai=1,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        sql += " update HOADON set DangNgan_DienThoai=1,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "PhieuBao":
-                        sql += " update HOADON set InPhieuBao_Ngay='" + Ngay + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        sql += " update HOADON set InPhieuBao_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "PhieuBao2":
-                        sql += " update HOADON set InPhieuBao2_Ngay='" + Ngay + "',InPhieuBao2_NgayHen='" + NgayHen + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        sql += " update HOADON set InPhieuBao2_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',InPhieuBao2_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "TBDongNuoc":
-                        sql += " update HOADON set TBDongNuoc_Ngay='" + Ngay + "',TBDongNuoc_NgayHen='" + NgayHen + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        sql += " update HOADON set TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "XoaDangNgan":
-                        sql += " update HOADON set XoaDangNgan_Ngay_DienThoai='" + Ngay + "',DangNgan_DienThoai=0,DangNgan_HanhThu=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
+                        sql += " update HOADON set XoaDangNgan_Ngay_DienThoai='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',DangNgan_DienThoai=0,DangNgan_HanhThu=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
                         break;
                     default:
                         break;

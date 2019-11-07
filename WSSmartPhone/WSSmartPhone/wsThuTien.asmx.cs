@@ -103,7 +103,13 @@ namespace WSSmartPhone
         [WebMethod]
         public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen)
         {
-            return _cThuTien.XuLy_HoaDonDienTu(LoaiXuLy, MaNV, MaHDs, Ngay, NgayHen);
+            IFormatProvider culture = new CultureInfo("en-US", true);
+            DateTime date = new DateTime(), date2 = new DateTime();
+            if (Ngay != "")
+                date = DateTime.ParseExact(Ngay, "dd/MM/yyyy HH:mm:ss", culture);
+            if (NgayHen != "")
+                date2 = DateTime.ParseExact(NgayHen, "dd/MM/yyyy HH:mm:ss", culture);
+            return _cThuTien.XuLy_HoaDonDienTu(LoaiXuLy, MaNV, MaHDs, date, date2);
         }
 
         [WebMethod]
@@ -144,21 +150,27 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc,string ViTri, string LyDo, string CreateBy)
+        public bool ThemDongNuoc(string MaDN, string DanhBo, string MLT, string HoTen, string DiaChi, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string Hieu, string Co, string SoThan, string ChiMatSo, string ChiKhoaGoc, string ViTri, string LyDo, string CreateBy)
         {
-            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture), ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac, KhoaKhac_GhiChu, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc,ViTri, LyDo, CreateBy);
+            IFormatProvider culture = new CultureInfo("en-US", true);
+            DateTime date = DateTime.ParseExact(NgayDN, "dd/MM/yyyy HH:mm:ss", culture);
+            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, date, ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac, KhoaKhac_GhiChu, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, ViTri, LyDo, CreateBy);
         }
 
         [WebMethod]
         public bool SuaDongNuoc(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ChiMatSo, string ChiKhoaGoc, string LyDo, string CreateBy)
         {
-            return _cThuTien.SuaDongNuoc(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoDN, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy);
+            IFormatProvider culture = new CultureInfo("en-US", true);
+            DateTime date = DateTime.ParseExact(NgayDN, "dd/MM/yyyy HH:mm:ss", culture);
+            return _cThuTien.SuaDongNuoc(MaDN, HinhDN, date, ChiSoDN, ChiMatSo, ChiKhoaGoc, LyDo, CreateBy);
         }
 
         [WebMethod]
         public bool ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy)
         {
-            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, DateTime.ParseExact(NgayDN, "dd/MM/yyyy HH:mm:ss", CultureInfo.InvariantCulture), ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac, KhoaKhac_GhiChu, CreateBy);
+            IFormatProvider culture = new CultureInfo("en-US", true);
+            DateTime date = DateTime.ParseExact(NgayDN, "dd/MM/yyyy HH:mm:ss", culture);
+            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, date, ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac, KhoaKhac_GhiChu, CreateBy);
         }
 
         [WebMethod]
@@ -170,13 +182,17 @@ namespace WSSmartPhone
         [WebMethod]
         public bool ThemMoNuoc(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy)
         {
-            return _cThuTien.ThemMoNuoc(MaDN, HinhMN, DateTime.ParseExact(NgayMN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoMN, CreateBy);
+            IFormatProvider culture = new CultureInfo("en-US", true);
+            DateTime date = DateTime.ParseExact(NgayMN, "dd/MM/yyyy HH:mm:ss", culture);
+            return _cThuTien.ThemMoNuoc(MaDN, HinhMN, date, ChiSoMN, CreateBy);
         }
 
         [WebMethod]
         public bool SuaMoNuoc(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy)
         {
-            return _cThuTien.SuaMoNuoc(MaDN, HinhMN, DateTime.ParseExact(NgayMN, "dd/MM/yyyy", CultureInfo.InvariantCulture), ChiSoMN, CreateBy);
+            IFormatProvider culture = new CultureInfo("en-US", true);
+            DateTime date = DateTime.ParseExact(NgayMN, "dd/MM/yyyy HH:mm:ss", culture);
+            return _cThuTien.SuaMoNuoc(MaDN, HinhMN, date, ChiSoMN, CreateBy);
         }
 
         [WebMethod]
