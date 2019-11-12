@@ -490,13 +490,13 @@ namespace WSSmartPhone
                             + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " SoThan=case when kqdn.SoThan is not null then kqdn.SoThan else (select SoThan=ttkh.SOTHANDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
-                            + " DongNuoc=case when kqdn.DongNuoc is null then 'false' else 'true' end,"
-                            + " DongNuoc2=case when kqdn.DongNuoc2 is null then 'false' else 'true' end,"
-                            + " MoNuoc=case when kqdn.MoNuoc is null then 'false' else 'true' end,"
-                            + " DongPhi=case when kqdn.DongPhi is null then 'false' else 'true' end,"
-                            + " ButChi=case when kqdn.ButChi is null then 'false' else 'true' end,"
-                            + " KhoaTu=case when kqdn.KhoaTu is null then 'false' else 'true' end,"
-                            + " KhoaKhac=case when kqdn.KhoaKhac is null then 'false' else 'true' end,"
+                            + " DongNuoc=case when kqdn.DongNuoc is null then 'false' else case when kqdn.DongNuoc=1 then 'true' else 'false' end end,"
+                            + " DongNuoc2=case when kqdn.DongNuoc2 is null then 'false' else case when kqdn.DongNuoc2=1 then 'true' else 'false' end end,"
+                            + " MoNuoc=case when kqdn.MoNuoc is null then 'false' else case when kqdn.MoNuoc=1 then 'true' else 'false' end end,"
+                            + " DongPhi=case when kqdn.DongPhi is null then 'false' else case when kqdn.DongPhi=1 then 'true' else 'false' end end,"
+                            + " ButChi=case when kqdn.ButChi is null then 'false' else case when kqdn.ButChi=1 then 'true' else 'false' end end,"
+                            + " KhoaTu=case when kqdn.KhoaTu is null then 'false' else case when kqdn.KhoaTu=1 then 'true' else 'false' end end,"
+                            + " KhoaKhac=case when kqdn.KhoaKhac is null then 'false' else case when kqdn.KhoaKhac=1 then 'true' else 'false' end end,"
                             + " kqdn.NgayDN,kqdn.ChiSoDN,kqdn.NiemChi,kqdn.KhoaKhac_GhiChu,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.ViTri,kqdn.LyDo,kqdn.NgayDN1,kqdn.ChiSoDN1,kqdn.NiemChi1,kqdn.NgayMN,kqdn.ChiSoMN"
                             + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyyMMdd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyyMMdd") + "'"
@@ -746,37 +746,43 @@ namespace WSSmartPhone
 
         public bool ThemMoNuoc(string MaDN, string HinhMN, DateTime NgayMN, string ChiSoMN, string CreateBy)
         {
-            using (TransactionScope scope = new TransactionScope())
+            try
             {
-                string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
-
-                SqlCommand command = new SqlCommand(sql);
-                if (HinhMN == "NULL")
-                    command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
-                else
-                    command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMN);
-
-                if (_cDAL.ExecuteNonQuery(command) == true)
+                using (TransactionScope scope = new TransactionScope())
                 {
-                    //insert table hình
-                    string sql_Hinh = "declare @MaKQDN int;"
-                                        + " set @MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + ")"
-                                        + " if not exists (select MaKQDN from TT_KQDongNuoc_Hinh where MaKQDN=@MaKQDN)"
-                                        + " insert into TT_KQDongNuoc_Hinh(MaKQDN,HinhMN,CreateBy,CreateDate)values(@MaKQDN,@HinhMN," + CreateBy + ",getDate())"
-                                        + " else"
-                                        + " update TT_KQDongNuoc_Hinh set HinhMN=@HinhMN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=@MaKQDN";
-                    command = new SqlCommand(sql_Hinh);
+                    //string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
+                    string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd HH:mm:ss") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
+                    SqlCommand command = new SqlCommand(sql);
                     if (HinhMN == "NULL")
                         command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
                     else
                         command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMN);
-                    _cDAL.ExecuteNonQuery(command);
 
-                    scope.Complete();
-                    return true;
+                    if (_cDAL.ExecuteNonQuery(command) == true)
+                    {
+                        //insert table hình
+                        string sql_Hinh = "declare @MaKQDN int;"
+                                            + " set @MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + ")"
+                                            + " if not exists (select MaKQDN from TT_KQDongNuoc_Hinh where MaKQDN=@MaKQDN)"
+                                            + " insert into TT_KQDongNuoc_Hinh(MaKQDN,HinhMN,CreateBy,CreateDate)values(@MaKQDN,@HinhMN," + CreateBy + ",getDate())"
+                                            + " else"
+                                            + " update TT_KQDongNuoc_Hinh set HinhMN=@HinhMN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=@MaKQDN";
+                        command = new SqlCommand(sql_Hinh);
+                        if (HinhMN == "NULL")
+                            command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
+                        else
+                            command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMN);
+                        _cDAL.ExecuteNonQuery(command);
+
+                        scope.Complete();
+                        return true;
+                    }
                 }
-                else
-                    return false;
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
