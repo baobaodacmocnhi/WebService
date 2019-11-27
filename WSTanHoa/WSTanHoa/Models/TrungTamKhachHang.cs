@@ -40,14 +40,19 @@ namespace WSTanHoa.Models
         public string MLT { get; set; }
 
         /// <summary>
+        /// Giá Biểu
+        /// </summary>
+        public string GiaBieu { get; set; }
+
+        /// <summary>
         /// Định mức
         /// </summary>
         public string DinhMuc { get; set; }
 
         /// <summary>
-        /// Giá Biểu
+        /// Định mức hộ nghèo
         /// </summary>
-        public string GiaBieu { get; set; }
+        public string DinhMucHN { get; set; }
 
         /// <summary>
         /// Hiệu ĐHN
@@ -102,8 +107,9 @@ namespace WSTanHoa.Models
             HopDong = "";
             DienThoai = "";
             MLT = "";
-            DinhMuc = "";
             GiaBieu = "";
+            DinhMuc = "";
+            DinhMucHN = "";
             HieuDH = "";
             CoDH = "";
             Cap = "";
@@ -246,6 +252,11 @@ namespace WSTanHoa.Models
         public string DinhMuc { get; set; }
 
         /// <summary>
+        /// Định mức hộ nghèo
+        /// </summary>
+        public string DinhMucHN { get; set; }
+
+        /// <summary>
         /// Số hóa đơn
         /// </summary>
         public string SoHoaDon { get; set; }
@@ -330,6 +341,7 @@ namespace WSTanHoa.Models
         {
             GiaBieu = "";
             DinhMuc = "";
+            DinhMucHN = "";
             SoHoaDon = "";
             Ky = "";
             TieuThu = "";
@@ -413,6 +425,11 @@ namespace WSTanHoa.Models
         public string DinhMuc { get; set; }
 
         /// <summary>
+        /// Định mức hộ nghèo
+        /// </summary>
+        public string DinhMucHN { get; set; }
+
+        /// <summary>
         /// Nội dung
         /// </summary>
         public string NoiDung { get; set; }
@@ -492,6 +509,7 @@ namespace WSTanHoa.Models
             DiaChi = "";
             GiaBieu = "";
             DinhMuc = "";
+            DinhMucHN = "";
             NoiDung = "";
             lstKTXM = new List<KTXM>();
             lstBamChi = new List<BamChi>();
@@ -775,6 +793,16 @@ namespace WSTanHoa.Models
         public string DinhMuc_BD { get; set; }
 
         /// <summary>
+        /// Định mức hộ nghèo cũ
+        /// </summary>
+        public string DinhMucHN { get; set; }
+
+        /// <summary>
+        /// Định mức hộ nghèo mới
+        /// </summary>
+        public string DinhMucHN_BD { get; set; }
+
+        /// <summary>
         /// Họ tên mới
         /// </summary>
         public string HoTen_BD { get; set; }
@@ -807,6 +835,8 @@ namespace WSTanHoa.Models
             GiaBieu_BD = "";
             DinhMuc = "";
             DinhMuc_BD = "";
+            DinhMucHN = "";
+            DinhMucHN_BD = "";
             HoTen_BD = "";
             DiaChi_BD = "";
             ThongTin = "";
@@ -870,6 +900,16 @@ namespace WSTanHoa.Models
         /// Định mức mới
         /// </summary>
         public string DinhMuc_BD { get; set; }
+
+        /// <summary>
+        /// Định mức hộ nghèo cũ
+        /// </summary>
+        public string DinhMucHN { get; set; }
+
+        /// <summary>
+        /// Định mức hộ nghèo mới
+        /// </summary>
+        public string DinhMucHN_BD { get; set; }
 
         /// <summary>
         /// Tiêu thụ cũ

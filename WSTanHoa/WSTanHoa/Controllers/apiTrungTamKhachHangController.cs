@@ -51,6 +51,7 @@ namespace WSTanHoa.Controllers
                              + ",DienThoai"
                              + ",MLT=LoTrinh"
                              + ",DinhMuc"
+                             + ",DinhMucHN"
                              + ",GiaBieu"
                              + ",HieuDH"
                              + ",CoDH"
@@ -73,6 +74,7 @@ namespace WSTanHoa.Controllers
                                  + ",DienThoai=''"
                                  + ",MLT=LoTrinh"
                                  + ",DinhMuc"
+                                 + ",DinhMucHN"
                                  + ",GiaBieu"
                                  + ",HieuDH"
                                  + ",CoDH"
@@ -99,6 +101,7 @@ namespace WSTanHoa.Controllers
                     en.DienThoai = dt.Rows[0]["DienThoai"].ToString();
                     en.MLT = dt.Rows[0]["MLT"].ToString();
                     en.DinhMuc = dt.Rows[0]["DinhMuc"].ToString();
+                    en.DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
                     en.GiaBieu = dt.Rows[0]["GiaBieu"].ToString();
                     en.HieuDH = dt.Rows[0]["HieuDH"].ToString();
                     en.CoDH = dt.Rows[0]["CoDH"].ToString();
@@ -472,6 +475,7 @@ namespace WSTanHoa.Controllers
                         HoaDonThuTien enCT = new HoaDonThuTien();
                         enCT.GiaBieu = item["GiaBieu"].ToString();
                         enCT.DinhMuc = item["DinhMuc"].ToString();
+                        enCT.DinhMucHN = item["DinhMucHN"].ToString();
                         enCT.SoHoaDon = item["SoHoaDon"].ToString();
                         enCT.Ky = item["Ky"].ToString();
                         enCT.TieuThu = item["TieuThu"].ToString();
@@ -635,6 +639,7 @@ namespace WSTanHoa.Controllers
                             en.DiaChi = item["DiaChi"].ToString();
                             en.GiaBieu = item["GiaBieu"].ToString();
                             en.DinhMuc = item["DinhMuc"].ToString();
+                            en.DinhMucHN = item["DinhMucHN"].ToString();
                             en.NoiDung = item["NoiDung"].ToString();
 
                             //thêm chi tiết
@@ -738,6 +743,8 @@ namespace WSTanHoa.Controllers
                                                     enCT.GiaBieu_BD = dr[j]["GiaBieu_BD"].ToString();
                                                     enCT.DinhMuc = dr[j]["DinhMuc"].ToString();
                                                     enCT.DinhMuc_BD = dr[j]["DinhMuc_BD"].ToString();
+                                                    enCT.DinhMucHN = dr[j]["DinhMucHN"].ToString();
+                                                    enCT.DinhMucHN_BD = dr[j]["DinhMucHN_BD"].ToString();
                                                     enCT.HoTen_BD = dr[j]["HoTen_BD"].ToString();
                                                     enCT.DiaChi_BD = dr[j]["DiaChi_BD"].ToString();
                                                     enCT.ThongTin = dr[j]["ThongTin"].ToString() + "; Hiệu lực: " + dr[j]["HieuLucKy"].ToString();
@@ -767,6 +774,8 @@ namespace WSTanHoa.Controllers
                                                     enCT.GiaBieu_BD = dr[j]["GiaBieu_BD"].ToString();
                                                     enCT.DinhMuc = dr[j]["DinhMuc"].ToString();
                                                     enCT.DinhMuc_BD = dr[j]["DinhMuc_BD"].ToString();
+                                                    enCT.DinhMucHN = dr[j]["DinhMucHN"].ToString();
+                                                    enCT.DinhMucHN_BD = dr[j]["DinhMucHN_BD"].ToString();
                                                     enCT.TieuThu = dr[j]["TieuThu"].ToString();
                                                     enCT.TieuThu_BD = dr[j]["TieuThu_BD"].ToString();
                                                     enCT.TongCong_Start = dr[j]["TongCong_Start"].ToString();
