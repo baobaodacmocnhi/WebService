@@ -43,8 +43,21 @@ namespace WSTanHoa.Controllers
             try
             {
                 //if (mac == getSHA256(oaid + fromuid + msgid + message + timestamp + "cCBBIsEx7UDj42KA1N5Y"))
+                if (@event == "follow")
+                {
+                    string sql = "if not exists(select * from ZaloQuanTam where IDZalo=" + fromuid + ")"
+                        + " insert into ZaloQuanTam(IDZalo, CreateDate)values(" + fromuid + ", GETDATE())";
+                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                }
                 if (@event == "sendmsg")
                 {
+
+                    //bấm quan tâm
+                    //if (message == "#dangkythongtin")
+                    //{
+                    //    strResponse = sendMessageDangKy(fromuid);
+                    //}
+                    //else
                     //gửi tin nhắn đăng ký
                     if (message == "#dangkythongtin")
                     {
@@ -338,6 +351,68 @@ namespace WSTanHoa.Controllers
         }
 
         /// <summary>
+        /// Gửi tin nhắn cúp nước
+        /// </summary>
+        /// <param name="IDZalo"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        [Route("sendMessageCupNuoc")]
+        [HttpGet]
+        public string sendMessageCupNuoc(string IDZalo, string message)
+        {
+            string strResponse = "success";
+            try
+            {
+                string url = "https://openapi.zalo.me/v2.0/oa/message?access_token=" + access_token;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+
+                string data = "{"
+                            + "\"recipient\": {"
+                            + "\"user_id\":\"" + IDZalo + "\""
+                            + "},"
+                            + "\"message\":{"
+                            + "\"text\": \"" + message + "\","
+                            + "\"attachment\": {"
+                            + "\"type\": \"template\","
+                            + "\"payload\": {"
+                            + "\"template_type\": \"media\","
+                            + "\"elements\": [{"
+                            + "\"media_type\": \"image\","
+                            + "\"url\":\"http://www.capnuoctanhoa.com.vn/zalo/thongbaotamngungcungcapnuoc.jpg\""
+                            + "}]"
+                            + "}"
+                            + "}"
+                            + "}"
+                            + "}";
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    strResponse = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                }
+                else
+                {
+                    strResponse = "Error: " + respuesta.StatusCode;
+                }
+                return strResponse;
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        /// <summary>
         /// Gửi tin nhắn từ CRM cho trưởng phòng
         /// </summary>
         /// <param name="IDZalo"></param>
@@ -353,7 +428,7 @@ namespace WSTanHoa.Controllers
                 DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo where KyHieuPhong='" + KyHieuPhong + "'");
                 foreach (DataRow item in dt.Rows)
                 {
-                    strResponse= sendMessage(item["IDZalo"].ToString(),message);
+                    strResponse = sendMessage(item["IDZalo"].ToString(), message);
                 }
             }
             catch (Exception ex)
@@ -361,6 +436,14 @@ namespace WSTanHoa.Controllers
                 strResponse = ex.Message;
             }
             return strResponse;
+        }
+
+        [Route("getFollow")]
+        [HttpGet]
+        public void getFollow(string id)
+        {
+            string sql = "if not exists(select * from ZaloQuanTam where IDZalo=" + id + ")"
+                        + " insert into ZaloQuanTam(IDZalo, CreateDate)values(" + id + ", GETDATE())";
         }
 
         private string getSHA256(string strData)
