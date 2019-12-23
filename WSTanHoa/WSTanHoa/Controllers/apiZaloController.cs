@@ -25,51 +25,47 @@ namespace WSTanHoa.Controllers
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
 
         /// <summary>
-        /// nhận webhook từ zalo
+        /// webhook receive zalo
         /// </summary>
-        /// <param name="fromuid"></param>
-        /// <param name="msgid"></param>
-        /// <param name="event"></param>
+        /// <param name="IDZalo"></param>
+        /// <param name="event_name"></param>
         /// <param name="message"></param>
-        /// <param name="oaid"></param>
-        /// <param name="mac"></param>
-        /// <param name="timestamp"></param>
         /// <returns></returns>
         [Route("webhook")]
         [HttpGet]
-        public string webhook(string fromuid, string msgid, string @event, string message, string oaid, string mac, string timestamp)
+        public string webhook(string IDZalo, string event_name, string message)
         {
             string strResponse = "success";
             try
             {
                 //if (mac == getSHA256(oaid + fromuid + msgid + message + timestamp + "cCBBIsEx7UDj42KA1N5Y"))
-                if (@event == "follow")
+                //bấm quan tâm
+                if (event_name == "follow")
                 {
-                    string sql = "if not exists(select * from ZaloQuanTam where IDZalo=" + fromuid + ")"
-                        + " insert into ZaloQuanTam(IDZalo, CreateDate)values(" + fromuid + ", GETDATE())";
+                    string sql = "if not exists(select * from ZaloQuanTam where IDZalo=" + IDZalo + ")"
+                        + " insert into ZaloQuanTam(IDZalo, CreateDate)values(" + IDZalo + ", GETDATE())";
                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
-                if (@event == "sendmsg")
+                //bấm bỏ quan tâm
+                if (event_name == "unfollow")
                 {
-
-                    //bấm quan tâm
-                    //if (message == "#dangkythongtin")
-                    //{
-                    //    strResponse = sendMessageDangKy(fromuid);
-                    //}
-                    //else
+                    string sql = "delete ZaloQuanTam where IDZalo=" + IDZalo;
+                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                }
+                if (event_name == "user_send_text")
+                {
                     //gửi tin nhắn đăng ký
                     if (message == "#dangkythongtin")
                     {
-                        strResponse = sendMessageDangKy(fromuid);
+                        strResponse = sendMessageDangKy(IDZalo);
                     }
                     else
                     {
                         //xét id chưa đăng ký
-                        DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + fromuid + "");
+                        DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + IDZalo + "");
                         if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
                         {
-                            strResponse = sendMessageDangKy(fromuid);
+                            strResponse = sendMessageDangKy(IDZalo);
                         }
                         else
                         //bắt đầu gửi tin nhắn tra cứu
@@ -93,11 +89,11 @@ namespace WSTanHoa.Controllers
                                             {
                                                 content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
                                             }
-                                            strResponse = sendMessage(fromuid, content);
+                                            strResponse = sendMessage(IDZalo, content);
                                         }
                                     }
                                     //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",'get12kyhoadon',getdate())";
+                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'get12kyhoadon',getdate())";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                     break;
                                 case "#gethoadonton"://lấy hóa đơn tồn
@@ -116,7 +112,7 @@ namespace WSTanHoa.Controllers
                                             {
                                                 content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
                                             }
-                                            strResponse = sendMessage(fromuid, content);
+                                            strResponse = sendMessage(IDZalo, content);
                                         }
                                         else
                                         {
@@ -127,12 +123,12 @@ namespace WSTanHoa.Controllers
                                                         + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
                                                         + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
                                                         + "Hiện đang Hết Nợ";
-                                            strResponse = sendMessage(fromuid, content);
+                                            strResponse = sendMessage(IDZalo, content);
                                         }
 
                                     }
                                     //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",'gethoadonton',getdate())";
+                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'gethoadonton',getdate())";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                     break;
                                 case "#getlichdocso"://lấy lịch đọc số
@@ -158,10 +154,10 @@ namespace WSTanHoa.Controllers
                                                     + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
                                                     + result_NhanVien + "\n"
                                                     + result_Lich;
-                                        strResponse = sendMessage(fromuid, content);
+                                        strResponse = sendMessage(IDZalo, content);
                                     }
                                     //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",'getlichdocso',getdate())";
+                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichdocso',getdate())";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                     break;
                                 case "#getlichthutien"://lấy lịch thu tiền
@@ -187,15 +183,15 @@ namespace WSTanHoa.Controllers
                                                     + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
                                                     + result_NhanVien + "\n"
                                                     + result_Lich;
-                                        strResponse = sendMessage(fromuid, content);
+                                        strResponse = sendMessage(IDZalo, content);
                                     }
                                     //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",'getlichthutien',getdate())";
+                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichthutien',getdate())";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                     break;
                                 default:
                                     //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + fromuid + ",N'" + message + "',getdate())";
+                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",N'" + message + "',getdate())";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                     break;
                             }
@@ -436,14 +432,6 @@ namespace WSTanHoa.Controllers
                 strResponse = ex.Message;
             }
             return strResponse;
-        }
-
-        [Route("getFollow")]
-        [HttpGet]
-        public void getFollow(string id)
-        {
-            string sql = "if not exists(select * from ZaloQuanTam where IDZalo=" + id + ")"
-                        + " insert into ZaloQuanTam(IDZalo, CreateDate)values(" + id + ", GETDATE())";
         }
 
         private string getSHA256(string strData)
