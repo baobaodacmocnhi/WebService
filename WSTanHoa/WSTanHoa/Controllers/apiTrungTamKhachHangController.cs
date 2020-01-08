@@ -375,6 +375,8 @@ namespace WSTanHoa.Controllers
                     result = item["NoiDung"].ToString();
                     break;
                 }
+            if (result == "")
+                result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
             return result;
         }
 
@@ -595,6 +597,8 @@ namespace WSTanHoa.Controllers
                     result = item["NoiDung"].ToString();
                     break;
                 }
+            if (result == "")
+                result = dt.Rows[dt.Rows.Count-1]["NoiDung"].ToString();
             return result;
         }
 
