@@ -354,7 +354,7 @@ namespace WSSmartPhone
                             + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
                             + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
-                            + " and NgayGiaiTrach is null"
+                            + " and (NgayGiaiTrach is null or DangNgan_DienThoai=1)"
                             + " order by MLT";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -408,15 +408,21 @@ namespace WSSmartPhone
                     default:
                         break;
                 }
-                using (var scope = new TransactionScope())
+                //using (var scope = new TransactionScope())
+                //{
+                //    if (_cDAL.ExecuteNonQuery(sql) == true)
+                //    {
+                //        scope.Complete();
+                //        scope.Dispose();
+                //        return true;
+                //    }
+                //}
+                if (_cDAL.ExecuteNonQuery(sql) == true)
                 {
-                    if (_cDAL.ExecuteNonQuery(sql) == true)
-                    {
-                        scope.Complete();
-                        scope.Dispose();
-                    }
+                    return true;
                 }
-                return false;
+                else
+                    return false;
             }
             catch (Exception)
             {
