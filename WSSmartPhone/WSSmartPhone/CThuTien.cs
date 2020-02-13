@@ -617,7 +617,7 @@ namespace WSSmartPhone
                     if (_cDAL.ExecuteNonQuery(command) == true)
                     {
                         //insert table hình
-                        string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end)," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
+                        string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end)," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
                         command = new SqlCommand(sql_Hinh);
                         if (HinhDN == "NULL")
                             command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
