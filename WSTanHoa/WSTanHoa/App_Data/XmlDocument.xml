@@ -628,17 +628,13 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiZaloController.webhook(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+        <member name="M:WSTanHoa.Controllers.apiZaloController.webhook(System.String,System.String,System.String)">
             <summary>
-            nhận webhook từ zalo
+            webhook receive zalo
             </summary>
-            <param name="fromuid"></param>
-            <param name="msgid"></param>
-            <param name="event"></param>
+            <param name="IDZalo"></param>
+            <param name="event_name"></param>
             <param name="message"></param>
-            <param name="oaid"></param>
-            <param name="mac"></param>
-            <param name="timestamp"></param>
             <returns></returns>
         </member>
         <member name="M:WSTanHoa.Controllers.apiZaloController.sendMessage(System.String,System.String)">

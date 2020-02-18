@@ -237,11 +237,11 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-                {
-                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                }
+                //if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+                //{
+                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                //}
                 DocSo en = new DocSo();
                 DataTable dt = new DataTable();
 
@@ -358,7 +358,7 @@ namespace WSTanHoa.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public string getLichDocSo_Func(string DanhBo, string MLT)
         {
-            string sql_Lich = "WITH docso AS(select top 1 KY, NAM from [SERVER8].[DocSoTH].[dbo].[DocSo] where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
+            string sql_Lich = "WITH docso AS(select top 2 KY, NAM from [SERVER8].[DocSoTH].[dbo].[DocSo] where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
                                    + " select NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103)"
                                    + " ,NgayDoc"
                                    + " from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c,docso where a.ID=b.IDDocSo and c.ID=b.IDDot and ((a.Nam>docso.Nam) or (a.Nam=docso.Nam and a.Ky>=docso.Ky))"
@@ -369,15 +369,18 @@ namespace WSTanHoa.Controllers
                                    //+ " order by a.CreateDate desc";
             string result = "";
             DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
-            foreach (DataRow item in dt.Rows)
-                if (DateTime.Parse(item["NgayDoc"].ToString()).Date >= DateTime.Now.Date)
-                {
-                    result = item["NoiDung"].ToString();
-                    break;
-                }
-            if (result == "")
-                result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
-            return result;
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date >= DateTime.Now.Date)
+                    {
+                        result = item["NoiDung"].ToString();
+                        break;
+                    }
+                if (result == "")
+                    result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
+            }
+                return result;
         }
 
         /// <summary>
@@ -580,7 +583,7 @@ namespace WSTanHoa.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public string getLichThuTien_Func(string DanhBo, string MLT)
         {
-            string sql_Lich = "WITH hoadon AS (select top 1 KY,NAM from [SERVER9].[HOADON_TA].[dbo].[HOADON] where DANHBA='" + DanhBo + "' order by ID_HOADON desc)"
+            string sql_Lich = "WITH hoadon AS (select top 2 KY,NAM from [SERVER9].[HOADON_TA].[dbo].[HOADON] where DANHBA='" + DanhBo + "' order by ID_HOADON desc)"
                                    + " select NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103)"
                                    + " ,NgayThuTien_From,NgayThuTien_To"
                                    + " from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c,hoadon where a.ID=b.IDThuTien and c.ID=b.IDDot and ((a.Nam>hoadon.Nam) or (a.Nam=hoadon.Nam and a.Ky>=hoadon.Ky))"
@@ -591,14 +594,17 @@ namespace WSTanHoa.Controllers
                                    //+ " order by a.CreateDate desc";
             string result = "";
             DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
-            foreach (DataRow item in dt.Rows)
-                if (DateTime.Parse(item["NgayThuTien_To"].ToString()).Date >= DateTime.Now.Date)
-                {
-                    result = item["NoiDung"].ToString();
-                    break;
-                }
-            if (result == "")
-                result = dt.Rows[dt.Rows.Count-1]["NoiDung"].ToString();
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                    if (DateTime.Parse(item["NgayThuTien_To"].ToString()).Date >= DateTime.Now.Date)
+                    {
+                        result = item["NoiDung"].ToString();
+                        break;
+                    }
+                if (result == "")
+                    result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
+            }
             return result;
         }
 
