@@ -617,14 +617,24 @@ namespace WSSmartPhone
                     if (_cDAL.ExecuteNonQuery(command) == true)
                     {
                         //insert table hình
-                        string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end)," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
-                        command = new SqlCommand(sql_Hinh);
-                        if (HinhDN == "NULL")
+                        if (HinhDN == "")
+                        {
+                            string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end)," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
+                            command = new SqlCommand(sql_Hinh);
                             command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
+                            _cDAL.ExecuteNonQuery(command);
+                        }
                         else
-                            command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
-                        _cDAL.ExecuteNonQuery(command);
-
+                        {
+                            string[] HinhDNs = HinhDN.Split(';');
+                            for (int i = 0; i < HinhDNs.Count(); i++)
+                            {
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end)," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
+                                command = new SqlCommand(sql_Hinh);
+                                command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDNs[i]);
+                                _cDAL.ExecuteNonQuery(command);
+                            }
+                        }
                         //insert niêm chì
                         if (NiemChi != "NULL")
                         {
@@ -730,13 +740,26 @@ namespace WSSmartPhone
                         //                + " insert into TT_KQDongNuoc_Hinh(MaKQDN,HinhDN,CreateBy,CreateDate)values(@MaKQDN,@HinhDN," + CreateBy + ",getDate())"
                         //                + " else"
                         //                + " update TT_KQDongNuoc_Hinh set HinhDN1=HinhDN,HinhDN=@HinhDN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=@MaKQDN";
-                        string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
-                        command = new SqlCommand(sql_Hinh);
-                        if (HinhDN == "NULL")
+
+                        //insert table hình
+                        if (HinhDN == "")
+                        {
+                            string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
+                            command = new SqlCommand(sql_Hinh);
                             command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
+                            _cDAL.ExecuteNonQuery(command);
+                        }
                         else
-                            command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDN);
-                        _cDAL.ExecuteNonQuery(command);
+                        {
+                            string[] HinhDNs = HinhDN.Split(';');
+                            for (int i = 0; i < HinhDNs.Count(); i++)
+                            {
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
+                                command = new SqlCommand(sql_Hinh);
+                                command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDNs[i]);
+                                _cDAL.ExecuteNonQuery(command);
+                            }
+                        }
 
                         //insert niêm chì
                         if (NiemChi != "NULL")
@@ -796,13 +819,25 @@ namespace WSSmartPhone
                         //                    + " insert into TT_KQDongNuoc_Hinh(MaKQDN,HinhMN,CreateBy,CreateDate)values(@MaKQDN,@HinhMN," + CreateBy + ",getDate())"
                         //                    + " else"
                         //                    + " update TT_KQDongNuoc_Hinh set HinhMN=@HinhMN,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaKQDN=@MaKQDN";
-                        string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
-                        command = new SqlCommand(sql_Hinh);
-                        if (HinhMN == "NULL")
+
+                        if (HinhMN == "")
+                        {
+                            string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
+                            command = new SqlCommand(sql_Hinh);
                             command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
+                            _cDAL.ExecuteNonQuery(command);
+                        }
                         else
-                            command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMN);
-                        _cDAL.ExecuteNonQuery(command);
+                        {
+                            string[] HinhMNs = HinhMN.Split(';');
+                            for (int i = 0; i < HinhMNs.Count(); i++)
+                            {
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
+                                command = new SqlCommand(sql_Hinh);
+                                command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMNs[i]);
+                                _cDAL.ExecuteNonQuery(command);
+                            }
+                        }
 
                         scope.Complete();
                         return true;
