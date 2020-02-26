@@ -619,10 +619,10 @@ namespace WSSmartPhone
                         //insert table hình
                         if (HinhDN == "")
                         {
-                            string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end)," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
-                            command = new SqlCommand(sql_Hinh);
-                            command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
-                            _cDAL.ExecuteNonQuery(command);
+                            //string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end)," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
+                            //command = new SqlCommand(sql_Hinh);
+                            //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
+                            //_cDAL.ExecuteNonQuery(command);
                         }
                         else
                         {
@@ -677,35 +677,35 @@ namespace WSSmartPhone
 
         public bool ThemDongNuoc2(string MaDN, string HinhDN, DateTime NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy)
         {
-            //int flagButChi = 0;
-            //int flagKhoaTu = 0;
-            //int flagKhoaKhac = 0;
-            //if (bool.Parse(KhoaTu) == false && bool.Parse(KhoaKhac) == false)
-            //{
-            //    if (NiemChi == "")
-            //        return false;
-            //    if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi).ToString()) == 0)
-            //        return false;
-            //    if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi + " and SuDung=1").ToString()) == 1)
-            //        return false;
-            //}
-            //else
-            //{
-            //    NiemChi = "NULL";
-            //    if (bool.Parse(KhoaTu) == true)
-            //    {
-            //        flagKhoaTu = 1;
-            //    }
-            //    if (bool.Parse(KhoaKhac) == true)
-            //    {
-            //        flagKhoaKhac = 1;
-            //    }
-            //    else
-            //        KhoaKhac_GhiChu = "NULL";
-            //}
+            int flagButChi = 0;
+            int flagKhoaTu = 0;
+            int flagKhoaKhac = 0;
+            if (bool.Parse(KhoaTu) == false && bool.Parse(KhoaKhac) == false)
+            {
+                if (NiemChi == "")
+                    return false;
+                if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi).ToString()) == 0)
+                    return false;
+                if (int.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi + " and SuDung=1").ToString()) == 1)
+                    return false;
+            }
+            else
+            {
+                NiemChi = "NULL";
+                if (bool.Parse(KhoaTu) == true)
+                {
+                    flagKhoaTu = 1;
+                }
+                if (bool.Parse(KhoaKhac) == true)
+                {
+                    flagKhoaKhac = 1;
+                }
+                else
+                    KhoaKhac_GhiChu = "NULL";
+            }
 
-            //if (bool.Parse(ButChi) == true)
-            //    flagButChi = 1;
+            if (bool.Parse(ButChi) == true)
+                flagButChi = 1;
 
             try
             {
@@ -721,7 +721,7 @@ namespace WSSmartPhone
                     //            + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
                     //            + " where DongNuoc2=0 and MaDN=" + MaDN;
                     string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=PhiMoNuoc*2,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,"
-                               + "NgayDN='" + NgayDN.ToString("yyyyMMdd HH:mm:ss") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",NiemChi=" + NiemChi + ",KhoaKhac_GhiChu=N'" + KhoaKhac_GhiChu + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
+                               + "NgayDN='" + NgayDN.ToString("yyyyMMdd HH:mm:ss") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",ButChi=" + flagButChi + ",KhoaTu=" + flagKhoaTu + ",NiemChi=" + NiemChi + ",KhoaKhac=" + flagKhoaKhac + ",KhoaKhac_GhiChu=N'" + KhoaKhac_GhiChu + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate(),"
                                + "SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
                                + " where DongNuoc2=0 and MaDN=" + MaDN;
 
@@ -744,17 +744,17 @@ namespace WSSmartPhone
                         //insert table hình
                         if (HinhDN == "")
                         {
-                            string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
-                            command = new SqlCommand(sql_Hinh);
-                            command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
-                            _cDAL.ExecuteNonQuery(command);
+                            //string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
+                            //command = new SqlCommand(sql_Hinh);
+                            //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
+                            //_cDAL.ExecuteNonQuery(command);
                         }
                         else
                         {
                             string[] HinhDNs = HinhDN.Split(';');
                             for (int i = 0; i < HinhDNs.Count(); i++)
                             {
-                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
                                 command = new SqlCommand(sql_Hinh);
                                 command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDNs[i]);
                                 _cDAL.ExecuteNonQuery(command);
@@ -822,17 +822,17 @@ namespace WSSmartPhone
 
                         if (HinhMN == "")
                         {
-                            string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
-                            command = new SqlCommand(sql_Hinh);
-                            command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
-                            _cDAL.ExecuteNonQuery(command);
+                            //string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
+                            //command = new SqlCommand(sql_Hinh);
+                            //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = DBNull.Value;
+                            //_cDAL.ExecuteNonQuery(command);
                         }
                         else
                         {
                             string[] HinhMNs = HinhMN.Split(';');
                             for (int i = 0; i < HinhMNs.Count(); i++)
                             {
-                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values((select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end),(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + "),1,@Hinh," + CreateBy + ",getDate())";
                                 command = new SqlCommand(sql_Hinh);
                                 command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMNs[i]);
                                 _cDAL.ExecuteNonQuery(command);
