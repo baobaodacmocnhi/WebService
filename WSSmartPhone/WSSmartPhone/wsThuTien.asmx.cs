@@ -101,7 +101,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen)
+        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen)
         {
             IFormatProvider culture = new CultureInfo("en-US", true);
             DateTime date = new DateTime(), date2 = new DateTime();

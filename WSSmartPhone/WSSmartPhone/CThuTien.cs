@@ -354,12 +354,12 @@ namespace WSSmartPhone
                             + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
                             + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
-                            + " and (NgayGiaiTrach is null or DangNgan_DienThoai=1)"
+                            + " and (NgayGiaiTrach is null or DangNgan_DienThoai=1) and DangNgan_Ton=0"
                             + " order by MLT";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public bool XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, DateTime Ngay, DateTime NgayHen)
+        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, DateTime Ngay, DateTime NgayHen)
         {
             try
             {
@@ -388,10 +388,28 @@ namespace WSSmartPhone
                 //            break;
                 //    }
                 //}
+                string sqlCheck = "select MaHD=ID_HOADON,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),"
+                                    + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
+                                    + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
+                                    + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
+                                    + " from HOADON hd where ID_HOADON in (" + MaHDs + ")";
+                DataTable dt = _cDAL.ExecuteQuery_DataTable(sqlCheck);
+                foreach (DataRow item in dt.Rows)
+                {
+                    if (bool.Parse(item["ThuHo"].ToString()) == true)
+                        return "false,ThuHo,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString()+" đã Thu Hộ";
+                    else
+                        if (bool.Parse(item["TamThu"].ToString()) == true)
+                            return "false,TamThu,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Tạm Thu";
+                        else
+                            if (bool.Parse(item["GiaiTrach"].ToString()) == true)
+                                return "false,GiaiTrach,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Giải Trách";
+                }
+
                 switch (LoaiXuLy)
                 {
                     case "DangNgan":
-                        sql += " update HOADON set DangNgan_DienThoai=1,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        sql += " update HOADON set DangNgan_DienThoai=1,XoaDangNgan_Ngay_DienThoai=NULL,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "PhieuBao":
                         sql += " update HOADON set InPhieuBao_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
@@ -419,14 +437,14 @@ namespace WSSmartPhone
                 //}
                 if (_cDAL.ExecuteNonQuery(sql) == true)
                 {
-                    return true;
+                    return "true,";
                 }
                 else
-                    return false;
+                    return "false,error query";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return "false," + ex.Message;
             }
         }
 
