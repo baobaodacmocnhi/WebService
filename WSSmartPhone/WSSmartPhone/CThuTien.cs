@@ -394,16 +394,28 @@ namespace WSSmartPhone
                                     + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
                                     + " from HOADON hd where ID_HOADON in (" + MaHDs + ")";
                 DataTable dt = _cDAL.ExecuteQuery_DataTable(sqlCheck);
-                foreach (DataRow item in dt.Rows)
+                switch (LoaiXuLy)
                 {
-                    if (bool.Parse(item["ThuHo"].ToString()) == true)
-                        return "false,ThuHo,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString()+" đã Thu Hộ";
-                    else
-                        if (bool.Parse(item["TamThu"].ToString()) == true)
-                            return "false,TamThu,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Tạm Thu";
-                        else
-                            if (bool.Parse(item["GiaiTrach"].ToString()) == true)
-                                return "false,GiaiTrach,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Giải Trách";
+                    case "XoaDangNgan":
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            if (bool.Parse(item["GiaiTrach"].ToString()) == false)
+                                return "false,GiaiTrach,false," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " chưa Giải Trách";
+                        }
+                        break;
+                    default:
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            if (bool.Parse(item["ThuHo"].ToString()) == true)
+                                return "false,ThuHo,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Thu Hộ";
+                            else
+                                if (bool.Parse(item["TamThu"].ToString()) == true)
+                                    return "false,TamThu,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Tạm Thu";
+                                else
+                                    if (bool.Parse(item["GiaiTrach"].ToString()) == true)
+                                        return "false,GiaiTrach,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Giải Trách";
+                        }
+                        break;
                 }
 
                 switch (LoaiXuLy)
