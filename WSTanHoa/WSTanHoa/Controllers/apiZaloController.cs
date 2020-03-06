@@ -21,7 +21,7 @@ namespace WSTanHoa.Controllers
         CConnection _cDAL_TrungTam = new CConnection(CConstantVariable.TrungTamKhachHang);
         CConnection _cDAL_DHN = new CConnection(CConstantVariable.DHN);
         CConnection _cDAL_DocSo = new CConnection(CConstantVariable.DocSo);
-        string access_token = "SVFT5EqUDLzm_zGKw1KzNN7rtXJb0bSiSPxaEQeWH0zgYU4ViIf52764tH-41qCROhNg4FiUKHanz_aByHvDGn2WzLpCCd9d8gxi8CWr2GeXdReSoNO9D1_LgGpsQ2uv6_IX2_Li0XDhWeGhYGa45bNzkW2RL0S_3kgaUEnAB6Xpr8judaywOs3btN-lT3euRPoTAhGlVon8miKUrtHDAZZbysVL3njiBBd_8BDJ7Z9-lA4VdKWq2W6WoHRRAI034RU1D-9UCsHbMQpPq7xk13vJ";
+        string access_token = "mmKT2lMZcXN22HGAyAYI5yC37WhzlzHEpraR1VYAb6EdLnjxzwFtOvX2UHZQbfPNxJGUIPhLq5VJAGqVvUk41RaxQ7NCp-yLyWfZLBlyxYwDLWSnxepFKgni5JFbn-8fao8JRTZ8uZVkBMfFeE3YNCmp3aQ1bjCcms0LVRUz_cBpIW8Ub9gD1AKmLqddzDWQfpvAQEcOis-aO6SKwBg92hPlGHNXgPPxZNXvOTIJaWIRD5HqfExOAS0h7cQ3y-Dyj35b3yZfunUM40XIK5W6ahygzhcH6G";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace WSTanHoa.Controllers
                 if (event_name == "user_send_text")
                 {
                     //gửi tin nhắn đăng ký
-                    if (message == "#dangkythongtin")
+                    if (message == "$dangkythongtin")
                     {
                         strResponse = sendMessageDangKy(IDZalo);
                     }
@@ -73,7 +73,7 @@ namespace WSTanHoa.Controllers
                             string sql = "";
                             switch (message)
                             {
-                                case "#get12kyhoadon"://lấy 12 kỳ hóa đơn gần nhất
+                                case "$get12kyhoadon"://lấy 12 kỳ hóa đơn gần nhất
                                     foreach (DataRow item in dt_DanhBo.Rows)
                                     {
                                         DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
@@ -96,7 +96,7 @@ namespace WSTanHoa.Controllers
                                     sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'get12kyhoadon',getdate())";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                     break;
-                                case "#gethoadonton"://lấy hóa đơn tồn
+                                case "$gethoadonton"://lấy hóa đơn tồn
                                     foreach (DataRow item in dt_DanhBo.Rows)
                                     {
                                         DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
@@ -131,7 +131,7 @@ namespace WSTanHoa.Controllers
                                     sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'gethoadonton',getdate())";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                     break;
-                                case "#getlichdocso"://lấy lịch đọc số
+                                case "$getlichdocso"://lấy lịch đọc số
                                     foreach (DataRow item in dt_DanhBo.Rows)
                                     {
                                         DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
@@ -160,7 +160,7 @@ namespace WSTanHoa.Controllers
                                     sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichdocso',getdate())";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                     break;
-                                case "#getlichthutien"://lấy lịch thu tiền
+                                case "$getlichthutien"://lấy lịch thu tiền
                                     foreach (DataRow item in dt_DanhBo.Rows)
                                     {
                                         DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
