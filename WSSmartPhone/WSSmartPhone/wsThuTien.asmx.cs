@@ -124,6 +124,13 @@ namespace WSSmartPhone
             return _cThuTien.update_GhiChu(MaNV, DanhBo, DienThoai, GiaBieu, NiemChi, DiemBe);
         }
 
+        //tạm thu
+        [WebMethod]
+        public string GetDSTamThu(string RutSot, string MaNV, string FromCreateDate, string ToCreateDate)
+        {
+            return _cThuTien.GetDSTamThu(bool.Parse(RutSot), MaNV, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+        }
+
         //đóng nước
         [WebMethod]
         public string GetDSDongNuoc(string MaNV_DongNuoc, string FromNgayGiao, string ToNgayGiao)
