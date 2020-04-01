@@ -85,7 +85,10 @@ namespace WSTanHoa.Controllers
                                     vZalo.IDZalo = IDZalo;
                                     //vZalo.DanhBo = vZalo.DanhBo.Replace(" ", "");
                                     vZalo.CreateDate = DateTime.Now;
-                                    db.Zaloes.Add(vZalo);
+                                    if (IDZalo != -1)
+                                    {
+                                        db.Zaloes.Add(vZalo);
+                                    }
                                     await db.SaveChangesAsync();
                                     return RedirectToAction("Index");
                                 }

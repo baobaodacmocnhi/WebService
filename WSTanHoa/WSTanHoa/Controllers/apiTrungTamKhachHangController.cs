@@ -267,7 +267,7 @@ namespace WSTanHoa.Controllers
                     //                                    + " or (c.TP1_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt.Rows[0]["MLT"].ToString() + ")"
                     //                                    + " or (c.TP2_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt.Rows[0]["MLT"].ToString() + "))"
                     //                                    + " order by a.CreateDate desc";
-                    en.NhanVien += " ; " + getLichDocSo_Func(DanhBo, dt.Rows[0]["MLT"].ToString());
+                    en.NhanVien += " ; " + getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
 
                     foreach (DataRow item in dt.Rows)
                     {
@@ -338,7 +338,7 @@ namespace WSTanHoa.Controllers
                     //                + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
                     //                + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
                     //                + " order by a.CreateDate desc";
-                    string result_Lich = getLichDocSo_Func(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
+                    string result_Lich = getLichDocSo_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
                     string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
 
@@ -356,19 +356,25 @@ namespace WSTanHoa.Controllers
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public string getLichDocSo_Func(string DanhBo, string MLT)
+        public DataTable getLichDocSo_Func_SQL(string DanhBo, string MLT)
         {
             string sql_Lich = "WITH docso AS(select top 2 KY, NAM from [SERVER8].[DocSoTH].[dbo].[DocSo] where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
                                    + " select NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103)"
-                                   + " ,NgayDoc"
+                                   + " ,NgayDoc,NgayChuyenListing"
                                    + " from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c,docso where a.ID=b.IDDocSo and c.ID=b.IDDot and ((a.Nam>docso.Nam) or (a.Nam=docso.Nam and a.Ky>=docso.Ky))"
                                    + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
                                    + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
                                    + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))";
-                                   //+ " order by a.CreateDate desc";
+            //+ " order by a.CreateDate desc";
+            return _cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public string getLichDocSo_Func_String(string DanhBo, string MLT)
+        {
+            DataTable dt = getLichDocSo_Func_SQL(DanhBo, MLT);
             string result = "";
-            DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
@@ -380,7 +386,26 @@ namespace WSTanHoa.Controllers
                 if (result == "")
                     result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
             }
-                return result;
+            return result;
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public DataRow getLichDocSo_Func_DataRow(string DanhBo, string MLT)
+        {
+            DataTable dt = getLichDocSo_Func_SQL(DanhBo, MLT);
+            DataRow result = null;
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date >= DateTime.Now.Date)
+                    {
+                        result = item;
+                        break;
+                    }
+                if (result == null)
+                    result = dt.Rows[dt.Rows.Count - 1];
+            }
+            return result;
         }
 
         /// <summary>
@@ -473,7 +498,7 @@ namespace WSTanHoa.Controllers
                     //                                   + " or (c.TP1_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt.Rows[0]["MLT"].ToString() + ")"
                     //                                   + " or (c.TP2_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt.Rows[0]["MLT"].ToString() + "))"
                     //                                   + " order by a.CreateDate desc";
-                    en.NhanVien += " ; " + getLichThuTien_Func(DanhBo, dt.Rows[0]["MLT"].ToString());
+                    en.NhanVien += " ; " + getLichThuTien_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
 
                     foreach (DataRow item in dt.Rows)
                     {
@@ -563,7 +588,7 @@ namespace WSTanHoa.Controllers
                     //            + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
                     //            + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
                     //            + " order by a.CreateDate desc";
-                    string result_Lich = getLichThuTien_Func(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
+                    string result_Lich = getLichThuTien_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
                     string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
 
@@ -581,7 +606,7 @@ namespace WSTanHoa.Controllers
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
-        public string getLichThuTien_Func(string DanhBo, string MLT)
+        public DataTable getLichThuTien_Func_SQL(string DanhBo, string MLT)
         {
             string sql_Lich = "WITH hoadon AS (select top 2 KY,NAM from [SERVER9].[HOADON_TA].[dbo].[HOADON] where DANHBA='" + DanhBo + "' order by ID_HOADON desc)"
                                    + " select NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103)"
@@ -591,9 +616,15 @@ namespace WSTanHoa.Controllers
                                    + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
                                    + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))";
-                                   //+ " order by a.CreateDate desc";
+            //+ " order by a.CreateDate desc";
+            return _cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public string getLichThuTien_Func_String(string DanhBo, string MLT)
+        {
+            DataTable dt = getLichThuTien_Func_SQL(DanhBo, MLT);
             string result = "";
-            DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
@@ -604,6 +635,25 @@ namespace WSTanHoa.Controllers
                     }
                 if (result == "")
                     result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
+            }
+            return result;
+        }
+
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public DataRow getLichThuTien_Func_DataRow(string DanhBo, string MLT)
+        {
+            DataTable dt = getLichThuTien_Func_SQL(DanhBo, MLT);
+            DataRow result = null;
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow item in dt.Rows)
+                    if (DateTime.Parse(item["NgayThuTien_To"].ToString()).Date >= DateTime.Now.Date)
+                    {
+                        result = item;
+                        break;
+                    }
+                if (result == null)
+                    result = dt.Rows[dt.Rows.Count - 1];
             }
             return result;
         }

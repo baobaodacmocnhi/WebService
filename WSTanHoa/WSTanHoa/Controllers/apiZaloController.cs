@@ -61,140 +61,216 @@ namespace WSTanHoa.Controllers
                     }
                     else
                     {
-                        //xét id chưa đăng ký
-                        DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + IDZalo + "");
-                        if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
-                        {
-                            strResponse = sendMessageDangKy(IDZalo);
-                        }
-                        else
                         //bắt đầu gửi tin nhắn tra cứu
+                        DataTable dt_DanhBo;
+                        string sql = "";
+                        switch (message)
                         {
-                            string sql = "";
-                            switch (message)
-                            {
-                                case "$get12kyhoadon"://lấy 12 kỳ hóa đơn gần nhất
-                                    foreach (DataRow item in dt_DanhBo.Rows)
+                            case "$get12kyhoadon"://lấy 12 kỳ hóa đơn gần nhất
+                                                  //xét id chưa đăng ký
+                                dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + IDZalo + "");
+                                if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
+                                {
+                                    strResponse = sendMessageDangKy(IDZalo);
+                                }
+                                foreach (DataRow item in dt_DanhBo.Rows)
+                                {
+                                    DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
+                                    if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                                     {
-                                        DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
-                                        if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                                        string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
+                                                    + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
+                                                    + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
+                                                    + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                    + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                                                    + "Danh sách 12 kỳ hóa đơn\n";
+                                        foreach (DataRow itemHD in dt_HoaDon.Rows)
                                         {
-                                            string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
-                                                        + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
-                                                        + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
-                                                        + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
-                                                        + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n\n"
-                                                        + "Danh sách 12 kỳ hóa đơn\n";
-                                            foreach (DataRow itemHD in dt_HoaDon.Rows)
-                                            {
-                                                content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
-                                            }
-                                            strResponse = sendMessage(IDZalo, content);
+                                            content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
                                         }
+                                        strResponse = sendMessage(IDZalo, content);
                                     }
-                                    //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'get12kyhoadon',getdate())";
-                                    _cDAL_TrungTam.ExecuteNonQuery(sql);
-                                    break;
-                                case "$gethoadonton"://lấy hóa đơn tồn
-                                    foreach (DataRow item in dt_DanhBo.Rows)
+                                }
+                                //insert lịch sử truy vấn
+                                sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'get12kyhoadon',getdate())";
+                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                                break;
+                            case "$gethoadonton"://lấy hóa đơn tồn
+                                                 //xét id chưa đăng ký
+                                dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + IDZalo + "");
+                                if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
+                                {
+                                    strResponse = sendMessageDangKy(IDZalo);
+                                }
+                                foreach (DataRow item in dt_DanhBo.Rows)
+                                {
+                                    DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
+                                    if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                                     {
-                                        DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
-                                        if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                                        string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
+                                                    + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
+                                                    + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
+                                                    + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                    + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                                                    + "Hiện đang còn nợ\n";
+                                        foreach (DataRow itemHD in dt_HoaDon.Rows)
                                         {
-                                            string content = "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
-                                                        + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
-                                                        + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
-                                                        + "Giá biểu: " + dt_HoaDon.Rows[0]["GiaBieu"].ToString() + "\n"
-                                                        + "Định mức: " + dt_HoaDon.Rows[0]["DinhMuc"].ToString() + "\n\n"
-                                                        + "Hiện đang còn nợ\n";
-                                            foreach (DataRow itemHD in dt_HoaDon.Rows)
+                                            content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                        }
+                                        strResponse = sendMessage(IDZalo, content);
+                                    }
+                                    else
+                                    {
+                                        DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                                        string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
+                                                    + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
+                                                    + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
+                                                    + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                    + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                                                    + "Hiện đang Hết Nợ";
+                                        strResponse = sendMessage(IDZalo, content);
+                                    }
+
+                                }
+                                //insert lịch sử truy vấn
+                                sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'gethoadonton',getdate())";
+                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                                break;
+                            case "$getlichdocso"://lấy lịch đọc số
+                                                 //xét id chưa đăng ký
+                                dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + IDZalo + "");
+                                if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
+                                {
+                                    strResponse = sendMessageDangKy(IDZalo);
+                                }
+                                foreach (DataRow item in dt_DanhBo.Rows)
+                                {
+                                    DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+
+                                    //string sql_Lich = "select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103) from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c where a.ID=b.IDDocSo and c.ID=b.IDDot"
+                                    //                + " and((c.TB1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                    //                + " or (c.TB2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                    //                + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                    //                + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
+                                    //                + " order by a.CreateDate desc";
+                                    //string result_Lich = _cDAL_TrungTam.ExecuteQuery_ReturnOneValue(sql_Lich).ToString();
+                                    string result_Lich = apiTTKH.getLichDocSo_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
+
+                                    string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+
+                                    string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
+                                                + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
+                                                + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
+                                                + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                                                + result_NhanVien + "\n"
+                                                + result_Lich;
+                                    strResponse = sendMessage(IDZalo, content);
+                                }
+                                //insert lịch sử truy vấn
+                                sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichdocso',getdate())";
+                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                                break;
+                            case "$getlichthutien"://lấy lịch thu tiền
+                                                   //xét id chưa đăng ký
+                                dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo where IDZalo=" + IDZalo + "");
+                                if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
+                                {
+                                    strResponse = sendMessageDangKy(IDZalo);
+                                }
+                                foreach (DataRow item in dt_DanhBo.Rows)
+                                {
+                                    DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+
+                                    //string sql_Lich = "select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103) from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c where a.ID=b.IDThuTien and c.ID=b.IDDot"
+                                    //                + " and((c.TB1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                    //                + " or (c.TB2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                    //                + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
+                                    //                + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
+                                    //                + " order by a.CreateDate desc";
+                                    //string result_Lich = _cDAL_TrungTam.ExecuteQuery_ReturnOneValue(sql_Lich).ToString();
+                                    string result_Lich = apiTTKH.getLichThuTien_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
+
+                                    string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+
+                                    string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
+                                                + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
+                                                + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
+                                                + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
+                                                + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
+                                                + result_NhanVien + "\n"
+                                                + result_Lich;
+                                    strResponse = sendMessage(IDZalo, content);
+                                }
+                                //insert lịch sử truy vấn
+                                sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichthutien',getdate())";
+                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                                break;
+                            default:
+                                //insert lịch sử truy vấn
+                                //sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",N'" + message + "',getdate())";
+                                //_cDAL_TrungTam.ExecuteNonQuery(sql);
+                                string[] messages = message.Split(' ');
+                                if (messages[0].ToUpper() == "CSN")
+                                {
+                                    if (messages.Count() != 3)
+                                        sendMessage(IDZalo, "Sai Cú Pháp, Vui lòng thử lại");
+                                    else
+                                    if (messages[1].Length != 11)
+                                        sendMessage(IDZalo, "Sai Danh Bộ, Vui lòng thử lại");
+                                    else
+                                    {
+                                        DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select DanhBo,MLT=LOTRINH from TB_DULIEUKHACHHANG where DanhBo='" + messages[1] + "'");
+                                        if (dt != null && dt.Rows.Count > 0)
+                                        {
+                                            DataRow drLich = apiTTKH.getLichDocSo_Func_DataRow(dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["MLT"].ToString());
+                                            //nếu trước 2 ngày
+                                            if (DateTime.Now.Date < DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-2))
                                             {
-                                                content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                                                sendMessage(IDZalo, "Chưa đến kỳ đọc số tiếp theo, Vui lòng tra cứu lịch đọc số");
+                                                break;
                                             }
-                                            strResponse = sendMessage(IDZalo, content);
+                                            else
+                                            //nếu sau 12h ngày chuyển listing
+                                            if (DateTime.Now.Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date && DateTime.Now.Hour > 11)
+                                            {
+                                                sendMessage(IDZalo, "Đã quá thời gian ghi chỉ số");
+                                                break;
+                                            }
+                                            else
+                                            //nếu sau ngày chuyển listing
+                                            if (DateTime.Now.Date > DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
+                                            {
+                                                sendMessage(IDZalo, "Chưa đến kỳ đọc số tiếp theo, Vui lòng tra cứu lịch đọc số");
+                                                break;
+                                            }
+                                            //kiểm tra đã gửi chỉ số nước rồi
+                                            sql = "select top 1 * from DocSo_Zalo where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' order by CreateDate desc";
+                                            DataTable dtResult = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
+                                            if (dtResult != null && dtResult.Rows.Count > 0)
+                                                if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-2)
+                                                    || DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
+                                                {
+                                                    sendMessage(IDZalo, "Danh Bộ này đã gửi chỉ số nước rồi");
+                                                    break;
+                                                }
+                                            //kiểm tra chỉ số nước
+                                            if (IsNumber(messages[2]) == true)
+                                            {
+                                                sql = "insert into DocSo_Zalo(DanhBo,ChiSo,CreateDate)values(N'" + messages[1] + "',N'" + messages[2] + "',getdate())";
+                                                if (_cDAL_DocSo.ExecuteNonQuery(sql) == true)
+                                                    sendMessage(IDZalo, "Thành Công, Cám ơn Quý Khách Hàng đã cung cấp chỉ số nước");
+                                                else
+                                                    sendMessage(IDZalo, "Thất Bại, Vui lòng thử lại");
+                                            }
+                                            else
+                                                sendMessage(IDZalo, "Chỉ Số không đúng, Vui lòng thử lại");
                                         }
                                         else
-                                        {
-                                            DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
-                                            string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
-                                                        + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
-                                                        + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
-                                                        + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
-                                                        + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
-                                                        + "Hiện đang Hết Nợ";
-                                            strResponse = sendMessage(IDZalo, content);
-                                        }
-
+                                            sendMessage(IDZalo, "Danh Bộ này không tồn tại, Vui lòng thử lại");
                                     }
-                                    //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'gethoadonton',getdate())";
-                                    _cDAL_TrungTam.ExecuteNonQuery(sql);
-                                    break;
-                                case "$getlichdocso"://lấy lịch đọc số
-                                    foreach (DataRow item in dt_DanhBo.Rows)
-                                    {
-                                        DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
-
-                                        //string sql_Lich = "select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103) from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c where a.ID=b.IDDocSo and c.ID=b.IDDot"
-                                        //                + " and((c.TB1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                                        //                + " or (c.TB2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                                        //                + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                                        //                + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
-                                        //                + " order by a.CreateDate desc";
-                                        //string result_Lich = _cDAL_TrungTam.ExecuteQuery_ReturnOneValue(sql_Lich).ToString();
-                                        string result_Lich = apiTTKH.getLichDocSo_Func(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
-
-                                        string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
-
-                                        string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
-                                                    + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
-                                                    + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
-                                                    + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
-                                                    + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
-                                                    + result_NhanVien + "\n"
-                                                    + result_Lich;
-                                        strResponse = sendMessage(IDZalo, content);
-                                    }
-                                    //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichdocso',getdate())";
-                                    _cDAL_TrungTam.ExecuteNonQuery(sql);
-                                    break;
-                                case "$getlichthutien"://lấy lịch thu tiền
-                                    foreach (DataRow item in dt_DanhBo.Rows)
-                                    {
-                                        DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
-
-                                        //string sql_Lich = "select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103) from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c where a.ID=b.IDThuTien and c.ID=b.IDDot"
-                                        //                + " and((c.TB1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                                        //                + " or (c.TB2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                                        //                + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                                        //                + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
-                                        //                + " order by a.CreateDate desc";
-                                        //string result_Lich = _cDAL_TrungTam.ExecuteQuery_ReturnOneValue(sql_Lich).ToString();
-                                        string result_Lich = apiTTKH.getLichThuTien_Func(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
-
-                                        string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
-
-                                        string content = "Danh Bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "\n"
-                                                    + "Họ tên: " + dt_ThongTin.Rows[0]["HoTen"].ToString() + "\n"
-                                                    + "Địa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString() + "\n"
-                                                    + "Giá biểu: " + dt_ThongTin.Rows[0]["GiaBieu"].ToString() + "\n"
-                                                    + "Định mức: " + dt_ThongTin.Rows[0]["DinhMuc"].ToString() + "\n\n"
-                                                    + result_NhanVien + "\n"
-                                                    + result_Lich;
-                                        strResponse = sendMessage(IDZalo, content);
-                                    }
-                                    //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichthutien',getdate())";
-                                    _cDAL_TrungTam.ExecuteNonQuery(sql);
-                                    break;
-                                default:
-                                    //insert lịch sử truy vấn
-                                    sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",N'" + message + "',getdate())";
-                                    _cDAL_TrungTam.ExecuteNonQuery(sql);
-                                    break;
-                            }
+                                }
+                                break;
                         }
                     }
                 }
@@ -444,6 +520,16 @@ namespace WSTanHoa.Controllers
                 hash.Append(theByte.ToString("x2"));
             }
             return hash.ToString().ToLower();
+        }
+
+        public bool IsNumber(string pValue)
+        {
+            foreach (Char c in pValue)
+            {
+                if (!Char.IsDigit(c))
+                    return false;
+            }
+            return true;
         }
     }
 }
