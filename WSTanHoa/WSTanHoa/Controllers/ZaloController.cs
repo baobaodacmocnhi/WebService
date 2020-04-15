@@ -21,20 +21,20 @@ namespace WSTanHoa.Controllers
         // GET: Zalo
         public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo vZalo, string action)
         {
-            if (Session["IDZalo"] == null)
+            if ( TempData["IDZalo"] == null)
             {
                 if (id != null)
-                    Session["IDZalo"] = id.Value;
+                     TempData["IDZalo"] = id.Value;
             }
 
-            if (Session["IDZalo"] != null)
-                IDZalo = decimal.Parse(Session["IDZalo"].ToString());
+            if ( TempData["IDZalo"] != null)
+                IDZalo = decimal.Parse( TempData["IDZalo"].ToString());
 
             IEnumerable<Zalo> lstZalo = await db.Zaloes.Where(item => item.IDZalo == IDZalo).ToListAsync();
             Zalo zalo = new Zalo();
 
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(action))
-                if (Session["IDZalo"] != null)
+                if ( TempData["IDZalo"] != null)
                 {
                     switch (action)
                     {
@@ -104,6 +104,92 @@ namespace WSTanHoa.Controllers
 
             return View(new ViewZalo(lstZalo, vZalo));
         }
+
+        //public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo vZalo, string action)
+        //{
+        //    if (Session["IDZalo"] == null)
+        //    {
+        //        if (id != null)
+        //            Session["IDZalo"] = id.Value;
+        //    }
+
+        //    if (Session["IDZalo"] != null)
+        //        IDZalo = decimal.Parse(Session["IDZalo"].ToString());
+
+        //    IEnumerable<Zalo> lstZalo = await db.Zaloes.Where(item => item.IDZalo == IDZalo).ToListAsync();
+        //    Zalo zalo = new Zalo();
+
+        //    if (ModelState.IsValid && !String.IsNullOrWhiteSpace(action))
+        //        if (Session["IDZalo"] != null)
+        //        {
+        //            switch (action)
+        //            {
+        //                case "Kiểm Tra":
+        //                    if (vZalo.DanhBo != null && vZalo.DanhBo != "")
+        //                    {
+        //                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + vZalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+        //                        if (dt.Rows.Count > 0)
+        //                        {
+        //                            //vZalo = await db.Zaloes.FindAsync(CConstantVariable.IDZalo, vZalo.DanhBo);
+        //                            zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+        //                            zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
+        //                            zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+        //                            return View(new ViewZalo(lstZalo, zalo));
+        //                        }
+        //                        else
+        //                        {
+        //                            ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ không đúng");
+        //                            return View(new ViewZalo(lstZalo, zalo));
+        //                        }
+        //                    }
+        //                    break;
+        //                case "Đăng Ký":
+        //                    if (vZalo.DanhBo != null && vZalo.DanhBo != "")
+        //                    {
+        //                        //kiểm tra danh bộ
+        //                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + vZalo.DanhBo + "' order by ID_HOADON desc");
+        //                        if (dt.Rows.Count > 0)
+        //                        {
+        //                            vZalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+        //                            vZalo.HoTen = dt.Rows[0]["HoTen"].ToString();
+        //                            vZalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+        //                        }
+        //                        else
+        //                        {
+        //                            ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ không đúng");
+        //                            return View(new ViewZalo(lstZalo, vZalo));
+        //                        }
+        //                        //kiểm tra trùng
+        //                        if (db.Zaloes.Count(item => item.IDZalo == IDZalo && item.DanhBo == vZalo.DanhBo.Replace(" ", "")) == 0)
+        //                        {
+
+        //                            if (vZalo.DienThoai == null || vZalo.DienThoai == "")
+        //                            {
+        //                                ModelState.AddModelError("vZalo.DienThoai", "Vui lòng nhập số điện thoại");
+        //                                return View(new ViewZalo(lstZalo, vZalo));
+        //                            }
+        //                            vZalo.IDZalo = IDZalo;
+        //                            //vZalo.DanhBo = vZalo.DanhBo.Replace(" ", "");
+        //                            vZalo.CreateDate = DateTime.Now;
+        //                            if (IDZalo != -1)
+        //                            {
+        //                                db.Zaloes.Add(vZalo);
+        //                            }
+        //                            await db.SaveChangesAsync();
+        //                            return RedirectToAction("Index");
+        //                        }
+        //                        else
+        //                        {
+        //                            ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ đã đăng ký rồi");
+        //                            return View(new ViewZalo(lstZalo, vZalo));
+        //                        }
+        //                    }
+        //                    break;
+        //            }
+        //        }
+
+        //    return View(new ViewZalo(lstZalo, vZalo));
+        //}
 
         // GET: Zalo/Details/5
         public async Task<ActionResult> Details(decimal? id)
@@ -307,6 +393,12 @@ namespace WSTanHoa.Controllers
             base.Dispose(disposing);
         }
 
-
+        public async Task<ActionResult> Webhook(FormCollection collection)
+        {
+            log4net.ILog _log = log4net.LogManager.GetLogger("File");
+            string var1 = collection["event_name"];
+            _log.Debug("test "+var1);
+            return View();
+        }
     }
 }

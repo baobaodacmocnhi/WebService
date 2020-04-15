@@ -346,6 +346,7 @@
     <Content Include="Views\KhieuNai\Details.cshtml" />
     <Content Include="Views\KhieuNai\Edit.cshtml" />
     <Content Include="Views\KhieuNai\Index.cshtml" />
+    <Content Include="Views\Zalo\Webhook.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />

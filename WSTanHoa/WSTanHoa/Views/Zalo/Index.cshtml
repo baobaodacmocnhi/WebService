@@ -25,7 +25,8 @@
     @using (Html.BeginForm("Index", "Zalo", FormMethod.Get))
     {
         <div class="form-group" style="display:none">
-            @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = @Session["IDZalo"], @class = "form-control" } })
+            @*@Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = @Session["IDZalo"], @class = "form-control" } })*@
+            @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = TempData["IDZalo"], @class = "form-control" } })
             <input id="submit" type="submit" value="Load" class="btn btn-default" />
         </div>
 
@@ -91,6 +92,9 @@
         @using (Html.BeginForm("Index", "Zalo", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
+            <div class="form-group" style="display:none">
+                @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = TempData["IDZalo"], @class = "form-control" } })
+            </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -109,6 +113,9 @@
         @using (Html.BeginForm("Index", "Zalo", FormMethod.Post))
         {
             @Html.AntiForgeryToken()
+            <div class="form-group" style="display:none">
+                @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = TempData["IDZalo"], @class = "form-control" } })
+            </div>
             <div class="form-group" style="display:none">
                 @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
