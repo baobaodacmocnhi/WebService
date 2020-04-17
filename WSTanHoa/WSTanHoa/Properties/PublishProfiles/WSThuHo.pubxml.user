@@ -13,7 +13,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/29/2018 15:34:34</publishTime>
     </File>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>04/15/2020 13:01:25</publishTime>
+      <publishTime>04/16/2020 10:49:43</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>06/29/2018 15:34:26</publishTime>
@@ -241,7 +241,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>04/15/2020 14:36:09</publishTime>
+      <publishTime>04/16/2020 10:51:56</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>05/14/2019 08:29:45</publishTime>
@@ -272,6 +272,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Image/giaybaotiennuoc.png">
       <publishTime>05/23/2019 14:43:15</publishTime>
+    </File>
+    <File Include="Image/logoctycp.jpg">
+      <publishTime>04/16/2020 09:57:51</publishTime>
+    </File>
+    <File Include="Image/logoctycp.png">
+      <publishTime>04/16/2020 10:19:42</publishTime>
+    </File>
+    <File Include="Image/zaloOACover1333x750.png">
+      <publishTime>04/16/2020 09:57:51</publishTime>
+    </File>
+    <File Include="Image/zalothongbaotamngungcungcapnuoc.jpg">
+      <publishTime>04/16/2020 10:14:22</publishTime>
     </File>
     <File Include="Lib/log4net.dll">
       <publishTime>03/28/2019 09:05:18</publishTime>

@@ -23,6 +23,10 @@ namespace WSTanHoa.Controllers
         CConnection _cDAL_DocSo = new CConnection(CConstantVariable.DocSo);
         string access_token = "mmKT2lMZcXN22HGAyAYI5yC37WhzlzHEpraR1VYAb6EdLnjxzwFtOvX2UHZQbfPNxJGUIPhLq5VJAGqVvUk41RaxQ7NCp-yLyWfZLBlyxYwDLWSnxepFKgni5JFbn-8fao8JRTZ8uZVkBMfFeE3YNCmp3aQ1bjCcms0LVRUz_cBpIW8Ub9gD1AKmLqddzDWQfpvAQEcOis-aO6SKwBg92hPlGHNXgPPxZNXvOTIJaWIRD5HqfExOAS0h7cQ3y-Dyj35b3yZfunUM40XIK5W6ahygzhcH6G";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
+        //string _url = "https://service.cskhtanhoa.com.vn";
+        //string _urlImage = "https://service.cskhtanhoa.com.vn/Image";
+        string _url = "http://service.capnuoctanhoa.com.vn:1010";
+        string _urlImage = "http://service.capnuoctanhoa.com.vn:1010/Image";
 
         /// <summary>
         /// webhook receive zalo
@@ -219,10 +223,10 @@ namespace WSTanHoa.Controllers
                                 if (messages[0].ToUpper() == "CSN")
                                 {
                                     if (messages.Count() != 3)
-                                        sendMessage(IDZalo, "Hệ thống trả lời tự động\nSai Cú Pháp, Vui lòng thử lại");
+                                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai Cú Pháp, Vui lòng thử lại");
                                     else
                                     if (messages[1].Length != 11)
-                                        sendMessage(IDZalo, "Hệ thống trả lời tự động\nSai Danh Bộ, Vui lòng thử lại");
+                                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai Danh Bộ, Vui lòng thử lại");
                                     else
                                     {
                                         DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select DanhBo,MLT=LOTRINH from TB_DULIEUKHACHHANG where DanhBo='" + messages[1] + "'");
@@ -232,21 +236,21 @@ namespace WSTanHoa.Controllers
                                             //nếu trước 2 ngày
                                             if (DateTime.Now.Date < DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-2))
                                             {
-                                                sendMessage(IDZalo, "Hệ thống trả lời tự động\nChưa đến kỳ đọc số tiếp theo, Vui lòng tra cứu lịch đọc số");
+                                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nChưa đến kỳ đọc số tiếp theo, Vui lòng tra cứu lịch đọc số");
                                                 break;
                                             }
                                             else
                                             //nếu sau 12h ngày chuyển listing
                                             if (DateTime.Now.Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date && DateTime.Now.Hour > 11)
                                             {
-                                                sendMessage(IDZalo, "Hệ thống trả lời tự động\nĐã quá thời gian ghi chỉ số");
+                                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nĐã quá thời gian ghi chỉ số");
                                                 break;
                                             }
                                             else
                                             //nếu sau ngày chuyển listing
                                             if (DateTime.Now.Date > DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
                                             {
-                                                sendMessage(IDZalo, "Hệ thống trả lời tự động\nChưa đến kỳ đọc số tiếp theo, Vui lòng tra cứu lịch đọc số");
+                                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nChưa đến kỳ đọc số tiếp theo, Vui lòng tra cứu lịch đọc số");
                                                 break;
                                             }
                                             //kiểm tra đã gửi chỉ số nước rồi
@@ -256,7 +260,7 @@ namespace WSTanHoa.Controllers
                                                 if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-2)
                                                     || DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
                                                 {
-                                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\nDanh Bộ này đã gửi chỉ số nước rồi");
+                                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nDanh Bộ này đã gửi chỉ số nước rồi");
                                                     break;
                                                 }
                                             //kiểm tra chỉ số nước
@@ -264,15 +268,15 @@ namespace WSTanHoa.Controllers
                                             {
                                                 sql = "insert into DocSo_Zalo(DanhBo,ChiSo,CreateDate)values(N'" + messages[1] + "',N'" + messages[2] + "',getdate())";
                                                 if (_cDAL_DocSo.ExecuteNonQuery(sql) == true)
-                                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\nThành Công, Cám ơn Quý Khách Hàng đã cung cấp chỉ số nước");
+                                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nThành Công, Cám ơn Quý Khách Hàng đã cung cấp chỉ số nước");
                                                 else
-                                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\nThất Bại, Vui lòng thử lại");
+                                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nThất Bại, Vui lòng thử lại");
                                             }
                                             else
-                                                sendMessage(IDZalo, "Hệ thống trả lời tự động\nChỉ Số không đúng, Vui lòng thử lại");
+                                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nChỉ Số không đúng, Vui lòng thử lại");
                                         }
                                         else
-                                            sendMessage(IDZalo, "Hệ thống trả lời tự động\nDanh Bộ này không tồn tại, Vui lòng thử lại");
+                                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nDanh Bộ này không tồn tại, Vui lòng thử lại");
                                     }
                                 }
                                 break;
@@ -632,19 +636,19 @@ namespace WSTanHoa.Controllers
                             + "\"elements\":[{"
                             + "\"title\":\"QUÝ KHÁCH HÀNG CHƯA ĐĂNG KÝ THÔNG TIN\","
                             + "\"subtitle\":\"Để sử dụng dịch vụ, Quý Khách Hàng cần phải đăng ký ít nhất một mã khách hàng (Danh Bộ)\","
-                            + "\"image_url\":\"http://www.capnuoctanhoa.com.vn/uploads/zalo/zaloOACover1333x750.png\","
+                            + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\","
                             + "\"default_action\":{"
                             + "\"type\":\"oa.open.url\","
-                            + "\"url\":\"http://service.capnuoctanhoa.com.vn:1010/Zalo?id=" + IDZalo + "\""
+                            + "\"url\":\""+_url+"/Zalo?id=" + IDZalo + "\""
                             + "}"
                             + "},"
                             + "{"
                             + "\"title\":\"Click vào đây để đăng ký\","
                             + "\"subtitle\":\"Click vào đây để đăng ký\","
-                            + "\"image_url\":\"http://www.capnuoctanhoa.com.vn/uploads/page/logoctycp.jpg\","
+                            + "\"image_url\":\"" + _urlImage + "/logoctycp.png\","
                             + "\"default_action\":{"
                             + "\"type\":\"oa.open.url\","
-                            + "\"url\":\"http://service.capnuoctanhoa.com.vn:1010/Zalo?id=" + IDZalo + "\""
+                            + "\"url\":\"" + _url + "/Zalo?id=" + IDZalo + "\""
                             + "}"
                             + "}]"
                             + "}"
@@ -707,7 +711,7 @@ namespace WSTanHoa.Controllers
                             + "\"template_type\": \"media\","
                             + "\"elements\": [{"
                             + "\"media_type\": \"image\","
-                            + "\"url\":\"http://www.capnuoctanhoa.com.vn/zalo/thongbaotamngungcungcapnuoc.jpg\""
+                            + "\"url\":\""+_urlImage+"/thongbaotamngungcungcapnuoc.jpg\""
                             + "}]"
                             + "}"
                             + "}"

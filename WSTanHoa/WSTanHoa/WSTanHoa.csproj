@@ -279,6 +279,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Image\giaybaotiennuoc.png" />
+    <Content Include="Image\logoctycp.png" />
+    <Content Include="Image\zaloOACover1333x750.png" />
+    <Content Include="Image\zalothongbaotamngungcungcapnuoc.jpg" />
     <Content Include="Lib\log4net.dll" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
