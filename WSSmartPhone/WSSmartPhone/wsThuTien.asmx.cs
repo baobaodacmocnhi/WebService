@@ -33,9 +33,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string DangNhaps(string Username, string Password, string UID)
+        public string DangNhaps(string Username, string Password, string IDMobile,string UID)
         {
-            return _cThuTien.DangNhaps(Username, Password, UID);
+            return _cThuTien.DangNhaps(Username, Password, IDMobile, UID);
         }
 
         [WebMethod]
