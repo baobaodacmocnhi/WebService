@@ -9,6 +9,12 @@ using System.Web;
 using System.Web.Mvc;
 using WSTanHoa.Models;
 using WSTanHoa.Providers;
+using Newtonsoft.Json.Linq;
+using System.IO;
+using System.Net.Http;
+using System.Text;
+using System.Web.Script.Serialization;
+using System.Net.Http.Headers;
 
 namespace WSTanHoa.Controllers
 {
@@ -21,20 +27,20 @@ namespace WSTanHoa.Controllers
         // GET: Zalo
         public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo vZalo, string action)
         {
-            if ( TempData["IDZalo"] == null)
+            if (TempData["IDZalo"] == null)
             {
                 if (id != null)
-                     TempData["IDZalo"] = id.Value;
+                    TempData["IDZalo"] = id.Value;
             }
 
-            if ( TempData["IDZalo"] != null)
-                IDZalo = decimal.Parse( TempData["IDZalo"].ToString());
+            if (TempData["IDZalo"] != null)
+                IDZalo = decimal.Parse(TempData["IDZalo"].ToString());
 
             IEnumerable<Zalo> lstZalo = await db.Zaloes.Where(item => item.IDZalo == IDZalo).ToListAsync();
             Zalo zalo = new Zalo();
 
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(action))
-                if ( TempData["IDZalo"] != null)
+                if (TempData["IDZalo"] != null)
                 {
                     switch (action)
                     {
@@ -393,12 +399,55 @@ namespace WSTanHoa.Controllers
             base.Dispose(disposing);
         }
 
-        public async Task<ActionResult> Webhook(FormCollection collection)
+        [HttpPost]
+        public async Task<ActionResult> Webhook()
         {
-            log4net.ILog _log = log4net.LogManager.GetLogger("File");
-            string var1 = collection["event_name"];
-            _log.Debug("test "+var1);
+            try
+            {
+                Stream req = Request.InputStream;
+                req.Seek(0, System.IO.SeekOrigin.Begin);
+                string json = new StreamReader(req, Encoding.UTF8, false).ReadToEnd();
+                var details = JObject.Parse(json);
+
+                string idzalo = "", message = "";
+                if (details["event_name"].ToString() == "follow" || details["event_name"].ToString() == "unfollow")
+                {
+                    idzalo = details["follower"]["id"].ToString();
+                    message = "";
+                }
+                else
+                if (details["event_name"].ToString() == "user_send_text")
+                {
+                    idzalo = details["sender"]["id"].ToString();
+                    message = details["message"]["text"].ToString();
+                }
+                log4net.ILog _log = log4net.LogManager.GetLogger("File");
+                _log.Debug("link: " + "https://service.cskhtanhoa.com.vn/api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message);
+
+                using (var client = new HttpClient())
+                {
+                    //Passing service base url  
+                    client.BaseAddress = new Uri("https://service.cskhtanhoa.com.vn");
+
+                    client.DefaultRequestHeaders.Clear();
+                    //Define request data format  
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                    //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
+                    HttpResponseMessage Res = await client.PostAsync("api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"), null);
+
+                    //Checking the response is successful or not which is sent using HttpClient  
+                    if (Res.IsSuccessStatusCode)
+                    {
+                        //_log.Debug(Res);
+                    }
+                    //returning the employee list to view  
+                }
+            }
+            catch (Exception) { }
             return View();
         }
+
+
     }
 }

@@ -35,6 +35,7 @@ namespace WSTanHoa.Controllers
         /// <param name="event_name"></param>
         /// <param name="message"></param>
         /// <returns></returns>
+        [HttpPost]
         [Route("webhook")]
         public string webhook(string IDZalo, string event_name, string message)
         {
@@ -82,7 +83,7 @@ namespace WSTanHoa.Controllers
                                     DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
                                     if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                                     {
-                                        string content ="Hệ thống trả lời tự động\n\n"
+                                        string content = "Hệ thống trả lời tự động\n\n"
                                                     + "Danh Bộ: " + dt_HoaDon.Rows[0]["DanhBo"].ToString() + "\n"
                                                     + "Họ tên: " + dt_HoaDon.Rows[0]["HoTen"].ToString() + "\n"
                                                     + "Địa chỉ: " + dt_HoaDon.Rows[0]["DiaChi"].ToString() + "\n"
@@ -639,7 +640,7 @@ namespace WSTanHoa.Controllers
                             + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\","
                             + "\"default_action\":{"
                             + "\"type\":\"oa.open.url\","
-                            + "\"url\":\""+_url+"/Zalo?id=" + IDZalo + "\""
+                            + "\"url\":\"" + _url + "/Zalo?id=" + IDZalo + "\""
                             + "}"
                             + "},"
                             + "{"
@@ -711,7 +712,7 @@ namespace WSTanHoa.Controllers
                             + "\"template_type\": \"media\","
                             + "\"elements\": [{"
                             + "\"media_type\": \"image\","
-                            + "\"url\":\""+_urlImage+"/thongbaotamngungcungcapnuoc.jpg\""
+                            + "\"url\":\"" + _urlImage + "/zalothongbaotamngungcungcapnuoc.jpg\""
                             + "}]"
                             + "}"
                             + "}"
