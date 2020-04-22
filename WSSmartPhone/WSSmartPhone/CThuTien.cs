@@ -356,7 +356,7 @@ namespace WSSmartPhone
                             + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
                             + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
-                            + " and (NgayGiaiTrach is null or DangNgan_DienThoai=1) and DangNgan_Ton=0"
+                            + " and (NgayGiaiTrach is null or DangNgan_DienThoai=1) and DangNgan_Ton=0 and DangNgan_Quay=0 and DangNgan_ChuyenKhoan=0"
                             + " order by MLT";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -423,7 +423,7 @@ namespace WSSmartPhone
                 switch (LoaiXuLy)
                 {
                     case "DangNgan":
-                        sql += " update HOADON set DangNgan_DienThoai=1,XoaDangNgan_Ngay_DienThoai=NULL,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        sql += " update HOADON set DangNgan_DienThoai=1,XoaDangNgan_MaNV_DienThoai=NULL,XoaDangNgan_Ngay_DienThoai=NULL,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "PhieuBao":
                         sql += " update HOADON set InPhieuBao_MaNV=" + MaNV + ",InPhieuBao_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
