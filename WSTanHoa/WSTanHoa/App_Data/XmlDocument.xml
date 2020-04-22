@@ -660,14 +660,6 @@
             <param name="message"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiZaloController.sendMessage_CRM(System.String,System.String)">
-            <summary>
-            Gửi tin nhắn từ CRM cho trưởng phòng
-            </summary>
-            <param name="IDZalo"></param>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
         <member name="P:WSTanHoa.Models.ThongTinKhachHang.DanhBo">
             <summary>
             Danh bộ
