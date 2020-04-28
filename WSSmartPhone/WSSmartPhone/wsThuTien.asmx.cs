@@ -33,7 +33,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string DangNhaps(string Username, string Password, string IDMobile,string UID)
+        public string DangNhaps(string Username, string Password, string IDMobile, string UID)
         {
             return _cThuTien.DangNhaps(Username, Password, IDMobile, UID);
         }
@@ -101,7 +101,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen)
+        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen, string DongPhi, string MaKQDN)
         {
             IFormatProvider culture = new CultureInfo("en-US", true);
             DateTime date = new DateTime(), date2 = new DateTime();
@@ -109,7 +109,7 @@ namespace WSSmartPhone
                 date = DateTime.ParseExact(Ngay, "dd/MM/yyyy HH:mm:ss", culture);
             if (NgayHen != "")
                 date2 = DateTime.ParseExact(NgayHen, "dd/MM/yyyy HH:mm:ss", culture);
-            return _cThuTien.XuLy_HoaDonDienTu(LoaiXuLy, MaNV, MaHDs, date, date2);
+            return _cThuTien.XuLy_HoaDonDienTu(LoaiXuLy, MaNV, MaHDs, date, date2, bool.Parse(DongPhi), MaKQDN);
         }
 
         [WebMethod]
