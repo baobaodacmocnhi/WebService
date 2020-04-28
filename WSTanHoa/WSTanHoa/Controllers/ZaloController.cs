@@ -421,8 +421,8 @@ namespace WSTanHoa.Controllers
                     idzalo = details["sender"]["id"].ToString();
                     message = details["message"]["text"].ToString();
                 }
-                log4net.ILog _log = log4net.LogManager.GetLogger("File");
-                _log.Debug("link: " + "https://service.cskhtanhoa.com.vn/api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message);
+                //log4net.ILog _log = log4net.LogManager.GetLogger("File");
+                //_log.Debug("link: " + "https://service.cskhtanhoa.com.vn/api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"));
 
                 using (var client = new HttpClient())
                 {

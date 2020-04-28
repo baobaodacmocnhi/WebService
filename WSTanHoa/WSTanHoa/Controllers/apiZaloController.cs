@@ -39,6 +39,7 @@ namespace WSTanHoa.Controllers
         [Route("webhook")]
         public string webhook(string IDZalo, string event_name, string message)
         {
+            log4net.ILog _log = log4net.LogManager.GetLogger("File");
             string strResponse = "success";
             try
             {
@@ -85,7 +86,7 @@ namespace WSTanHoa.Controllers
                                 break;
                             case "$getlichthutien"://lấy lịch thu tiền
                                                    //xét id chưa đăng ký
-                                gethoadonton(IDZalo, ref strResponse);
+                                getlichthutien(IDZalo, ref strResponse);
                                 break;
                             default:
                                 //insert lịch sử truy vấn
@@ -112,6 +113,7 @@ namespace WSTanHoa.Controllers
             {
                 strResponse = ex.Message;
             }
+            _log.Error("webhook: "+strResponse);
             return strResponse;
         }
 
