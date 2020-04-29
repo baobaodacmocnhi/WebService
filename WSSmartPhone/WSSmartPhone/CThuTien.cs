@@ -118,6 +118,11 @@ namespace WSSmartPhone
             return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
         }
 
+        public bool updateLogin(string MaNV, string UID)
+        {
+            return _cDAL.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where UID='" + UID + "' and MaNV=" + MaNV);
+        }
+
         public string GetDSTo()
         {
             string sql = "select MaTo,TenTo,HanhThu from TT_To";

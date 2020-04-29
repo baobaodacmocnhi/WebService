@@ -51,6 +51,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public bool updateLogin(string MaNV, string UID)
+        {
+            return _cThuTien.updateLogin(MaNV, UID);
+        }
+
+        [WebMethod]
         public string GetVersion()
         {
             return _cThuTien.GetVersion();
