@@ -40,6 +40,11 @@ namespace WSSmartPhone
             return _cDAL.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig").ToString();
         }
 
+        private bool checkActiveMobile(string MaNV)
+        {
+            return (bool)_cDAL.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
+        }
+
         public string DangNhap(string Username, string Password, string UID)
         {
             try
@@ -369,10 +374,12 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, DateTime Ngay, DateTime NgayHen, bool DongPhi,string MaKQDN)
+        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, DateTime Ngay, DateTime NgayHen, bool DongPhi, string MaKQDN)
         {
             try
             {
+                if(checkActiveMobile(MaNV)==false)
+                    return "false,Chưa Active Mobile";
                 string sql = "";
                 //string[] MaHD = MaHDs.Split(',');
                 //for (int i = 0; i < MaHD.Length; i++)
@@ -484,6 +491,8 @@ namespace WSSmartPhone
         {
             try
             {
+                if (checkActiveMobile(MaNV) == false)
+                    return false;
                 string sql = "if not exists (select 1 from TT_GhiChu where DanhBo='" + DanhBo + "')"
                             + " 	insert into TT_GhiChu(DanhBo,DienThoai,GiaBieu,NiemChi,DiemBe,CreateBy,CreateDate)values('" + DanhBo + "','" + DienThoai + "',N'" + GiaBieu + "',N'" + NiemChi + "',N'" + DiemBe + "'," + MaNV + ",GETDATE());"
                             + " else"
