@@ -10,6 +10,7 @@ using System.IO;
 using System.Net;
 using System.Web.Script.Serialization;
 using System.Transactions;
+using WSSmartPhone.LinQ;
 
 namespace WSSmartPhone
 {
@@ -17,6 +18,7 @@ namespace WSSmartPhone
     {
         CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         CKinhDoanh _cKinhDoanh = new CKinhDoanh();
+        dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
 
         public string DataTableToJSON(DataTable table)
         {
@@ -378,7 +380,7 @@ namespace WSSmartPhone
         {
             try
             {
-                if(checkActiveMobile(MaNV)==false)
+                if (checkActiveMobile(MaNV) == false)
                     return "false,Chưa Active Mobile";
                 string sql = "";
                 //string[] MaHD = MaHDs.Split(',');
@@ -417,20 +419,20 @@ namespace WSSmartPhone
                         foreach (DataRow item in dt.Rows)
                         {
                             if (bool.Parse(item["GiaiTrach"].ToString()) == false)
-                                return "false,GiaiTrach,false," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " chưa Giải Trách";
+                                return "false,Kỳ " + item["Ky"].ToString() + " chưa Giải Trách,GiaiTrach,false," + item["MaHD"].ToString();
                         }
                         break;
                     default:
                         foreach (DataRow item in dt.Rows)
                         {
                             if (bool.Parse(item["ThuHo"].ToString()) == true)
-                                return "false,ThuHo,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Thu Hộ";
+                                return "false,Kỳ " + item["Ky"].ToString() + " đã Thu Hộ,ThuHo,true," + item["MaHD"].ToString();
                             else
                                 if (bool.Parse(item["TamThu"].ToString()) == true)
-                                    return "false,TamThu,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Tạm Thu";
+                                    return "false,Kỳ " + item["Ky"].ToString() + " đã Tạm Thu,TamThu,true," + item["MaHD"].ToString();
                                 else
                                     if (bool.Parse(item["GiaiTrach"].ToString()) == true)
-                                        return "false,GiaiTrach,true," + item["MaHD"].ToString() + ",Kỳ " + item["Ky"].ToString() + " đã Giải Trách";
+                                        return "false,Kỳ " + item["Ky"].ToString() + " đã Giải Trách,GiaiTrach,true," + item["MaHD"].ToString();
                         }
                         break;
                 }
@@ -449,7 +451,45 @@ namespace WSSmartPhone
                         sql += " update HOADON set InPhieuBao2_MaNV=" + MaNV + ",InPhieuBao2_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',InPhieuBao2_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "TBDongNuoc":
+                        //insert table TBDongNuoc
+                        //if ((int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_DongNuoc a,TT_CTDongNuoc b where a.Huy=0 and b.MaHD in (" + MaHDs + ") and a.MaDN=b.MaDN") > 0)
+                        //    return "false,Hóa Đơn đã Lập TB Đóng Nước";
+                        //else
+                        //{
+                        //    List<HOADON> lstHDTemp = new List<HOADON>();
+                        //    string[] strMaHDs = MaHDs.Split(',');
+                        //    foreach (string item in strMaHDs)
+                        //    {
+                        //        lstHDTemp.Add(getHoaDon(int.Parse(item)));
+                        //    }
+                        //    TT_DongNuoc dongnuoc = new TT_DongNuoc();
+                        //    dongnuoc.DanhBo = lstHDTemp[0].DANHBA;
+                        //    dongnuoc.HoTen = lstHDTemp[0].TENKH;
+                        //    dongnuoc.DiaChi = lstHDTemp[0].SO + " " + lstHDTemp[0].DUONG;
+                        //    dongnuoc.MLT = lstHDTemp[0].MALOTRINH;
+                        //    foreach (HOADON item in lstHDTemp)
+                        //    {
+                        //        TT_CTDongNuoc ctdongnuoc = new TT_CTDongNuoc();
+                        //        ctdongnuoc.MaDN = dongnuoc.MaDN;
+                        //        ctdongnuoc.MaHD = lstHDTemp[0].ID_HOADON;
+                        //        ctdongnuoc.SoHoaDon = lstHDTemp[0].SOHOADON;
+                        //        ctdongnuoc.Ky = lstHDTemp[0].KY + "/" + lstHDTemp[0].NAM;
+                        //        ctdongnuoc.TieuThu = (int)lstHDTemp[0].TIEUTHU;
+                        //        ctdongnuoc.GiaBan = (int)lstHDTemp[0].GIABAN;
+                        //        ctdongnuoc.ThueGTGT = (int)lstHDTemp[0].THUE;
+                        //        ctdongnuoc.PhiBVMT = (int)lstHDTemp[0].PHI;
+                        //        ctdongnuoc.TongCong = (int)lstHDTemp[0].TONGCONG;
+                        //        ctdongnuoc.CreateBy = int.Parse(MaNV);
+                        //        ctdongnuoc.CreateDate = DateTime.Now;
+
+                        //        dongnuoc.TT_CTDongNuocs.Add(ctdongnuoc);
+                        //    }
+                        //    if (ThemDN(dongnuoc, int.Parse(MaNV)) == false)
+                        //        return "false,Lỗi Lập TB Đóng Nước";
+                        //}
+
                         sql += " update HOADON set TBDongNuoc_MaNV=" + MaNV + ",TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+
                         break;
                     case "XoaDangNgan":
                         sql += " update HOADON set XoaDangNgan_MaNV_DienThoai=" + MaNV + ",XoaDangNgan_Ngay_DienThoai='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',DangNgan_DienThoai=0,DangNgan_Ton=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
@@ -984,6 +1024,57 @@ namespace WSSmartPhone
                 + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
                 + " from HOADON where DANHBA='" + DanhBo + "' and NGAYGIAITRACH is null";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        //lập thông báo đóng nước
+        public bool ThemDN(TT_DongNuoc dongnuoc, int MaNV)
+        {
+            try
+            {
+                if (_dbThuTien.TT_DongNuocs.Count() > 0)
+                {
+                    string ID = "MaDN";
+                    string Table = "TT_DongNuoc";
+                    decimal MaDN = _dbThuTien.ExecuteQuery<decimal>("declare @Ma int " +
+                        "select @Ma=MAX(SUBSTRING(CONVERT(nvarchar(50)," + ID + "),LEN(CONVERT(nvarchar(50)," + ID + "))-1,2)) from " + Table + " " +
+                        "select MAX(" + ID + ") from " + Table + " where SUBSTRING(CONVERT(nvarchar(50)," + ID + "),LEN(CONVERT(nvarchar(50)," + ID + "))-1,2)=@Ma").Single();
+                    //decimal MaCHDB = db.CHDBs.Max(itemCHDB => itemCHDB.MaCHDB);
+                    dongnuoc.MaDN = getMaxNextIDTable(MaDN);
+                }
+                else
+                    dongnuoc.MaDN = decimal.Parse("1" + DateTime.Now.ToString("yy"));
+                dongnuoc.CreateDate = DateTime.Now;
+                dongnuoc.CreateBy = MaNV;
+                _dbThuTien.TT_DongNuocs.InsertOnSubmit(dongnuoc);
+                _dbThuTien.SubmitChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _dbThuTien = new dbThuTienDataContext();
+                throw ex;
+            }
+        }
+
+        public decimal getMaxNextIDTable(decimal id)
+        {
+            string nam = id.ToString().Substring(id.ToString().Length - 2, 2);
+            string stt = id.ToString().Substring(0, id.ToString().Length - 2);
+            if (decimal.Parse(nam) == decimal.Parse(DateTime.Now.ToString("yy")))
+            {
+                stt = (decimal.Parse(stt) + 1).ToString();
+            }
+            else
+            {
+                stt = "1";
+                nam = DateTime.Now.ToString("yy");
+            }
+            return decimal.Parse(stt + nam);
+        }
+
+        public HOADON getHoaDon(int MaHD)
+        {
+            return _dbThuTien.HOADONs.SingleOrDefault(item => item.ID_HOADON == MaHD);
         }
 
         //tìm kiếm
