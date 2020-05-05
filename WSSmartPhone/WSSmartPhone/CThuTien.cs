@@ -533,11 +533,70 @@ namespace WSSmartPhone
             {
                 if (checkActiveMobile(MaNV) == false)
                     return false;
-                string sql = "if not exists (select 1 from TT_GhiChu where DanhBo='" + DanhBo + "')"
-                            + " 	insert into TT_GhiChu(DanhBo,DienThoai,GiaBieu,NiemChi,DiemBe,CreateBy,CreateDate)values('" + DanhBo + "','" + DienThoai + "',N'" + GiaBieu + "',N'" + NiemChi + "',N'" + DiemBe + "'," + MaNV + ",GETDATE());"
-                            + " else"
-                            + " 	update TT_GhiChu set DienThoai='" + DienThoai + "',GiaBieu=N'" + GiaBieu + "',NiemChi=N'" + NiemChi + "',DiemBe=N'" + DiemBe + "',ModifyBy=" + MaNV + ",ModifyDate=GETDATE() where DanhBo='" + DanhBo + "';";
-                return _cDAL.ExecuteNonQuery(sql);
+                TT_GhiChu gc = _dbThuTien.TT_GhiChus.SingleOrDefault(item => item.DanhBo == DanhBo);
+                if (gc == null)
+                {
+                    TT_GhiChu en = new TT_GhiChu();
+                    en.DanhBo = DanhBo;
+                    en.DienThoai = DienThoai;
+                    en.CreateBy = int.Parse(MaNV);
+                    en.CreateDate = DateTime.Now;
+
+                    if (GiaBieu != "")
+                    {
+                        en.GiaBieu = GiaBieu;
+                        en.GiaBieu_CreateBy = int.Parse(MaNV);
+                        en.GiaBieu_Ngay = DateTime.Now;
+                    }
+                    if (NiemChi != "")
+                    {
+                        en.NiemChi = NiemChi;
+                        en.NiemChi_CreateBy = int.Parse(MaNV);
+                        en.NiemChi_Ngay = DateTime.Now;
+                    }
+                    if (DiemBe != "")
+                    {
+                        en.DiemBe = DiemBe;
+                        en.DiemBe_CreateBy = int.Parse(MaNV);
+                        en.DiemBe_Ngay = DateTime.Now;
+                    }
+
+                    _dbThuTien.TT_GhiChus.InsertOnSubmit(en);
+                    _dbThuTien.SubmitChanges();
+                }
+                else
+                {
+                    gc.DienThoai = DienThoai;
+                    gc.ModifyBy = int.Parse(MaNV);
+                    gc.ModifyDate = DateTime.Now;
+
+                    if (GiaBieu != "" && GiaBieu != gc.GiaBieu)
+                    {
+                        gc.GiaBieu = GiaBieu;
+                        gc.GiaBieu_CreateBy = int.Parse(MaNV);
+                        gc.GiaBieu_Ngay = DateTime.Now;
+                    }
+                    if (NiemChi != "" && NiemChi != gc.NiemChi)
+                    {
+                        gc.NiemChi = NiemChi;
+                        gc.NiemChi_CreateBy = int.Parse(MaNV);
+                        gc.NiemChi_Ngay = DateTime.Now;
+                    }
+                    if (DiemBe != "" && DiemBe != gc.DiemBe)
+                    {
+                        gc.DiemBe = DiemBe;
+                        gc.DiemBe_CreateBy = int.Parse(MaNV);
+                        gc.DiemBe_Ngay = DateTime.Now;
+                    }
+
+                    _dbThuTien.SubmitChanges();
+                }
+                return true;
+                //string sql = "if not exists (select 1 from TT_GhiChu where DanhBo='" + DanhBo + "')"
+                //            + " 	insert into TT_GhiChu(DanhBo,DienThoai,GiaBieu,NiemChi,DiemBe,CreateBy,CreateDate)values('" + DanhBo + "','" + DienThoai + "',N'" + GiaBieu + "',N'" + NiemChi + "',N'" + DiemBe + "'," + MaNV + ",GETDATE());"
+                //            + " else"
+                //            + " 	update TT_GhiChu set DienThoai='" + DienThoai + "',GiaBieu=N'" + GiaBieu + "',NiemChi=N'" + NiemChi + "',DiemBe=N'" + DiemBe + "',ModifyBy=" + MaNV + ",ModifyDate=GETDATE() where DanhBo='" + DanhBo + "';";
+                //return _cDAL.ExecuteNonQuery(sql);
             }
             catch (Exception)
             {
