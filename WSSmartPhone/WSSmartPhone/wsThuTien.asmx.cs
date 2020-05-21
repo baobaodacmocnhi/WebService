@@ -107,7 +107,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen, string MaKQDN)
+        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen, string MaKQDN, string XoaDCHD)
         {
             IFormatProvider culture = new CultureInfo("en-US", true);
             DateTime date = new DateTime(), date2 = new DateTime();
@@ -115,7 +115,7 @@ namespace WSSmartPhone
                 date = DateTime.ParseExact(Ngay, "dd/MM/yyyy HH:mm:ss", culture);
             if (NgayHen != "")
                 date2 = DateTime.ParseExact(NgayHen, "dd/MM/yyyy HH:mm:ss", culture);
-            return _cThuTien.XuLy_HoaDonDienTu(LoaiXuLy, MaNV, MaHDs, date, date2, MaKQDN);
+            return _cThuTien.XuLy_HoaDonDienTu(LoaiXuLy, MaNV, MaHDs, date, date2, MaKQDN, bool.Parse(XoaDCHD));
         }
 
         [WebMethod]
