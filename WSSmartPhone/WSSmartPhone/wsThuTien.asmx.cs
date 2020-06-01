@@ -288,5 +288,12 @@ namespace WSSmartPhone
         {
             return _cThuTien.Sua_LenhHuy(MaHDs, Cat, TinhTrang, CreateBy);
         }
+
+        //sync tổng
+        [WebMethod]
+        public bool syncThanhToan(int MaHD,bool GiaiTrach)
+        {
+            return _cThuTien.syncThanhToan(MaHD, GiaiTrach);
+        }
     }
 }

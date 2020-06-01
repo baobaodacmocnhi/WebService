@@ -47,6 +47,14 @@ namespace WSSmartPhone
             return (bool)_cDAL.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
         }
 
+        private bool checkChotDangNgan(String NgayGiaiTrach)
+        {
+            if ((int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
+                return true;
+            else
+                return false;
+        }
+
         public string DangNhap(string Username, string Password, string UID)
         {
             try
@@ -299,7 +307,7 @@ namespace WSSmartPhone
             }
             catch (Exception ex)
             {
-                responseMess = ex.Message;
+                responseMess = "Error: " + ex.Message;
             }
             return responseMess;
         }
@@ -415,8 +423,6 @@ namespace WSSmartPhone
                 switch (LoaiXuLy)
                 {
                     case "XoaDangNgan":
-                        if (checkActiveMobile(MaNV) == false)
-                            return "false,Chưa Active Mobile";
                         foreach (DataRow item in dt.Rows)
                         {
                             if (bool.Parse(item["GiaiTrach"].ToString()) == false)
@@ -443,14 +449,18 @@ namespace WSSmartPhone
                     case "DangNgan":
                         if (checkActiveMobile(MaNV) == false)
                             return "false,Chưa Active Mobile";
+                        if (checkChotDangNgan(_cDAL.ExecuteQuery_ReturnOneValue("select convert(varchar, NGAYGIAITRACH, 112) from HOADON where ID_HOADON=" + MaHDs).ToString()) == true)
+                            return "false,Đã Chốt Ngày Giải Trách";
                         sql += " update HOADON set DangNgan_DienThoai=1,XoaDangNgan_MaNV_DienThoai=NULL,XoaDangNgan_Ngay_DienThoai=NULL,DangNgan_Ton=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate()";
                         if (XoaDCHD == true)
                             sql += ",DCHD=0,TONGCONG=TongCongTruoc_DCHD,TongCongTruoc_DCHD=NULL,TienDuTruoc_DCHD=NULL";
                         sql += " where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "DongPhi":
-                        if (checkActiveMobile(MaNV) == false)
-                            return "false,Chưa Active Mobile";
+                        //if (checkActiveMobile(MaNV) == false)
+                        //    return "false,Chưa Active Mobile";
+                        //if (checkChotDangNgan(Ngay) == true)
+                        //    return "false,Đã Chốt Ngày Giải Trách";
                         sql += " update TT_KQDongNuoc set DongPhi=1,MaNV_DongPhi=" + MaNV + ",NgayDongPhi='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where MaKQDN=" + MaKQDN + " ";
                         break;
                     case "PhieuBao":
@@ -503,11 +513,15 @@ namespace WSSmartPhone
                     case "XoaDangNgan":
                         if (checkActiveMobile(MaNV) == false)
                             return "false,Chưa Active Mobile";
+                        if (checkChotDangNgan(_cDAL.ExecuteQuery_ReturnOneValue("select convert(varchar, NGAYGIAITRACH, 112) from HOADON where ID_HOADON=" + MaHDs).ToString()) == true)
+                            return "false,Đã Chốt Ngày Giải Trách";
                         sql += " update HOADON set XoaDangNgan_MaNV_DienThoai=" + MaNV + ",XoaDangNgan_Ngay_DienThoai='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',DangNgan_DienThoai=0,DangNgan_Ton=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
                         break;
                     case "XoaDongPhi":
-                        if (checkActiveMobile(MaNV) == false)
-                            return "false,Chưa Active Mobile";
+                        //if (checkActiveMobile(MaNV) == false)
+                        //    return "false,Chưa Active Mobile";
+                        //if (checkChotDangNgan(Ngay) == true)
+                        //    return "false,Đã Chốt Ngày Giải Trách";
                         sql += " update TT_KQDongNuoc set DongPhi=0,MaNV_DongPhi=NULL,NgayDongPhi=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where MaKQDN=" + MaKQDN + " ";
                         break;
                     default:
@@ -1485,5 +1499,126 @@ namespace WSSmartPhone
             }
         }
 
+        //sync tổng
+        string urlTong = "http://hoadontest.sawaco.com.vn";
+        string taxCode = "0301129367";
+        string userName = "tanhoaapi";
+        string passWord = "12345678";
+
+        public bool syncThanhToan(int MaHD, bool GiaiTrach)
+        {
+            string responseMess = "";
+            try
+            {
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where ID_HOADON=" + MaHD);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/thanhtoan");
+                request.Method = "POST";
+                request.Headers.Add("taxcode", taxCode);
+                request.Headers.Add("username", userName);
+                request.Headers.Add("password", passWord);
+                request.ContentType = "application/json; charset=utf-8";
+
+                String NgayThanhToan = "", LoaiThuTien = "-1", ThanhToan = "-1", TenThuTien = "";
+                if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
+                    NgayThanhToan = dt.Rows[0]["NgayGiaiTrach"].ToString();
+                else
+                    NgayThanhToan = DateTime.Now.ToString("yyyyMMdd");
+
+                if (bool.Parse(dt.Rows[0]["DangNgan_Ton"].ToString()) == true)
+                    LoaiThuTien = "0";
+                else
+                    if (bool.Parse(dt.Rows[0]["DangNgan_ChuyenKhoan"].ToString()) == true)
+                        LoaiThuTien = "2";
+                    else
+                        if (bool.Parse(dt.Rows[0]["DangNgan_Quay"].ToString()) == true)
+                            LoaiThuTien = "1";
+
+                if (GiaiTrach == true)
+                    ThanhToan = "1";
+                else
+                    ThanhToan = "0";
+
+                if (dt.Rows[0]["DangNgan"].ToString() != "")
+                    TenThuTien = dt.Rows[0]["DangNgan"].ToString();
+                else
+                    TenThuTien = "rỗng";
+
+                var data = new
+                {
+                    branchcode = "TH",
+                    pattern = "01GTKT0/002",
+                    serial = "CT/20E",
+                    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
+                    NgayThanhToan = NgayThanhToan,
+                    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
+                    LoaiThuTien = LoaiThuTien,
+                    TenThuTien = TenThuTien,
+                    ThanhToan = ThanhToan,
+                };
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(data);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                request.ContentLength = byteArray.Length;
+                //gắn data post
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    responseMess = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    var obj = js.Deserialize<dynamic>(responseMess);
+                    if (obj["status"] == "OK")
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+                else
+                {
+                    responseMess = "Error: " + respuesta.StatusCode;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                responseMess = "Error: " + ex.Message;
+                return false;
+            }
+        }
+
+        public string getErrorCode_syncThanhToan(string status)
+        {
+            switch (status)
+            {
+                case "ERR:1":
+                    return "Tham số không đúng";
+                case "ERR:2":
+                    return "Lỗi xử lý dữ liệu đầu vào";
+                case "ERR:3":
+                    return "Lệch tổng tiền";
+                case "ERR:4":
+                    return "Đã thanh toán";
+                case "ERR:5":
+                    return "Ngày thanh toán sai định dạng";
+                case "ERR:6":
+                    return "Đã nộp tiền";
+                case "ERR:7":
+                    return "Đã gạch nợ";
+                case "ERR:9":
+                    return "Trạng thái hóa đơn không phù hợp";
+                case "ERR:10":
+                    return "Lỗi exception, kiểm tra ";
+            }
+            return null;
+        }
     }
 }
