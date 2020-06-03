@@ -291,9 +291,15 @@ namespace WSSmartPhone
 
         //sync tổng
         [WebMethod]
-        public bool syncThanhToan(int MaHD,bool GiaiTrach)
+        public string syncThanhToan(int MaHD,bool GiaiTrach,int IDTemp_SyncHoaDon)
         {
-            return _cThuTien.syncThanhToan(MaHD, GiaiTrach);
+            return _cThuTien.syncThanhToan(MaHD, GiaiTrach, IDTemp_SyncHoaDon);
+        }
+
+        [WebMethod]
+        public string syncNopTien(int MaHD)
+        {
+            return _cThuTien.syncNopTien(MaHD);
         }
     }
 }

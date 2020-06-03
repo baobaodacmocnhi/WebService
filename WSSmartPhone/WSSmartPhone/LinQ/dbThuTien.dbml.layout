@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 19.875" name="dbThuTien">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 13.625, 20.5" name="dbThuTien">
   <DataContextMoniker Name="/dbThuTienDataContext" />
   <nestedChildShapes>
     <classShape Id="b45a2234-6fd4-49d1-b366-28409228fa62" absoluteBounds="5, 1.125, 2, 4.4631168619791666">
@@ -21,16 +21,16 @@
         <classShapeMoniker Id="e0179ee0-6a1f-4a96-aa7c-66da377928fd" />
       </nodes>
     </associationConnector>
-    <classShape Id="00d2a4ca-ba31-4fc9-a287-147785770548" absoluteBounds="0.5, 0.5, 2, 19.078025716145834">
-      <DataClassMoniker Name="/dbThuTienDataContext/HOADON" />
-      <nestedChildShapes>
-        <elementListCompartment Id="a4f403e0-4228-471f-bffa-617426a3dace" absoluteBounds="0.51500000000000012, 0.96, 1.9700000000000002, 18.518025716145832" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
     <classShape Id="abce0b92-d7d0-47c0-aee9-35c042001e3b" absoluteBounds="8.375, 1.375, 2, 3.6939111328124996">
       <DataClassMoniker Name="/dbThuTienDataContext/TT_GhiChu" />
       <nestedChildShapes>
         <elementListCompartment Id="3e5c3230-5f5b-42df-9c59-26969c600efc" absoluteBounds="8.39, 1.835, 1.9700000000000002, 3.1339111328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="3d698d33-ff82-478e-9edd-6efe028fc03b" absoluteBounds="11.375, 0.75, 2, 19.462628580729167">
+      <DataClassMoniker Name="/dbThuTienDataContext/HOADON" />
+      <nestedChildShapes>
+        <elementListCompartment Id="5cb633a5-bbfb-4982-b68f-dc33646b7198" absoluteBounds="11.39, 1.21, 1.9700000000000002, 18.902628580729164" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>

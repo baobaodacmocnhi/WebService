@@ -78,8 +78,10 @@ namespace WSSmartPhone
         {
             try
             {
-                //string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
-                string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0").ToString();
+                string MaNV = "";
+                MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
+                if (MaNV != "0" && MaNV != "1")
+                    MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0").ToString();
                 if (MaNV == null || MaNV == "")
                     return "[]";
                 int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
@@ -366,18 +368,19 @@ namespace WSSmartPhone
         public string GetDSHoaDonTon_HoaDonDienTu(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
         {
             string sql = "select ID=ID_HOADON,MaHD=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,CoDH,"
-                            + " GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,TongCong,"
+                            + " GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,Code,TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,TongCong,"
                             + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
                             + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end,"
-                            + " DangNgan_DienThoai,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_Ngay,TBDongNuoc_NgayHen,DCHD,TienDuTruoc_DCHD,"
-                //+ " TBDongNuoc_Ngay=(select a.CreateDate from TT_DongNuoc a,TT_CTDongNuoc b where a.MaDN=b.MaDN and Huy=0 and b.MaHD=hd.ID_HOADON),"
+                            + " DangNgan_DienThoai,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_NgayHen,DCHD,TienDuTruoc_DCHD,"
+                            + " TBDongNuoc_Ngay=(select a.CreateDate from TT_DongNuoc a,TT_CTDongNuoc b where a.MaDN=b.MaDN and Huy=0 and b.MaHD=hd.ID_HOADON),"
                             + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                             + " PhiMoNuocThuHo=(select a.PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=hd.ID_HOADON and a.ID=b.IDDichVu),"
                             + " MaKQDN=(select MaKQDN from TT_DongNuoc a,TT_KQDongNuoc b where a.Huy=0 and b.DanhBo=hd.DANHBA and b.MoNuoc=0 and b.TroNgaiMN=0 and a.MaDN=b.MaDN),"
                             + " DongPhi =(select DongPhi from TT_DongNuoc a,TT_KQDongNuoc b where a.Huy=0 and b.DanhBo=hd.DANHBA and b.MoNuoc=0 and b.TroNgaiMN=0 and a.MaDN=b.MaDN),"
-                            + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
+                            + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
+                            + " DiaChiDHN=(select [SONHA]+' '+[TENDUONG] FROM [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] where DanhBo=hd.DANHBA)"
                             + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
                             + " order by MLT";
@@ -704,6 +707,7 @@ namespace WSSmartPhone
         public string GetDSDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
             string query = "select ID=dn.MaDN,dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
+                            + " DiaChiDHN=(select [SONHA]+' '+[TENDUONG] FROM [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] where DanhBo=dn.DanhBo),"
                             + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " SoThan=case when kqdn.SoThan is not null then kqdn.SoThan else (select SoThan=ttkh.SOTHANDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
@@ -739,7 +743,7 @@ namespace WSSmartPhone
             //                + " or kqdn.MoNuoc=0)"
             //                + " order by dn.MLT,ctdn.MaHD";
             string sql = "select ID=dn.MaDN,dn.MaDN,MaHD,MLT=MALOTRINH,ctdn.Ky,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
-                            + " GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,hd.TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),hd.GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,hd.TongCong,hd.DCHD,hd.TienDuTruoc_DCHD,"
+                            + " GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,hd.Code,hd.TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),hd.GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,hd.TongCong,hd.DCHD,hd.TienDuTruoc_DCHD,"
                             + " DangNgan_DienThoai,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_Ngay,TBDongNuoc_NgayHen,"
                             + " GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
                             + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
@@ -1504,10 +1508,13 @@ namespace WSSmartPhone
         string taxCode = "0301129367";
         string userName = "tanhoaapi";
         string passWord = "12345678";
+        string branchcode = "TH";
+        string pattern = "01GTKT0/002";
+        string serial = "CT/20E";
 
-        public bool syncThanhToan(int MaHD, bool GiaiTrach)
+        public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
-            string responseMess = "";
+            string result = "";
             try
             {
                 DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where ID_HOADON=" + MaHD);
@@ -1541,13 +1548,13 @@ namespace WSSmartPhone
                 if (dt.Rows[0]["DangNgan"].ToString() != "")
                     TenThuTien = dt.Rows[0]["DangNgan"].ToString();
                 else
-                    TenThuTien = "rỗng";
+                    TenThuTien = "NULL";
 
                 var data = new
                 {
-                    branchcode = "TH",
-                    pattern = "01GTKT0/002",
-                    serial = "CT/20E",
+                    branchcode = branchcode,
+                    pattern = pattern,
+                    serial = serial,
                     SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
                     NgayThanhToan = NgayThanhToan,
                     TongSoTien = dt.Rows[0]["TongCong"].ToString(),
@@ -1568,31 +1575,115 @@ namespace WSSmartPhone
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
                     StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    responseMess = read.ReadToEnd();
+                    result = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
                     JavaScriptSerializer js = new JavaScriptSerializer();
-                    var obj = js.Deserialize<dynamic>(responseMess);
+                    var obj = js.Deserialize<dynamic>(result);
                     if (obj["status"] == "OK")
                     {
-                        return true;
+                        _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + " where ID_HOADON=" + MaHD);
+                        _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
+                        result = obj["status"] + " = " + obj["message"];
                     }
                     else
-                    {
-                        return false;
-                    }
+                        if (obj["status"] == "ERR:4")
+                        {
+                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + " where ID_HOADON=" + MaHD);
+                            _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
+                            result = obj["status"] + " = " + obj["message"];
+                        }
+                        else
+                        {
+                            result = obj["status"] + " = " + obj["message"];
+                            _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "' where ID=" + IDTemp_SyncHoaDon);
+                        }
                 }
                 else
                 {
-                    responseMess = "Error: " + respuesta.StatusCode;
-                    return false;
+                    result = "Error: " + respuesta.StatusCode;
                 }
             }
             catch (Exception ex)
             {
-                responseMess = "Error: " + ex.Message;
-                return false;
+                result = "Error: " + ex.Message;
             }
+            return result;
+        }
+
+        public string syncNopTien(int MaHD)
+        {
+            string result = "";
+            try
+            {
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG from HOADON where ID_HOADON=" + MaHD);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptien");
+                request.Method = "POST";
+                request.Headers.Add("taxcode", taxCode);
+                request.Headers.Add("username", userName);
+                request.Headers.Add("password", passWord);
+                request.ContentType = "application/json; charset=utf-8";
+
+                String NgayNopTien = "";
+                if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
+                    NgayNopTien = dt.Rows[0]["NgayGiaiTrach"].ToString();
+                else
+                    NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
+
+                var data = new
+                {
+                    branchcode = branchcode,
+                    pattern = pattern,
+                    serial = serial,
+                    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
+                    NgayNopTien = NgayNopTien,
+                    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
+                    HinhThucThanhToan = "1",
+                };
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(data);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                request.ContentLength = byteArray.Length;
+                //gắn data post
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    var obj = js.Deserialize<dynamic>(result);
+                    if (obj["status"] == "OK")
+                    {
+                        _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where ID_HOADON=" + MaHD);
+                        result = obj["status"] + " = " + obj["message"];
+                    }
+                    else
+                        if (obj["status"] == "ERR:7")
+                        {
+                            _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where ID_HOADON=" + MaHD);
+                            result = obj["status"] + " = " + obj["message"];
+                        }
+                        else
+                        {
+                            result = obj["status"] + " = " + obj["message"];
+                        }
+                }
+                else
+                {
+                    result = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "Error: " + ex.Message;
+            }
+            return result;
         }
 
         public string getErrorCode_syncThanhToan(string status)
@@ -1617,6 +1708,32 @@ namespace WSSmartPhone
                     return "Trạng thái hóa đơn không phù hợp";
                 case "ERR:10":
                     return "Lỗi exception, kiểm tra ";
+            }
+            return null;
+        }
+
+        public string getErrorCode_syncNopTien(string status)
+        {
+            switch (status)
+            {
+                case "ERR:1":
+                    return "Tham số không đúng";
+                case "ERR:2":
+                    return "Hình thức thanh toán không đúng";
+                case "ERR:4":
+                    return "Lệch tổng tiền";
+                case "ERR:5":
+                    return "Ngày thanh toán sai định dạng";
+                case "ERR:6":
+                    return "Hóa đơn chưa thanh toán";
+                case "ERR:7":
+                    return "Hóa đơn đã nộp tiền";
+                case "ERR:8":
+                    return "Hóa đơn đã gạch nợ";
+                case "ERR:9":
+                    return "Trạng thái thanh toán không hợp lệ";
+                case "ERR:10":
+                    return "Lỗi không xác định, kiểm tra log hệ thống";
             }
             return null;
         }
