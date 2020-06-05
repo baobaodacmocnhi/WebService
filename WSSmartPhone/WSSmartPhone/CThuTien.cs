@@ -83,7 +83,7 @@ namespace WSSmartPhone
                 if (MaNV != "0" && MaNV != "1")
                     MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0").ToString();
                 if (MaNV == null || MaNV == "")
-                    return "[]";
+                    return "false;";
                 int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
                 if (MaNV_UID_Old > 0)
                     _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where UID='" + UID + "'");
@@ -94,11 +94,11 @@ namespace WSSmartPhone
 
                 _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Doi,ToTruong,MaTo,DienThoai,TestApp from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Doi,ToTruong,MaTo,DienThoai,TestApp from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception)
             {
-                return "[]";
+                return "false;";
             }
         }
 
@@ -114,7 +114,7 @@ namespace WSSmartPhone
             }
         }
 
-        public bool DangXuats(string Username, string UID)
+        public string DangXuats(string Username, string UID)
         {
             try
             {
@@ -122,11 +122,11 @@ namespace WSSmartPhone
 
                 _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
-                return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'");
+                return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
             }
             catch (Exception)
             {
-                return false;
+                return "false;";
             }
         }
 
@@ -380,8 +380,7 @@ namespace WSSmartPhone
                             + " MaKQDN=(select MaKQDN from TT_DongNuoc a,TT_KQDongNuoc b where a.Huy=0 and b.DanhBo=hd.DANHBA and b.MoNuoc=0 and b.TroNgaiMN=0 and a.MaDN=b.MaDN),"
                             + " DongPhi =(select DongPhi from TT_DongNuoc a,TT_KQDongNuoc b where a.Huy=0 and b.DanhBo=hd.DANHBA and b.MoNuoc=0 and b.TroNgaiMN=0 and a.MaDN=b.MaDN),"
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
-                //+ " DiaChiDHN=(select [SONHA]+' '+[TENDUONG] FROM [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] where DanhBo=hd.DANHBA)"
-                            + " ,DiaChiDHN=''"
+                            + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=hd.DANHBA)"
                             + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
                             + " order by MLT";
@@ -544,7 +543,7 @@ namespace WSSmartPhone
                 //}
                 if (_cDAL.ExecuteNonQuery(sql) == true)
                 {
-                    if(XoaDCHD==true)
+                    if (XoaDCHD == true)
                         _cDAL.ExecuteNonQuery("insert into TT_DieuChinhTienDuXoa(MaHD,CreateBy,CreateDate)values(" + MaHDs + "," + MaNV + ",getdate())");
                     return "true,";
                 }
@@ -762,7 +761,7 @@ namespace WSSmartPhone
                             + " left join HOADON hd on hd.ID_HOADON=ctdn.MaHD"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(dn.NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyyMMdd") + "' and CAST(dn.NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyyMMdd") + "'"
                             + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
-                            + " or kqdn.MoNuoc=0)"
+                            + " or kqdn.MoNuoc=0 or CAST(kqdn.NgayMN as DATE)=CAST(getdate() as DATE))"
                             + " order by dn.MLT,ctdn.MaHD";
             DataTable dt = _cDAL.ExecuteQuery_DataTable(sql);
 

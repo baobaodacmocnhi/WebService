@@ -45,7 +45,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool DangXuats(string Username, string UID)
+        public string DangXuats(string Username, string UID)
         {
             return _cThuTien.DangXuats(Username, UID);
         }
