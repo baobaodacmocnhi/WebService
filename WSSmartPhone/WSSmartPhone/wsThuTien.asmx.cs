@@ -301,5 +301,12 @@ namespace WSSmartPhone
         {
             return _cThuTien.syncNopTien(MaHD);
         }
+
+        [WebMethod]
+        public string syncNopTienLo()
+        {
+            return _cThuTien.syncNopTienLo();
+        }
+
     }
 }

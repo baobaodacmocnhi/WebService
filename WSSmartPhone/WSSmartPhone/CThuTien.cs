@@ -11,6 +11,7 @@ using System.Net;
 using System.Web.Script.Serialization;
 using System.Transactions;
 using WSSmartPhone.LinQ;
+using System.Web;
 
 namespace WSSmartPhone
 {
@@ -383,7 +384,7 @@ namespace WSSmartPhone
                             + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=hd.DANHBA)"
                             + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            + " order by MLT";
+                            + " order by MLT asc,ID_HOADON desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
@@ -1516,6 +1517,58 @@ namespace WSSmartPhone
         string pattern = "01GTKT0/002";
         string serial = "CT/20E";
 
+        public class HoaDonThanhToan
+        {
+            public string branchcode { get; set; }
+            public string pattern { get; set; }
+            public string serial { get; set; }
+            public string SoHD { get; set; }
+            public string NgayThanhToan { get; set; }
+            public string TongSoTien { get; set; }
+            public string LoaiThuTien { get; set; }
+            public string TenThuTien { get; set; }
+            public string ThanhToan { get; set; }
+        }
+
+        public class HoaDonNopTien
+        {
+            public string branchcode { get; set; }
+            public string pattern { get; set; }
+            public string serial { get; set; }
+            public string SoHD { get; set; }
+            public string NgayNopTien { get; set; }
+            public string TongSoTien { get; set; }
+            public string HinhThucThanhToan { get; set; }
+        }
+
+        public class HoaDonNopTienLo
+        {
+            public string SoHD { get; set; }
+            public string NgayNopTien { get; set; }
+            public string TongSoTien { get; set; }
+            public string HinhThucThanhToan { get; set; }
+        }
+
+        public class HoaDonNopTienResult
+        {
+            public string branchcode { get; set; }
+            public string pattern { get; set; }
+            public string serial { get; set; }
+            public string SoHD { get; set; }
+            public string NgayNopTien { get; set; }
+            public string TongSoTien { get; set; }
+            public string HinhThucThanhToan { get; set; }
+            public string Status { get; set; }
+            public string Message { get; set; }
+        }
+
+        public class HoaDonNopTienLoResult
+        {
+            public string Status { get; set; }
+            public string Message { get; set; }
+            public List<HoaDonNopTienResult> result { get; set; }
+        }
+
         public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
             string result = "";
@@ -1529,7 +1582,7 @@ namespace WSSmartPhone
                 request.Headers.Add("password", passWord);
                 request.ContentType = "application/json; charset=utf-8";
 
-                String NgayThanhToan = "", LoaiThuTien = "-1", ThanhToan = "-1", TenThuTien = "";
+                string NgayThanhToan = "", LoaiThuTien = "-1", ThanhToan = "-1", TenThuTien = "";
                 if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
                     NgayThanhToan = dt.Rows[0]["NgayGiaiTrach"].ToString();
                 else
@@ -1554,20 +1607,31 @@ namespace WSSmartPhone
                 else
                     TenThuTien = "NULL";
 
-                var data = new
-                {
-                    branchcode = branchcode,
-                    pattern = pattern,
-                    serial = serial,
-                    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
-                    NgayThanhToan = NgayThanhToan,
-                    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
-                    LoaiThuTien = LoaiThuTien,
-                    TenThuTien = TenThuTien,
-                    ThanhToan = ThanhToan,
-                };
+                //var data = new
+                //{
+                //    branchcode = branchcode,
+                //    pattern = pattern,
+                //    serial = serial,
+                //    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
+                //    NgayThanhToan = NgayThanhToan,
+                //    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
+                //    LoaiThuTien = LoaiThuTien,
+                //    TenThuTien = TenThuTien,
+                //    ThanhToan = ThanhToan,
+                //};
+                HoaDonThanhToan en = new HoaDonThanhToan();
+                en.branchcode = branchcode;
+                en.pattern = pattern;
+                en.serial = serial;
+                en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                en.NgayThanhToan = NgayThanhToan;
+                en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
+                en.LoaiThuTien = LoaiThuTien;
+                en.TenThuTien = TenThuTien;
+                en.ThanhToan = ThanhToan;
+
                 var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(data);
+                var json = serializer.Serialize(en);
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 request.ContentLength = byteArray.Length;
                 //gắn data post
@@ -1620,7 +1684,7 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG from HOADON where ID_HOADON=" + MaHD);
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where ID_HOADON=" + MaHD);
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptien");
                 request.Method = "POST";
                 request.Headers.Add("taxcode", taxCode);
@@ -1628,24 +1692,38 @@ namespace WSSmartPhone
                 request.Headers.Add("password", passWord);
                 request.ContentType = "application/json; charset=utf-8";
 
-                String NgayNopTien = "";
+                string NgayNopTien = "", HinhThucThanhToan = "";
                 if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
                     NgayNopTien = dt.Rows[0]["NgayGiaiTrach"].ToString();
                 else
                     NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
 
-                var data = new
-                {
-                    branchcode = branchcode,
-                    pattern = pattern,
-                    serial = serial,
-                    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
-                    NgayNopTien = NgayNopTien,
-                    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
-                    HinhThucThanhToan = "1",
-                };
+                if (bool.Parse(dt.Rows[0]["ChuyenNoKhoDoi"].ToString()) == true)
+                    HinhThucThanhToan = "2";
+                else
+                    HinhThucThanhToan = "1";
+
+                //var data = new
+                //{
+                //    branchcode = branchcode,
+                //    pattern = pattern,
+                //    serial = serial,
+                //    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
+                //    NgayNopTien = NgayNopTien,
+                //    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
+                //    HinhThucThanhToan = HinhThucThanhToan,
+                //};
+                HoaDonNopTien en = new HoaDonNopTien();
+                en.branchcode = branchcode;
+                en.pattern = pattern;
+                en.serial = serial;
+                en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                en.NgayNopTien = NgayNopTien;
+                en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
+                en.HinhThucThanhToan = HinhThucThanhToan;
+
                 var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(data);
+                var json = serializer.Serialize(en);
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 request.ContentLength = byteArray.Length;
                 //gắn data post
@@ -1676,6 +1754,102 @@ namespace WSSmartPhone
                         else
                         {
                             result = obj["status"] + " = " + obj["message"];
+                        }
+                }
+                else
+                {
+                    result = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "Error: " + ex.Message;
+            }
+            return result;
+        }
+
+        public string syncNopTienLo()
+        {
+            string result = "";
+            try
+            {
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where ID_HOADON=" + 21481945);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchcode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern) + "&serial=" + HttpUtility.UrlEncode(serial));
+                request.Method = "POST";
+                //request.Headers.Add("taxcode", taxCode);
+                //request.Headers.Add("username", userName);
+                //request.Headers.Add("password", passWord);
+                request.ContentType = "application/json; charset=utf-8";
+
+                var lstHD = new List<HoaDonNopTienLo>();
+
+                foreach (DataRow item in dt.Rows)
+                {
+                    string NgayNopTien = "", HinhThucThanhToan = "";
+                    if (item["NgayGiaiTrach"].ToString() != "")
+                        NgayNopTien = item["NgayGiaiTrach"].ToString();
+                    else
+                        NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
+
+                    if (bool.Parse(item["ChuyenNoKhoDoi"].ToString()) == true)
+                        HinhThucThanhToan = "2";
+                    else
+                        HinhThucThanhToan = "1";
+
+                    //var data = new
+                    //{
+                    //    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
+                    //    NgayNopTien = NgayNopTien,
+                    //    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
+                    //    HinhThucThanhToan = HinhThucThanhToan,
+                    //};
+                    HoaDonNopTienLo en = new HoaDonNopTienLo();
+                    en.SoHD = item["SoHoaDon"].ToString().Substring(6);
+                    en.NgayNopTien = NgayNopTien;
+                    en.TongSoTien = item["TongCong"].ToString();
+                    en.HinhThucThanhToan = HinhThucThanhToan;
+                    lstHD.Add(en);
+                }
+
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(lstHD);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                request.ContentLength = byteArray.Length;
+                //gắn data post
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    JavaScriptSerializer js = new JavaScriptSerializer();
+                    //var obj = js.Deserialize<dynamic>(result);
+                    //if (obj["status"] == "OK")
+                    //{
+                    //    _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where ID_HOADON=" + MaHD);
+                    //    result = obj["status"] + " = " + obj["message"];
+                    //}
+                    //else
+                    //    if (obj["status"] == "ERR:7")
+                    //    {
+                    //        _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where ID_HOADON=" + MaHD);
+                    //        result = obj["status"] + " = " + obj["message"];
+                    //    }
+                    //    else
+                    //    {
+                    //        result = obj["status"] + " = " + obj["message"];
+                    //    }
+                    HoaDonNopTienLoResult deserializedResult = serializer.Deserialize<HoaDonNopTienLoResult>(result);
+                    if (deserializedResult.Status == "OK")
+                        foreach (HoaDonNopTienResult item in deserializedResult.result)
+                        {
+                            if (item.Status == "OK")
+                                _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where SoHoaDon='" + item.serial.Replace("E","P") + item.SoHD + "'");
                         }
                 }
                 else
@@ -1738,6 +1912,8 @@ namespace WSSmartPhone
                     return "Trạng thái thanh toán không hợp lệ";
                 case "ERR:10":
                     return "Lỗi không xác định, kiểm tra log hệ thống";
+                case "ERR:11":
+                    return "Lô hóa đơn quá giới hạn";
             }
             return null;
         }
