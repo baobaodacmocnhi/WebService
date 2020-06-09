@@ -1777,7 +1777,7 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select TOP 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='"+NgayGiaiTrach.ToString("yyyyMMdd")+"' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0");
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select TOP 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='"+NgayGiaiTrach.ToString("yyyyMMdd")+"' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0 order by NGAYGIAITRACH asc");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern) + "&serial=" + HttpUtility.UrlEncode(serial));
