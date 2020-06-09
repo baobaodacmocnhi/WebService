@@ -303,9 +303,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string syncNopTienLo()
+        public string syncNopTienLo(string NgayGiaiTrach)
         {
-            return _cThuTien.syncNopTienLo();
+            return _cThuTien.syncNopTienLo(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
     }
