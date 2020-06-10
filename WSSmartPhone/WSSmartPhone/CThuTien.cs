@@ -381,6 +381,7 @@ namespace WSSmartPhone
                             + " MaKQDN=(select MaKQDN from TT_DongNuoc a,TT_KQDongNuoc b where a.Huy=0 and b.DanhBo=hd.DANHBA and b.MoNuoc=0 and b.TroNgaiMN=0 and a.MaDN=b.MaDN),"
                             + " DongPhi =(select DongPhi from TT_DongNuoc a,TT_KQDongNuoc b where a.Huy=0 and b.DanhBo=hd.DANHBA and b.MoNuoc=0 and b.TroNgaiMN=0 and a.MaDN=b.MaDN),"
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
+                            + " ,LenhHuyCat=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON and Cat=1) then 'true' else 'false' end"
                             + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=hd.DANHBA)"
                             + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
@@ -1509,6 +1510,8 @@ namespace WSSmartPhone
         }
 
         //sync tổng
+        #region Class
+
         string urlTong = "http://hoadontest.sawaco.com.vn";
         string taxCode = "0301129367";
         string userName = "tanhoaapi";
@@ -1568,6 +1571,8 @@ namespace WSSmartPhone
             public string Message { get; set; }
             public List<HoaDonNopTienResult> result { get; set; }
         }
+
+        #endregion
 
         public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
@@ -1664,10 +1669,17 @@ namespace WSSmartPhone
                                 result = obj["status"] + " = " + obj["message"];
                             }
                             else
-                            {
-                                result = obj["status"] + " = " + obj["message"];
-                                _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
-                            }
+                                if (obj["status"] == "ERR:6")
+                                {
+                                    _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + " where ID_HOADON=" + MaHD);
+                                    _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
+                                    result = obj["status"] + " = " + obj["message"];
+                                }
+                                else
+                                {
+                                    result = obj["status"] + " = " + obj["message"];
+                                    _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                                }
                     }
                     else
                         result = "Error: " + respuesta.StatusCode;
@@ -1777,85 +1789,94 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select TOP 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='"+NgayGiaiTrach.ToString("yyyyMMdd")+"' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0 order by NGAYGIAITRACH asc");
-                if (dt != null && dt.Rows.Count > 0)
+                //int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0");
+                //while (count > 0)
                 {
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern) + "&serial=" + HttpUtility.UrlEncode(serial));
-                    request.Method = "POST";
-                    request.Headers.Add("taxcode", taxCode);
-                    request.Headers.Add("username", userName);
-                    request.Headers.Add("password", passWord);
-                    request.ContentType = "application/json; charset=utf-8";
-
-                    var lstHD = new List<HoaDonNopTienLo>();
-
-                    foreach (DataRow item in dt.Rows)
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select TOP 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0 order by NGAYGIAITRACH asc");
+                    if (dt != null && dt.Rows.Count > 0)
                     {
-                        string NgayNopTien = "", HinhThucThanhToan = "";
-                        if (item["NgayGiaiTrach"].ToString() != "")
-                            NgayNopTien = item["NgayGiaiTrach"].ToString();
-                        else
-                            NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern) + "&serial=" + HttpUtility.UrlEncode(serial));
+                        request.Method = "POST";
+                        request.Headers.Add("taxcode", taxCode);
+                        request.Headers.Add("username", userName);
+                        request.Headers.Add("password", passWord);
+                        request.ContentType = "application/json; charset=utf-8";
 
-                        if (bool.Parse(item["ChuyenNoKhoDoi"].ToString()) == true)
-                            HinhThucThanhToan = "2";
-                        else
-                            HinhThucThanhToan = "1";
+                        var lstHD = new List<HoaDonNopTienLo>();
 
-                        HoaDonNopTienLo en = new HoaDonNopTienLo();
-                        en.SoHD = item["SoHoaDon"].ToString().Substring(6);
-                        en.NgayNopTien = NgayNopTien;
-                        en.TongSoTien = item["TongCong"].ToString();
-                        en.HinhThucThanhToan = HinhThucThanhToan;
-                        lstHD.Add(en);
-                    }
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            string NgayNopTien = "", HinhThucThanhToan = "";
+                            if (item["NgayGiaiTrach"].ToString() != "")
+                                NgayNopTien = item["NgayGiaiTrach"].ToString();
+                            else
+                                NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(lstHD);
-                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
-                    request.ContentLength = byteArray.Length;
-                    //gắn data post
-                    Stream dataStream = request.GetRequestStream();
-                    dataStream.Write(byteArray, 0, byteArray.Length);
-                    dataStream.Close();
+                            if (bool.Parse(item["ChuyenNoKhoDoi"].ToString()) == true)
+                                HinhThucThanhToan = "2";
+                            else
+                                HinhThucThanhToan = "1";
 
-                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
-                    {
-                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                        result = read.ReadToEnd();
-                        read.Close();
-                        respuesta.Close();
-                        JavaScriptSerializer js = new JavaScriptSerializer();
-                        HoaDonNopTienLoResult deserializedResult = serializer.Deserialize<HoaDonNopTienLoResult>(result);
-                        if (deserializedResult.Status == "OK")
-                            foreach (HoaDonNopTienResult item in deserializedResult.result)
+                            HoaDonNopTienLo en = new HoaDonNopTienLo();
+                            en.SoHD = item["SoHoaDon"].ToString().Substring(6);
+                            en.NgayNopTien = NgayNopTien;
+                            en.TongSoTien = item["TongCong"].ToString();
+                            en.HinhThucThanhToan = HinhThucThanhToan;
+                            lstHD.Add(en);
+                        }
+
+                        var serializer = new JavaScriptSerializer();
+                        var json = serializer.Serialize(lstHD);
+                        Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                        request.ContentLength = byteArray.Length;
+                        //gắn data post
+                        Stream dataStream = request.GetRequestStream();
+                        dataStream.Write(byteArray, 0, byteArray.Length);
+                        dataStream.Close();
+
+                        HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                        if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                        {
+                            StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                            result = read.ReadToEnd();
+                            read.Close();
+                            respuesta.Close();
+                            JavaScriptSerializer js = new JavaScriptSerializer();
+                            HoaDonNopTienLoResult deserializedResult = serializer.Deserialize<HoaDonNopTienLoResult>(result);
+                            if (deserializedResult.Status == "OK")
                             {
-                                if (item.Status == "OK")
+                                foreach (HoaDonNopTienResult item in deserializedResult.result)
                                 {
-                                    _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'");
-                                    result = item.Status + " = " + item.Message;
-                                }
-                                else
-                                    if (item.Status == "ERR:7")
+                                    if (item.Status == "OK")
                                     {
                                         _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'");
                                         result = item.Status + " = " + item.Message;
                                     }
                                     else
-                                        result = item.Status + " = " + item.Message;
+                                        if (item.Status == "ERR:7")
+                                        {
+                                            _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'");
+                                            result = item.Status + " = " + item.Message;
+                                        }
+                                        else
+                                            result = item.Status + " = " + item.Message;
+                                }
+                                result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;
                             }
-                        result = deserializedResult.Status + " = " + deserializedResult.Message;
+                            else
+                                result = "false;" + deserializedResult.Status + " = " + deserializedResult.Message;
+                        }
+                        else
+                            result = "false;" + "Error: " + respuesta.StatusCode;
                     }
                     else
-                        result = "Error: " + respuesta.StatusCode;
+                        result = "false;" + "Hóa Đơn không có";
+                    //count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0");
                 }
-                else
-                    result = "Hóa Đơn không có";
             }
             catch (Exception ex)
             {
-                result = "Error: " + ex.Message;
+                result = "false;" + "Error: " + ex.Message;
             }
             return result;
         }
