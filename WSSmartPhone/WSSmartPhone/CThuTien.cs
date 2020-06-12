@@ -433,20 +433,20 @@ namespace WSSmartPhone
                             foreach (DataRow item in dt.Rows)
                             {
                                 if (bool.Parse(item["GiaiTrach"].ToString()) == false)
-                                    return "false,Kỳ " + item["Ky"].ToString() + " chưa Giải Trách,GiaiTrach,false," + item["MaHD"].ToString();
+                                    return "false;Kỳ " + item["Ky"].ToString() + " chưa Giải Trách;GiaiTrach;false;" + item["MaHD"].ToString();
                             }
                             break;
                         default:
                             foreach (DataRow item in dt.Rows)
                             {
                                 if (bool.Parse(item["ThuHo"].ToString()) == true)
-                                    return "false,Kỳ " + item["Ky"].ToString() + " đã Thu Hộ,ThuHo,true," + item["MaHD"].ToString();
+                                    return "false;Kỳ " + item["Ky"].ToString() + " đã Thu Hộ;ThuHo;true;" + item["MaHD"].ToString();
                                 else
                                     if (bool.Parse(item["TamThu"].ToString()) == true)
-                                        return "false,Kỳ " + item["Ky"].ToString() + " đã Tạm Thu,TamThu,true," + item["MaHD"].ToString();
+                                        return "false;Kỳ " + item["Ky"].ToString() + " đã Tạm Thu;TamThu;true;" + item["MaHD"].ToString();
                                     else
                                         if (bool.Parse(item["GiaiTrach"].ToString()) == true)
-                                            return "false,Kỳ " + item["Ky"].ToString() + " đã Giải Trách,GiaiTrach,true," + item["MaHD"].ToString();
+                                            return "false;Kỳ " + item["Ky"].ToString() + " đã Giải Trách;GiaiTrach;true;" + item["MaHD"].ToString();
                             }
                             break;
                     }
@@ -456,9 +456,9 @@ namespace WSSmartPhone
                 {
                     case "DangNgan":
                         if (checkActiveMobile(MaNV) == false)
-                            return "false,Chưa Active Mobile";
+                            return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(_cDAL.ExecuteQuery_ReturnOneValue("select convert(varchar, NGAYGIAITRACH, 112) from HOADON where ID_HOADON=" + MaHDs).ToString()) == true)
-                            return "false,Đã Chốt Ngày Giải Trách";
+                            return "false;Đã Chốt Ngày Giải Trách";
                         sql += " update HOADON set DangNgan_DienThoai=1,XoaDangNgan_MaNV_DienThoai=NULL,XoaDangNgan_Ngay_DienThoai=NULL,DangNgan_Ton=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate()";
                         if (XoaDCHD == true)
                         {
@@ -522,9 +522,9 @@ namespace WSSmartPhone
                         break;
                     case "XoaDangNgan":
                         if (checkActiveMobile(MaNV) == false)
-                            return "false,Chưa Active Mobile";
+                            return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(_cDAL.ExecuteQuery_ReturnOneValue("select convert(varchar, NGAYGIAITRACH, 112) from HOADON where ID_HOADON=" + MaHDs).ToString()) == true)
-                            return "false,Đã Chốt Ngày Giải Trách";
+                            return "false;Đã Chốt Ngày Giải Trách";
                         sql += " update HOADON set XoaDangNgan_MaNV_DienThoai=" + MaNV + ",XoaDangNgan_Ngay_DienThoai='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',DangNgan_DienThoai=0,DangNgan_Ton=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
                         break;
                     case "XoaDongPhi":
@@ -550,14 +550,14 @@ namespace WSSmartPhone
                 {
                     if (XoaDCHD == true)
                         _cDAL.ExecuteNonQuery("insert into TT_DieuChinhTienDuXoa(MaHD,CreateBy,CreateDate)values(" + MaHDs + "," + MaNV + ",getdate())");
-                    return "true,";
+                    return "true; ";
                 }
                 else
-                    return "false,error query";
+                    return "false;error query";
             }
             catch (Exception ex)
             {
-                return "false," + ex.Message;
+                return "false;" + ex.Message;
             }
         }
 
