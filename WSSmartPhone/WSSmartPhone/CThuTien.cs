@@ -1905,7 +1905,9 @@ namespace WSSmartPhone
                                     else
                                     {
                                         result = item.Status + " = " + item.Message;
-                                        _cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial.Replace("E", "P") + (int)item.SoHD + "',N'" + result + "')");
+                                        _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "')"
+                                        + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial.Replace("E", "P") + (int)item.SoHD + "',N'" + result + "')"
+                                        + " else update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'");
                                     }
                                 }
                                 result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;
