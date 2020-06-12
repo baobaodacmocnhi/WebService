@@ -419,34 +419,37 @@ namespace WSSmartPhone
                 //            break;
                 //    }
                 //}
-                string sqlCheck = "select MaHD=ID_HOADON,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),"
-                                    + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
-                                    + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
-                                    + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
-                                    + " from HOADON hd where ID_HOADON in (" + MaHDs + ")";
-                DataTable dt = _cDAL.ExecuteQuery_DataTable(sqlCheck);
-                switch (LoaiXuLy)
+                if (LoaiXuLy != "DongPhi" && LoaiXuLy != "XoaDongPhi")
                 {
-                    case "XoaDangNgan":
-                        foreach (DataRow item in dt.Rows)
-                        {
-                            if (bool.Parse(item["GiaiTrach"].ToString()) == false)
-                                return "false,Kỳ " + item["Ky"].ToString() + " chưa Giải Trách,GiaiTrach,false," + item["MaHD"].ToString();
-                        }
-                        break;
-                    default:
-                        foreach (DataRow item in dt.Rows)
-                        {
-                            if (bool.Parse(item["ThuHo"].ToString()) == true)
-                                return "false,Kỳ " + item["Ky"].ToString() + " đã Thu Hộ,ThuHo,true," + item["MaHD"].ToString();
-                            else
-                                if (bool.Parse(item["TamThu"].ToString()) == true)
-                                    return "false,Kỳ " + item["Ky"].ToString() + " đã Tạm Thu,TamThu,true," + item["MaHD"].ToString();
+                    string sqlCheck = "select MaHD=ID_HOADON,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),"
+                                        + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
+                                        + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
+                                        + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
+                                        + " from HOADON hd where ID_HOADON in (" + MaHDs + ")";
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable(sqlCheck);
+                    switch (LoaiXuLy)
+                    {
+                        case "XoaDangNgan":
+                            foreach (DataRow item in dt.Rows)
+                            {
+                                if (bool.Parse(item["GiaiTrach"].ToString()) == false)
+                                    return "false,Kỳ " + item["Ky"].ToString() + " chưa Giải Trách,GiaiTrach,false," + item["MaHD"].ToString();
+                            }
+                            break;
+                        default:
+                            foreach (DataRow item in dt.Rows)
+                            {
+                                if (bool.Parse(item["ThuHo"].ToString()) == true)
+                                    return "false,Kỳ " + item["Ky"].ToString() + " đã Thu Hộ,ThuHo,true," + item["MaHD"].ToString();
                                 else
-                                    if (bool.Parse(item["GiaiTrach"].ToString()) == true)
-                                        return "false,Kỳ " + item["Ky"].ToString() + " đã Giải Trách,GiaiTrach,true," + item["MaHD"].ToString();
-                        }
-                        break;
+                                    if (bool.Parse(item["TamThu"].ToString()) == true)
+                                        return "false,Kỳ " + item["Ky"].ToString() + " đã Tạm Thu,TamThu,true," + item["MaHD"].ToString();
+                                    else
+                                        if (bool.Parse(item["GiaiTrach"].ToString()) == true)
+                                            return "false,Kỳ " + item["Ky"].ToString() + " đã Giải Trách,GiaiTrach,true," + item["MaHD"].ToString();
+                            }
+                            break;
+                    }
                 }
 
                 switch (LoaiXuLy)
@@ -710,6 +713,31 @@ namespace WSSmartPhone
             return DataTableToJSON(dt);
         }
 
+        public string GetDSDongNuoc(string MaNV_DongNuoc)
+        {
+            string query = "select ID=dn.MaDN,dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
+                            + " DiaChiDHN=(select [SONHA]+' '+[TENDUONG] FROM [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] where DanhBo=dn.DanhBo),"
+                            + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " SoThan=case when kqdn.SoThan is not null then kqdn.SoThan else (select SoThan=ttkh.SOTHANDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
+                            + " DongNuoc=case when kqdn.DongNuoc is null then 'false' else case when kqdn.DongNuoc=1 then 'true' else 'false' end end,"
+                            + " DongNuoc2=case when kqdn.DongNuoc2 is null then 'false' else case when kqdn.DongNuoc2=1 then 'true' else 'false' end end,"
+                            + " MoNuoc=case when kqdn.MoNuoc is null then 'false' else case when kqdn.MoNuoc=1 then 'true' else 'false' end end,"
+                            + " DongPhi=case when kqdn.DongPhi is null then 'false' else case when kqdn.DongPhi=1 then 'true' else 'false' end end,"
+                            + " ButChi=case when kqdn.ButChi is null then 'false' else case when kqdn.ButChi=1 then 'true' else 'false' end end,"
+                            + " KhoaTu=case when kqdn.KhoaTu is null then 'false' else case when kqdn.KhoaTu=1 then 'true' else 'false' end end,"
+                            + " KhoaKhac=case when kqdn.KhoaKhac is null then 'false' else case when kqdn.KhoaKhac=1 then 'true' else 'false' end end,"
+                            + " kqdn.NgayDN,kqdn.ChiSoDN,kqdn.NiemChi,kqdn.KhoaKhac_GhiChu,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.ViTri,kqdn.LyDo,kqdn.NgayDN1,kqdn.ChiSoDN1,kqdn.NiemChi1,kqdn.NgayMN,kqdn.ChiSoMN,kqdn.MaKQDN"
+                            + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
+                            + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
+                            + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
+                            + " or kqdn.MoNuoc=0 or CAST(kqdn.NgayMN as DATE)=CAST(getdate() as DATE))"
+                            + " order by dn.MLT";
+            DataTable dt = _cDAL.ExecuteQuery_DataTable(query);
+
+            return DataTableToJSON(dt);
+        }
+
         public string GetDSDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
             string query = "select ID=dn.MaDN,dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
@@ -731,6 +759,41 @@ namespace WSSmartPhone
                             + " or kqdn.MoNuoc=0 or CAST(kqdn.NgayMN as DATE)=CAST(getdate() as DATE))"
                             + " order by dn.MLT";
             DataTable dt = _cDAL.ExecuteQuery_DataTable(query);
+
+            return DataTableToJSON(dt);
+        }
+
+        public string GetDSCTDongNuoc(string MaNV_DongNuoc)
+        {
+            //string sql = "select ID=dn.MaDN,dn.MaDN,MaHD,Ky,TongCong,"
+            //                + " GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
+            //                + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
+            //                + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=ctdn.MaHD) then 'true' else 'false' end,"
+            //                + " PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong where MaHDs like '%'+CONVERT(varchar(8),ctdn.MaHD)+'%'),"
+            //                + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
+            //                + " from TT_DongNuoc dn left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
+            //                + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyyMMdd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyyMMdd") + "'"
+            //                + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
+            //                + " or kqdn.MoNuoc=0)"
+            //                + " order by dn.MLT,ctdn.MaHD";
+            string sql = "select ID=dn.MaDN,dn.MaDN,MaHD,MLT=MALOTRINH,ctdn.Ky,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
+                            + " GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,hd.Code,hd.TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),hd.GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,hd.TongCong,hd.DCHD,hd.TienDuTruoc_DCHD,"
+                            + " DangNgan_DienThoai,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_Ngay,TBDongNuoc_NgayHen,"
+                            + " GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
+                            + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
+                            + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=ctdn.MaHD) then 'true' else 'false' end,"
+                            + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
+                            + " PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=ctdn.MaHD and a.ID=b.IDDichVu),"
+                            + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
+                            + " from TT_DongNuoc dn"
+                            + " left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN"
+                            + " left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
+                            + " left join HOADON hd on hd.ID_HOADON=ctdn.MaHD"
+                            + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
+                            + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
+                            + " or kqdn.MoNuoc=0 or CAST(kqdn.NgayMN as DATE)=CAST(getdate() as DATE))"
+                            + " order by dn.MLT asc,ctdn.MaHD desc";
+            DataTable dt = _cDAL.ExecuteQuery_DataTable(sql);
 
             return DataTableToJSON(dt);
         }
@@ -1655,31 +1718,17 @@ namespace WSSmartPhone
                         respuesta.Close();
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         var obj = js.Deserialize<dynamic>(result);
-                        if (obj["status"] == "OK")
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6")
                         {
                             _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + " where ID_HOADON=" + MaHD);
                             _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
                             result = obj["status"] + " = " + obj["message"];
                         }
                         else
-                            if (obj["status"] == "ERR:4")
-                            {
-                                _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + " where ID_HOADON=" + MaHD);
-                                _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
-                                result = obj["status"] + " = " + obj["message"];
-                            }
-                            else
-                                if (obj["status"] == "ERR:6")
-                                {
-                                    _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + " where ID_HOADON=" + MaHD);
-                                    _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
-                                    result = obj["status"] + " = " + obj["message"];
-                                }
-                                else
-                                {
-                                    result = obj["status"] + " = " + obj["message"];
-                                    _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
-                                }
+                        {
+                            result = obj["status"] + " = " + obj["message"];
+                            _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                        }
                     }
                     else
                         result = "Error: " + respuesta.StatusCode;
@@ -1757,19 +1806,18 @@ namespace WSSmartPhone
                         respuesta.Close();
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         var obj = js.Deserialize<dynamic>(result);
-                        if (obj["status"] == "OK")
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:7")
                         {
-                            _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where ID_HOADON=" + MaHD);
+                            string sql = "update HOADON set SyncNopTien=1 where ID_HOADON=" + MaHD;
+                            sql += " delete Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "' and [Action]='NopTien'";
+                            _cDAL.ExecuteNonQuery(sql);
                             result = obj["status"] + " = " + obj["message"];
                         }
                         else
-                            if (obj["status"] == "ERR:7")
-                            {
-                                _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where ID_HOADON=" + MaHD);
-                                result = obj["status"] + " = " + obj["message"];
-                            }
-                            else
-                                result = obj["status"] + " = " + obj["message"];
+                        {
+                            result = obj["status"] + " = " + obj["message"];
+                            _cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + result + "')");
+                        }
                     }
                     else
                         result = "Error: " + respuesta.StatusCode;
@@ -1847,19 +1895,18 @@ namespace WSSmartPhone
                             {
                                 foreach (HoaDonNopTienResult item in deserializedResult.result)
                                 {
-                                    if (item.Status == "OK")
+                                    if (item.Status == "OK" || item.Status == "ERR:7")
                                     {
-                                        _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'");
+                                        string sql = "update HOADON set SyncNopTien=1 where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'";
+                                        sql += " delete Temp_SyncHoaDon where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "' and [Action]='NopTien'";
+                                        _cDAL.ExecuteNonQuery(sql);
                                         result = item.Status + " = " + item.Message;
                                     }
                                     else
-                                        if (item.Status == "ERR:7")
-                                        {
-                                            _cDAL.ExecuteNonQuery("update HOADON set SyncNopTien=1 where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'");
-                                            result = item.Status + " = " + item.Message;
-                                        }
-                                        else
-                                            result = item.Status + " = " + item.Message;
+                                    {
+                                        result = item.Status + " = " + item.Message;
+                                        _cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial.Replace("E", "P") + (int)item.SoHD + "',N'" + result + "')");
+                                    }
                                 }
                                 result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;
                             }
