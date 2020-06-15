@@ -83,11 +83,24 @@ namespace WSSmartPhone
                 MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
                 if (MaNV != "0" && MaNV != "1")
                     MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0").ToString();
+
                 if (MaNV == null || MaNV == "")
                     return "false;";
+
+                //xóa máy đăng nhập MaNV khác
                 int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
                 if (MaNV_UID_Old > 0)
                     _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where UID='" + UID + "'");
+
+                if (MaNV != "0" && MaNV != "1")
+                {
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select UID from TT_DeviceSigned where MaNV=" + MaNV);
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        SendNotificationToClient("Thông Báo Đăng Xuất", "Hệ thống server gửi đăng xuất đến thiết bị", item["UID"].ToString(), "DangXuat", "DangXuat", "false", "");
+                        _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + item["UID"].ToString() + "'");
+                    }
+                }
 
                 int MaNV_UID = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
                 if (MaNV_UID == 0)
@@ -792,7 +805,7 @@ namespace WSSmartPhone
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
                             + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
                             + " or kqdn.MoNuoc=0 or CAST(kqdn.NgayMN as DATE)=CAST(getdate() as DATE))"
-                            + " order by dn.MLT asc,ctdn.MaHD desc";
+                            + " order by dn.MLT asc";
             DataTable dt = _cDAL.ExecuteQuery_DataTable(sql);
 
             return DataTableToJSON(dt);
