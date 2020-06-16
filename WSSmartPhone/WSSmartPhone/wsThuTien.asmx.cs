@@ -305,6 +305,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string syncThanhToan_ThuHo(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
+        {
+            return _cThuTien.syncThanhToan_ThuHo(MaHD, GiaiTrach, IDTemp_SyncHoaDon);
+        }
+
+        [WebMethod]
         public string syncNopTien(int MaHD)
         {
             return _cThuTien.syncNopTien(MaHD);
