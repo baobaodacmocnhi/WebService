@@ -387,7 +387,8 @@ namespace WSSmartPhone
                             + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
                             + " ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end,"
-                            + " DangNgan_DienThoai,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_NgayHen,DCHD,TienDuTruoc_DCHD,"
+                            + " DangNgan_DienThoai=case when MaNV_DangNgan=" + MaNV + " then DangNgan_DienThoai else 'false' end"
+                            + " ,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_NgayHen,DCHD,TienDuTruoc_DCHD,"
                             + " TBDongNuoc_Ngay=(select a.CreateDate from TT_DongNuoc a,TT_CTDongNuoc b where a.MaDN=b.MaDN and Huy=0 and b.MaHD=hd.ID_HOADON),"
                             + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                             + " PhiMoNuocThuHo=(select a.PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=hd.ID_HOADON and a.ID=b.IDDichVu),"
@@ -396,6 +397,7 @@ namespace WSSmartPhone
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
                             + " ,LenhHuyCat=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON and Cat=1) then 'true' else 'false' end"
                             + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=hd.DANHBA)"
+                            + " ,DongA=case when exists(select DanhBo from TT_DuLieuKhachHang_DanhBo where DanhBo=hd.DANHBA) then 'true' else 'false' end"
                             + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
                             + " order by MLT asc,ID_HOADON desc";
@@ -472,6 +474,17 @@ namespace WSSmartPhone
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(_cDAL.ExecuteQuery_ReturnOneValue("select convert(varchar, NGAYGIAITRACH, 112) from HOADON where ID_HOADON=" + MaHDs).ToString()) == true)
                             return "false;Đã Chốt Ngày Giải Trách";
+                        if ((bool)_cDAL.ExecuteQuery_ReturnOneValue("if exists(select ID_HOADON from HOADON where ID_HOADON=" + MaHDs + " and (NAM<2020 or (NAM=2020 and KY<=6)))"
+                                                                    + "	select 'true'"
+                                                                    + "else"
+                                                                    + "	if not exists(select FK_HOADON from DIEUCHINH_HD where FK_HOADON=" + MaHDs + ")"
+                                                                    + "		select 'true'"
+                                                                    + "	else"
+                                                                    + "		if exists(select FK_HOADON from DIEUCHINH_HD where FK_HOADON=" + MaHDs + " and UpdatedHDDT=1)"
+                                                                    + "			select 'true'"
+                                                                    + "		else"
+                                                                    + "			select 'false'") == false)
+                            return "false;Hóa Đơn có Điều Chỉnh nhưng chưa update HĐĐT";
                         sql += " update HOADON set DangNgan_DienThoai=1,XoaDangNgan_MaNV_DienThoai=NULL,XoaDangNgan_Ngay_DienThoai=NULL,DangNgan_Ton=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate()";
                         if (XoaDCHD == true)
                         {
