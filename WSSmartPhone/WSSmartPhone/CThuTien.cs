@@ -409,7 +409,6 @@ namespace WSSmartPhone
         {
             try
             {
-
                 string sql = "";
                 //string[] MaHD = MaHDs.Split(',');
                 //for (int i = 0; i < MaHD.Length; i++)
@@ -475,7 +474,7 @@ namespace WSSmartPhone
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(_cDAL.ExecuteQuery_ReturnOneValue("select convert(varchar, NGAYGIAITRACH, 112) from HOADON where ID_HOADON=" + MaHDs).ToString()) == true)
                             return "false;Đã Chốt Ngày Giải Trách";
-                        if ((bool)_cDAL.ExecuteQuery_ReturnOneValue("if exists(select ID_HOADON from HOADON where ID_HOADON=" + MaHDs + " and (NAM<2020 or (NAM=2020 and KY<=6)))"
+                        if (bool.Parse(_cDAL.ExecuteQuery_ReturnOneValue("if exists(select ID_HOADON from HOADON where ID_HOADON=" + MaHDs + " and (NAM<2020 or (NAM=2020 and KY<=6)))"
                                                                     + "	select 'true'"
                                                                     + "else"
                                                                     + "	if not exists(select FK_HOADON from DIEUCHINH_HD where FK_HOADON=" + MaHDs + ")"
@@ -484,8 +483,9 @@ namespace WSSmartPhone
                                                                     + "		if exists(select FK_HOADON from DIEUCHINH_HD where FK_HOADON=" + MaHDs + " and UpdatedHDDT=1)"
                                                                     + "			select 'true'"
                                                                     + "		else"
-                                                                    + "			select 'false'") == false)
+                                                                    + "			select 'false'").ToString()) == false)
                             return "false;Hóa Đơn có Điều Chỉnh nhưng chưa update HĐĐT";
+
                         sql += " update HOADON set DangNgan_DienThoai=1,XoaDangNgan_MaNV_DienThoai=NULL,XoaDangNgan_Ngay_DienThoai=NULL,DangNgan_Ton=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate()";
                         if (XoaDCHD == true)
                         {
@@ -577,7 +577,7 @@ namespace WSSmartPhone
                 {
                     if (XoaDCHD == true)
                         _cDAL.ExecuteNonQuery("insert into TT_DieuChinhTienDuXoa(MaHD,CreateBy,CreateDate)values(" + MaHDs + "," + MaNV + ",getdate())");
-                    return "true; ";
+                    return "true;";
                 }
                 else
                     return "false;error query";
@@ -594,12 +594,12 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public bool update_GhiChu(string MaNV, string DanhBo, string DienThoai, string GiaBieu, string NiemChi, string DiemBe)
+        public string update_GhiChu(string MaNV, string DanhBo, string DienThoai, string GiaBieu, string NiemChi, string DiemBe)
         {
             try
             {
                 if (checkActiveMobile(MaNV) == false)
-                    return false;
+                    return "false;Chưa Active Mobile";
                 TT_GhiChu gc = _dbThuTien.TT_GhiChus.SingleOrDefault(item => item.DanhBo == DanhBo);
                 if (gc == null)
                 {
@@ -658,16 +658,39 @@ namespace WSSmartPhone
 
                     _dbThuTien.SubmitChanges();
                 }
-                return true;
+                return "true;";
                 //string sql = "if not exists (select 1 from TT_GhiChu where DanhBo='" + DanhBo + "')"
                 //            + " 	insert into TT_GhiChu(DanhBo,DienThoai,GiaBieu,NiemChi,DiemBe,CreateBy,CreateDate)values('" + DanhBo + "','" + DienThoai + "',N'" + GiaBieu + "',N'" + NiemChi + "',N'" + DiemBe + "'," + MaNV + ",GETDATE());"
                 //            + " else"
                 //            + " 	update TT_GhiChu set DienThoai='" + DienThoai + "',GiaBieu=N'" + GiaBieu + "',NiemChi=N'" + NiemChi + "',DiemBe=N'" + DiemBe + "',ModifyBy=" + MaNV + ",ModifyDate=GETDATE() where DanhBo='" + DanhBo + "';";
                 //return _cDAL.ExecuteNonQuery(sql);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string update_DiaChiDHN(string MaNV,string DanhBo, string DiaChiDHN)
+        {
+            try
+            {
+                if (checkActiveMobile(MaNV) == false)
+                    return "false;Chưa Active Mobile";
+                string sql = "if exists (select DanhBo from TT_DiaChiDHN where DanhBo='" + DanhBo + "')"
+                                + " 	update TT_DiaChiDHN set DiaChi=N'" + DiaChiDHN + "',ModifyDate=GETDATE() where DanhBo='" + DanhBo + "'"
+                                + " else"
+                                + " 	insert into TT_DiaChiDHN(DanhBo,DiaChi,ModifyDate)values('" + DanhBo + "',N'" + DiaChiDHN + "',GETDATE())";
+                if (_cDAL.ExecuteNonQuery(sql) == true)
+                {
+                    return "true;";
+                }
+                else
+                    return "false;error query";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
             }
         }
 

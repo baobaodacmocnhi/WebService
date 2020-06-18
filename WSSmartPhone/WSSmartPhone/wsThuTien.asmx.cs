@@ -125,9 +125,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool update_GhiChu(string MaNV, string DanhBo, string DienThoai, string GiaBieu, string NiemChi, string DiemBe)
+        public string update_GhiChu(string MaNV, string DanhBo, string DienThoai, string GiaBieu, string NiemChi, string DiemBe)
         {
             return _cThuTien.update_GhiChu(MaNV, DanhBo, DienThoai, GiaBieu, NiemChi, DiemBe);
+        }
+
+        [WebMethod]
+        public string update_DiaChiDHN(string MaNV, string DanhBo, string DiaChiDHN)
+        {
+            return _cThuTien.update_DiaChiDHN(MaNV,DanhBo, DiaChiDHN);
         }
 
         //tạm thu
@@ -299,7 +305,7 @@ namespace WSSmartPhone
 
         //sync tổng
         [WebMethod]
-        public string syncThanhToan(int MaHD,bool GiaiTrach,int IDTemp_SyncHoaDon)
+        public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
             return _cThuTien.syncThanhToan(MaHD, GiaiTrach, IDTemp_SyncHoaDon);
         }
