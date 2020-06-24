@@ -2000,10 +2000,10 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                //int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0");
+                //int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0");
                 //while (count > 0)
                 {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0 order by NGAYGIAITRACH asc");
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 order by NGAYGIAITRACH asc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
@@ -2017,7 +2017,7 @@ namespace WSSmartPhone
                             request.ContentType = "application/json; charset=utf-8";
 
                             var lstHD = new List<HoaDonNopTienLo>();
-                            dt = _cDAL.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0 order by NGAYGIAITRACH asc");
+                            dt = _cDAL.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 order by NGAYGIAITRACH asc");
                             foreach (DataRow item in dt.Rows)
                             {
                                 string NgayNopTien = "", HinhThucThanhToan = "";
@@ -2063,17 +2063,17 @@ namespace WSSmartPhone
                                     {
                                         if (item.Status == "OK" || item.Status == "ERR:7")
                                         {
-                                            string sql = "update HOADON set SyncNopTien=1 where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'";
-                                            sql += " delete Temp_SyncHoaDon where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "' and [Action]='NopTien'";
+                                            string sql = "update HOADON set SyncNopTien=1 where SoHoaDon='" + serial + (int)item.SoHD + "'";
+                                            sql += " delete Temp_SyncHoaDon where SoHoaDon='" + serial + (int)item.SoHD + "' and [Action]='NopTien'";
                                             _cDAL.ExecuteNonQuery(sql);
                                             result = item.Status + " = " + item.Message;
                                         }
                                         else
                                         {
                                             result = item.Status + " = " + item.Message;
-                                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "')"
-                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial.Replace("E", "P") + (int)item.SoHD + "',N'" + result + "')"
-                                            + " else update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where SoHoaDon='" + serial.Replace("E", "P") + (int)item.SoHD + "'");
+                                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + serial + (int)item.SoHD + "')"
+                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial + (int)item.SoHD + "',N'" + result + "')"
+                                            + " else update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where SoHoaDon='" + serial + (int)item.SoHD + "'");
                                         }
                                     }
                                     result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;
@@ -2088,7 +2088,7 @@ namespace WSSmartPhone
                     }
                     else
                         result = "false;" + "Hóa Đơn không có";
-                    //count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=6)) and DCHD=0");
+                    //count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0");
                 }
             }
             catch (Exception ex)
