@@ -140,7 +140,7 @@ namespace WSSmartPhone
             }
             catch (Exception ex)
             {
-                return "false;"+ex.Message;
+                return "false;" + ex.Message;
             }
         }
 
@@ -399,9 +399,9 @@ namespace WSSmartPhone
                             + " ,LenhHuyCat=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON and Cat=1) then 'true' else 'false' end"
                             + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=hd.DANHBA)"
                             + " ,DongA=case when exists(select DanhBo from TT_DuLieuKhachHang_DanhBo where DanhBo=hd.DANHBA) then 'true' else 'false' end"
-                            + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
+                            + " from HOADON hd where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            + " and GB!=10 and DinhMucHN is null"
+                            + " and ((NAM>2020 or (NAM=2020 and Ky>=7))||(GB!=10 and DinhMucHN is null))"
                             + " order by MLT asc,ID_HOADON desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -411,30 +411,6 @@ namespace WSSmartPhone
             try
             {
                 string sql = "";
-                //string[] MaHD = MaHDs.Split(',');
-                //for (int i = 0; i < MaHD.Length; i++)
-                //{
-                //    switch (LoaiXuLy)
-                //    {
-                //        case "DangNgan":
-                //            sql += " update HOADON set DangNgan_DienThoai=1,DangNgan_HanhThu=1,MaNV_DangNgan=" + MaNV + ",NGAYGIAITRACH='" + Ngay + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
-                //            break;
-                //        case "PhieuBao":
-                //            sql += " update HOADON set InPhieuBao_Ngay='" + Ngay + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
-                //            break;
-                //        case "PhieuBao2":
-                //            sql += " update HOADON set InPhieuBao2_Ngay='" + Ngay + "',InPhieuBao2_NgayHen='" + NgayHen + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
-                //            break;
-                //        case "TBDongNuoc":
-                //            sql += " update HOADON set TBDongNuoc_Ngay='" + Ngay + "',TBDongNuoc_NgayHen='" + NgayHen + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is null ";
-                //            break;
-                //        case "XoaDangNgan":
-                //            sql += " update HOADON set XoaDangNgan_Ngay_DienThoai='" + Ngay + "',DangNgan_DienThoai=0,DangNgan_HanhThu=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON=" + MaHD[i] + " and NGAYGIAITRACH is not null ";
-                //            break;
-                //        default:
-                //            break;
-                //    }
-                //}
                 if (LoaiXuLy != "DongPhi" && LoaiXuLy != "XoaDongPhi")
                 {
                     string sqlCheck = "select MaHD=ID_HOADON,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),"
@@ -446,6 +422,7 @@ namespace WSSmartPhone
                     switch (LoaiXuLy)
                     {
                         case "XoaDangNgan":
+                            return "false;Tính năng này tạm thời ẩn";
                             foreach (DataRow item in dt.Rows)
                             {
                                 if (bool.Parse(item["GiaiTrach"].ToString()) == false)
@@ -546,9 +523,9 @@ namespace WSSmartPhone
                         //}
 
                         sql += " update HOADON set TBDongNuoc_MaNV=" + MaNV + ",TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
-
                         break;
                     case "XoaDangNgan":
+                        return "false;Tính năng này tạm thời ẩn";
                         if (checkActiveMobile(MaNV) == false)
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(_cDAL.ExecuteQuery_ReturnOneValue("select convert(varchar, NGAYGIAITRACH, 112) from HOADON where ID_HOADON=" + MaHDs).ToString()) == true)
@@ -556,6 +533,7 @@ namespace WSSmartPhone
                         sql += " update HOADON set XoaDangNgan_MaNV_DienThoai=" + MaNV + ",XoaDangNgan_Ngay_DienThoai='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',DangNgan_DienThoai=0,DangNgan_Ton=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
                         break;
                     case "XoaDongPhi":
+                        return "false;Tính năng này tạm thời ẩn";
                         //if (checkActiveMobile(MaNV) == false)
                         //    return "false,Chưa Active Mobile";
                         //if (checkChotDangNgan(Ngay) == true)
@@ -1628,10 +1606,10 @@ namespace WSSmartPhone
         //sync tổng
         #region Class
 
-        string urlTong = "http://hoadontest.sawaco.com.vn";
+        string urlTong = "https://hoadon.sawaco.com.vn";
         string taxCode = "0301129367";
         string userName = "tanhoaapi";
-        string passWord = "12345678";
+        string passWord = "tanhoaapi@sawaco.com.vn#2020";
         string branchcode = "TH";
         string pattern = "01GTKT0/002";
         string serial = "CT/20E";
@@ -1894,14 +1872,21 @@ namespace WSSmartPhone
                         }
                     }
                     else
+                    {
                         result = "Error: " + respuesta.StatusCode;
+                        _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                    }
                 }
                 else
+                {
                     result = "Hóa Đơn không có";
+                    _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                }
             }
             catch (Exception ex)
             {
                 result = "Error: " + ex.Message;
+                _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
             }
             return result;
         }
