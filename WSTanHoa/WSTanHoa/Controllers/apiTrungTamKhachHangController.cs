@@ -113,8 +113,8 @@ namespace WSTanHoa.Controllers
                     if (dt.Rows[0]["NgayKiemDinh"].ToString() != "")
                         en.NgayKiemDinh = DateTime.Parse(dt.Rows[0]["NgayKiemDinh"].ToString());
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
-                    //if ((int)_cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
-                    //    en.ThongTin = "Có sử dụng Giếng";
+                    if ((int)_cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
+                        en.ThongTin = "Có sử dụng Giếng";
                     return en;
                 }
                 else
