@@ -79,13 +79,13 @@ namespace WSSmartPhone
         {
             try
             {
-                string MaNV = "";
-                MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
+                object MaNV = null;
+                MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
                 if (MaNV != "0" && MaNV != "1")
-                    MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0").ToString();
+                    MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
 
                 if (MaNV == null || MaNV == "")
-                    return "false; ";
+                    return "false;Sai mật khẩu hoặc IDMobile";
 
                 //xóa máy đăng nhập MaNV khác
                 int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
@@ -107,6 +107,47 @@ namespace WSSmartPhone
                     _cDAL.ExecuteQuery_DataTable("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
 
                 _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
+
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,TestApp from TT_NguoiDung where MaND=" + MaNV));
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string DangNhaps_Admin(string Username, string Password, string IDMobile, string UID)
+        {
+            try
+            {
+                object MaNV = "";
+                MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+                //if (MaNV != "0" && MaNV != "1")
+                //    MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0").ToString();
+
+                if (MaNV == null || MaNV == "")
+                    return "false;Sai mật khẩu hoặc IDMobile";
+
+                ////xóa máy đăng nhập MaNV khác
+                //int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
+                //if (MaNV_UID_Old > 0)
+                //    _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where UID='" + UID + "'");
+
+                //if (MaNV != "0" && MaNV != "1")
+                //{
+                //    DataTable dt = _cDAL.ExecuteQuery_DataTable("select UID from TT_DeviceSigned where MaNV=" + MaNV);
+                //    foreach (DataRow item in dt.Rows)
+                //    {
+                //        SendNotificationToClient("Thông Báo Đăng Xuất", "Hệ thống server gửi đăng xuất đến thiết bị", item["UID"].ToString(), "DangXuat", "DangXuat", "false", "");
+                //        _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + item["UID"].ToString() + "'");
+                //    }
+                //}
+
+                //int MaNV_UID = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                //if (MaNV_UID == 0)
+                //    _cDAL.ExecuteQuery_DataTable("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+
+                //_cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
                 return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,TestApp from TT_NguoiDung where MaND=" + MaNV));
             }
@@ -401,7 +442,7 @@ namespace WSSmartPhone
                             + " ,DongA=case when exists(select DanhBo from TT_DuLieuKhachHang_DanhBo where DanhBo=hd.DANHBA) then 'true' else 'false' end"
                             + " from HOADON hd where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            + " and ((NAM>2020 or (NAM=2020 and Ky>=7))||(GB!=10 and DinhMucHN is null))"
+                            + " and ((NAM>2020 or (NAM=2020 and Ky>=7))or(GB!=10 and DinhMucHN is null))"
                             + " order by MLT asc,ID_HOADON desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -682,11 +723,13 @@ namespace WSSmartPhone
                         + " select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,GiaBieu=GB"
                         + " from HOADON hd,TAMTHU tt where MaNV_HanhThu=" + MaNV + " and NGAYGIAITRACH is null"
                         + " and CAST(tt.CreateDate as DATE)>='" + FromCreateDate.ToString("yyyyMMdd") + "' and CAST(tt.CreateDate as DATE)<='" + ToCreateDate.ToString("yyyyMMdd") + "'"
+                        + " and (hd.NAM<2020 or (hd.NAM=2020 and hd.KY<7))"
                         + " and tt.ChuyenKhoan=1 and hd.ID_HOADON=tt.FK_HOADON"
                         + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.Huy=0 and dn.MaDN=ctdn.MaDN)"
                     + " else"
                         + " select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,GiaBieu=GB"
                         + " from HOADON hd,TAMTHU tt,TT_DongNuoc dn,TT_CTDongNuoc ctdn where MaNV_DongNuoc=" + MaNV + " and NGAYGIAITRACH is null"
+                        + " and (hd.NAM<2020 or (hd.NAM=2020 and hd.KY<7))"
                         + " and CAST(tt.CreateDate as DATE)>='" + FromCreateDate.ToString("yyyyMMdd") + "' and CAST(tt.CreateDate as DATE)<='" + ToCreateDate.ToString("yyyyMMdd") + "'"
                         + " and tt.ChuyenKhoan=1 and hd.ID_HOADON=tt.FK_HOADON and dn.Huy=0 and dn.MaDN=ctdn.MaDN and hd.ID_HOADON=ctdn.MaHD";
             else
@@ -694,12 +737,14 @@ namespace WSSmartPhone
                         + " select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,GiaBieu=GB"
                         + " from HOADON hd,TAMTHU tt where MaNV_HanhThu=" + MaNV
                         + " and CAST(tt.CreateDate as DATE)>='" + FromCreateDate.ToString("yyyyMMdd") + "' and CAST(tt.CreateDate as DATE)<='" + ToCreateDate.ToString("yyyyMMdd") + "'"
+                        + " and (hd.NAM<2020 or (hd.NAM=2020 and hd.KY<7))"
                         + " and tt.ChuyenKhoan=1 and hd.ID_HOADON=tt.FK_HOADON"
                         + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.Huy=0 and dn.MaDN=ctdn.MaDN)"
                     + " else"
                         + " select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,GiaBieu=GB"
                         + " from HOADON hd,TAMTHU tt,TT_DongNuoc dn,TT_CTDongNuoc ctdn where MaNV_DongNuoc=" + MaNV
                         + " and CAST(tt.CreateDate as DATE)>='" + FromCreateDate.ToString("yyyyMMdd") + "' and CAST(tt.CreateDate as DATE)<='" + ToCreateDate.ToString("yyyyMMdd") + "'"
+                        + " and (hd.NAM<2020 or (hd.NAM=2020 and hd.KY<7))"
                         + " and tt.ChuyenKhoan=1 and hd.ID_HOADON=tt.FK_HOADON and dn.Huy=0 and dn.MaDN=ctdn.MaDN and hd.ID_HOADON=ctdn.MaHD";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -2048,17 +2093,17 @@ namespace WSSmartPhone
                                     {
                                         if (item.Status == "OK" || item.Status == "ERR:7")
                                         {
-                                            string sql = "update HOADON set SyncNopTien=1 where SoHoaDon='" + serial + (int)item.SoHD + "'";
-                                            sql += " delete Temp_SyncHoaDon where SoHoaDon='" + serial + (int)item.SoHD + "' and [Action]='NopTien'";
+                                            string sql = "update HOADON set SyncNopTien=1 where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'";
+                                            sql += " delete Temp_SyncHoaDon where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "' and [Action]='NopTien'";
                                             _cDAL.ExecuteNonQuery(sql);
                                             result = item.Status + " = " + item.Message;
                                         }
                                         else
                                         {
                                             result = item.Status + " = " + item.Message;
-                                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + serial + (int)item.SoHD + "')"
+                                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "')"
                                             + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial + (int)item.SoHD + "',N'" + result + "')"
-                                            + " else update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where SoHoaDon='" + serial + (int)item.SoHD + "'");
+                                            + " else update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'");
                                         }
                                     }
                                     result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;

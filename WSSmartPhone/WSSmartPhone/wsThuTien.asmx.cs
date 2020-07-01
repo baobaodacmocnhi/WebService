@@ -39,6 +39,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string DangNhaps_Admin(string Username, string Password, string IDMobile, string UID)
+        {
+            return _cThuTien.DangNhaps_Admin(Username, Password, IDMobile, UID);
+        }
+
+        [WebMethod]
         public bool DangXuat(string Username)
         {
             return _cThuTien.DangXuat(Username);
