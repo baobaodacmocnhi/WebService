@@ -57,6 +57,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string DangXuats_Admin(string Username, string UID)
+        {
+            return _cThuTien.DangXuats_Admin(Username, UID);
+        }
+
+        [WebMethod]
         public bool updateLogin(string MaNV, string UID)
         {
             return _cThuTien.updateLogin(MaNV, UID);
@@ -139,7 +145,7 @@ namespace WSSmartPhone
         [WebMethod]
         public string update_DiaChiDHN(string MaNV, string DanhBo, string DiaChiDHN)
         {
-            return _cThuTien.update_DiaChiDHN(MaNV,DanhBo, DiaChiDHN);
+            return _cThuTien.update_DiaChiDHN(MaNV, DanhBo, DiaChiDHN);
         }
 
         //tạm thu

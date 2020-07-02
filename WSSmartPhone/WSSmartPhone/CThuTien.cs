@@ -81,10 +81,10 @@ namespace WSSmartPhone
             {
                 object MaNV = null;
                 MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
-                if (MaNV != "0" && MaNV != "1")
+                if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                     MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
 
-                if (MaNV == null || MaNV == "")
+                if (MaNV == null || MaNV.ToString() == "")
                     return "false;Sai mật khẩu hoặc IDMobile";
 
                 //xóa máy đăng nhập MaNV khác
@@ -92,7 +92,7 @@ namespace WSSmartPhone
                 if (MaNV_UID_Old > 0)
                     _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where UID='" + UID + "'");
 
-                if (MaNV != "0" && MaNV != "1")
+                if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                 {
                     DataTable dt = _cDAL.ExecuteQuery_DataTable("select UID from TT_DeviceSigned where MaNV=" + MaNV);
                     foreach (DataRow item in dt.Rows)
@@ -178,6 +178,23 @@ namespace WSSmartPhone
                 _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string DangXuats_Admin(string Username, string UID)
+        {
+            try
+            {
+                //string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
+
+                //_cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+
+                //return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
+                return "true; ";
             }
             catch (Exception ex)
             {
@@ -463,7 +480,8 @@ namespace WSSmartPhone
                     switch (LoaiXuLy)
                     {
                         case "XoaDangNgan":
-                            return "false;Tính năng này tạm thời ẩn";
+                            if (checkQuyenXoa(MaNV) == false)
+                                return "false;Tính năng này tạm thời ẩn";
                             foreach (DataRow item in dt.Rows)
                             {
                                 if (bool.Parse(item["GiaiTrach"].ToString()) == false)
@@ -566,7 +584,8 @@ namespace WSSmartPhone
                         sql += " update HOADON set TBDongNuoc_MaNV=" + MaNV + ",TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "XoaDangNgan":
-                        return "false;Tính năng này tạm thời ẩn";
+                        if (checkQuyenXoa(MaNV) == false)
+                            return "false;Tính năng này tạm thời ẩn";
                         if (checkActiveMobile(MaNV) == false)
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(_cDAL.ExecuteQuery_ReturnOneValue("select convert(varchar, NGAYGIAITRACH, 112) from HOADON where ID_HOADON=" + MaHDs).ToString()) == true)
@@ -574,7 +593,8 @@ namespace WSSmartPhone
                         sql += " update HOADON set XoaDangNgan_MaNV_DienThoai=" + MaNV + ",XoaDangNgan_Ngay_DienThoai='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',DangNgan_DienThoai=0,DangNgan_Ton=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
                         break;
                     case "XoaDongPhi":
-                        return "false;Tính năng này tạm thời ẩn";
+                        if (checkQuyenXoa(MaNV) == false)
+                            return "false;Tính năng này tạm thời ẩn";
                         //if (checkActiveMobile(MaNV) == false)
                         //    return "false,Chưa Active Mobile";
                         //if (checkChotDangNgan(Ngay) == true)
@@ -712,6 +732,13 @@ namespace WSSmartPhone
             {
                 return "false;" + ex.Message;
             }
+        }
+
+        public bool checkQuyenXoa(string MaNV)
+        {
+            string sql = "select case when (select ToTruong from TT_NguoiDung where MaND=" + MaNV + ")=1 then 'true' else"
+                        + " case when (select Doi from TT_NguoiDung where MaND=" + MaNV + ")=1 then 'true' else 'false' end end";
+            return bool.Parse(_cDAL.ExecuteQuery_ReturnOneValue(sql).ToString());
         }
 
         //tạm thu
@@ -1796,7 +1823,7 @@ namespace WSSmartPhone
                         var obj = js.Deserialize<dynamic>(result);
                         if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6")
                         {
-                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + " where ID_HOADON=" + MaHD);
+                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where ID_HOADON=" + MaHD);
                             _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
                             result = obj["status"] + " = " + obj["message"];
                         }
@@ -1906,7 +1933,7 @@ namespace WSSmartPhone
                         var obj = js.Deserialize<dynamic>(result);
                         if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6")
                         {
-                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + " where ID_HOADON=" + MaHD);
+                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where ID_HOADON=" + MaHD);
                             _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
                             result = obj["status"] + " = " + obj["message"];
                         }
@@ -2001,7 +2028,7 @@ namespace WSSmartPhone
                         var obj = js.Deserialize<dynamic>(result);
                         if (obj["status"] == "OK" || obj["status"] == "ERR:7")
                         {
-                            string sql = "update HOADON set SyncNopTien=1 where ID_HOADON=" + MaHD;
+                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where ID_HOADON=" + MaHD;
                             sql += " delete Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "' and [Action]='NopTien'";
                             _cDAL.ExecuteNonQuery(sql);
                             result = obj["status"] + " = " + obj["message"];
@@ -2093,7 +2120,7 @@ namespace WSSmartPhone
                                     {
                                         if (item.Status == "OK" || item.Status == "ERR:7")
                                         {
-                                            string sql = "update HOADON set SyncNopTien=1 where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'";
+                                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'";
                                             sql += " delete Temp_SyncHoaDon where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "' and [Action]='NopTien'";
                                             _cDAL.ExecuteNonQuery(sql);
                                             result = item.Status + " = " + item.Message;
