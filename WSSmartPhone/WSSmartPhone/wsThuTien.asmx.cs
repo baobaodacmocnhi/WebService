@@ -315,6 +315,25 @@ namespace WSSmartPhone
             return _cThuTien.Sua_LenhHuy(MaHDs, Cat, TinhTrang, CreateBy);
         }
 
+        //nộp tiền
+        [WebMethod]
+        public string getDS_ChotDangNgan(string FromNgayChot, string ToNgayChot)
+        {
+            return _cThuTien.getDS_ChotDangNgan(DateTime.ParseExact(FromNgayChot, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayChot, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+        }
+
+        [WebMethod]
+        public string them_ChotDangNgan(string NgayChot, string CreateBy)
+        {
+            return _cThuTien.them_ChotDangNgan(DateTime.ParseExact(NgayChot, "dd/MM/yyyy", CultureInfo.InvariantCulture), CreateBy);
+        }
+
+        [WebMethod]
+        public string chotDangNgan(string ID, string Chot, string CreateBy)
+        {
+            return _cThuTien.chotDangNgan(ID, bool.Parse(Chot), CreateBy);
+        }
+
         //sync tổng
         [WebMethod]
         public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)

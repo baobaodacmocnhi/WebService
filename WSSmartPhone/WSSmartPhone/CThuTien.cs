@@ -617,7 +617,7 @@ namespace WSSmartPhone
                 {
                     if (XoaDCHD == true)
                         _cDAL.ExecuteNonQuery("insert into TT_DieuChinhTienDuXoa(MaHD,CreateBy,CreateDate)values(" + MaHDs + "," + MaNV + ",getdate())");
-                    return "true;";
+                    return "true; ";
                 }
                 else
                     return "false;error query";
@@ -723,7 +723,7 @@ namespace WSSmartPhone
                                 + " 	insert into TT_DiaChiDHN(DanhBo,DiaChi,ModifyDate)values('" + DanhBo + "',N'" + DiaChiDHN + "',GETDATE())";
                 if (_cDAL.ExecuteNonQuery(sql) == true)
                 {
-                    return "true;";
+                    return "true; ";
                 }
                 else
                     return "false;error query";
@@ -1675,6 +1675,58 @@ namespace WSSmartPhone
             }
         }
 
+        //nộp tiền
+        public string getDS_ChotDangNgan(DateTime FromNgayChot, DateTime ToNgayChot)
+        {
+            string sql = "select ID,NgayChot=CONVERT(varchar(10),NgayChot,103),Chot,"
+                        + " SLDangNgan=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and MaNV_DangNgan is not null),"
+                        + " TCDangNgan=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and MaNV_DangNgan is not null),"
+                        + " SLGiay=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM<2020 or (NAM=2020 and KY<7)) and MaNV_DangNgan is not null),"
+                        + " TCGiay=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM<2020 or (NAM=2020 and KY<7)) and MaNV_DangNgan is not null),"
+                        + " SLHDDT=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null),"
+                        + " TCHDDT=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null),"
+                        + " SLNopTien=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and SyncNopTien=1),"
+                        + " TCNopTien=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and SyncNopTien=1)"
+                        + " from TT_ChotDangNgan where CAST(NgayChot as date)>='" + FromNgayChot.ToString("yyyyMMdd") + "' and CAST(NgayChot as date)<='" + ToNgayChot.ToString("yyyyMMdd") + "'"
+                        + " group by ID,NgayChot,Chot order by ID desc";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string them_ChotDangNgan(DateTime NgayChot, string CreateBy)
+        {
+            try
+            {
+                if (bool.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select case when exists(select ID from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayChot.ToString("yyyyMMdd") + "') then 'true' else 'false' end").ToString()) == true)
+                    return "false;Ngày Chốt đã tồn tại";
+                if (_cDAL.ExecuteNonQuery("insert into TT_ChotDangNgan(ID,NgayChot,Chot,CreateBy,CreateDate)values((select case when exists(select ID from TT_ChotDangNgan) then (select MAX(ID)+1 from TT_ChotDangNgan) else 1 end),'" + NgayChot.ToString("yyyyMMdd HH:mm:ss") + "',0," + CreateBy + ",getdate())") == true)
+                    return "true; ";
+                else
+                    return "false; ";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string chotDangNgan(string ID, bool Chot, string CreateBy)
+        {
+            try
+            {
+                int value = 0;
+                if (Chot == true)
+                    value = 1;
+                if (_cDAL.ExecuteNonQuery("update TT_ChotDangNgan set Chot=" + value + ",ModifyBy=" + CreateBy + ",ModifyDate=getdate() where ID=" + ID) == true)
+                    return "true; ";
+                else
+                    return "false; ";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
         //sync tổng
         #region Class
 
@@ -1825,23 +1877,22 @@ namespace WSSmartPhone
                         {
                             _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where ID_HOADON=" + MaHD);
                             _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
-                            result = obj["status"] + " = " + obj["message"];
                         }
                         else
                         {
-                            result = obj["status"] + " = " + obj["message"];
-                            _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                            _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
                         }
+                        result = "true;" + obj["status"] + " = " + obj["message"];
                     }
                     else
-                        result = "Error: " + respuesta.StatusCode;
+                        result = "false;" + respuesta.StatusCode;
                 }
                 else
-                    result = "Hóa Đơn không có";
+                    result = "false;Hóa Đơn không có";
             }
             catch (Exception ex)
             {
-                result = "Error: " + ex.Message;
+                result = "false;" + ex.Message;
             }
             return result;
         }
@@ -1935,29 +1986,28 @@ namespace WSSmartPhone
                         {
                             _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where ID_HOADON=" + MaHD);
                             _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
-                            result = obj["status"] + " = " + obj["message"];
                         }
                         else
                         {
-                            result = obj["status"] + " = " + obj["message"];
-                            _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                            _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
                         }
+                        result = "true;" + obj["status"] + " = " + obj["message"];
                     }
                     else
                     {
-                        result = "Error: " + respuesta.StatusCode;
+                        result = "false;" + respuesta.StatusCode;
                         _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
                     }
                 }
                 else
                 {
-                    result = "Hóa Đơn không có";
+                    result = "false;Hóa Đơn không có";
                     _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
                 }
             }
             catch (Exception ex)
             {
-                result = "Error: " + ex.Message;
+                result = "false; " + ex.Message;
                 _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
             }
             return result;
@@ -2031,23 +2081,22 @@ namespace WSSmartPhone
                             string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where ID_HOADON=" + MaHD;
                             sql += " delete Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "' and [Action]='NopTien'";
                             _cDAL.ExecuteNonQuery(sql);
-                            result = obj["status"] + " = " + obj["message"];
                         }
                         else
                         {
-                            result = obj["status"] + " = " + obj["message"];
-                            _cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + result + "')");
+                            _cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')");
                         }
+                        result = "true;" + obj["status"] + " = " + obj["message"];
                     }
                     else
-                        result = "Error: " + respuesta.StatusCode;
+                        result = "false;" + respuesta.StatusCode;
                 }
                 else
-                    result = "Hóa Đơn không có";
+                    result = "false;Hóa Đơn không có";
             }
             catch (Exception ex)
             {
-                result = "Error: " + ex.Message;
+                result = "false;" + ex.Message;
             }
             return result;
         }
@@ -2123,13 +2172,11 @@ namespace WSSmartPhone
                                             string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'";
                                             sql += " delete Temp_SyncHoaDon where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "' and [Action]='NopTien'";
                                             _cDAL.ExecuteNonQuery(sql);
-                                            result = item.Status + " = " + item.Message;
                                         }
                                         else
                                         {
-                                            result = item.Status + " = " + item.Message;
                                             _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "')"
-                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial + (int)item.SoHD + "',N'" + result + "')"
+                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial + (int)item.SoHD + "',N'" + item.Status + " = " + item.Message + "')"
                                             + " else update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'");
                                         }
                                     }
@@ -2139,7 +2186,7 @@ namespace WSSmartPhone
                                     result = "false;" + deserializedResult.Status + " = " + deserializedResult.Message;
                             }
                             else
-                                result = "false;" + "Error: " + respuesta.StatusCode;
+                                result = "false;" + respuesta.StatusCode;
                         }
 
                     }
@@ -2150,7 +2197,7 @@ namespace WSSmartPhone
             }
             catch (Exception ex)
             {
-                result = "false;" + "Error: " + ex.Message;
+                result = "false;" + ex.Message;
             }
             return result;
         }
