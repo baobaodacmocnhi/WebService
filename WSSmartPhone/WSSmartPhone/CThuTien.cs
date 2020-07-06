@@ -1681,6 +1681,8 @@ namespace WSSmartPhone
             string sql = "select ID,NgayChot=CONVERT(varchar(10),NgayChot,103),Chot,"
                         + " SLDangNgan=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and MaNV_DangNgan is not null),"
                         + " TCDangNgan=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and MaNV_DangNgan is not null),"
+                        + " SLCNKD=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and ChuyenNoKhoDoi=1),"
+                        + " TCCNKD=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and ChuyenNoKhoDoi=1),"
                         + " SLGiay=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM<2020 or (NAM=2020 and KY<7)) and MaNV_DangNgan is not null),"
                         + " TCGiay=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM<2020 or (NAM=2020 and KY<7)) and MaNV_DangNgan is not null),"
                         + " SLHDDT=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null),"
@@ -1692,7 +1694,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public string them_ChotDangNgan(DateTime NgayChot, string CreateBy)
+        public string them_ChotDangNgan(DateTime NgayChot,string CreateBy)
         {
             try
             {
@@ -2084,7 +2086,10 @@ namespace WSSmartPhone
                         }
                         else
                         {
-                            _cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')");
+                            //_cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')");
+                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "')"
+                                           + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')"
+                                           + " else update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "'");
                         }
                         result = "true;" + obj["status"] + " = " + obj["message"];
                     }
@@ -2176,8 +2181,8 @@ namespace WSSmartPhone
                                         else
                                         {
                                             _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "')"
-                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial + (int)item.SoHD + "',N'" + item.Status + " = " + item.Message + "')"
-                                            + " else update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'");
+                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
+                                            + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'");
                                         }
                                     }
                                     result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;
