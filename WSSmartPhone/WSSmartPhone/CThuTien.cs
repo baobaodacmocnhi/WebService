@@ -108,7 +108,7 @@ namespace WSSmartPhone
 
                 _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,TestApp from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -1676,7 +1676,7 @@ namespace WSSmartPhone
         }
 
         //nộp tiền
-        public string getDS_ChotDangNgan(DateTime FromNgayChot, DateTime ToNgayChot)
+        public string getDS_ChotDangNgan(DateTime FromNgayGiaiTrach, DateTime ToNgayGiaiTrach)
         {
             string sql = "select ID,NgayChot=CONVERT(varchar(10),NgayChot,103),Chot,"
                         + " SLDangNgan=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and MaNV_DangNgan is not null),"
@@ -1689,18 +1689,18 @@ namespace WSSmartPhone
                         + " TCHDDT=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null),"
                         + " SLNopTien=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and SyncNopTien=1),"
                         + " TCNopTien=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and SyncNopTien=1)"
-                        + " from TT_ChotDangNgan where CAST(NgayChot as date)>='" + FromNgayChot.ToString("yyyyMMdd") + "' and CAST(NgayChot as date)<='" + ToNgayChot.ToString("yyyyMMdd") + "'"
+                        + " from TT_ChotDangNgan where CAST(NgayChot as date)>='" + FromNgayGiaiTrach.ToString("yyyyMMdd") + "' and CAST(NgayChot as date)<='" + ToNgayGiaiTrach.ToString("yyyyMMdd") + "'"
                         + " group by ID,NgayChot,Chot order by ID desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public string them_ChotDangNgan(DateTime NgayChot,string CreateBy)
+        public string them_ChotDangNgan(DateTime NgayGiaiTrach, string CreateBy)
         {
             try
             {
-                if (bool.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select case when exists(select ID from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayChot.ToString("yyyyMMdd") + "') then 'true' else 'false' end").ToString()) == true)
+                if (bool.Parse(_cDAL.ExecuteQuery_ReturnOneValue("select case when exists(select ID from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "') then 'true' else 'false' end").ToString()) == true)
                     return "false;Ngày Chốt đã tồn tại";
-                if (_cDAL.ExecuteNonQuery("insert into TT_ChotDangNgan(ID,NgayChot,Chot,CreateBy,CreateDate)values((select case when exists(select ID from TT_ChotDangNgan) then (select MAX(ID)+1 from TT_ChotDangNgan) else 1 end),'" + NgayChot.ToString("yyyyMMdd HH:mm:ss") + "',0," + CreateBy + ",getdate())") == true)
+                if (_cDAL.ExecuteNonQuery("insert into TT_ChotDangNgan(ID,NgayChot,Chot,CreateBy,CreateDate)values((select case when exists(select ID from TT_ChotDangNgan) then (select MAX(ID)+1 from TT_ChotDangNgan) else 1 end),'" + NgayGiaiTrach.ToString("yyyyMMdd HH:mm:ss") + "',0," + CreateBy + ",getdate())") == true)
                     return "true; ";
                 else
                     return "false; ";
@@ -1722,6 +1722,22 @@ namespace WSSmartPhone
                     return "true; ";
                 else
                     return "false; ";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string showError_NopTien(DateTime NgayGiaiTrach)
+        {
+            try
+            {
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=hd.DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),tmp.Result from HOADON hd,Temp_SyncHoaDon tmp where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and SyncNopTien=0 and hd.SOHOADON=tmp.SoHoaDon");
+                if (dt != null && dt.Rows.Count > 0)
+                    return "true;" + DataTableToJSON(dt);
+                else
+                    return "false;Không có hóa đơn";
             }
             catch (Exception ex)
             {

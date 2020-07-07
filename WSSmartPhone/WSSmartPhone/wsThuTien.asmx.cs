@@ -317,15 +317,15 @@ namespace WSSmartPhone
 
         //nộp tiền
         [WebMethod]
-        public string getDS_ChotDangNgan(string FromNgayChot, string ToNgayChot)
+        public string getDS_ChotDangNgan(string FromNgayGiaiTrach, string ToNgayGiaiTrach)
         {
-            return _cThuTien.getDS_ChotDangNgan(DateTime.ParseExact(FromNgayChot, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayChot, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+            return _cThuTien.getDS_ChotDangNgan(DateTime.ParseExact(FromNgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToNgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
         [WebMethod]
-        public string them_ChotDangNgan(string NgayChot, string CreateBy)
+        public string them_ChotDangNgan(string NgayGiaiTrach, string CreateBy)
         {
-            return _cThuTien.them_ChotDangNgan(DateTime.ParseExact(NgayChot, "dd/MM/yyyy", CultureInfo.InvariantCulture), CreateBy);
+            return _cThuTien.them_ChotDangNgan(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture), CreateBy);
         }
 
         [WebMethod]
@@ -359,5 +359,10 @@ namespace WSSmartPhone
             return _cThuTien.syncNopTienLo(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
+        [WebMethod]
+        public string showError_NopTien(string NgayGiaiTrach)
+        {
+            return _cThuTien.showError_NopTien(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+        }
     }
 }
