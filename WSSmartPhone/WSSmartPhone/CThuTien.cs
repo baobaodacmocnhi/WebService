@@ -604,23 +604,45 @@ namespace WSSmartPhone
                     default:
                         break;
                 }
-                //using (var scope = new TransactionScope())
+
+                //if (_cDAL.ExecuteNonQuery(sql) == true)
                 //{
-                //    if (_cDAL.ExecuteNonQuery(sql) == true)
+                //    if (XoaDCHD == true)
                 //    {
-                //        scope.Complete();
-                //        scope.Dispose();
-                //        return true;
+                //        if (_cDAL.ExecuteNonQuery("insert into TT_DieuChinhTienDuXoa(MaHD,CreateBy,CreateDate)values(" + MaHDs + "," + MaNV + ",getdate())") == true)
+                //            return "true; ";
+                //        else
+                //            return "false; ";
                 //    }
+                //    else
+                //        return "true; ";
                 //}
-                if (_cDAL.ExecuteNonQuery(sql) == true)
-                {
-                    if (XoaDCHD == true)
-                        _cDAL.ExecuteNonQuery("insert into TT_DieuChinhTienDuXoa(MaHD,CreateBy,CreateDate)values(" + MaHDs + "," + MaNV + ",getdate())");
-                    return "true; ";
-                }
-                else
-                    return "false;error query";
+                //else
+                //    return "false;error query";
+
+                using (var scope = new TransactionScope())
+                    if (_cDAL.ExecuteNonQuery(sql) == true)
+                    {
+                        if (XoaDCHD == true)
+                        {
+                            if (_cDAL.ExecuteNonQuery("insert into TT_DieuChinhTienDuXoa(MaHD,CreateBy,CreateDate)values(" + MaHDs + "," + MaNV + ",getdate())") == true)
+                            {
+                                scope.Complete();
+                                scope.Dispose();
+                                return "true; ";
+                            }
+                            else
+                                return "false; ";
+                        }
+                        else
+                        {
+                            scope.Complete();
+                            scope.Dispose();
+                            return "true; ";
+                        }
+                    }
+                    else
+                        return "false;error query";
             }
             catch (Exception ex)
             {
@@ -1754,7 +1776,7 @@ namespace WSSmartPhone
         string passWord = "tanhoaapi@sawaco.com.vn#2020";
         string branchcode = "TH";
         string pattern = "01GTKT0/002";
-        string serial = "CT/20E";
+        //string serial = "CT/20E";
 
         public class HoaDonThanhToan
         {
@@ -1865,7 +1887,7 @@ namespace WSSmartPhone
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
                     en.pattern = pattern;
-                    en.serial = serial;
+                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayThanhToan = NgayThanhToan;
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
@@ -1974,7 +1996,7 @@ namespace WSSmartPhone
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
                     en.pattern = pattern;
-                    en.serial = serial;
+                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayThanhToan = NgayThanhToan;
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
@@ -2070,7 +2092,7 @@ namespace WSSmartPhone
                     HoaDonNopTien en = new HoaDonNopTien();
                     en.branchcode = branchcode;
                     en.pattern = pattern;
-                    en.serial = serial;
+                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayNopTien = NgayNopTien;
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
@@ -2127,16 +2149,16 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                //int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0");
-                //while (count > 0)
+                DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 group by SUBSTRING(SOHOADON,0,7)");
+                foreach (DataRow itemSerial in dtSerial.Rows)
                 {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 order by NGAYGIAITRACH asc");
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and SUBSTRING(SOHOADON,0,7)=" + itemSerial["serial"].ToString() + " order by NGAYGIAITRACH asc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
                         for (int i = 0; i < SL; i++)
                         {
-                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern) + "&serial=" + HttpUtility.UrlEncode(serial));
+                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern) + "&serial=" + HttpUtility.UrlEncode(itemSerial["serial"].ToString()));
                             request.Method = "POST";
                             request.Headers.Add("taxcode", taxCode);
                             request.Headers.Add("username", userName);
@@ -2190,15 +2212,15 @@ namespace WSSmartPhone
                                     {
                                         if (item.Status == "OK" || item.Status == "ERR:7")
                                         {
-                                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'";
-                                            sql += " delete Temp_SyncHoaDon where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "' and [Action]='NopTien'";
+                                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'";
+                                            sql += " delete Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "' and [Action]='NopTien'";
                                             _cDAL.ExecuteNonQuery(sql);
                                         }
                                         else
                                         {
-                                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "')"
-                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + serial + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
-                                            + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + serial + ((int)item.SoHD).ToString("0000000") + "'");
+                                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
+                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
+                                            + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'");
                                         }
                                     }
                                     result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;
@@ -2213,8 +2235,8 @@ namespace WSSmartPhone
                     }
                     else
                         result = "false;" + "Hóa Đơn không có";
-                    //count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0");
                 }
+
             }
             catch (Exception ex)
             {
