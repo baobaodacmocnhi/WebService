@@ -439,7 +439,7 @@ namespace WSSmartPhone
 
         public string GetDSHoaDonTon_HoaDonDienTu(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
         {
-            string sql = "select ID=ID_HOADON,MaHD=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,CoDH"
+            string sql = "select ID=ID_HOADON,MaHD=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=case when hd.SO is null then hd.DUONG else case when hd.DUONG is null then hd.SO else hd.SO+' '+hd.DUONG end end,CoDH"
                             + " ,GiaBieu=GB,DinhMuc=DM,DinhMucHN,CSC=CSCU,CSM=CSMOI,Code,TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,TongCong"
                             + " ,GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end"
                             + " ,TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
