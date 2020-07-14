@@ -12,6 +12,7 @@ using System.Web.Script.Serialization;
 using System.Transactions;
 using WSSmartPhone.LinQ;
 using System.Web;
+using System.Threading;
 
 namespace WSSmartPhone
 {
@@ -2152,7 +2153,7 @@ namespace WSSmartPhone
                 DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 group by SUBSTRING(SOHOADON,0,7)");
                 foreach (DataRow itemSerial in dtSerial.Rows)
                 {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and SUBSTRING(SOHOADON,0,7)=" + itemSerial["serial"].ToString() + " order by NGAYGIAITRACH asc");
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
@@ -2208,6 +2209,69 @@ namespace WSSmartPhone
                                 HoaDonNopTienLoResult deserializedResult = serializer.Deserialize<HoaDonNopTienLoResult>(result);
                                 if (deserializedResult.Status == "OK")
                                 {
+                                    //int SL2 = (int)Math.Ceiling((double)deserializedResult.result.Count / 100);
+                                    //for (int j = 0; j < 100; j++)
+                                    //{
+                                    //    Thread t = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 0, itemSerial);
+                                    //    });
+                                    //    t.Start();
+
+                                    //    Thread t1 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 100, itemSerial);
+                                    //    });
+                                    //    t1.Start();
+
+                                    //    Thread t2 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 200, itemSerial);
+                                    //    });
+                                    //    t2.Start();
+
+                                    //    Thread t3 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 300, itemSerial);
+                                    //    });
+                                    //    t3.Start();
+
+                                    //    Thread t4 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 400, itemSerial);
+                                    //    });
+                                    //    t4.Start();
+
+                                    //    Thread t5 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 500, itemSerial);
+                                    //    });
+                                    //    t5.Start();
+
+                                    //    Thread t6 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 600, itemSerial);
+                                    //    });
+                                    //    t6.Start();
+
+                                    //    Thread t7 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 700, itemSerial);
+                                    //    });
+                                    //    t7.Start();
+
+                                    //    Thread t8 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 800, itemSerial);
+                                    //    });
+                                    //    t8.Start();
+
+                                    //    Thread t9 = new Thread(() =>
+                                    //    {
+                                    //        updateResultSyncNopTien(deserializedResult, 900, itemSerial);
+                                    //    });
+                                    //    t9.Start();
+                                    //}
                                     foreach (HoaDonNopTienResult item in deserializedResult.result)
                                     {
                                         if (item.Status == "OK" || item.Status == "ERR:7")
@@ -2243,6 +2307,25 @@ namespace WSSmartPhone
                 result = "false;" + ex.Message;
             }
             return result;
+        }
+
+        public void updateResultSyncNopTien(HoaDonNopTienLoResult itemResult, int index, DataRow itemSerial)
+        {
+            for (int i = index; i < itemResult.result.Count; i++)
+            {
+                if (itemResult.result[i].Status == "OK" || itemResult.result[i].Status == "ERR:7")
+                {
+                    string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "'";
+                    sql += " delete Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "' and [Action]='NopTien'";
+                    _cDAL.ExecuteNonQuery(sql);
+                }
+                else
+                {
+                    _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "')"
+                    + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "',N'" + itemResult.result[i].Status + " = " + itemResult.result[i].Message + "')"
+                    + " else update Temp_SyncHoaDon set Result=N'" + itemResult.result[i].Status + " = " + itemResult.result[i].Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "'");
+                }
+            }
         }
 
         public string getErrorCode_syncThanhToan(string status)
