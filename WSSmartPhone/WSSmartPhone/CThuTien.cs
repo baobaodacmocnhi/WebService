@@ -546,41 +546,41 @@ namespace WSSmartPhone
                         break;
                     case "TBDongNuoc":
                         //insert table TBDongNuoc
-                        //if ((int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_DongNuoc a,TT_CTDongNuoc b where a.Huy=0 and b.MaHD in (" + MaHDs + ") and a.MaDN=b.MaDN") > 0)
-                        //    return "false,Hóa Đơn đã Lập TB Đóng Nước";
-                        //else
-                        //{
-                        //    List<HOADON> lstHDTemp = new List<HOADON>();
-                        //    string[] strMaHDs = MaHDs.Split(',');
-                        //    foreach (string item in strMaHDs)
-                        //    {
-                        //        lstHDTemp.Add(getHoaDon(int.Parse(item)));
-                        //    }
-                        //    TT_DongNuoc dongnuoc = new TT_DongNuoc();
-                        //    dongnuoc.DanhBo = lstHDTemp[0].DANHBA;
-                        //    dongnuoc.HoTen = lstHDTemp[0].TENKH;
-                        //    dongnuoc.DiaChi = lstHDTemp[0].SO + " " + lstHDTemp[0].DUONG;
-                        //    dongnuoc.MLT = lstHDTemp[0].MALOTRINH;
-                        //    foreach (HOADON item in lstHDTemp)
-                        //    {
-                        //        TT_CTDongNuoc ctdongnuoc = new TT_CTDongNuoc();
-                        //        ctdongnuoc.MaDN = dongnuoc.MaDN;
-                        //        ctdongnuoc.MaHD = lstHDTemp[0].ID_HOADON;
-                        //        ctdongnuoc.SoHoaDon = lstHDTemp[0].SOHOADON;
-                        //        ctdongnuoc.Ky = lstHDTemp[0].KY + "/" + lstHDTemp[0].NAM;
-                        //        ctdongnuoc.TieuThu = (int)lstHDTemp[0].TIEUTHU;
-                        //        ctdongnuoc.GiaBan = (int)lstHDTemp[0].GIABAN;
-                        //        ctdongnuoc.ThueGTGT = (int)lstHDTemp[0].THUE;
-                        //        ctdongnuoc.PhiBVMT = (int)lstHDTemp[0].PHI;
-                        //        ctdongnuoc.TongCong = (int)lstHDTemp[0].TONGCONG;
-                        //        ctdongnuoc.CreateBy = int.Parse(MaNV);
-                        //        ctdongnuoc.CreateDate = DateTime.Now;
+                        if ((int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_DongNuoc a,TT_CTDongNuoc b where a.Huy=0 and b.MaHD in (" + MaHDs + ") and a.MaDN=b.MaDN") > 0)
+                            return "false,Hóa Đơn đã Lập TB Đóng Nước";
+                        else
+                        {
+                            List<HOADON> lstHDTemp = new List<HOADON>();
+                            string[] strMaHDs = MaHDs.Split(',');
+                            foreach (string item in strMaHDs)
+                            {
+                                lstHDTemp.Add(getHoaDon(int.Parse(item)));
+                            }
+                            TT_DongNuoc dongnuoc = new TT_DongNuoc();
+                            dongnuoc.DanhBo = lstHDTemp[0].DANHBA;
+                            dongnuoc.HoTen = lstHDTemp[0].TENKH;
+                            dongnuoc.DiaChi = lstHDTemp[0].SO + " " + lstHDTemp[0].DUONG;
+                            dongnuoc.MLT = lstHDTemp[0].MALOTRINH;
+                            foreach (HOADON item in lstHDTemp)
+                            {
+                                TT_CTDongNuoc ctdongnuoc = new TT_CTDongNuoc();
+                                ctdongnuoc.MaDN = dongnuoc.MaDN;
+                                ctdongnuoc.MaHD = lstHDTemp[0].ID_HOADON;
+                                ctdongnuoc.SoHoaDon = lstHDTemp[0].SOHOADON;
+                                ctdongnuoc.Ky = lstHDTemp[0].KY + "/" + lstHDTemp[0].NAM;
+                                ctdongnuoc.TieuThu = (int)lstHDTemp[0].TIEUTHU;
+                                ctdongnuoc.GiaBan = (int)lstHDTemp[0].GIABAN;
+                                ctdongnuoc.ThueGTGT = (int)lstHDTemp[0].THUE;
+                                ctdongnuoc.PhiBVMT = (int)lstHDTemp[0].PHI;
+                                ctdongnuoc.TongCong = (int)lstHDTemp[0].TONGCONG;
+                                ctdongnuoc.CreateBy = int.Parse(MaNV);
+                                ctdongnuoc.CreateDate = DateTime.Now;
 
-                        //        dongnuoc.TT_CTDongNuocs.Add(ctdongnuoc);
-                        //    }
-                        //    if (ThemDN(dongnuoc, int.Parse(MaNV)) == false)
-                        //        return "false,Lỗi Lập TB Đóng Nước";
-                        //}
+                                dongnuoc.TT_CTDongNuocs.Add(ctdongnuoc);
+                            }
+                            if (ThemDN(dongnuoc, int.Parse(MaNV)) == false)
+                                return "false,Lỗi Lập TB Đóng Nước";
+                        }
 
                         sql += " update HOADON set TBDongNuoc_MaNV=" + MaNV + ",TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
