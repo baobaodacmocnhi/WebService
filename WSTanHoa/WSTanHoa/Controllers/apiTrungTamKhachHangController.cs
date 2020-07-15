@@ -35,11 +35,11 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                //if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-                //{
-                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                //}
+                if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
                 DataTable dt = new DataTable();
 
                 //lấy thông tin khách hàng
