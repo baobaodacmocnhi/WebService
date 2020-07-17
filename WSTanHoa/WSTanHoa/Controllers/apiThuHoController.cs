@@ -61,24 +61,32 @@ namespace WSTanHoa.Controllers
             {
                 List<HoaDon> hoadons = new List<HoaDon>();
                 foreach (DataRow item in dt.Rows)
+                    //if (item["UpdatedHDDT"].ToString() == "" || (item["UpdatedHDDT"].ToString() != "" && bool.Parse(item["UpdatedHDDT"].ToString()) == true))
+                    {
+                        HoaDon entity = new HoaDon();
+                        entity.HoTen = item["HoTen"].ToString();
+                        entity.DiaChi = item["DiaChi"].ToString();
+                        entity.MaHD = int.Parse(item["MaHD"].ToString());
+                        entity.SoHoaDon = item["SoHoaDon"].ToString();
+                        entity.DanhBo = (string)item["DanhBo"];
+                        entity.Nam = int.Parse(item["Nam"].ToString());
+                        entity.Ky = int.Parse(item["Ky"].ToString());
+                        entity.GiaBan = int.Parse(item["GiaBan"].ToString());
+                        entity.ThueGTGT = int.Parse(item["ThueGTGT"].ToString());
+                        entity.PhiBVMT = int.Parse(item["PhiBVMT"].ToString());
+                        entity.TongCong = int.Parse(item["TongCong"].ToString());
+                        entity.PhiMoNuoc = int.Parse(item["PhiMoNuoc"].ToString());
+                        entity.TienDu = int.Parse(item["TienDu"].ToString());
+                        hoadons.Add(entity);
+                    }
+                if (hoadons.Count > 0)
+                    return hoadons;
+                else
                 {
-                    HoaDon entity = new HoaDon();
-                    entity.HoTen = item["HoTen"].ToString();
-                    entity.DiaChi = item["DiaChi"].ToString();
-                    entity.MaHD = int.Parse(item["MaHD"].ToString());
-                    entity.SoHoaDon = item["SoHoaDon"].ToString();
-                    entity.DanhBo = (string)item["DanhBo"];
-                    entity.Nam = int.Parse(item["Nam"].ToString());
-                    entity.Ky = int.Parse(item["Ky"].ToString());
-                    entity.GiaBan = int.Parse(item["GiaBan"].ToString());
-                    entity.ThueGTGT = int.Parse(item["ThueGTGT"].ToString());
-                    entity.PhiBVMT = int.Parse(item["PhiBVMT"].ToString());
-                    entity.TongCong = int.Parse(item["TongCong"].ToString());
-                    entity.PhiMoNuoc = int.Parse(item["PhiMoNuoc"].ToString());
-                    entity.TienDu = int.Parse(item["TienDu"].ToString());
-                    hoadons.Add(entity);
+                    ErrorResponseDetail error = new ErrorResponseDetail(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo, dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["HoTen"].ToString(), dt.Rows[0]["DiaChi"].ToString());
+                    _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
-                return hoadons;
             }
             else
             {
