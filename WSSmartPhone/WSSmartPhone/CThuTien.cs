@@ -565,14 +565,14 @@ namespace WSSmartPhone
                             {
                                 TT_CTDongNuoc ctdongnuoc = new TT_CTDongNuoc();
                                 ctdongnuoc.MaDN = dongnuoc.MaDN;
-                                ctdongnuoc.MaHD = lstHDTemp[0].ID_HOADON;
-                                ctdongnuoc.SoHoaDon = lstHDTemp[0].SOHOADON;
-                                ctdongnuoc.Ky = lstHDTemp[0].KY + "/" + lstHDTemp[0].NAM;
-                                ctdongnuoc.TieuThu = (int)lstHDTemp[0].TIEUTHU;
-                                ctdongnuoc.GiaBan = (int)lstHDTemp[0].GIABAN;
-                                ctdongnuoc.ThueGTGT = (int)lstHDTemp[0].THUE;
-                                ctdongnuoc.PhiBVMT = (int)lstHDTemp[0].PHI;
-                                ctdongnuoc.TongCong = (int)lstHDTemp[0].TONGCONG;
+                                ctdongnuoc.MaHD = item.ID_HOADON;
+                                ctdongnuoc.SoHoaDon = item.SOHOADON;
+                                ctdongnuoc.Ky = item.KY + "/" + item.NAM;
+                                ctdongnuoc.TieuThu = (int)item.TIEUTHU;
+                                ctdongnuoc.GiaBan = (int)item.GIABAN;
+                                ctdongnuoc.ThueGTGT = (int)item.THUE;
+                                ctdongnuoc.PhiBVMT = (int)item.PHI;
+                                ctdongnuoc.TongCong = (int)item.TONGCONG;
                                 ctdongnuoc.CreateBy = int.Parse(MaNV);
                                 ctdongnuoc.CreateDate = DateTime.Now;
 
@@ -620,8 +620,9 @@ namespace WSSmartPhone
                 //}
                 //else
                 //    return "false;error query";
-
-                using (var scope = new TransactionScope())
+                var transactionOptions = new TransactionOptions();
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                     if (_cDAL.ExecuteNonQuery(sql) == true)
                     {
                         if (XoaDCHD == true)
@@ -1007,7 +1008,9 @@ namespace WSSmartPhone
 
             try
             {
-                using (TransactionScope scope = new TransactionScope())
+                var transactionOptions = new TransactionOptions();
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     int MaKQDN = (int)_cDAL.ExecuteQuery_ReturnOneValue("select case when (select COUNT(MaKQDN) from TT_KQDongNuoc)=0 then 1 else (select MAX(MaKQDN) from TT_KQDongNuoc)+1 end");
                     //insert đóng nước
@@ -1119,7 +1122,9 @@ namespace WSSmartPhone
 
             try
             {
-                using (TransactionScope scope = new TransactionScope())
+                var transactionOptions = new TransactionOptions();
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     //insert đóng nước
                     //string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=(select top 1 PhiMoNuoc from TT_CacLoaiPhi)*2,HinhDN1=HinhDN,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,"
@@ -1209,7 +1214,9 @@ namespace WSSmartPhone
         {
             try
             {
-                using (TransactionScope scope = new TransactionScope())
+                var transactionOptions = new TransactionOptions();
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     //string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
                     //string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd HH:mm:ss") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
@@ -1279,7 +1286,9 @@ namespace WSSmartPhone
             try
             {
                 string[] MaHD = MaHDs.Split(',');
-                using (var scope = new TransactionScope())
+                var transactionOptions = new TransactionOptions();
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     for (int i = 0; i < MaHD.Length; i++)
                     {
@@ -1681,7 +1690,9 @@ namespace WSSmartPhone
                 int flagCat = 0;
                 if (bool.Parse(Cat) == true)
                     flagCat = 1;
-                using (var scope = new TransactionScope())
+                var transactionOptions = new TransactionOptions();
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     string sql = "update TT_LenhHuy set Cat=" + flagCat + ",TinhTrang=N'" + TinhTrang + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaHD in (" + MaHDs + ")";
                     if (_cDAL.ExecuteNonQuery(sql) == true)
@@ -1848,7 +1859,7 @@ namespace WSSmartPhone
                     request.Headers.Add("password", passWord);
                     request.ContentType = "application/json; charset=utf-8";
 
-                    string NgayThanhToan = "", LoaiThuTien = "-1", ThanhToan = "-1", TenThuTien = "";
+                    string NgayThanhToan = "", LoaiThuTien = "0", ThanhToan = "-1", TenThuTien = "";
                     if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
                         NgayThanhToan = dt.Rows[0]["NgayGiaiTrach"].ToString();
                     else
@@ -1957,7 +1968,7 @@ namespace WSSmartPhone
                     request.Headers.Add("password", passWord);
                     request.ContentType = "application/json; charset=utf-8";
 
-                    string NgayThanhToan = "", LoaiThuTien = "-1", ThanhToan = "-1", TenThuTien = "";
+                    string NgayThanhToan = "", LoaiThuTien = "0", ThanhToan = "-1", TenThuTien = "";
                     if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
                         NgayThanhToan = dt.Rows[0]["NgayGiaiTrach"].ToString();
                     else
