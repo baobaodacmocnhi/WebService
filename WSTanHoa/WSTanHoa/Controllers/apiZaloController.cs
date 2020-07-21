@@ -113,7 +113,7 @@ namespace WSTanHoa.Controllers
             {
                 strResponse = ex.Message;
             }
-            _log.Error("webhook: "+strResponse);
+            _log.Error("webhook: " + strResponse);
             return strResponse;
         }
 
@@ -135,7 +135,11 @@ namespace WSTanHoa.Controllers
                         content += "Danh sách 12 kỳ hóa đơn\n";
                         foreach (DataRow itemHD in dt_HoaDon.Rows)
                         {
-                            content += "Kỳ " + itemHD["KyHD"].ToString() + ": Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3 ; Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n";
+                            content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
+                               + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
+                               + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3\n"
+                               + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n"
+                               + "    " + itemHD["ChiTietTienNuoc"].ToString() + "\n\n";
                         }
                         strResponse = sendMessage(IDZalo, content);
                     }
@@ -331,9 +335,9 @@ namespace WSTanHoa.Controllers
                 }
                 else
                     if ((date.Hour == 17 && date.Minute > 0)
-                    ||date.Hour>17
-                    ||date.Hour<7
-                    ||(date.Hour==7 && date.Minute<30))
+                    || date.Hour > 17
+                    || date.Hour < 7
+                    || (date.Hour == 7 && date.Minute < 30))
                 {
                     strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hện Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Hoặc liên hệ tổng đài 19006489 để được giải đáp nhanh hơn. Xin cám ơn!");
                 }
@@ -585,11 +589,22 @@ namespace WSTanHoa.Controllers
                         + "Họ tên: " + dt.Rows[0]["HoTen"].ToString() + "\n"
                         + "Địa chỉ: " + dt.Rows[0]["DiaChi"].ToString() + "\n"
                         + "Giá biểu: " + dt.Rows[0]["GiaBieu"].ToString() + "\n"
-                        + "Định mức: " + dt.Rows[0]["DinhMuc"].ToString() + "\n"
-                        + "Định mức HN: " + dt.Rows[0]["DinhMuc"].ToString() + "\n\n";
+                        + "Định mức: " + dt.Rows[0]["DinhMuc"].ToString() + "    Định mức HN: " + dt.Rows[0]["DinhMuc"].ToString() + "\n"
+                        + getCSC_CSM(dt.Rows[0]["DanhBo"].ToString()) + "\n\n";
             }
             else
                 return null;
         }
+
+        private string getCSC_CSM(string DanhBo)
+        {
+            return _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 'CSC: '+ CONVERT(varchar(10),CSCU) + '    ' + 'CSM: ' + CONVERT(varchar(10),CSMOI) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc").ToString();
+        }
+
+        private string getCSC_CSM(string DanhBo, int Nam, int Ky)
+        {
+            return _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 'CSC: '+ CONVERT(varchar(10),CSCU) + '    ' + 'CSM: ' + CONVERT(varchar(10),CSMOI) from HOADON where DANHBA='" + DanhBo + "' and NAM=" + Nam + " and KY=" + Ky + " order by ID_HOADON desc").ToString();
+        }
+
     }
 }
