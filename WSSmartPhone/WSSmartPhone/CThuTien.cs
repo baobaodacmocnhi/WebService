@@ -1951,6 +1951,111 @@ namespace WSSmartPhone
             return result;
         }
 
+        public string syncThanhToan(string SoHoaDon, bool GiaiTrach, int IDTemp_SyncHoaDon)
+        {
+            string result = "";
+            try
+            {
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where SOHOADON='" + SoHoaDon + "'");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/thanhtoan");
+                    request.Method = "POST";
+                    request.Headers.Add("taxcode", taxCode);
+                    request.Headers.Add("username", userName);
+                    request.Headers.Add("password", passWord);
+                    request.ContentType = "application/json; charset=utf-8";
+
+                    string NgayThanhToan = "", LoaiThuTien = "0", ThanhToan = "-1", TenThuTien = "";
+                    if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
+                        NgayThanhToan = dt.Rows[0]["NgayGiaiTrach"].ToString();
+                    else
+                        NgayThanhToan = DateTime.Now.ToString("yyyyMMdd");
+
+                    if (bool.Parse(dt.Rows[0]["DangNgan_Ton"].ToString()) == true)
+                        LoaiThuTien = "0";
+                    else
+                        if (bool.Parse(dt.Rows[0]["DangNgan_ChuyenKhoan"].ToString()) == true)
+                            LoaiThuTien = "2";
+                        else
+                            if (bool.Parse(dt.Rows[0]["DangNgan_Quay"].ToString()) == true)
+                                LoaiThuTien = "1";
+
+                    if (GiaiTrach == true)
+                        ThanhToan = "1";
+                    else
+                        ThanhToan = "0";
+
+                    if (dt.Rows[0]["DangNgan"].ToString() != "")
+                        TenThuTien = dt.Rows[0]["DangNgan"].ToString();
+                    else
+                        TenThuTien = "NULL";
+
+                    //var data = new
+                    //{
+                    //    branchcode = branchcode,
+                    //    pattern = pattern,
+                    //    serial = serial,
+                    //    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
+                    //    NgayThanhToan = NgayThanhToan,
+                    //    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
+                    //    LoaiThuTien = LoaiThuTien,
+                    //    TenThuTien = TenThuTien,
+                    //    ThanhToan = ThanhToan,
+                    //};
+                    HoaDonThanhToan en = new HoaDonThanhToan();
+                    en.branchcode = branchcode;
+                    en.pattern = pattern;
+                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
+                    en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                    en.NgayThanhToan = NgayThanhToan;
+                    en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
+                    en.LoaiThuTien = LoaiThuTien;
+                    en.TenThuTien = TenThuTien;
+                    en.ThanhToan = ThanhToan;
+
+                    var serializer = new JavaScriptSerializer();
+                    var json = serializer.Serialize(en);
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                    request.ContentLength = byteArray.Length;
+                    //gắn data post
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        JavaScriptSerializer js = new JavaScriptSerializer();
+                        var obj = js.Deserialize<dynamic>(result);
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6")
+                        {
+                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SOHOADON='" + SoHoaDon + "'");
+                            _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
+                        }
+                        else
+                        {
+                            _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                        }
+                        result = "true;" + obj["status"] + " = " + obj["message"];
+                    }
+                    else
+                        result = "false;" + respuesta.StatusCode;
+                }
+                else
+                    result = "false;Hóa Đơn không có";
+            }
+            catch (Exception ex)
+            {
+                result = "false;" + ex.Message;
+            }
+            return result;
+        }
+
         public string syncThanhToan_ThuHo(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
             string result = "";
@@ -2158,6 +2263,97 @@ namespace WSSmartPhone
             return result;
         }
 
+        public string syncNopTien(string SoHoaDon)
+        {
+            string result = "";
+            try
+            {
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where SOHOADON='" + SoHoaDon + "'");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptien");
+                    request.Method = "POST";
+                    request.Headers.Add("taxcode", taxCode);
+                    request.Headers.Add("username", userName);
+                    request.Headers.Add("password", passWord);
+                    request.ContentType = "application/json; charset=utf-8";
+
+                    string NgayNopTien = "", HinhThucThanhToan = "";
+                    if (dt.Rows[0]["NgayGiaiTrach"].ToString() != "")
+                        NgayNopTien = dt.Rows[0]["NgayGiaiTrach"].ToString();
+                    else
+                        NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
+
+                    if (bool.Parse(dt.Rows[0]["ChuyenNoKhoDoi"].ToString()) == true)
+                        HinhThucThanhToan = "2";
+                    else
+                        HinhThucThanhToan = "1";
+
+                    //var data = new
+                    //{
+                    //    branchcode = branchcode,
+                    //    pattern = pattern,
+                    //    serial = serial,
+                    //    SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6),
+                    //    NgayNopTien = NgayNopTien,
+                    //    TongSoTien = dt.Rows[0]["TongCong"].ToString(),
+                    //    HinhThucThanhToan = HinhThucThanhToan,
+                    //};
+                    HoaDonNopTien en = new HoaDonNopTien();
+                    en.branchcode = branchcode;
+                    en.pattern = pattern;
+                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
+                    en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                    en.NgayNopTien = NgayNopTien;
+                    en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
+                    en.HinhThucThanhToan = HinhThucThanhToan;
+
+                    var serializer = new JavaScriptSerializer();
+                    var json = serializer.Serialize(en);
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                    request.ContentLength = byteArray.Length;
+                    //gắn data post
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        JavaScriptSerializer js = new JavaScriptSerializer();
+                        var obj = js.Deserialize<dynamic>(result);
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:7")
+                        {
+                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SOHOADON='" + SoHoaDon + "'";
+                            sql += " delete Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "' and [Action]='NopTien'";
+                            _cDAL.ExecuteNonQuery(sql);
+                        }
+                        else
+                        {
+                            //_cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')");
+                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "')"
+                                           + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')"
+                                           + " else update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "'");
+                        }
+                        result = "true;" + obj["status"] + " = " + obj["message"];
+                    }
+                    else
+                        result = "false;" + respuesta.StatusCode;
+                }
+                else
+                    result = "false;Hóa Đơn không có";
+            }
+            catch (Exception ex)
+            {
+                result = "false;" + ex.Message;
+            }
+            return result;
+        }
+
         public string syncNopTienLo(DateTime NgayGiaiTrach)
         {
             string result = "";
@@ -2294,11 +2490,17 @@ namespace WSSmartPhone
                                             _cDAL.ExecuteNonQuery(sql);
                                         }
                                         else
-                                        {
-                                            _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
-                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
-                                            + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'");
-                                        }
+                                            if (item.Status == "ERR:6")
+                                            {
+                                                syncThanhToan(itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000"), true, 0);
+                                                syncNopTien(itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000"));
+                                            }
+                                            else
+                                            {
+                                                _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
+                                                + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
+                                                + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'");
+                                            }
                                     }
                                     result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;
                                 }
