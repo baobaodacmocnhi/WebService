@@ -12,7 +12,6 @@ using System.Web.Script.Serialization;
 using System.Transactions;
 using WSSmartPhone.LinQ;
 using System.Web;
-using System.Threading;
 
 namespace WSSmartPhone
 {
@@ -2418,69 +2417,6 @@ namespace WSSmartPhone
                                 HoaDonNopTienLoResult deserializedResult = serializer.Deserialize<HoaDonNopTienLoResult>(result);
                                 if (deserializedResult.Status == "OK")
                                 {
-                                    //int SL2 = (int)Math.Ceiling((double)deserializedResult.result.Count / 100);
-                                    //for (int j = 0; j < 100; j++)
-                                    //{
-                                    //    Thread t = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 0, itemSerial);
-                                    //    });
-                                    //    t.Start();
-
-                                    //    Thread t1 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 100, itemSerial);
-                                    //    });
-                                    //    t1.Start();
-
-                                    //    Thread t2 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 200, itemSerial);
-                                    //    });
-                                    //    t2.Start();
-
-                                    //    Thread t3 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 300, itemSerial);
-                                    //    });
-                                    //    t3.Start();
-
-                                    //    Thread t4 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 400, itemSerial);
-                                    //    });
-                                    //    t4.Start();
-
-                                    //    Thread t5 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 500, itemSerial);
-                                    //    });
-                                    //    t5.Start();
-
-                                    //    Thread t6 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 600, itemSerial);
-                                    //    });
-                                    //    t6.Start();
-
-                                    //    Thread t7 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 700, itemSerial);
-                                    //    });
-                                    //    t7.Start();
-
-                                    //    Thread t8 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 800, itemSerial);
-                                    //    });
-                                    //    t8.Start();
-
-                                    //    Thread t9 = new Thread(() =>
-                                    //    {
-                                    //        updateResultSyncNopTien(deserializedResult, 900, itemSerial);
-                                    //    });
-                                    //    t9.Start();
-                                    //}
                                     foreach (HoaDonNopTienResult item in deserializedResult.result)
                                     {
                                         if (item.Status == "OK" || item.Status == "ERR:7")
@@ -2489,12 +2425,12 @@ namespace WSSmartPhone
                                             sql += " delete Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "' and [Action]='NopTien'";
                                             _cDAL.ExecuteNonQuery(sql);
                                         }
-                                        else
-                                            if (item.Status == "ERR:6")
-                                            {
-                                                syncThanhToan(itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000"), true, 0);
-                                                syncNopTien(itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000"));
-                                            }
+                                        //else
+                                            //if (item.Status == "ERR:6")
+                                            //{
+                                                //syncThanhToan(itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000"), true, 0);
+                                                //syncNopTien(itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000"));
+                                            //}
                                             else
                                             {
                                                 _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
