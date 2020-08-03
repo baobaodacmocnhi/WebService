@@ -857,7 +857,7 @@ namespace WSSmartPhone
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
                             + " and exists(select * from HOADON a,TT_CTDongNuoc b where a.ID_HOADON=b.MaHD and b.MaDN=dn.MaDN)"
                             + " and ((kqdn.MaDN is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE))))"
-                            + " or (kqdn.DongNuoc=1 and (kqdn.MoNuoc=0 or CAST(kqdn.NgayMN as DATE)=CAST(getdate() as DATE)) and kqdn.TroNgaiMN=0 and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE)))))"
+                            + " or (kqdn.DongNuoc=1 and kqdn.MoNuoc=0 and TroNgaiMN=0 or CAST(kqdn.NgayMN as date)=CAST(GETDATE() as date)))"
                             + " order by dn.MLT";
             DataTable dt = _cDAL.ExecuteQuery_DataTable(query);
 
@@ -919,7 +919,7 @@ namespace WSSmartPhone
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
                             + " and exists(select * from HOADON a,TT_CTDongNuoc b where a.ID_HOADON=b.MaHD and b.MaDN=dn.MaDN)"
                             + " and ((kqdn.MaDN is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE))))"
-                            + " or (kqdn.DongNuoc=1 and (kqdn.MoNuoc=0 or CAST(kqdn.NgayMN as DATE)=CAST(getdate() as DATE)) and kqdn.TroNgaiMN=0 and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE)))))"
+                            + " or (kqdn.DongNuoc=1 and kqdn.MoNuoc=0 and TroNgaiMN=0 or CAST(kqdn.NgayMN as date)=CAST(GETDATE() as date)))"
                             + " order by dn.MLT asc";
             DataTable dt = _cDAL.ExecuteQuery_DataTable(sql);
 
