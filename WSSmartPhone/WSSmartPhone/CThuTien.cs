@@ -108,7 +108,7 @@ namespace WSSmartPhone
 
                 _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -149,7 +149,7 @@ namespace WSSmartPhone
 
                 //_cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,TestApp from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -535,13 +535,13 @@ namespace WSSmartPhone
                         //    return "false,Chưa Active Mobile";
                         //if (checkChotDangNgan(Ngay) == true)
                         //    return "false,Đã Chốt Ngày Giải Trách";
-                        sql += " update TT_KQDongNuoc set DongPhi=1,MaNV_DongPhi=" + MaNV + ",NgayDongPhi='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where MaKQDN=" + MaKQDN + " ";
+                        sql += " update TT_KQDongNuoc set DongPhi=1,MaNV_DongPhi=" + MaNV + ",NgayDongPhi='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where MaKQDN=" + MaKQDN + " and NgayDongPhi is null ";
                         break;
                     case "PhieuBao":
-                        sql += " update HOADON set InPhieuBao_MaNV=" + MaNV + ",InPhieuBao_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        sql += " update HOADON set InPhieuBao_MaNV=" + MaNV + ",InPhieuBao_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null and InPhieuBao_Ngay is null ";
                         break;
                     case "PhieuBao2":
-                        sql += " update HOADON set InPhieuBao2_MaNV=" + MaNV + ",InPhieuBao2_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',InPhieuBao2_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
+                        sql += " update HOADON set InPhieuBao2_MaNV=" + MaNV + ",InPhieuBao2_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',InPhieuBao2_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null and InPhieuBao2_Ngay is null ";
                         break;
                     case "TBDongNuoc":
                         //insert table TBDongNuoc
@@ -599,7 +599,7 @@ namespace WSSmartPhone
                         //    return "false,Chưa Active Mobile";
                         //if (checkChotDangNgan(Ngay) == true)
                         //    return "false,Đã Chốt Ngày Giải Trách";
-                        sql += " update TT_KQDongNuoc set DongPhi=0,MaNV_DongPhi=NULL,NgayDongPhi=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where MaKQDN=" + MaKQDN + " ";
+                        sql += " update TT_KQDongNuoc set DongPhi=0,MaNV_DongPhi=NULL,NgayDongPhi=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where MaKQDN=" + MaKQDN + " and NgayDongPhi is not null ";
                         break;
                     default:
                         break;
@@ -1722,6 +1722,10 @@ namespace WSSmartPhone
                         + " TCGiay=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM<2020 or (NAM=2020 and KY<7)) and MaNV_DangNgan is not null),"
                         + " SLHDDT=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null),"
                         + " TCHDDT=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null),"
+                        + " SLHDDTDC=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is not null),"
+                        + " TCHDDTDC=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is not null),"
+                        + " SLHDDTSach=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is null),"
+                        + " TCHDDTSach=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is null),"
                         + " SLNopTien=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and SyncNopTien=1),"
                         + " TCNopTien=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and SyncNopTien=1)"
                         + " from TT_ChotDangNgan where CAST(NgayChot as date)>='" + FromNgayGiaiTrach.ToString("yyyyMMdd") + "' and CAST(NgayChot as date)<='" + ToNgayGiaiTrach.ToString("yyyyMMdd") + "'"
