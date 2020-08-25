@@ -459,7 +459,7 @@ namespace WSSmartPhone
                             + " ,DongA=case when exists(select DanhBo from TT_DuLieuKhachHang_DanhBo where DanhBo=hd.DANHBA) then 'true' else 'false' end"
                             + " from HOADON hd where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null))"
+                            + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and KY in (4,5,6) and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
                             + " order by MLT asc,ID_HOADON desc";
             //or (Nam=2020 and KY in (4,5,6) and DANHBA in (select DanhBo from TT_ThoatNgheo))
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
@@ -1444,7 +1444,7 @@ namespace WSSmartPhone
 
         public string GetTongTon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
-            string sql = "select t1.*,t2.HoTen from"
+            string sql = "select t1.*,t2.HoTen,TyLe=ROUND(CONVERT(float,t1.TongHD)/(select COUNT(ID_HOADON) from HOADON a where MaNV_HanhThu=t1.MaNV_HanhThu),2) from"
                         + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
                         + " where NgayGiaiTrach is null and (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot
                         + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
