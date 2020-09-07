@@ -625,6 +625,7 @@ namespace WSSmartPhone
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                     if (_cDAL.ExecuteNonQuery(sql) == true)
                     {
+                        _cDAL.ExecuteNonQuery("insert into TT_Location_NhanVien(MaNV,Location,Action)values(" + MaNV + ",'" + Location + "','" + LoaiXuLy + "')");
                         if (XoaDCHD == true)
                         {
                             if (_cDAL.ExecuteNonQuery("insert into TT_DieuChinhTienDuXoa(MaHD,CreateBy,CreateDate)values(" + MaHDs + "," + MaNV + ",getdate())") == true)
