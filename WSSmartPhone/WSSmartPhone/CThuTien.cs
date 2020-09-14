@@ -2366,6 +2366,8 @@ namespace WSSmartPhone
             try
             {
                 DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 group by SUBSTRING(SOHOADON,0,7)");
+                if(dtSerial==null ||dtSerial.Rows.Count==0)
+                    result = "false;" + "Đã Nộp Tiền rồi";
                 foreach (DataRow itemSerial in dtSerial.Rows)
                 {
                     DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
