@@ -1933,9 +1933,9 @@ namespace WSSmartPhone
                         respuesta.Close();
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         var obj = js.Deserialize<dynamic>(result);
-                        if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6")
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                         {
-                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where ID_HOADON=" + MaHD);
+                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and ID_HOADON=" + MaHD);
                             _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
                         }
                         else
@@ -2038,9 +2038,9 @@ namespace WSSmartPhone
                         respuesta.Close();
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         var obj = js.Deserialize<dynamic>(result);
-                        if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6")
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                         {
-                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SOHOADON='" + SoHoaDon + "'");
+                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and SOHOADON='" + SoHoaDon + "'");
                             _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
                         }
                         else
@@ -2147,9 +2147,9 @@ namespace WSSmartPhone
                         respuesta.Close();
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         var obj = js.Deserialize<dynamic>(result);
-                        if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6")
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                         {
-                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where ID_HOADON=" + MaHD);
+                            _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and ID_HOADON=" + MaHD);
                             _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
                         }
                         else
@@ -2241,9 +2241,9 @@ namespace WSSmartPhone
                         respuesta.Close();
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         var obj = js.Deserialize<dynamic>(result);
-                        if (obj["status"] == "OK" || obj["status"] == "ERR:7")
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:7" || obj["status"] == "ERR:8")
                         {
-                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where ID_HOADON=" + MaHD;
+                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and ID_HOADON=" + MaHD;
                             sql += " delete Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "' and [Action]='NopTien'";
                             _cDAL.ExecuteNonQuery(sql);
                         }
@@ -2332,9 +2332,9 @@ namespace WSSmartPhone
                         respuesta.Close();
                         JavaScriptSerializer js = new JavaScriptSerializer();
                         var obj = js.Deserialize<dynamic>(result);
-                        if (obj["status"] == "OK" || obj["status"] == "ERR:7")
+                        if (obj["status"] == "OK" || obj["status"] == "ERR:7" || obj["status"] == "ERR:8")
                         {
-                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SOHOADON='" + SoHoaDon + "'";
+                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and SOHOADON='" + SoHoaDon + "'";
                             sql += " delete Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "' and [Action]='NopTien'";
                             _cDAL.ExecuteNonQuery(sql);
                         }
@@ -2428,9 +2428,9 @@ namespace WSSmartPhone
                                 {
                                     foreach (HoaDonNopTienResult item in deserializedResult.result)
                                     {
-                                        if (item.Status == "OK" || item.Status == "ERR:7")
+                                        if (item.Status == "OK" || item.Status == "ERR:7" || item.Status == "ERR:8")
                                         {
-                                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'";
+                                            string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'";
                                             sql += " delete Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "' and [Action]='NopTien'";
                                             _cDAL.ExecuteNonQuery(sql);
                                         }
