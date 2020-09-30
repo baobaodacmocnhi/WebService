@@ -275,9 +275,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetTongTon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
+        public string GetTongTon_DenKy(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
-            return _cThuTien.GetTongTon(MaTo, Nam, Ky, FromDot, ToDot);
+            return _cThuTien.GetTongTon_DenKy(MaTo, Nam, Ky, FromDot, ToDot);
+        }
+
+        [WebMethod]
+        public string GetTongTon_TrongKy(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
+        {
+            return _cThuTien.GetTongTon_TrongKy(MaTo, Nam, Ky, FromDot, ToDot);
         }
 
         [WebMethod]

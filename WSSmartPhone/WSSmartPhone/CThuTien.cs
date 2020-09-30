@@ -1444,11 +1444,23 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public string GetTongTon(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
+        public string GetTongTon_DenKy(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
-            string sql = "select t1.*,t2.HoTen,TyLe=ROUND(CONVERT(float,t1.TongHD)/(select COUNT(ID_HOADON) from HOADON a where MaNV_HanhThu=t1.MaNV_HanhThu),2) from"
+            string sql = "select t1.*,t2.HoTen,TyLe=ROUND(CONVERT(float,t1.TongHD)/(select COUNT(ID_HOADON) from HOADON a where (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=t1.MaNV_HanhThu),2) from"
                         + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
                         + " where NgayGiaiTrach is null and (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot
+                        + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
+                        + " group by MaNV_HanhThu) t1,TT_NguoiDung t2"
+                        + " where t1.MaNV_HanhThu=t2.MaND"
+                        + " order by t2.STT asc";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string GetTongTon_TrongKy(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
+        {
+            string sql = "select t1.*,t2.HoTen,TyLe=ROUND(CONVERT(float,t1.TongHD)/(select COUNT(ID_HOADON) from HOADON a where and NAM=" + Nam + " and KY=" + Ky + " and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=t1.MaNV_HanhThu),2) from"
+                        + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
+                        + " where NgayGiaiTrach is null and NAM=" + Nam + " and KY=" + Ky + " and DOT>=" + FromDot + " and DOT<=" + ToDot
                         + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
                         + " group by MaNV_HanhThu) t1,TT_NguoiDung t2"
                         + " where t1.MaNV_HanhThu=t2.MaND"
@@ -2366,7 +2378,7 @@ namespace WSSmartPhone
             try
             {
                 DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 group by SUBSTRING(SOHOADON,0,7)");
-                if(dtSerial==null ||dtSerial.Rows.Count==0)
+                if (dtSerial == null || dtSerial.Rows.Count == 0)
                     result = "false;" + "Đã Nộp Tiền rồi";
                 foreach (DataRow itemSerial in dtSerial.Rows)
                 {
