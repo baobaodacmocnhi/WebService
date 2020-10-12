@@ -457,9 +457,11 @@ namespace WSSmartPhone
                             + " ,LenhHuyCat=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON and Cat=1) then 'true' else 'false' end"
                             + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=hd.DANHBA)"
                             + " ,DongA=case when exists(select DanhBo from TT_DuLieuKhachHang_DanhBo where DanhBo=hd.DANHBA) then 'true' else 'false' end"
+                            + " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi+' '+DanhBo  from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
+							+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi+' '+DanhBo  from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
                             + " from HOADON hd where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and KY in (4,5,6) and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
+                            + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
                             + " order by MLT asc,ID_HOADON desc";
             //or (Nam=2020 and KY in (4,5,6) and DANHBA in (select DanhBo from TT_ThoatNgheo))
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
@@ -914,6 +916,8 @@ namespace WSSmartPhone
                             + " ,PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA))"
                             + " ,PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=ctdn.MaHD and a.ID=b.IDDichVu)"
                             + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
+                            + " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi+' '+DanhBo  from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
+                            + " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi+' '+DanhBo  from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
                             + " from TT_DongNuoc dn"
                             + " left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN"
                             + " left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
