@@ -372,5 +372,12 @@ namespace WSSmartPhone
         {
             return _cThuTien.showError_NopTien(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
+
+        //chi tiết tiền nước
+        [WebMethod]
+        public string updateChiTietTienNuoc(string Nam, string Ky, string Dot)
+        {
+            return _cThuTien.updateChiTietTienNuoc(int.Parse(Nam), int.Parse(Ky), int.Parse(Dot));
+        }
     }
 }

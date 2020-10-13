@@ -61,6 +61,24 @@
       <Column Name="ModifyDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </Type>
   </Table>
+  <Table Name="dbo.GiaNuoc2" Member="GiaNuoc2s">
+    <Type Name="GiaNuoc2">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SHN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SHTM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SHVM1" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SHVM2" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SX" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HCSN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="KDDV" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NgayTangGia" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="CreateBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CreateDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ModifyBy" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ModifyDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.HOADON" Member="HOADONs">
     <Type Name="HOADON">
       <Column Name="ID_HOADON" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -148,18 +166,27 @@
       <Column Name="Name_PC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="IP_PC" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="DangNgan_DienThoai" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="DangNgan_DienThoai_Location" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="XoaDangNgan_MaNV_DienThoai" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="XoaDangNgan_Ngay_DienThoai" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="XoaDangNgan_Location_DienThoai" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="InPhieuBao_MaNV" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="InPhieuBao_Ngay" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="InPhieuBao_Location" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="InPhieuBao2_MaNV" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="InPhieuBao2_Ngay" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="InPhieuBao2_NgayHen" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="InPhieuBao2_Location" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="TBDongNuoc_MaNV" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TBDongNuoc_Ngay" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="TBDongNuoc_NgayHen" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="TBDongNuoc_Location" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="SyncThanhToan" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SyncThanhToan_Ngay" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="SyncNopTien" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SyncNopTien_Ngay" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ChiTietTienNuoc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="CuaHangThuHo" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 13.625, 20.5" name="dbThuTien">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 13.375, 22.75" name="dbThuTien">
   <DataContextMoniker Name="/dbThuTienDataContext" />
   <nestedChildShapes>
     <classShape Id="b45a2234-6fd4-49d1-b366-28409228fa62" absoluteBounds="5, 1.125, 2, 4.4631168619791666">
@@ -27,10 +27,16 @@
         <elementListCompartment Id="3e5c3230-5f5b-42df-9c59-26969c600efc" absoluteBounds="8.39, 1.835, 1.9700000000000002, 3.1339111328125" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <classShape Id="3d698d33-ff82-478e-9edd-6efe028fc03b" absoluteBounds="11.375, 0.75, 2, 19.462628580729167">
+    <classShape Id="0b5216b4-711d-41a5-805f-c29c290d1d83" absoluteBounds="2.625, 4.75, 2, 3.5016097005208326">
+      <DataClassMoniker Name="/dbThuTienDataContext/GiaNuoc2" />
+      <nestedChildShapes>
+        <elementListCompartment Id="410c04a8-136a-4e90-a244-d1b274e52935" absoluteBounds="2.6399999999999997, 5.21, 1.9700000000000002, 2.941609700520833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="8d6f8395-81d6-47c2-93f1-2058a42a88b0" absoluteBounds="11.125, 1.25, 2, 21.193341471354167">
       <DataClassMoniker Name="/dbThuTienDataContext/HOADON" />
       <nestedChildShapes>
-        <elementListCompartment Id="5cb633a5-bbfb-4982-b68f-dc33646b7198" absoluteBounds="11.39, 1.21, 1.9700000000000002, 18.902628580729164" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="ec35ada8-8f7b-4761-943e-06cfde629c90" absoluteBounds="11.14, 1.71, 1.9700000000000002, 20.633341471354164" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
   </nestedChildShapes>
