@@ -462,6 +462,7 @@ namespace WSSmartPhone
                             + " from HOADON hd where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
                             + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
+                            + " and hd.SOHOADON not in (select SoHoaDon from TT_HoaDon_KhongTHu)"
                             + " order by MLT asc,ID_HOADON desc";
             //or (Nam=2020 and KY in (4,5,6) and DANHBA in (select DanhBo from TT_ThoatNgheo))
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
