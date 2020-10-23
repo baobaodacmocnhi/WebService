@@ -310,6 +310,19 @@ namespace WSSmartPhone
             return _cThuTien.GetTongThuHo_ChiTiet(MaTo, DateTime.ParseExact(FromCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), DateTime.ParseExact(ToCreateDate, "dd/MM/yyyy", CultureInfo.InvariantCulture), Loai);
         }
 
+        //admin
+        [WebMethod]
+        public string truyvan(string sql)
+        {
+            return _cThuTien.truyvan(sql);
+        }
+
+        [WebMethod]
+        public string capnhat(string sql)
+        {
+            return _cThuTien.capnhat(sql);
+        }
+
         //lệnh hủy
         [WebMethod]
         public string GetDSHoaDon_LenhHuy(string LoaiCat, string ID)

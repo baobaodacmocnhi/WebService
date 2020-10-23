@@ -108,7 +108,7 @@ namespace WSSmartPhone
 
                 _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -149,7 +149,7 @@ namespace WSSmartPhone
 
                 //_cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -1659,6 +1659,33 @@ namespace WSSmartPhone
         {
             return _cDAL.ExecuteQuery_DataTable("select top 1 * from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
         }
+
+        //admin
+        public string truyvan(string sql)
+        {
+            try
+            {
+                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string capnhat(string sql)
+        {
+            try
+            {
+                return _cDAL.ExecuteNonQuery(sql).ToString();
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+
+        }
+
 
         //lệnh hủy
         public string GetDSHoaDon_LenhHuy(string LoaiCat, string ID)

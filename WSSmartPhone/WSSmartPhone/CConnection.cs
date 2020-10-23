@@ -196,7 +196,7 @@ namespace WSSmartPhone
                 Connect();
                 DataTable dt = new DataTable();
                 command = new SqlCommand(sql, connection);
-                command.CommandTimeout = 120;
+                command.CommandTimeout = 180;
                 adapter = new SqlDataAdapter(command);
                 try
                 {
