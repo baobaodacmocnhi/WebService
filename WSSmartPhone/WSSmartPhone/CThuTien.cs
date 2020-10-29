@@ -66,7 +66,7 @@ namespace WSSmartPhone
                     string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
                     SendNotificationToClient("Thông Báo", "Tài khoản của bạn đã được đăng nhập ở máy khác, Bạn bị đăng xuất tại thiết bị này", MaNV, "DangXuat", "", "", "");
                 }
-                _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+                _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
                 return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
             }
             catch (Exception)
@@ -88,25 +88,27 @@ namespace WSSmartPhone
                     return "false;Sai mật khẩu hoặc IDMobile";
 
                 //xóa máy đăng nhập MaNV khác
-                int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
-                if (MaNV_UID_Old > 0)
-                    _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where UID='" + UID + "'");
+                //int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
+                //if (MaNV_UID_Old > 0)
+                //    _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + UID + "'");
 
-                if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
-                {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select UID from TT_DeviceSigned where MaNV=" + MaNV);
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        SendNotificationToClient("Thông Báo Đăng Xuất", "Hệ thống server gửi đăng xuất đến thiết bị", item["UID"].ToString(), "DangXuat", "DangXuat", "false", "");
-                        _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + item["UID"].ToString() + "'");
-                    }
-                }
+                //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
+                //{
+                //    DataTable dt = _cDAL.ExecuteQuery_DataTable("select UID from TT_DeviceSigned where MaNV=" + MaNV);
+                //    foreach (DataRow item in dt.Rows)
+                //    {
+                //        SendNotificationToClient("Thông Báo Đăng Xuất", "Hệ thống server gửi đăng xuất đến thiết bị", item["UID"].ToString(), "DangXuat", "DangXuat", "false", "");
+                //        _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + item["UID"].ToString() + "'");
+                //    }
+                //}
 
                 int MaNV_UID = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
                 if (MaNV_UID == 0)
-                    _cDAL.ExecuteQuery_DataTable("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                    _cDAL.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                else
+                    _cDAL.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + ",UID='" + UID + "'");
 
-                _cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
+                _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
                 return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
             }
@@ -131,7 +133,7 @@ namespace WSSmartPhone
                 ////xóa máy đăng nhập MaNV khác
                 //int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
                 //if (MaNV_UID_Old > 0)
-                //    _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where UID='" + UID + "'");
+                //    _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + UID + "'");
 
                 //if (MaNV != "0" && MaNV != "1")
                 //{
@@ -145,9 +147,9 @@ namespace WSSmartPhone
 
                 //int MaNV_UID = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
                 //if (MaNV_UID == 0)
-                //    _cDAL.ExecuteQuery_DataTable("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                //    _cDAL.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
 
-                //_cDAL.ExecuteQuery_DataTable("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
+                //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
                 return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp from TT_NguoiDung where MaND=" + MaNV));
             }
@@ -175,7 +177,7 @@ namespace WSSmartPhone
             {
                 string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
 
-                _cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+                _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
             }
@@ -191,7 +193,7 @@ namespace WSSmartPhone
             {
                 //string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
 
-                //_cDAL.ExecuteQuery_DataTable("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+                //_cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 //return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
                 return "true; ";
@@ -858,8 +860,8 @@ namespace WSSmartPhone
                             + " ,KhoaTu=case when kqdn.KhoaTu is null then 'false' else case when kqdn.KhoaTu=1 then 'true' else 'false' end end"
                             + " ,KhoaKhac=case when kqdn.KhoaKhac is null then 'false' else case when kqdn.KhoaKhac=1 then 'true' else 'false' end end"
                             + " ,kqdn.NgayDN,kqdn.ChiSoDN,kqdn.NiemChi,kqdn.KhoaKhac_GhiChu,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.ViTri,kqdn.LyDo,kqdn.NgayDN1,kqdn.ChiSoDN1,kqdn.NiemChi1,kqdn.NgayMN,kqdn.ChiSoMN,kqdn.MaKQDN"
-                            + " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
-                            + " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
+                            //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
+                            //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
                             + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
                             + " and exists(select * from HOADON a,TT_CTDongNuoc b where a.ID_HOADON=b.MaHD and b.MaDN=dn.MaDN)"
