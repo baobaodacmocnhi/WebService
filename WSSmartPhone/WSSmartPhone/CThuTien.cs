@@ -1455,7 +1455,7 @@ namespace WSSmartPhone
 
         public string GetTongTon_DenKy(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
-            string sql = "select t1.*,t2.HoTen,TyLe=ROUND(CONVERT(float,t1.TongHD)/(select COUNT(ID_HOADON) from HOADON a where (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=t1.MaNV_HanhThu)*100,2) from"
+            string sql = "select t1.*,t2.HoTen,TyLe=CAST(ROUND(CONVERT(float,t1.TongHD)/(select COUNT(ID_HOADON) from HOADON a where (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=t1.MaNV_HanhThu)*100,2)as varchar(5)) from"
                         + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
                         + " where NgayGiaiTrach is null and (NAM<" + Nam + " or (NAM=" + Nam + " and KY<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot
                         + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
@@ -1467,7 +1467,7 @@ namespace WSSmartPhone
 
         public string GetTongTon_TrongKy(string MaTo, string Nam, string Ky, string FromDot, string ToDot)
         {
-            string sql = "select t1.*,t2.HoTen,TyLe=ROUND(CONVERT(float,t1.TongHD)/(select COUNT(ID_HOADON) from HOADON a where NAM=" + Nam + " and KY=" + Ky + " and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=t1.MaNV_HanhThu)*100,2) from"
+            string sql = "select t1.*,t2.HoTen,TyLe=CAST(ROUND(CONVERT(float,t1.TongHD)/(select COUNT(ID_HOADON) from HOADON a where NAM=" + Nam + " and KY=" + Ky + " and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=t1.MaNV_HanhThu)*100,2)as varchar(5)) from"
                         + " (select MaNV_HanhThu,TongHD=COUNT(ID_HOADON),TongCong=SUM(TONGCONG) from HOADON"
                         + " where NgayGiaiTrach is null and NAM=" + Nam + " and KY=" + Ky + " and DOT>=" + FromDot + " and DOT<=" + ToDot
                         + " and MAY>=(select TuCuonGCS from TT_To where MaTo=" + MaTo + ") and MAY<=(select DenCuonGCS from TT_To where MaTo=" + MaTo + ")"
