@@ -106,7 +106,7 @@ namespace WSSmartPhone
                 if (MaNV_UID == 0)
                     _cDAL.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
                 else
-                    _cDAL.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + ",UID='" + UID + "'");
+                    _cDAL.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
@@ -175,11 +175,11 @@ namespace WSSmartPhone
         {
             try
             {
-                string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
+                //string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
 
-                _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+                //_cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
-                return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
+                return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "' and UID='" + UID + "'").ToString() + ";";
             }
             catch (Exception ex)
             {
@@ -860,8 +860,8 @@ namespace WSSmartPhone
                             + " ,KhoaTu=case when kqdn.KhoaTu is null then 'false' else case when kqdn.KhoaTu=1 then 'true' else 'false' end end"
                             + " ,KhoaKhac=case when kqdn.KhoaKhac is null then 'false' else case when kqdn.KhoaKhac=1 then 'true' else 'false' end end"
                             + " ,kqdn.NgayDN,kqdn.ChiSoDN,kqdn.NiemChi,kqdn.KhoaKhac_GhiChu,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.ViTri,kqdn.LyDo,kqdn.NgayDN1,kqdn.ChiSoDN1,kqdn.NiemChi1,kqdn.NgayMN,kqdn.ChiSoMN,kqdn.MaKQDN"
-                            //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
-                            //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
+                //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
+                //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
                             + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
                             + " and exists(select * from HOADON a,TT_CTDongNuoc b where a.ID_HOADON=b.MaHD and b.MaDN=dn.MaDN)"
@@ -921,8 +921,8 @@ namespace WSSmartPhone
                             + " ,PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA))"
                             + " ,PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=ctdn.MaHD and a.ID=b.IDDichVu)"
                             + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
-                            //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
-                            //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
+                //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
+                //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
                             + " from TT_DongNuoc dn"
                             + " left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN"
                             + " left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
