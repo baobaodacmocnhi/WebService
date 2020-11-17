@@ -179,7 +179,7 @@ namespace WSSmartPhone
 
                 //_cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
-                return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "' and UID='" + UID + "'").ToString() + ";";
+                return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
             }
             catch (Exception ex)
             {
