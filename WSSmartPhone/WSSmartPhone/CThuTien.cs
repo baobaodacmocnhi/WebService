@@ -88,9 +88,9 @@ namespace WSSmartPhone
                     return "false;Sai mật khẩu hoặc IDMobile";
 
                 //xóa máy đăng nhập MaNV khác
-                //int MaNV_UID_Old = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where UID='" + UID + "'");
-                //if (MaNV_UID_Old > 0)
-                //    _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + UID + "'");
+                object MaNV_UID_Old = _cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
+                    _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
 
                 //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                 //{
@@ -102,11 +102,12 @@ namespace WSSmartPhone
                 //    }
                 //}
 
-                int MaNV_UID = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
-                if (MaNV_UID == 0)
-                    _cDAL.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
-                else
-                    _cDAL.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+                object MaNV_UID = _cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                if (MaNV_UID != null)
+                    if ((int)MaNV_UID == 0)
+                        _cDAL.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                    else
+                        _cDAL.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
@@ -187,6 +188,23 @@ namespace WSSmartPhone
             }
         }
 
+        public string DangXuats_Person(string Username, string UID)
+        {
+            try
+            {
+                object MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
+
+                if (MaNV != null)
+                    _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+
+                return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
         public string DangXuats_Admin(string Username, string UID)
         {
             try
@@ -206,7 +224,7 @@ namespace WSSmartPhone
 
         public bool UpdateUID(string MaNV, string UID)
         {
-            return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
+            return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
         }
 
         public bool updateLogin(string MaNV, string UID)
@@ -336,7 +354,7 @@ namespace WSSmartPhone
             string responseMess = "";
             try
             {
-                string serverKey = "AAAAYRLMnTg:APA91bH00qfWWWjIilUlB6gcazcdSUyXnU_SnsSpt8X141z4Kcboqw_qjIpsORxtaOAAGzz-RL-biPz-280wWQhJQu_Pq9JH9hCFfCgF2LNzLakEWA381KWlhoV1zsmG7z3kECf_ePdt";
+                string serverKey = "AAAAYRLMnTg:APA91bH4MPTCqY4WntyOtKOo-DARDX3fIFXDihCdNyxRVzZilsP_pWE9kMYrWDyUjo-XGgX7IZuSzwz-zZYHgMyMLtTx9S3YdrSAwyqNgHjNaWehxtu5Usnd36q1lEo6e2zQRx7R6Wf3";
                 string senderId = "416927227192";
 
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://fcm.googleapis.com/fcm/send");
@@ -350,8 +368,8 @@ namespace WSSmartPhone
                     to = UID,
                     data = new
                     {
-                        title = Title,
-                        body = Content,
+                        Title = Title,
+                        Body = Content,
                         Action = Action,
                         NameUpdate = NameUpdate,
                         ValueUpdate = ValueUpdate,
