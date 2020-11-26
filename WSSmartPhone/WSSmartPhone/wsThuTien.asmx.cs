@@ -387,6 +387,18 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string syncNopTienLo_Except12(string NgayGiaiTrach)
+        {
+            return _cThuTien.syncNopTienLo_Except12(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+        }
+
+        [WebMethod]
+        public string syncNopTienLo_12(string NgayGiaiTrach)
+        {
+            return _cThuTien.syncNopTienLo_12(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+        }
+
+        [WebMethod]
         public string showError_NopTien(string NgayGiaiTrach)
         {
             return _cThuTien.showError_NopTien(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
