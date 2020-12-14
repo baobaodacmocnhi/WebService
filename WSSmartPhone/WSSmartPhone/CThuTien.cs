@@ -888,8 +888,8 @@ namespace WSSmartPhone
                             + " left join TT_DichVuThu_DanhBo_CuaHang chth on dn.DanhBo=chth.DanhBo"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
                             + " and exists(select * from HOADON a,TT_CTDongNuoc b where a.ID_HOADON=b.MaHD and b.MaDN=dn.MaDN)"
-                            + " and ((kqdn.MaDN is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE))))"
-                            + " or (kqdn.DongNuoc=1 and kqdn.MoNuoc=0 and TroNgaiMN=0 or CAST(kqdn.NgayMN as date)=CAST(GETDATE() as date)) and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE))))"
+                            + " and (select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE)))>0"
+                            + " and (kqdn.MaDN is null or ((kqdn.DongNuoc=1 and kqdn.MoNuoc=0 and TroNgaiMN=0) or (CAST(kqdn.NgayMN as date)=CAST(GETDATE() as date))))"
                             + " order by dn.MLT";
             DataTable dt = _cDAL.ExecuteQuery_DataTable(query);
 
@@ -952,9 +952,9 @@ namespace WSSmartPhone
                             + " left join HOADON hd on hd.ID_HOADON=ctdn.MaHD"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
                             + " and exists(select * from HOADON a,TT_CTDongNuoc b where a.ID_HOADON=b.MaHD and b.MaDN=dn.MaDN)"
-                            + " and ((kqdn.MaDN is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE))))"
-                            + " or (kqdn.DongNuoc=1 and kqdn.MoNuoc=0 and TroNgaiMN=0 or CAST(kqdn.NgayMN as date)=CAST(GETDATE() as date)) and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE))))"
-                            + " order by dn.MLT asc";
+                            + " and (select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE)))>0"
+                            + " and (kqdn.MaDN is null or ((kqdn.DongNuoc=1 and kqdn.MoNuoc=0 and TroNgaiMN=0) or (CAST(kqdn.NgayMN as date)=CAST(GETDATE() as date))))"
+                            + " order by dn.MLT asc,ctdn.MaHD desc";
             DataTable dt = _cDAL.ExecuteQuery_DataTable(sql);
 
             return DataTableToJSON(dt);
