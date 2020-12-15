@@ -479,8 +479,8 @@ namespace WSSmartPhone
                             + " ,DongA=case when exists(select DanhBo from TT_DuLieuKhachHang_DanhBo where DanhBo=hd.DANHBA) then 'true' else 'false' end"
                             //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
                             //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
-                            + " ,chth.CuaHangThuHo1,chth.CuaHangThuHo2"
-                            + " from HOADON hd left join TT_DichVuThu_DanhBo_CuaHang chth on hd.DANHBA=chth.DanhBo"
+                            + " ,CuaHangThuHo"
+                            + " from HOADON hd"
                             + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
                             + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
@@ -868,7 +868,6 @@ namespace WSSmartPhone
         public string GetDSDongNuoc(string MaNV_DongNuoc)
         {
             string query = "select ID=dn.MaDN,dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT"
-                //+ " ,DiaChiDHN=(select [SONHA]+' '+[TENDUONG] FROM [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] where DanhBo=dn.DanhBo)"
                             + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=dn.DanhBo)"
                             + " ,Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end"
                             + " ,Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end"
@@ -881,11 +880,8 @@ namespace WSSmartPhone
                             + " ,KhoaTu=case when kqdn.KhoaTu is null then 'false' else case when kqdn.KhoaTu=1 then 'true' else 'false' end end"
                             + " ,KhoaKhac=case when kqdn.KhoaKhac is null then 'false' else case when kqdn.KhoaKhac=1 then 'true' else 'false' end end"
                             + " ,kqdn.NgayDN,kqdn.ChiSoDN,kqdn.NiemChi,kqdn.KhoaKhac_GhiChu,kqdn.ChiMatSo,kqdn.ChiKhoaGoc,kqdn.ViTri,kqdn.LyDo,kqdn.NgayDN1,kqdn.ChiSoDN1,kqdn.NiemChi1,kqdn.NgayMN,kqdn.ChiSoMN,kqdn.MaKQDN"
-                //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
-                //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where (select top 1 Dot from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and (select top 1 MaNV_HanhThu from HOADON where DANHBA=dn.DanhBo order by CreateDate desc)=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
-                            + " ,chth.CuaHangThuHo1,chth.CuaHangThuHo2"            
+                            + " ,CuaHangThuHo=(select top 1 CuaHangThuHo from HOADON where DANHBA=dn.DanhBo order by ID_HOADON desc)"            
                             + " from TT_DongNuoc dn left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
-                            + " left join TT_DichVuThu_DanhBo_CuaHang chth on dn.DanhBo=chth.DanhBo"
                             + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc
                             + " and exists(select * from HOADON a,TT_CTDongNuoc b where a.ID_HOADON=b.MaHD and b.MaDN=dn.MaDN)"
                             + " and (select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and ChuyenNoKhoDoi=0 and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as DATE)=CAST(getdate() as DATE)))>0"
@@ -924,17 +920,6 @@ namespace WSSmartPhone
 
         public string GetDSCTDongNuoc(string MaNV_DongNuoc)
         {
-            //string sql = "select ID=dn.MaDN,dn.MaDN,MaHD,Ky,TongCong,"
-            //                + " GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
-            //                + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
-            //                + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=ctdn.MaHD) then 'true' else 'false' end,"
-            //                + " PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong where MaHDs like '%'+CONVERT(varchar(8),ctdn.MaHD)+'%'),"
-            //                + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
-            //                + " from TT_DongNuoc dn left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
-            //                + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyyMMdd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyyMMdd") + "'"
-            //                + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
-            //                + " or kqdn.MoNuoc=0)"
-            //                + " order by dn.MLT,ctdn.MaHD";
             string sql = "select ID=dn.MaDN,dn.MaDN,MaHD,MLT=MALOTRINH,ctdn.Ky,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG"
                             + " ,GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,hd.Code,hd.TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),hd.GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,hd.TongCong,hd.DCHD,hd.TienDuTruoc_DCHD"
                             + " ,DangNgan_DienThoai,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_Ngay,TBDongNuoc_NgayHen"
@@ -944,8 +929,6 @@ namespace WSSmartPhone
                             + " ,PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA))"
                             + " ,PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=ctdn.MaHD and a.ID=b.IDDichVu)"
                             + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
-                //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
-                //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
                             + " from TT_DongNuoc dn"
                             + " left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN"
                             + " left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
@@ -962,17 +945,6 @@ namespace WSSmartPhone
 
         public string GetDSCTDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
-            //string sql = "select ID=dn.MaDN,dn.MaDN,MaHD,Ky,TongCong,"
-            //                + " GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
-            //                + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
-            //                + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=ctdn.MaHD) then 'true' else 'false' end,"
-            //                + " PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong where MaHDs like '%'+CONVERT(varchar(8),ctdn.MaHD)+'%'),"
-            //                + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
-            //                + " from TT_DongNuoc dn left join TT_CTDongNuoc ctdn on dn.MaDN=ctdn.MaDN left join TT_KQDongNuoc kqdn on dn.MaDN=kqdn.MaDN"
-            //                + " where Huy=0 and MaNV_DongNuoc=" + MaNV_DongNuoc + " and CAST(NgayGiao as DATE)>='" + FromNgayGiao.ToString("yyyyMMdd") + "' and CAST(NgayGiao as DATE)<='" + ToNgayGiao.ToString("yyyyMMdd") + "'"
-            //                + " and (kqdn.DongNuoc is null and (select COUNT(MaHD) from TT_CTDongNuoc where MaDN=dn.MaDN)=(select COUNT(MaHD) from TT_CTDongNuoc ctdn,HOADON hd where MaDN=dn.MaDN and ctdn.MaHD=hd.ID_HOADON and NGAYGIAITRACH is null)"
-            //                + " or kqdn.MoNuoc=0)"
-            //                + " order by dn.MLT,ctdn.MaHD";
             string sql = "select ID=dn.MaDN,dn.MaDN,MaHD,MLT=MALOTRINH,ctdn.Ky,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
                             + " GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,hd.Code,hd.TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),hd.GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,hd.TongCong,hd.DCHD,hd.TienDuTruoc_DCHD,"
                             + " DangNgan_DienThoai,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_Ngay,TBDongNuoc_NgayHen,"
