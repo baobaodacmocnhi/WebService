@@ -1116,7 +1116,7 @@ namespace WSSmartPhone
                             //        TieuThu_DieuChinhGia = _SH - DinhMuc;
                             //}
                             GiaBan += _DV * int.Parse(dtGiaNuoc.Rows[5]["DonGia"].ToString());
-                            ChiTiet += "\r\n" + _DV + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(dtGiaNuoc.Rows[5]["DonGia"].ToString()) );
+                            ChiTiet += "\r\n" + _DV + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(dtGiaNuoc.Rows[5]["DonGia"].ToString()));
                             //GiaBan -= GiaBan * 10 / 100;
                         }
                         break;
@@ -1158,8 +1158,8 @@ namespace WSSmartPhone
                 ///5. Cơ quan, đoàn thể HCSN
                 ///6. Đơn vị kinh doanh, dịch vụ
                 ///List bắt đầu từ phần tử thứ 0
-               int GiaBan = 0;
-               ChiTiet = "";
+                int GiaBan = 0;
+                ChiTiet = "";
                 switch (GiaBieu)
                 {
                     ///TƯ GIA
@@ -2092,8 +2092,8 @@ namespace WSSmartPhone
                             //    else
                             //        TieuThu_DieuChinhGia = _SH - DinhMuc;
                             //}
-                            GiaBan += _DV * int.Parse(dtGiaNuoc.Rows[5]["DonGia"].ToString()) ;
-                            ChiTiet += "\r\n" + _DV + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(dtGiaNuoc.Rows[5]["DonGia"].ToString()) );
+                            GiaBan += _DV * int.Parse(dtGiaNuoc.Rows[5]["DonGia"].ToString());
+                            ChiTiet += "\r\n" + _DV + " x " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(dtGiaNuoc.Rows[5]["DonGia"].ToString()));
                             //GiaBan -= GiaBan * 10 / 100;
                         }
                         break;
@@ -2112,7 +2112,7 @@ namespace WSSmartPhone
             }
         }
 
-        public bool ThemHinhDHN(string DanhBo, string CreateBy, string imageStr,string Latitude, string Longitude)
+        public bool ThemHinhDHN(string DanhBo, string CreateBy, string imageStr, string Latitude, string Longitude)
         {
             //int ID = 0;
             //if (int.Parse(_DAL.ExecuteQuery_DataTable("select COUNT(ID) from HinhDHN").Rows[0][0].ToString()) == 0)
@@ -2148,6 +2148,7 @@ namespace WSSmartPhone
                 return false;
             }
         }
+
 
     }
 }

@@ -20,6 +20,7 @@ namespace WSSmartPhone
         CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         CKinhDoanh _cKinhDoanh = new CKinhDoanh();
         dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
+        CDHN _cDHN = new CDHN();
 
         public string DataTableToJSON(DataTable table)
         {
@@ -585,7 +586,7 @@ namespace WSSmartPhone
                             TT_DongNuoc dongnuoc = new TT_DongNuoc();
                             dongnuoc.DanhBo = lstHDTemp[0].DANHBA;
                             dongnuoc.HoTen = lstHDTemp[0].TENKH;
-                            dongnuoc.DiaChi = lstHDTemp[0].SO + " " + lstHDTemp[0].DUONG;
+                            dongnuoc.DiaChi = lstHDTemp[0].SO + " " + lstHDTemp[0].DUONG + _cDHN.getPhuongQuan(lstHDTemp[0].DANHBA);
                             dongnuoc.MLT = lstHDTemp[0].MALOTRINH;
                             foreach (HOADON item in lstHDTemp)
                             {
