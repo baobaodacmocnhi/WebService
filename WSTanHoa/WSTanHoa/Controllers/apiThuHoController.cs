@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Transactions;
 using System.Web.Http;
+using System.Web.Http.Description;
 using WSTanHoa.Models;
 using WSTanHoa.Providers;
 
@@ -117,6 +118,7 @@ namespace WSTanHoa.Controllers
         /// </summary>
         /// <param name="DanhBo"></param>
         /// <returns></returns>
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Route("getPhiMoNuoc")]
         public int getPhiMoNuoc(string DanhBo)
         {
@@ -137,6 +139,7 @@ namespace WSTanHoa.Controllers
         /// </summary>
         /// <param name="DanhBo"></param>
         /// <returns></returns>
+        [ApiExplorerSettings(IgnoreApi = true)]
         [Route("getTienDu")]
         public int getTienDu(string DanhBo)
         {
@@ -155,9 +158,7 @@ namespace WSTanHoa.Controllers
         /// <summary>
         /// Lưu Giao Dịch thực hiện
         /// Bước 1: gọi hàm lấy hóa đơn tồn
-        /// Bước 2: gọi hàm lấy phí mở nước
-        /// Bước 3: gọi hàm lấy tiền dư
-        /// Bước 4: gọi hàm insertThuHo
+        /// Bước 2: gọi hàm insertThuHo
         /// </summary>
         /// <param name="DanhBo"></param>
         /// <param name="MaHDs">chuổi Mã Hóa Đơn. ví dụ new string {MaHD1,MaHD2,MaHD3}</param>

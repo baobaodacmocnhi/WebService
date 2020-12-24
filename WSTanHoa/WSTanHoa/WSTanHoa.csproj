@@ -245,6 +245,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\apiThuHoController.cs" />
+    <Compile Include="Controllers\apiThuTienController.cs" />
     <Compile Include="Controllers\apiTrungTamKhachHangController.cs" />
     <Compile Include="Controllers\apiZaloController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Models\KhieuNai.cs" />
     <Compile Include="Models\LichCupNuoc.cs" />
     <Compile Include="Models\ModelTrungTamKhachHang.cs" />
+    <Compile Include="Models\ResultThuTien.cs" />
     <Compile Include="Models\ThuHo.cs" />
     <Compile Include="Models\TrungTamKhachHang.cs" />
     <Compile Include="Models\Zalo.cs" />
