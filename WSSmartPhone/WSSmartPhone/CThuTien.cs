@@ -49,7 +49,7 @@ namespace WSSmartPhone
             return (bool)_cDAL.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
         }
 
-        private bool checkChotDangNgan(String NgayGiaiTrach)
+        private bool checkChotDangNgan(string NgayGiaiTrach)
         {
             if ((int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
                 return true;
@@ -538,7 +538,12 @@ namespace WSSmartPhone
                         if (checkActiveMobile(MaNV) == false)
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(Ngay.ToString("yyyyMMdd")) == true)
-                            return "false;Đã Chốt Ngày Giải Trách";
+                        {
+                            Ngay.AddDays(1);
+                            TimeSpan ts = new TimeSpan(1, 0, 0);
+                            Ngay = Ngay.Date + ts;
+                            //return "false;Đã Chốt Ngày Giải Trách";
+                        }
                         if (bool.Parse(_cDAL.ExecuteQuery_ReturnOneValue("if exists(select ID_HOADON from HOADON where ID_HOADON=" + MaHDs + " and (NAM<2020 or (NAM=2020 and KY<=6)))"
                                                                     + "	select 'true'"
                                                                     + "else"
