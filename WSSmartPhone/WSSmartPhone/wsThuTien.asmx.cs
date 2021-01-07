@@ -87,9 +87,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetDSNhanVienDoi()
+        public string getDS_NhanVien_HanhThu()
         {
-            return _cThuTien.GetDSNhanVien();
+            return _cThuTien.getDS_NhanVien_HanhThu();
         }
 
         [WebMethod]

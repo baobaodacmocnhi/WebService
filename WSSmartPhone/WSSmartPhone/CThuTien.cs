@@ -19,8 +19,9 @@ namespace WSSmartPhone
     {
         CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         CKinhDoanh _cKinhDoanh = new CKinhDoanh();
-        dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
         CDHN _cDHN = new CDHN();
+        CDocSo _cDocSo = new CDocSo();
+        dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
 
         public string DataTableToJSON(DataTable table)
         {
@@ -153,7 +154,7 @@ namespace WSSmartPhone
 
                 //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -235,19 +236,19 @@ namespace WSSmartPhone
 
         public string GetDSTo()
         {
-            string sql = "select MaTo,TenTo,HanhThu from TT_To";
+            string sql = "select MaTo,TenTo,HanhThu from TT_To where An=0";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public string GetDSNhanVien()
+        public string getDS_NhanVien_HanhThu()
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
         public string GetDSNhanVien(string MaTo)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
@@ -497,7 +498,7 @@ namespace WSSmartPhone
             try
             {
                 string sql = "";
-                if (LoaiXuLy != "DongPhi" && LoaiXuLy != "XoaDongPhi")
+                if (LoaiXuLy != "DongPhi" || LoaiXuLy != "XoaDongPhi")
                 {
                     string sqlCheck = "select MaHD=ID_HOADON,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),"
                                         + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
@@ -535,6 +536,7 @@ namespace WSSmartPhone
                 switch (LoaiXuLy)
                 {
                     case "DangNgan":
+                        return "false;Tính năng đã bị Khóa";
                         if (checkActiveMobile(MaNV) == false)
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(Ngay.ToString("yyyyMMdd")) == true)
@@ -564,6 +566,7 @@ namespace WSSmartPhone
                         sql += " where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "DongPhi":
+                        return "false;Tính năng đã bị Khóa";
                         //if (checkActiveMobile(MaNV) == false)
                         //    return "false,Chưa Active Mobile";
                         //if (checkChotDangNgan(Ngay) == true)
@@ -617,6 +620,7 @@ namespace WSSmartPhone
                         sql += " update HOADON set TBDongNuoc_MaNV=" + MaNV + ",TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_Location='" + Location + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "XoaDangNgan":
+                        return "false;Tính năng đã bị Khóa";
                         if (checkQuyenXoa(MaNV) == false)
                             return "false;Tính năng này tạm thời ẩn";
                         if (checkActiveMobile(MaNV) == false)
@@ -626,6 +630,7 @@ namespace WSSmartPhone
                         sql += " update HOADON set XoaDangNgan_MaNV_DienThoai=" + MaNV + ",XoaDangNgan_Ngay_DienThoai='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',XoaDangNgan_Location_DienThoai='" + Location + "',DangNgan_DienThoai=0,DangNgan_Ton=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
                         break;
                     case "XoaDongPhi":
+                        return "false;Tính năng đã bị Khóa";
                         if (checkQuyenXoa(MaNV) == false)
                             return "false;Tính năng này tạm thời ẩn";
                         //if (checkActiveMobile(MaNV) == false)
@@ -2822,24 +2827,28 @@ namespace WSSmartPhone
                 List<HOADON> lst = _dbThuTien.HOADONs.Where(item => item.NAM == Nam && item.KY == Ky && item.DOT == Dot && item.ChiTietTienNuoc == null).ToList();
                 foreach (HOADON item in lst)
                 {
+                    ChiTietCuA = ChiTietCuB = "";
+                    TyleSH = TyLeSX = TyLeDV = TyLeHCSN = DinhMucHN = 0;
+                    if (item.TILESH != null && item.TILESH.Value != 0)
+                        TyleSH = item.TILESH.Value;
+                    if (item.TILESX != null && item.TILESX.Value != 0)
+                        TyLeSX = item.TILESX.Value;
+                    if (item.TILEDV != null && item.TILEDV.Value != 0)
+                        TyLeDV = item.TILEDV.Value;
+                    if (item.TILEHCSN != null && item.TILEHCSN.Value != 0)
+                        TyLeHCSN = item.TILEHCSN.Value;
+                    if (item.DinhMucHN != null)
+                        DinhMucHN = item.DinhMucHN.Value;
                     if (item.TUNGAY != null)
-                    {
-                        ChiTietCuA = ChiTietCuB = "";
-                        TyleSH = TyLeSX = TyLeDV = TyLeHCSN = DinhMucHN = 0;
-                        if (item.TILESH != null && item.TILESH.Value != 0)
-                            TyleSH = item.TILESH.Value;
-                        if (item.TILESX != null && item.TILESX.Value != 0)
-                            TyLeSX = item.TILESX.Value;
-                        if (item.TILEDV != null && item.TILEDV.Value != 0)
-                            TyLeDV = item.TILEDV.Value;
-                        if (item.TILEHCSN != null && item.TILEHCSN.Value != 0)
-                            TyLeHCSN = item.TILEHCSN.Value;
-                        if (item.DinhMucHN != null)
-                            DinhMucHN = item.DinhMucHN.Value;
                         TinhTienNuoc(false, false, 0, item.DANHBA, Ky, Nam, item.TUNGAY.Value, item.DENNGAY.Value, item.GB.Value, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, out TongTienCuA, out ChiTietCuA, out TongTienCuB, out ChiTietCuB, out TieuThu_DieuChinhGia);
-                        item.ChiTietTienNuoc = ChiTietCuA + "\r\n" + ChiTietCuB;
-                        _dbThuTien.SubmitChanges();
+                    else
+                    {
+                        DataTable dt = _cDocSo.get(item.DANHBA, item.NAM.Value.ToString(), item.KY.ToString());
+                        DateTime TuNgay = DateTime.Parse(dt.Rows[0]["TuNgay"].ToString()), DenNgay = DateTime.Parse(dt.Rows[0]["DenNgay"].ToString());
+                        TinhTienNuoc(false, false, 0, item.DANHBA, Ky, Nam, TuNgay, DenNgay, item.GB.Value, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, out TongTienCuA, out ChiTietCuA, out TongTienCuB, out ChiTietCuB, out TieuThu_DieuChinhGia);
                     }
+                    item.ChiTietTienNuoc = ChiTietCuA + "\r\n" + ChiTietCuB;
+                    _dbThuTien.SubmitChanges();
                 }
 
                 return "true; ";
