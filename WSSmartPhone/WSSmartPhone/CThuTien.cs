@@ -58,25 +58,6 @@ namespace WSSmartPhone
                 return false;
         }
 
-        public string DangNhap(string Username, string Password, string UID)
-        {
-            try
-            {
-                string UID_old = _cDAL.ExecuteQuery_ReturnOneValue("select UID from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
-                if (String.IsNullOrEmpty(UID_old) != true && UID_old != "NULL")
-                {
-                    string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0").ToString();
-                    SendNotificationToClient("Thông Báo", "Tài khoản của bạn đã được đăng nhập ở máy khác, Bạn bị đăng xuất tại thiết bị này", MaNV, "DangXuat", "", "", "");
-                }
-                _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
-                return DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select * from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0"));
-            }
-            catch (Exception)
-            {
-                return "[]";
-            }
-        }
-
         public string DangNhaps(string Username, string Password, string IDMobile, string UID)
         {
             try
@@ -162,18 +143,6 @@ namespace WSSmartPhone
             }
         }
 
-        public bool DangXuat(string Username)
-        {
-            try
-            {
-                return _cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'");
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
-
         public string DangXuats(string Username, string UID)
         {
             try
@@ -234,9 +203,9 @@ namespace WSSmartPhone
             return _cDAL.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where UID='" + UID + "' and MaNV=" + MaNV);
         }
 
-        public string GetDSTo()
+        public string getDS_To()
         {
-            string sql = "select MaTo,TenTo,HanhThu from TT_To where An=0";
+            string sql = "select MaTo,TenTo,HanhThu,DongNuoc from TT_To where An=0";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
@@ -246,7 +215,13 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
-        public string GetDSNhanVien(string MaTo)
+        public string getDS_NhanVien()
+        {
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and An=0 order by STT asc";
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_NhanVien(string MaTo)
         {
             string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
@@ -409,57 +384,7 @@ namespace WSSmartPhone
         }
 
         //hành thu
-        public string GetDSHoaDonTon(string MaNV, DateTime NgayDi)
-        {
-            //string sql = "select ID=ID_HOADON,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
-            //            + " NgayGiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
-            //            + " DichVuThu=case when exists(select SOHOADON from TT_DichVuThu where SOHOADON=hd.SOHOADON) then 'true' else 'false' end,"
-            //            + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
-            //            + " from TT_GiaoHDDienThoai ghd,HOADON hd where MaNV=" + MaNV + " and NgayDi='" + NgayDi.ToString("yyyy-MM-dd") + "' and ghd.MaHD=hd.ID_HOADON"
-            //            + " order by MALOTRINH";
-            string sql = "select * from"
-                            + " (select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
-                            + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
-                            + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
-                            + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
-                            + " from HOADON hd where NgayGiaiTrach is null and MaNV_HanhThu=" + MaNV
-                            + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0 and dn.MaNV_DongNuoc is not null))t1"
-                        + " where t1.ID not in (select MaHD from TT_LenhHuy)"
-                        + " order by t1.MLT";
-            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
-        }
-
-        public string GetDSHoaDonTon(string MaNV, string FromDot, string ToDot)
-        {
-            string sql = "select * from"
-                          + " (select ID=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),hd.TongCong,DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
-                          + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
-                          + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
-                          + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
-                          + " from HOADON hd where NgayGiaiTrach is null and MaNV_HanhThu=" + MaNV + " and DOT>=" + FromDot + " and DOT<=" + ToDot
-                          + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0 and dn.MaNV_DongNuoc is not null))t1"
-                      + " where t1.ID not in (select MaHD from TT_LenhHuy)"
-                      + " order by t1.MLT";
-            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
-        }
-
-        public string GetDSHoaDonTon(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
-        {
-            string sql = "select * from"
-                            + " (select ID=ID_HOADON,MaHD=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=hd.SO+' '+hd.DUONG,"
-                            + " GiaBieu=GB,DinhMuc=DM,CSC=CSCU,CSM=CSMOI,TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,TongCong,"
-                            + " GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end,"
-                            + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end,"
-                            + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end,"
-                            + " ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end"
-                            + " from HOADON hd where (NAM<" + Nam + " or (Ky<=" + Ky + " and NAM=" + Nam + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV + " and NgayGiaiTrach is null"
-                            + " and ID_HOADON not in (select ctdn.MaHD from TT_DongNuoc dn,TT_CTDongNuoc ctdn where dn.MaDN=ctdn.MaDN and dn.Huy=0 and dn.MaNV_DongNuoc is not null))t1"
-                            + " where t1.ID not in (select MaHD from TT_LenhHuy)"
-                            + " order by t1.MLT";
-            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
-        }
-
-        public string GetDSHoaDonTon_HoaDonDienTu(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
+        public string getDSHoaDonTon_NhanVien(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
         {
             string sql = "select ID=ID_HOADON,MaHD=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=case when hd.SO is null then hd.DUONG else case when hd.DUONG is null then hd.SO else hd.SO+' '+hd.DUONG end end,CoDH"
                             + " ,GiaBieu=GB,DinhMuc=DM,DinhMucHN,CSC=CSCU,CSM=CSMOI,Code,TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,TongCong"
@@ -479,8 +404,6 @@ namespace WSSmartPhone
                             + " ,LenhHuyCat=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON and Cat=1) then 'true' else 'false' end"
                             + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=hd.DANHBA)"
                             + " ,DongA=case when exists(select DanhBo from TT_DuLieuKhachHang_DanhBo where DanhBo=hd.DANHBA) then 'true' else 'false' end"
-                //+ " ,CuaHangThuHo1=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))"
-                //+ " ,CuaHangThuHo2=(select top 1 [Name]+': '+DiaChi from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc) and ID not in((select top 1 ID from TT_DichVuThu_CuaHang where hd.DOT=(select top 1 Dot from HOADON where DANHBA=DanhBo order by CreateDate desc) and hd.MaNV_HanhThu=(select top 1 MaNV_HanhThu from HOADON where DANHBA=DanhBo order by CreateDate desc))))"
                             + " ,CuaHangThuHo1,CuaHangThuHo2"
                             + " from HOADON hd"
                             + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
@@ -489,7 +412,37 @@ namespace WSSmartPhone
                             + " and hd.SOHOADON not in (select SoHoaDon from TT_HoaDon_KhongTHu)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " order by MLT asc,ID_HOADON desc";
-            //or (Nam=2020 and KY in (4,5,6) and DANHBA in (select DanhBo from TT_ThoatNgheo))
+            return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDSHoaDonTon_May(string MaNV, string Nam, string Ky, string FromDot, string ToDot, string TuMay, string DenMay)
+        {
+            string sql = "select ID=ID_HOADON,MaHD=ID_HOADON,MLT=MALOTRINH,hd.SoHoaDon,Ky=CAST(hd.KY as varchar)+'/'+CAST(hd.NAM as varchar),DanhBo=hd.DANHBA,HoTen=hd.TENKH,DiaChi=case when hd.SO is null then hd.DUONG else case when hd.DUONG is null then hd.SO else hd.SO+' '+hd.DUONG end end,CoDH"
+                            + " ,GiaBieu=GB,DinhMuc=DM,DinhMucHN,CSC=CSCU,CSM=CSMOI,Code,TieuThu,TuNgay=CONVERT(varchar(10),TUNGAY,103),DenNgay=CONVERT(varchar(10),DenNgay,103),GiaBan,ThueGTGT=Thue,PhiBVMT=Phi,TongCong"
+                            + " ,GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end"
+                            + " ,TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
+                            + " ,ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
+                            + " ,ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end"
+                //+ " ,DangNgan_DienThoai=case when MaNV_DangNgan=" + MaNV + " then DangNgan_DienThoai else 'false' end"
+                            + " ,DangNgan_DienThoai"
+                            + " ,MaNV_DangNgan,NgayGiaiTrach,XoaDangNgan_Ngay_DienThoai,InPhieuBao_Ngay,InPhieuBao2_Ngay,InPhieuBao2_NgayHen,TBDongNuoc_NgayHen,DCHD,TienDuTruoc_DCHD"
+                            + " ,TBDongNuoc_Ngay=(select a.CreateDate from TT_DongNuoc a,TT_CTDongNuoc b where a.MaDN=b.MaDN and Huy=0 and b.MaHD=hd.ID_HOADON)"
+                            + " ,PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA))"
+                            + " ,PhiMoNuocThuHo=(select a.PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=hd.ID_HOADON and a.ID=b.IDDichVu)"
+                            + " ,MaKQDN=(select MaKQDN from TT_DongNuoc a,TT_KQDongNuoc b where a.Huy=0 and b.DanhBo=hd.DANHBA and b.MoNuoc=0 and b.TroNgaiMN=0 and a.MaDN=b.MaDN)"
+                            + " ,DongPhi =(select DongPhi from TT_DongNuoc a,TT_KQDongNuoc b where a.Huy=0 and b.DanhBo=hd.DANHBA and b.MoNuoc=0 and b.TroNgaiMN=0 and a.MaDN=b.MaDN)"
+                            + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
+                            + " ,LenhHuyCat=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON and Cat=1) then 'true' else 'false' end"
+                            + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=hd.DANHBA)"
+                            + " ,DongA=case when exists(select DanhBo from TT_DuLieuKhachHang_DanhBo where DanhBo=hd.DANHBA) then 'true' else 'false' end"
+                            + " ,CuaHangThuHo1,CuaHangThuHo2"
+                            + " from HOADON hd"
+                            + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV + " and MAY>=" + TuMay + " and MAY<=" + DenMay
+                            + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
+                            + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
+                            + " and hd.SOHOADON not in (select SoHoaDon from TT_HoaDon_KhongTHu)"
+                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
+                            + " order by MLT asc,ID_HOADON desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 

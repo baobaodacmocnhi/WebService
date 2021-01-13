@@ -27,12 +27,6 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string DangNhap(string Username, string Password, string UID)
-        {
-            return _cThuTien.DangNhap(Username, Password, UID);
-        }
-
-        [WebMethod]
         public string DangNhaps(string Username, string Password, string IDMobile, string UID)
         {
             return _cThuTien.DangNhaps(Username, Password, IDMobile, UID);
@@ -42,12 +36,6 @@ namespace WSSmartPhone
         public string DangNhaps_Admin(string Username, string Password, string IDMobile, string UID)
         {
             return _cThuTien.DangNhaps_Admin(Username, Password, IDMobile, UID);
-        }
-
-        [WebMethod]
-        public bool DangXuat(string Username)
-        {
-            return _cThuTien.DangXuat(Username);
         }
 
         [WebMethod]
@@ -83,7 +71,7 @@ namespace WSSmartPhone
         [WebMethod]
         public string GetDSTo()
         {
-            return _cThuTien.GetDSTo();
+            return _cThuTien.getDS_To();
         }
 
         [WebMethod]
@@ -95,7 +83,13 @@ namespace WSSmartPhone
         [WebMethod]
         public string GetDSNhanVienTo(string MaTo)
         {
-            return _cThuTien.GetDSNhanVien(MaTo);
+            return _cThuTien.getDS_NhanVien(MaTo);
+        }
+
+        [WebMethod]
+        public string getDS_NhanVien()
+        {
+            return _cThuTien.getDS_NhanVien();
         }
 
         //send notification
@@ -107,25 +101,19 @@ namespace WSSmartPhone
 
         //hành thu
         [WebMethod]
-        public string GetDSHoaDonTon(string MaNV, string NgayDi)
+        public string getDSHoaDonTon_NhanVien(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
         {
-            return _cThuTien.GetDSHoaDonTon(MaNV, DateTime.ParseExact(NgayDi, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+            return _cThuTien.getDSHoaDonTon_NhanVien(MaNV, Nam, Ky, FromDot, ToDot);
         }
 
         [WebMethod]
-        public string GetDSHoaDonTon_Dot(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
+        public string getDSHoaDonTon_May(string MaNV, string Nam, string Ky, string FromDot, string ToDot, string TuMay, string DenMay)
         {
-            return _cThuTien.GetDSHoaDonTon(MaNV, Nam, Ky, FromDot, ToDot);
+            return _cThuTien.getDSHoaDonTon_May(MaNV, Nam, Ky, FromDot, ToDot, TuMay, DenMay);
         }
 
         [WebMethod]
-        public string GetDSHoaDonTon_Dot_HoaDonDienTu(string MaNV, string Nam, string Ky, string FromDot, string ToDot)
-        {
-            return _cThuTien.GetDSHoaDonTon_HoaDonDienTu(MaNV, Nam, Ky, FromDot, ToDot);
-        }
-
-        [WebMethod]
-        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen, string MaKQDN, string XoaDCHD,string Location)
+        public string XuLy_HoaDonDienTu(string LoaiXuLy, string MaNV, string MaHDs, string Ngay, string NgayHen, string MaKQDN, string XoaDCHD, string Location)
         {
             IFormatProvider culture = new CultureInfo("en-US", true);
             DateTime date = new DateTime(), date2 = new DateTime();
