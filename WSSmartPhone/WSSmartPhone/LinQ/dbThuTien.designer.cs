@@ -2019,7 +2019,9 @@ namespace WSSmartPhone.LinQ
 		
 		private string _ChiTietTienNuoc;
 		
-		private string _CuaHangThuHo;
+		private string _CuaHangThuHo1;
+		
+		private string _CuaHangThuHo2;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -2235,8 +2237,10 @@ namespace WSSmartPhone.LinQ
     partial void OnSyncNopTien_NgayChanged();
     partial void OnChiTietTienNuocChanging(string value);
     partial void OnChiTietTienNuocChanged();
-    partial void OnCuaHangThuHoChanging(string value);
-    partial void OnCuaHangThuHoChanged();
+    partial void OnCuaHangThuHo1Changing(string value);
+    partial void OnCuaHangThuHo1Changed();
+    partial void OnCuaHangThuHo2Changing(string value);
+    partial void OnCuaHangThuHo2Changed();
     #endregion
 		
 		public HOADON()
@@ -4324,7 +4328,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChiTietTienNuoc", DbType="VarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ChiTietTienNuoc", DbType="VarChar(200)")]
 		public string ChiTietTienNuoc
 		{
 			get
@@ -4344,22 +4348,42 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CuaHangThuHo", DbType="NVarChar(200)")]
-		public string CuaHangThuHo
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CuaHangThuHo1", DbType="NVarChar(200)")]
+		public string CuaHangThuHo1
 		{
 			get
 			{
-				return this._CuaHangThuHo;
+				return this._CuaHangThuHo1;
 			}
 			set
 			{
-				if ((this._CuaHangThuHo != value))
+				if ((this._CuaHangThuHo1 != value))
 				{
-					this.OnCuaHangThuHoChanging(value);
+					this.OnCuaHangThuHo1Changing(value);
 					this.SendPropertyChanging();
-					this._CuaHangThuHo = value;
-					this.SendPropertyChanged("CuaHangThuHo");
-					this.OnCuaHangThuHoChanged();
+					this._CuaHangThuHo1 = value;
+					this.SendPropertyChanged("CuaHangThuHo1");
+					this.OnCuaHangThuHo1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CuaHangThuHo2", DbType="NVarChar(200)")]
+		public string CuaHangThuHo2
+		{
+			get
+			{
+				return this._CuaHangThuHo2;
+			}
+			set
+			{
+				if ((this._CuaHangThuHo2 != value))
+				{
+					this.OnCuaHangThuHo2Changing(value);
+					this.SendPropertyChanging();
+					this._CuaHangThuHo2 = value;
+					this.SendPropertyChanged("CuaHangThuHo2");
+					this.OnCuaHangThuHo2Changed();
 				}
 			}
 		}
