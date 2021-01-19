@@ -2264,7 +2264,7 @@ namespace WSSmartPhone
                         {
                             //_cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')");
                             _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "')"
-                                           + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')"
+                                           + " insert into Temp_SyncHoaDon([Action],SoHoaDon,Result)values('NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')"
                                            + " else update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "'");
                         }
                         result = "true;" + obj["status"] + " = " + obj["message"];
@@ -2355,7 +2355,7 @@ namespace WSSmartPhone
                         {
                             //_cDAL.ExecuteNonQuery("insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')");
                             _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "')"
-                                           + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')"
+                                           + " insert into Temp_SyncHoaDon([Action],SoHoaDon,Result)values('NopTien','" + dt.Rows[0]["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')"
                                            + " else update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where SoHoaDon='" + dt.Rows[0]["SoHoaDon"].ToString() + "'");
                         }
                         result = "true;" + obj["status"] + " = " + obj["message"];
@@ -2456,7 +2456,7 @@ namespace WSSmartPhone
                                         else
                                         {
                                             _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
-                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
+                                            + " insert into Temp_SyncHoaDon([Action],SoHoaDon,Result)values('NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
                                             + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'");
                                         }
                                     }
@@ -2565,7 +2565,7 @@ namespace WSSmartPhone
                                         else
                                         {
                                             _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
-                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
+                                            + " insert into Temp_SyncHoaDon([Action],SoHoaDon,Result)values('NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
                                             + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'");
                                         }
                                     }
@@ -2674,7 +2674,7 @@ namespace WSSmartPhone
                                         else
                                         {
                                             _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
-                                            + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
+                                            + " insert into Temp_SyncHoaDon([Action],SoHoaDon,Result)values('NopTien','" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
                                             + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'");
                                         }
                                     }
@@ -2713,7 +2713,7 @@ namespace WSSmartPhone
                 else
                 {
                     _cDAL.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "')"
-                    + " insert into Temp_SyncHoaDon(ID,[Action],SoHoaDon,Result)values((select ID=case when not exists (select ID from Temp_SyncHoaDon) then 1 else MAX(ID)+1 end from Temp_SyncHoaDon),'NopTien','" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "',N'" + itemResult.result[i].Status + " = " + itemResult.result[i].Message + "')"
+                    + " insert into Temp_SyncHoaDon([Action],SoHoaDon,Result)values('NopTien','" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "',N'" + itemResult.result[i].Status + " = " + itemResult.result[i].Message + "')"
                     + " else update Temp_SyncHoaDon set Result=N'" + itemResult.result[i].Status + " = " + itemResult.result[i].Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)itemResult.result[i].SoHD).ToString("0000000") + "'");
                 }
             }
