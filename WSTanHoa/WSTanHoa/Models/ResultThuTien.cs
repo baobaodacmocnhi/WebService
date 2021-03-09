@@ -11,13 +11,13 @@ namespace WSTanHoa.Models
 
         public string message { get; set; }
 
-        public Logger logger { get; set}
+        public Logger logger { get; set; }
 
         public ResultThuTien()
         {
             success = false;
             message = "Không Có Kết Quả";
-            nguoidung = new Logger();
+            logger = new Logger();
         }
 
         public ResultThuTien(bool success, string message)
