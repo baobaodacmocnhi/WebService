@@ -411,6 +411,7 @@ namespace WSSmartPhone
                             //+ " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
                             + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null))"
                             + " and hd.SOHOADON not in (select SoHoaDon from TT_HoaDon_KhongThu)"
+                            + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " order by MLT asc,ID_HOADON desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
@@ -443,6 +444,7 @@ namespace WSSmartPhone
                             //+ " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
                             + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null))"
                             + " and hd.SOHOADON not in (select SoHoaDon from TT_HoaDon_KhongThu)"
+                            + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " order by MLT asc,ID_HOADON desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
@@ -1296,6 +1298,8 @@ namespace WSSmartPhone
                  //+ " and ((GB!=10 and DinhMucHN is null) or (Nam=2020 and KY in (4,5,6) and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
                 //+ " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null) or (Nam=2020 and DANHBA in (select DanhBo from TT_ThoatNgheo)))"
                  + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null))"
+                 + " and hd.SOHOADON not in (select SoHoaDon from TT_HoaDon_KhongThu)"
+                 + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
