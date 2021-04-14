@@ -94,7 +94,7 @@ namespace WSSmartPhone
 
                 //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,Zalo,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -135,7 +135,7 @@ namespace WSSmartPhone
 
                 //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,Zalo,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -211,19 +211,19 @@ namespace WSSmartPhone
 
         public string getDS_NhanVien_HanhThu()
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
         public string getDS_NhanVien()
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
         public string getDS_NhanVien(string MaTo)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
 
@@ -835,7 +835,7 @@ namespace WSSmartPhone
 
         public string GetDSDongNuoc(string MaNV_DongNuoc)
         {
-            string query = "select ID=dn.MaDN,dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT"
+            string query = "select ID=dn.MaDN,dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,dn.CreateDate"
                             + " ,DiaChiDHN=(select DiaChi from TT_DiaChiDHN where DanhBo=dn.DanhBo)"
                             + " ,Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end"
                             + " ,Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end"
@@ -863,7 +863,7 @@ namespace WSSmartPhone
 
         public string GetDSDongNuoc(string MaNV_DongNuoc, DateTime FromNgayGiao, DateTime ToNgayGiao)
         {
-            string query = "select ID=dn.MaDN,dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,"
+            string query = "select ID=dn.MaDN,dn.MaDN,dn.DanhBo,dn.HoTen,dn.DiaChi,dn.MLT,dn.CreateDate"
                             + " DiaChiDHN=(select [SONHA]+' '+[TENDUONG] FROM [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] where DanhBo=dn.DanhBo),"
                             + " Hieu=case when kqdn.Hieu is not null then kqdn.Hieu else (select Hieu=ttkh.HIEUDH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
                             + " Co=case when kqdn.Co is not null then kqdn.Co else (select ttkh.CODH from [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=dn.DanhBo) end,"
