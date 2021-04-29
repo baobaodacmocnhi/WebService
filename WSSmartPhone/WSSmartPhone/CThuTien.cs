@@ -26,6 +26,7 @@ namespace WSSmartPhone
         public string DataTableToJSON(DataTable table)
         {
             JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+            jsSerializer.MaxJsonLength = Int32.MaxValue; 
             List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
             Dictionary<string, object> childRow;
             foreach (DataRow row in table.Rows)
