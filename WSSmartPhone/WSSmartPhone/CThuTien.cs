@@ -1875,7 +1875,7 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where ID_HOADON=" + MaHD);
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where BaoCaoThue=0 and ID_HOADON=" + MaHD);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/thanhtoan");
@@ -1980,7 +1980,7 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where SOHOADON='" + SoHoaDon + "'");
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where BaoCaoThue=0 and SOHOADON='" + SoHoaDon + "'");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/thanhtoan");
@@ -2087,9 +2087,9 @@ namespace WSSmartPhone
             {
                 DataTable dt;
                 if (GiaiTrach == true)
-                    dt = _cDAL.ExecuteQuery_DataTable("select SoHoaDon,NGAYGIAITRACH=(select convert(varchar, CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu where MaHD=" + MaHD);
+                    dt = _cDAL.ExecuteQuery_DataTable("select SoHoaDon,NGAYGIAITRACH=(select convert(varchar, CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu where EXISTS(select * from HOADON where MaHD="+MaHD+" and BaoCaoThue=0) and MaHD=" + MaHD);
                 else
-                    dt = _cDAL.ExecuteQuery_DataTable("select SoHoaDon,NGAYGIAITRACH=(select convert(varchar, CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu_Huy where MaHD=" + MaHD);
+                    dt = _cDAL.ExecuteQuery_DataTable("select SoHoaDon,NGAYGIAITRACH=(select convert(varchar, CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu_Huy where EXISTS(select * from HOADON where MaHD=" + MaHD + " and BaoCaoThue=0) and MaHD=" + MaHD);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/thanhtoan");
@@ -2201,7 +2201,7 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where ID_HOADON=" + MaHD);
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where BaoCaoThue=0 and ID_HOADON=" + MaHD);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptien");
@@ -2292,7 +2292,7 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where SOHOADON='" + SoHoaDon + "'");
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where BaoCaoThue=0 and SOHOADON='" + SoHoaDon + "'");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptien");
@@ -2383,12 +2383,12 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 group by SUBSTRING(SOHOADON,0,7)");
+                DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and BaoCaoThue=0 group by SUBSTRING(SOHOADON,0,7)");
                 if (dtSerial == null || dtSerial.Rows.Count == 0)
                     result = "false;" + "Đã Nộp Tiền rồi";
                 foreach (DataRow itemSerial in dtSerial.Rows)
                 {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
@@ -2402,7 +2402,7 @@ namespace WSSmartPhone
                             request.ContentType = "application/json; charset=utf-8";
 
                             var lstHD = new List<HoaDonNopTienLo>();
-                            dt = _cDAL.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                            dt = _cDAL.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                             foreach (DataRow item in dt.Rows)
                             {
                                 string NgayNopTien = "", HinhThucThanhToan = "";
@@ -2492,12 +2492,12 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY<12 and DCHD=0 group by SUBSTRING(SOHOADON,0,7)");
+                DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY<12 and DCHD=0 and BaoCaoThue=0 group by SUBSTRING(SOHOADON,0,7)");
                 if (dtSerial == null || dtSerial.Rows.Count == 0)
                     result = "false;" + "Đã Nộp Tiền rồi";
                 foreach (DataRow itemSerial in dtSerial.Rows)
                 {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY<12 and DCHD=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY<12 and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
@@ -2601,12 +2601,12 @@ namespace WSSmartPhone
             string result = "";
             try
             {
-                DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY=12 and DCHD=0 group by SUBSTRING(SOHOADON,0,7)");
+                DataTable dtSerial = _cDAL.ExecuteQuery_DataTable("select serial=SUBSTRING(SOHOADON,0,7) from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY=12 and DCHD=0 and BaoCaoThue=0 group by SUBSTRING(SOHOADON,0,7)");
                 if (dtSerial == null || dtSerial.Rows.Count == 0)
                     result = "false;" + "Đã Nộp Tiền rồi";
                 foreach (DataRow itemSerial in dtSerial.Rows)
                 {
-                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY=12 and DCHD=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                    DataTable dt = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY=12 and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
@@ -2620,7 +2620,7 @@ namespace WSSmartPhone
                             request.ContentType = "application/json; charset=utf-8";
 
                             var lstHD = new List<HoaDonNopTienLo>();
-                            dt = _cDAL.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY=12 and DCHD=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                            dt = _cDAL.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY=12 and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                             foreach (DataRow item in dt.Rows)
                             {
                                 string NgayNopTien = "", HinhThucThanhToan = "";
