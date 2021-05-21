@@ -389,7 +389,7 @@ namespace WSTanHoa.Controllers
                 DateTime date = DateTime.Now;
                 if (date.Date.DayOfWeek == DayOfWeek.Saturday || date.Date.DayOfWeek == DayOfWeek.Sunday)
                 {
-                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hện Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Hoặc liên hệ tổng đài 19006489 để được giải đáp nhanh hơn. Xin cám ơn!");
+                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Hoặc liên hệ tổng đài 19006489 để được giải đáp nhanh hơn. Xin cám ơn!");
                 }
                 else
                     if ((date.Hour == 17 && date.Minute > 0)
@@ -397,7 +397,7 @@ namespace WSTanHoa.Controllers
                     || date.Hour < 7
                     || (date.Hour == 7 && date.Minute < 30))
                 {
-                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hện Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Hoặc liên hệ tổng đài 19006489 để được giải đáp nhanh hơn. Xin cám ơn!");
+                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Hoặc liên hệ tổng đài 19006489 để được giải đáp nhanh hơn. Xin cám ơn!");
                 }
             }
             catch (Exception ex)
