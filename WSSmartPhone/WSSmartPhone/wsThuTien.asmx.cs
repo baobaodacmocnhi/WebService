@@ -392,6 +392,12 @@ namespace WSSmartPhone
             return _cThuTien.showError_NopTien(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
         }
 
+        [WebMethod]
+        public string showHDDCBaoCaoThue(string NgayGiaiTrach)
+        {
+            return _cThuTien.showHDDCBaoCaoThue(DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture));
+        }
+
         //chi tiết tiền nước
         [WebMethod]
         public string updateChiTietTienNuoc(string Nam, string Ky, string Dot)

@@ -1745,8 +1745,10 @@ namespace WSSmartPhone
                         + " TCHDDT=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null),"
                         + " SLHDDTDC=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is not null),"
                         + " TCHDDTDC=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is not null),"
-                        + " SLHDDTSach=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is null),"
-                        + " TCHDDTSach=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is null),"
+                        + " SLHDDTDCBCT=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and BaoCaoThue=1),"
+                        + " TCHDDTDCBCT=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and BaoCaoThue=1),"
+                        + " SLHDDTSach=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is null and BaoCaoThue=0),"
+                        + " TCHDDTSach=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and (NAM>2020 or (NAM=2020 and KY>=7)) and MaNV_DangNgan is not null and SoHoaDonCu is null and BaoCaoThue=0),"
                         + " SLNopTien=(select COUNT(ID_HOADON) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and SyncNopTien=1),"
                         + " TCNopTien=(select SUM(TONGCONG) from HOADON where CAST(NGAYGIAITRACH as date)=CAST(NgayChot as date) and SyncNopTien=1)"
                         + " from TT_ChotDangNgan where CAST(NgayChot as date)>='" + FromNgayGiaiTrach.ToString("yyyyMMdd") + "' and CAST(NgayChot as date)<='" + ToNgayGiaiTrach.ToString("yyyyMMdd") + "'"
@@ -1793,7 +1795,23 @@ namespace WSSmartPhone
         {
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=hd.DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),tmp.Result from HOADON hd,Temp_SyncHoaDon tmp where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and SyncNopTien=0 and hd.SOHOADON=tmp.SoHoaDon");
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=hd.DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),Result=(select Result from Temp_SyncHoaDon where SoHoaDon=HOADON.SOHOADON) from HOADON where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and SyncNopTien=0 and MaNV_DangNgan is not null and (NAM>2020 or (NAM=2020 and KY>=7)) and BaoCaoThue=0");
+                if (dt != null && dt.Rows.Count > 0)
+                    return "true;" + DataTableToJSON(dt);
+                else
+                    return "false;Không có hóa đơn";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string showHDDCBaoCaoThue(DateTime NgayGiaiTrach)
+        {
+            try
+            {
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=hd.DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),Result=(select Result from Temp_SyncHoaDon where SoHoaDon=HOADON.SOHOADON) from HOADON where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and (NAM>2020 or (NAM=2020 and KY>=7)) and BaoCaoThue=1");
                 if (dt != null && dt.Rows.Count > 0)
                     return "true;" + DataTableToJSON(dt);
                 else
