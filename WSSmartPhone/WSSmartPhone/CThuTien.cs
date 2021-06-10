@@ -1795,7 +1795,7 @@ namespace WSSmartPhone
         {
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=hd.DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),Result=(select Result from Temp_SyncHoaDon where SoHoaDon=HOADON.SOHOADON) from HOADON where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and SyncNopTien=0 and MaNV_DangNgan is not null and (NAM>2020 or (NAM=2020 and KY>=7)) and BaoCaoThue=0");
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),Result=(select Result from Temp_SyncHoaDon where SoHoaDon=HOADON.SOHOADON) from HOADON where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and SyncNopTien=0 and MaNV_DangNgan is not null and (NAM>2020 or (NAM=2020 and KY>=7)) and BaoCaoThue=0");
                 if (dt != null && dt.Rows.Count > 0)
                     return "true;" + DataTableToJSON(dt);
                 else
@@ -1811,7 +1811,7 @@ namespace WSSmartPhone
         {
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=hd.DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),Result=(select Result from Temp_SyncHoaDon where SoHoaDon=HOADON.SOHOADON) from HOADON where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and (NAM>2020 or (NAM=2020 and KY>=7)) and BaoCaoThue=1");
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),Result=(select Result from Temp_SyncHoaDon where SoHoaDon=HOADON.SOHOADON) from HOADON where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and (NAM>2020 or (NAM=2020 and KY>=7)) and BaoCaoThue=1");
                 if (dt != null && dt.Rows.Count > 0)
                     return "true;" + DataTableToJSON(dt);
                 else
