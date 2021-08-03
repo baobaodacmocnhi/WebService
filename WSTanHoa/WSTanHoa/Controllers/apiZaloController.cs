@@ -92,9 +92,19 @@ namespace WSTanHoa.Controllers
                                 //insert lịch sử truy vấn
                                 //sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",N'" + message + "',getdate())";
                                 //_cDAL_TrungTam.ExecuteNonQuery(sql);
-                                string[] messagesCSN = message.Split('_');
+                                string[] messagesCSN = null;
+                                if (message.ToUpper().Contains("CSN_") == true)
+                                    messagesCSN = message.Split('_');
+                                else
+                                    if (message.ToUpper().Contains("CSN-") == true)
+                                    messagesCSN = message.Split('-');
+                                else
+                                    if (message.ToUpper().Contains("CSN ") == true)
+                                    messagesCSN = message.Split(' ');
+
                                 string[] messagesKyHD = message.Split('/');
-                                if (messagesCSN.Count() > 1)
+
+                                if (messagesCSN != null && messagesCSN.Count() > 1)
                                 {
                                     if (messagesCSN[0].ToUpper() == "CSN")
                                     {
@@ -330,8 +340,8 @@ namespace WSTanHoa.Controllers
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         DataRow drLich = apiTTKH.getLichDocSo_Func_DataRow(dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["MLT"].ToString());
-                        //nếu trước 2 ngày
-                        if (DateTime.Now.Date < DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-2))
+                        //nếu trước 1 ngày
+                        if (DateTime.Now.Date < DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-1))
                         {
                             strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nChưa đến kỳ đọc số tiếp theo, Vui lòng tra cứu lịch đọc số");
                             return;
@@ -354,7 +364,7 @@ namespace WSTanHoa.Controllers
                         string sql = "select top 1 * from DocSo_Zalo where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' order by CreateDate desc";
                         DataTable dtResult = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
                         if (dtResult != null && dtResult.Rows.Count > 0)
-                            if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-2)
+                            if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-1)
                                 || DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
                             {
                                 strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nDanh Bộ này đã gửi chỉ số nước rồi");
