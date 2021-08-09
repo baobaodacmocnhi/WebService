@@ -281,6 +281,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Image\giaybaotiennuoc.png" />
+    <Content Include="Image\giaybaotiennuoc2021.png" />
     <Content Include="Image\logoctycp.png" />
     <Content Include="Image\zaloOACover1333x750.png" />
     <Content Include="Image\zalothongbaotamngungcungcapnuoc.jpg" />

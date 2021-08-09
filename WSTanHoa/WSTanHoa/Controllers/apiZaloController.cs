@@ -23,10 +23,13 @@ namespace WSTanHoa.Controllers
         CConnection _cDAL_DocSo = new CConnection(CConstantVariable.DocSo);
         string access_token = "YU3XJkQE9XM8xEXEuuKk5udcuaxkacnXuONCOzYx1rMnYP9Al8C2SwoxloJ0bN0EhBZBB9AtGnI2XkLNbfrCIgM-ddsLbm9QiE3FTwxV24oeuQHhcjWqVO7xkcJlmm10Wj6POwd1F6-NxV9gf_9VLg7Ba6Aomm5VkicOLepH80sqtAaqdCC1Q_RpjJt1v7WnwjYrCfYn8MInYUSveBHe4fs7eGk9i6i2lPFw3gQnNogoWTKMteHeIkADrcxquazdsjlnVx7ZGsIqxUL6dUSZJv24a4FubI9tIsLVMlzkvPGj6G";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
-        //string _url = "https://service.cskhtanhoa.com.vn";
-        //string _urlImage = "https://service.cskhtanhoa.com.vn/Image";
-        string _url = "http://service.capnuoctanhoa.com.vn:1010";
-        string _urlImage = "http://service.capnuoctanhoa.com.vn:1010/Image";
+        JavaScriptSerializer _jss = new JavaScriptSerializer();
+        string _url = "https://service.cskhtanhoa.com.vn";
+        string _urlImage = "https://service.cskhtanhoa.com.vn/Image";
+        //string _url = "http://service.capnuoctanhoa.com.vn:1010";
+        //string _urlImage = "http://service.capnuoctanhoa.com.vn:1010/Image";
+
+        string _IDZalo = "4276209776391262580";
 
         /// <summary>
         /// webhook receive zalo
@@ -40,7 +43,7 @@ namespace WSTanHoa.Controllers
         public string webhook(string IDZalo, string event_name, string message)
         {
             log4net.ILog _log = log4net.LogManager.GetLogger("File");
-            string strResponse = "success";
+            string strResponse = "";
             try
             {
                 //if (mac == getSHA256(oaid + fromuid + msgid + message + timestamp + "cCBBIsEx7UDj42KA1N5Y"))
@@ -48,14 +51,14 @@ namespace WSTanHoa.Controllers
                 if (event_name == "follow")
                 {
                     sendMessageDangKy(IDZalo);
-                    string sql = "if not exists(select * from ZaloQuanTam where IDZalo=" + IDZalo + ")"
-                        + " insert into ZaloQuanTam(IDZalo, CreateDate)values(" + IDZalo + ", GETDATE())";
+                    string sql = "if not exists(select * from Zalo_QuanTam where IDZalo=" + IDZalo + ")"
+                        + " insert into Zalo_QuanTam(IDZalo, CreateDate)values(" + IDZalo + ", GETDATE())";
                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
                 //bấm bỏ quan tâm
                 if (event_name == "unfollow")
                 {
-                    string sql = "delete ZaloQuanTam where IDZalo=" + IDZalo;
+                    string sql = "delete Zalo_QuanTam where IDZalo=" + IDZalo;
                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
                 if (event_name == "user_send_text")
@@ -156,10 +159,10 @@ namespace WSTanHoa.Controllers
                                 + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3\n";
                             if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                 content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + "đ\n"
-                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + "đ\n"
-                                    + "    Phí BVMT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + "đ\n"
-                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n\n";
+                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
+                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
+                                    + "    Phí BVMT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
+                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
                         }
                         strResponse = sendMessage(IDZalo, content);
                     }
@@ -196,10 +199,10 @@ namespace WSTanHoa.Controllers
                                 + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3\n";
                             if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                 content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + "đ\n"
-                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + "đ\n"
-                                    + "    Phí BVMT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + "đ\n"
-                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n\n";
+                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
+                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
+                                    + "    Phí BVMT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
+                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
                         }
                         strResponse = sendMessage(IDZalo, content);
                     }
@@ -237,10 +240,10 @@ namespace WSTanHoa.Controllers
                                 + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3\n";
                             if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                 content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + "đ\n"
-                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + "đ\n"
-                                    + "    Phí BVMT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + "đ\n"
-                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + "đ\n\n";
+                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
+                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
+                                    + "    Phí BVMT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
+                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
                         }
                         strResponse = sendMessage(IDZalo, content);
                     }
@@ -426,7 +429,7 @@ namespace WSTanHoa.Controllers
         [HttpGet]
         public string sendMessage(string IDZalo, string message)
         {
-            string strResponse = "success";
+            string strResponse = "";
             try
             {
                 string url = "https://openapi.zalo.me/v2.0/oa/message?access_token=" + access_token;
@@ -465,7 +468,8 @@ namespace WSTanHoa.Controllers
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
                     StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    strResponse = read.ReadToEnd();
+                    jsonReult deserializedResult = _jss.Deserialize<jsonReult>(read.ReadToEnd());
+                    strResponse = deserializedResult.message;
                     read.Close();
                     respuesta.Close();
                 }
@@ -491,7 +495,7 @@ namespace WSTanHoa.Controllers
         [HttpGet]
         public string sendMessageDangKy(string IDZalo)
         {
-            string strResponse = "success";
+            string strResponse = "";
             try
             {
                 string url = "https://openapi.zalo.me/v2.0/oa/message?access_token=" + access_token;
@@ -539,7 +543,8 @@ namespace WSTanHoa.Controllers
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
                     StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    strResponse = read.ReadToEnd();
+                    jsonReult deserializedResult = _jss.Deserialize<jsonReult>(read.ReadToEnd());
+                    strResponse = deserializedResult.message;
                     read.Close();
                     respuesta.Close();
                 }
@@ -566,7 +571,7 @@ namespace WSTanHoa.Controllers
         [HttpGet]
         public string sendMessageCupNuoc(string IDZalo, string message)
         {
-            string strResponse = "success";
+            string strResponse = "";
             try
             {
                 string url = "https://openapi.zalo.me/v2.0/oa/message?access_token=" + access_token;
@@ -675,6 +680,238 @@ namespace WSTanHoa.Controllers
                         + " union all"
                         + " select top 1 'CSC: ' + CONVERT(varchar(10), CSCU) + '    ' + 'CSM: ' + CONVERT(varchar(10), CSMOI) from TT_HoaDonCu where DANHBA='" + DanhBo + "' and NAM=" + Nam + " and KY=" + Ky;
             return _cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
+        }
+
+        /// <summary>
+        /// Gửi tin nhắn thông báo đến ngày ghi chỉ số nước
+        /// </summary>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("ThongBaoNgayGhiChiSoNuoc")]
+        [HttpGet]
+        public string ThongBaoNgayGhiChiSoNuoc(string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CConstantVariable.cheksum)
+                {
+                    //string sql = "select Nam=2021, Ky=8, NgayDoc=GETDATE(), IDZalo='4276209776391262580', DanhBo='13182499650', HoTen='GIENG PTH CONG TY CO PHAN CAP NUOC TAN HOA',DiaChi='GOC TR THU DO+L/LO P.PHU THANH',DienThoai='123456789'";
+                    string sql = "select Nam, Ky, NgayDoc=CONVERT(varchar(10),NgayDoc,103), IDZalo, DanhBo, HoTen, DiaChi,DienThoai=(select DienThoai from [SERVER8].[DocSoTH].[dbo].[MayDS] where May=SUBSTRING(z.MLT,3,2))"
+                                + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, Zalo z"
+                                + " where a.ID = b.IDDocSo and c.ID = b.IDDot"
+                                + " and CAST(NgayDoc as date) = CAST(GETDATE() as date)"
+                                + " and((TB1_From <= z.MLT and z.MLT <= TB1_To)or(TB2_From <= z.MLT and z.MLT <= TB2_To)or(TP1_From <= z.MLT and z.MLT <= TP1_To)or(TP2_From <= z.MLT and z.MLT <= TP2_To))";
+                    DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    string message;
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
+                                    + "\nĐịa chỉ: " + item["DiaChi"]
+                                    + "\nDanh bộ: " + item["DanhBo"]
+                                    + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
+                                    + " .Nhưng do giãn cách xã hội nhân viên Công ty không thể đến ghi chỉ số nước. Kính mong"
+                                    + " Quý khách hàng cung cấp chỉ số nước để Công ty tính đúng lượng nước tiêu thụ thực tế"
+                                    + " của Quý khách. Trường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính"
+                                    + " tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
+                                    + "\n\n***Cú pháp báo chỉ số nước: CSN_<danhbo>_<chisonuoc>"
+                                    + "\n***Chỉ số nước là dãy số màu đen trên đồng hồ nước"
+                                    + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
+                        strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'ghichisonuoc',N'" + strResponse + "')");
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        /// <summary>
+        /// Gửi tin nhắn thông báo phát hành hóa đơn
+        /// </summary>
+        /// <param name="checksum"></param>
+        /// <param name="Nam"></param>
+        /// <param name="Ky"></param>
+        /// <param name="Dot"></param>
+        /// <returns></returns>
+        [Route("ThongBaoPhatHanhHoaDon")]
+        [HttpGet]
+        public string ThongBaoPhatHanhHoaDon(string checksum, int Nam, int Ky, int Dot)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CConstantVariable.cheksum)
+                {
+                    //string sql = "select DanhBo='13011030051',HoTen='VO DAI PHAT',DiaChi='18 (763) LY THUONG KIET'"
+                    //    + " ,Nam=2021,Ky=8,CSC=0,CSM=9,TuNgay='18/06/2021',DenNgay='19/07/2021',TieuThu=9,TongCong=65205,IDZalo='4276209776391262580'";
+                    string sql = "select DanhBo = DANHBA,HoTen = TENKH,DiaChi =case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end, NAM, KY"
+                            + " , CSC = CSCU, CSM = CSMOI, TUNGAY = CONVERT(varchar(10), TUNGAY, 103), DENNGAY = CONVERT(varchar(10), DENNGAY, 103), TIEUTHU, TONGCONG,IDZalo"
+                            + " from HOADON hd, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo] z"
+                            + " where NAM = " + Nam + " and KY = " + Ky + " and DOT = " + Dot + " and hd.DANHBA=z.DanhBo";
+                    DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    string message;
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
+                                    + "\nĐịa chỉ: " + item["DiaChi"]
+                                    + "\nDanh bộ: " + item["DanhBo"]
+                                    + "\n\nThông báo tiền nước kỳ " + item["Ky"] + "/" + item["Nam"] + " từ ngày " + item["TuNgay"] + " đến ngày " + item["DenNgay"]
+                                    + "\nChỉ số cũ: " + item["CSC"]
+                                    + "\nChỉ số mới: " + item["CSM"]
+                                    + "\nTổng lượng nước tiêu thụ: " + item["TieuThu"]
+                                    + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đ"
+                                    + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(7).ToString("dd/MM/yyyy") + " qua các ví điện tử (Payoo, Shopeepay, ZaloPay, MoMo, ViettelPay, VNpay,…),"
+                                    + " website/ứng dụng/trích nợ tự động của các ngân hàng như AGRIBANK, MB, VIETCOMBANK,...(lưu ý ghi rõ nội dung chuyển khoản gồm danh bộ, kỳ hóa đơn thanh toán, số điện thoại/địa chỉ)"
+                                    + "\nNếu đã thanh toán vui lòng bỏ qua thông báo này."
+                                    + " Để được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
+                                    + "\nTrân trọng!";
+                        strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'phathanhhoadon',N'" + strResponse + "')");
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        [Route("resendMessageDangKy")]
+        [HttpGet]
+        public string resendMessageDangKy(string checksum, int number)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CConstantVariable.cheksum)
+                {
+                    string sql = "select top " + number + " * from Zalo_QuanTam where IDZalo not in (select IDZalo from Zalo) and resenddangky=0";
+                    DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        string a = resendMessageDangKy_Action(item["IDZalo"].ToString());
+
+                        _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set resenddangky=1,Result=N'" + a + "' where IDZalo=" + item["IDZalo"]);
+                    }
+                    strResponse = "Đã xử lý";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        public string resendMessageDangKy_Action(string IDZalo)
+        {
+            string strResponse = "";
+            try
+            {
+                string url = "https://openapi.zalo.me/v2.0/oa/message?access_token=" + access_token;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+
+                string data = "{"
+                            + "\"recipient\":{"
+                            + "\"user_id\":\"" + IDZalo + "\""
+                            + "},"
+                            + "\"message\":{"
+                            + "\"attachment\":{"
+                            + "\"type\":\"template\","
+                            + "\"payload\":{"
+                            + "\"template_type\":\"list\","
+                            + "\"elements\":[{"
+                            + "\"title\":\"QUÝ KHÁCH HÀNG CHƯA ĐĂNG KÝ THÔNG TIN\","
+                            + "\"subtitle\":\"Quý khách hàng vui lòng đăng ký thông tin Danh Bộ"
+                            + " để sử dụng những tiện ích của Cấp nước Tân Hòa như: Thông báo phát sinh hóa đơn tiền nước/Thông báo ngày ghi chỉ số nước/Tra cứu nợ tiền nước/..."
+                            + "\","
+                            + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\","
+                            + "\"default_action\":{"
+                            + "\"type\":\"oa.open.url\","
+                            + "\"url\":\"" + _url + "/Zalo?id=" + IDZalo + "\""
+                            + "}"
+                            + "},"
+                            + "{"
+                            + "\"title\":\"Click vào đây để đăng ký\","
+                            + "\"subtitle\":\"Click vào đây để đăng ký\","
+                            + "\"image_url\":\"" + _urlImage + "/logoctycp.png\","
+                            + "\"default_action\":{"
+                            + "\"type\":\"oa.open.url\","
+                            + "\"url\":\"" + _url + "/Zalo?id=" + IDZalo + "\""
+                            + "}"
+                            + "}]"
+                            + "}"
+                            + "}"
+                            + "}"
+                            + "}";
+
+                //tin nhắn nội dung+button phía dưới
+                //string data = "{"
+                //            + "\"recipient\": {"
+                //            + "\"user_id\": \"4276209776391262580\""
+                //            + "},"
+                //            + "\"message\": {"
+                //            + "\"text\": \"Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng kính chào Quý khách hàng\","
+                //            + "\"attachment\": {"
+                //            + "\"type\": \"template\","
+                //            + "\"payload\": {"
+                //            + "\"buttons\": ["
+                //            + "{"
+                //            + "\"title\": \"Click vào đây để đăng ký\","
+                //            + "\"payload\": {"
+                //            + "\"url\": \"" + _url + "/Zalo?id=" + IDZalo + "\""
+                //            + "},"
+                //            + "\"type\": \"oa.open.url\""
+                //            + "}"
+                //            + "]"
+                //            + "}"
+                //            + "}"
+                //            + "}"
+                //            + "}";
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    jsonReult deserializedResult = _jss.Deserialize<jsonReult>(read.ReadToEnd());
+                    strResponse = deserializedResult.message;
+                    read.Close();
+                    respuesta.Close();
+                }
+                else
+                {
+                    strResponse = "Error: " + respuesta.StatusCode;
+                }
+                return strResponse;
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        public class jsonReult
+        {
+            public string error { get; set; }
+            public string message { get; set; }
         }
 
     }

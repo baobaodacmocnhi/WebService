@@ -18,8 +18,8 @@ namespace WSTanHoa.Providers
         public static string ThuTien_test = "Data Source=serverg8-01;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string KinhDoanh = "Data Source=serverg8-01;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string TrungTamKhachHang = "Data Source=serverg8-01;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
-        
-
+        public static string TrungTamKhachHangWFH = "Data Source=113.161.88.180,1133;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
+        public static string cheksum="tanho@2022";
         public static string getSHA256(string strData)
         {
             SHA256Managed crypt = new SHA256Managed();

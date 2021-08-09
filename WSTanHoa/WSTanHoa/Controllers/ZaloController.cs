@@ -257,12 +257,12 @@ namespace WSTanHoa.Controllers
                                 DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
-                                    Zalo zalo1 = await db.Zaloes.FindAsync(1, "13051375570");
+                                    //Zalo zalo1 = await db.Zaloes.FindAsync(1, "13051375570");
                                     //Zalo en = new Zalo();
                                     //en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                                     zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
                                     zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                                    return View(zalo1);
+                                    return View(zalo);
                                 }
                                 else
                                 {
@@ -283,12 +283,13 @@ namespace WSTanHoa.Controllers
                                     zalo.IDZalo = IDZalo;
                                     if (zalo.HoTen == null || zalo.HoTen == "")
                                     {
-                                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
+                                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),MLT=MALOTRINH from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
                                         if (dt.Rows.Count > 0)
                                         {
                                             zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                                             zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
                                             zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                                            zalo.MLT = dt.Rows[0]["MLT"].ToString();
                                         }
                                         else
                                         {

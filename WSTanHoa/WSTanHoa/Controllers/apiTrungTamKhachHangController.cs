@@ -132,105 +132,6 @@ namespace WSTanHoa.Controllers
         }
 
         /// <summary>
-        /// Lấy danh sách 12 kỳ đọc số gần nhất
-        /// </summary>
-        /// <param name="DanhBo"></param>
-        /// <param name="checksum"></param>
-        /// <returns></returns>
-        //[Route("getGhiChiSo")]
-        //public IList<GhiChiSo> getGhiChiSo(string DanhBo, string checksum)
-        //{
-        //    if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-        //    {
-        //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //    }
-        //    DataTable dt = new DataTable();
-        //    try
-        //    {
-        //        string sql = "select top(12) Ky=CONVERT(char(2),Ky)+'/'+CONVERT(char(4),Nam)"
-        //                       //+ ",NgayDoc=CONVERT(char(10),DenNgay,103)"
-        //                       + ",NgayDoc=DenNgay"
-        //                       + ",CodeMoi"
-        //                       + ",ChiSoCu=CSCu"
-        //                       + ",ChiSoMoi=CSMoi"
-        //                       + ",TieuThu=TieuThuMoi"
-        //                       + " from DocSo"
-        //                       + " where DanhBa=" + DanhBo
-        //                       + " order by Nam desc,CAST(Ky as int) desc";
-        //        dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
-        //        //
-        //        if (dt != null && dt.Rows.Count > 0)
-        //        {
-        //            List<GhiChiSo> lst = new List<GhiChiSo>();
-        //            foreach (DataRow item in dt.Rows)
-        //            {
-        //                GhiChiSo en = new GhiChiSo();
-        //                en.Ky = item["Ky"].ToString();
-        //                if (item["NgayDoc"].ToString() != "")
-        //                    en.NgayDoc = DateTime.Parse(item["NgayDoc"].ToString());
-        //                en.CodeMoi = item["CodeMoi"].ToString();
-        //                en.ChiSoCu = item["ChiSoCu"].ToString();
-        //                en.ChiSoMoi = item["ChiSoMoi"].ToString();
-        //                en.TieuThu = item["TieuThu"].ToString();
-        //                lst.Add(en);
-        //            }
-        //            return lst;
-        //        }
-        //        else
-        //            return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //    }
-        //}
-
-        /// <summary>
-        /// Lấy danh sách thông tin ghi chú
-        /// </summary>
-        /// <param name="DanhBo"></param>
-        /// <param name="checksum"></param>
-        /// <returns></returns>
-        //[Route("getGhiChu")]
-        //public IList<GhiChu> getGhiChu(string DanhBo, string checksum)
-        //{
-        //    if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-        //    {
-        //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //    }
-        //    DataTable dt = new DataTable();
-        //    try
-        //    {
-        //        string sql = "select NoiDung,CreateDate from TB_GHICHU where DanhBo=" + DanhBo + " order by CreateDate desc";
-        //        dt = _cDAL_DHN.ExecuteQuery_DataTable(sql);
-        //        //
-        //        if (dt != null && dt.Rows.Count > 0)
-        //        {
-        //            List<GhiChu> lst = new List<GhiChu>();
-        //            foreach (DataRow item in dt.Rows)
-        //            {
-        //                GhiChu en = new GhiChu();
-        //                en.NoiDung = item["NoiDung"].ToString();
-        //                if (item["CreateDate"].ToString() != "")
-        //                    en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
-        //                lst.Add(en);
-        //            }
-        //            return lst;
-        //        }
-        //        else
-        //            return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //    }
-        //}
-
-        /// <summary>
         /// Lấy thông tin nhân viên đọc số, lịch ghi chỉ số nước, ghi chú
         /// </summary>
         /// <param name="DanhBo"></param>
@@ -265,12 +166,6 @@ namespace WSTanHoa.Controllers
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     en.NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
-                    //string sql_Lich = "select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103) from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c where a.ID=b.IDDocSo and c.ID=b.IDDot"
-                    //                                    + " and((c.TB1_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt.Rows[0]["MLT"].ToString() + ")"
-                    //                                    + " or (c.TB2_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt.Rows[0]["MLT"].ToString() + ")"
-                    //                                    + " or (c.TP1_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt.Rows[0]["MLT"].ToString() + ")"
-                    //                                    + " or (c.TP2_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt.Rows[0]["MLT"].ToString() + "))"
-                    //                                    + " order by a.CreateDate desc";
                     en.NhanVien += " ; " + getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
 
                     foreach (DataRow item in dt.Rows)
@@ -336,12 +231,6 @@ namespace WSTanHoa.Controllers
                     en.DinhMuc = dt_ThongTin.Rows[0]["DinhMuc"].ToString();
                     en.GiaBieu = dt_ThongTin.Rows[0]["GiaBieu"].ToString();
 
-                    //string sql_Lich = "select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103) from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c where a.ID=b.IDDocSo and c.ID=b.IDDot"
-                    //                + " and((c.TB1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                    //                + " or (c.TB2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                    //                + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                    //                + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
-                    //                + " order by a.CreateDate desc";
                     string result_Lich = getLichDocSo_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
                     string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
@@ -359,12 +248,13 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        //hàm gốc
         [ApiExplorerSettings(IgnoreApi = true)]
         public DataTable getLichDocSo_Func_SQL(string DanhBo, string MLT)
         {
             string sql_Lich = "WITH docso AS(select top 2 KY, NAM from [SERVER8].[DocSoTH].[dbo].[DocSo] where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
                                    + " select distinct NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103)"
-                                   + " ,NgayDoc,NgayChuyenListing"
+                                   + " ,NgayDoc,NgayChuyenListing,NgayThuTien,a.Ky,a.Nam"
                                    + " from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c,docso where a.ID=b.IDDocSo and c.ID=b.IDDot and ((a.Nam>docso.Nam) or (a.Nam=docso.Nam and a.Ky>=docso.Ky))"
                                    + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
                                    + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
@@ -418,64 +308,6 @@ namespace WSTanHoa.Controllers
         /// <param name="DanhBo"></param>
         /// <param name="checksum"></param>
         /// <returns></returns>
-        //[Route("getHoaDon")]
-        //public IList<HoaDonThuTien> getHoaDon(string DanhBo, string checksum)
-        //{
-        //    if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-        //    {
-        //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //    }
-        //    DataTable dt = new DataTable();
-        //    try
-        //    {
-        //        string sql = "select * from fnTimKiem('" + DanhBo + "','') order by MaHD desc";
-        //        dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
-        //        //
-        //        if (dt != null && dt.Rows.Count > 0)
-        //        {
-        //            List<HoaDonThuTien> lst = new List<HoaDonThuTien>();
-        //            foreach (DataRow item in dt.Rows)
-        //            {
-        //                HoaDonThuTien en = new HoaDonThuTien();
-        //                en.GiaBieu = item["GiaBieu"].ToString();
-        //                en.DinhMuc = item["DinhMuc"].ToString();
-        //                en.SoHoaDon = item["SoHoaDon"].ToString();
-        //                en.Ky = item["Ky"].ToString();
-        //                en.TieuThu = item["TieuThu"].ToString();
-        //                en.GiaBan = item["GiaBan"].ToString();
-        //                en.ThueGTGT = item["ThueGTGT"].ToString();
-        //                en.PhiBVMT = item["PhiBVMT"].ToString();
-        //                en.TongCong = item["TongCong"].ToString();
-        //                if (item["NgayGiaiTrach"].ToString() != "")
-        //                    en.NgayGiaiTrach = DateTime.Parse(item["NgayGiaiTrach"].ToString());
-        //                en.DangNgan = item["DangNgan"].ToString();
-        //                en.HanhThu = item["HanhThu"].ToString();
-        //                en.MaDN = item["MaDN"].ToString();
-        //                if (item["NgayDN"].ToString() != "")
-        //                    en.NgayDN = DateTime.Parse(item["NgayDN"].ToString());
-        //                if (item["NgayMN"].ToString() != "")
-        //                    en.NgayMN = DateTime.Parse(item["NgayMN"].ToString());
-        //                lst.Add(en);
-        //            }
-        //            return lst;
-        //        }
-        //        else
-        //            return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //    }
-        //}
-
-        /// <summary>
-        /// Lấy thông tin hóa đơn
-        /// </summary>
-        /// <param name="DanhBo"></param>
-        /// <param name="checksum"></param>
-        /// <returns></returns>
         [Route("getThuTien")]
         public ThuTien getThuTien(string DanhBo, string checksum)
         {
@@ -496,12 +328,6 @@ namespace WSTanHoa.Controllers
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     en.NhanVien = "Nhân viên thu tiền: " + dt.Rows[0]["NhanVien"].ToString();
-                    //string sql_Lich = "select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103) from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c where a.ID=b.IDThuTien and c.ID=b.IDDot"
-                    //                                   + " and((c.TB1_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt.Rows[0]["MLT"].ToString() + ")"
-                    //                                   + " or (c.TB2_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt.Rows[0]["MLT"].ToString() + ")"
-                    //                                   + " or (c.TP1_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt.Rows[0]["MLT"].ToString() + ")"
-                    //                                   + " or (c.TP2_From <= " + dt.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt.Rows[0]["MLT"].ToString() + "))"
-                    //                                   + " order by a.CreateDate desc";
                     en.NhanVien += " ; " + getLichThuTien_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
 
                     foreach (DataRow item in dt.Rows)
@@ -586,12 +412,6 @@ namespace WSTanHoa.Controllers
                     en.DinhMuc = dt_ThongTin.Rows[0]["DinhMuc"].ToString();
                     en.GiaBieu = dt_ThongTin.Rows[0]["GiaBieu"].ToString();
 
-                    //string sql_Lich = "select top 1 NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103) from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c where a.ID=b.IDThuTien and c.ID=b.IDDot"
-                    //            + " and((c.TB1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                    //            + " or (c.TB2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TB2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                    //            + " or (c.TP1_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP1_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + ")"
-                    //            + " or (c.TP2_From <= " + dt_ThongTin.Rows[0]["MLT"].ToString() + " and c.TP2_To >= " + dt_ThongTin.Rows[0]["MLT"].ToString() + "))"
-                    //            + " order by a.CreateDate desc";
                     string result_Lich = getLichThuTien_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
                     string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
@@ -609,6 +429,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        //hàm gốc
         [ApiExplorerSettings(IgnoreApi = true)]
         public DataTable getLichThuTien_Func_SQL(string DanhBo, string MLT)
         {
@@ -627,40 +448,64 @@ namespace WSTanHoa.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public string getLichThuTien_Func_String(string DanhBo, string MLT)
         {
-            DataTable dt = getLichThuTien_Func_SQL(DanhBo, MLT);
+            //DataTable dt = getLichThuTien_Func_SQL(DanhBo, MLT);
+            //string result = "";
+            //if (dt.Rows.Count > 0)
+            //{
+            //    foreach (DataRow item in dt.Rows)
+            //        if (DateTime.Parse(item["NgayThuTien_To"].ToString()).Date >= DateTime.Now.Date)
+            //        {
+            //            result = item["NoiDung"].ToString();
+            //            break;
+            //        }
+            //    if (result == "")
+            //        result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
+            //}
+            //return result;
+
+            //không áp dụng hành thu nên lấy ngày phát hành hóa đơn bên lịch đọc số
+            DataTable dt = getLichDocSo_Func_SQL(DanhBo, MLT);
             string result = "";
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
-                    if (DateTime.Parse(item["NgayThuTien_To"].ToString()).Date >= DateTime.Now.Date)
+                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date >= DateTime.Now.Date)
                     {
-                        result = item["NoiDung"].ToString();
+                        DateTime date = DateTime.Parse(item["NgayThuTien"].ToString()).AddDays(1);
+                        if (date.DayOfWeek == DayOfWeek.Saturday)
+                            date = date.AddDays(2);
+                        result = "Kỳ " + item["Ky"].ToString() + "/" + item["Nam"].ToString() + " dự kiến sẽ được phát hành vào ngày " + date.ToString("dd/MM/yyyy");
                         break;
                     }
                 if (result == "")
-                    result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
+                {
+                    DateTime date = DateTime.Parse(dt.Rows[dt.Rows.Count - 1]["NgayThuTien"].ToString()).AddDays(1);
+                    if (date.DayOfWeek == DayOfWeek.Saturday)
+                        date = date.AddDays(2);
+                    result = "Kỳ " + dt.Rows[dt.Rows.Count - 1]["Ky"].ToString() + "/" + dt.Rows[dt.Rows.Count - 1]["Nam"].ToString() + " dự kiến sẽ được phát hành vào ngày " + date.ToString("dd/MM/yyyy");
+                }
             }
             return result;
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public DataRow getLichThuTien_Func_DataRow(string DanhBo, string MLT)
-        {
-            DataTable dt = getLichThuTien_Func_SQL(DanhBo, MLT);
-            DataRow result = null;
-            if (dt.Rows.Count > 0)
-            {
-                foreach (DataRow item in dt.Rows)
-                    if (DateTime.Parse(item["NgayThuTien_To"].ToString()).Date >= DateTime.Now.Date)
-                    {
-                        result = item;
-                        break;
-                    }
-                if (result == null)
-                    result = dt.Rows[dt.Rows.Count - 1];
-            }
-            return result;
-        }
+        //[ApiExplorerSettings(IgnoreApi = true)]
+        //public DataRow getLichThuTien_Func_DataRow(string DanhBo, string MLT)
+        //{
+        //    DataTable dt = getLichThuTien_Func_SQL(DanhBo, MLT);
+        //    DataRow result = null;
+        //    if (dt.Rows.Count > 0)
+        //    {
+        //        foreach (DataRow item in dt.Rows)
+        //            if (DateTime.Parse(item["NgayThuTien_To"].ToString()).Date >= DateTime.Now.Date)
+        //            {
+        //                result = item;
+        //                break;
+        //            }
+        //        if (result == null)
+        //            result = dt.Rows[dt.Rows.Count - 1];
+        //    }
+        //    return result;
+        //}
 
         //sẽ update getdontumoi
 
@@ -1073,411 +918,6 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        //hàm getDonKhachHang cũ
-
-        ///// <summary>
-        ///// Lấy thông tin đơn phòng kinh doanh
-        ///// </summary>
-        ///// <param name="DanhBo"></param>
-        ///// <param name="checksum"></param>
-        ///// <returns></returns>
-        //[Route("getDonKinhDoanh")]
-        //public IList<DonTu> getDonKinhDoanh(string DanhBo, string checksum)
-        //{
-        //    try
-        //    {
-        //        if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-        //        {
-        //            ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-        //            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //        }
-        //        DataTable dt = new DataTable();
-        //        DataSet ds = new DataSet();
-
-        //        dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("exec spTimKiemByBanhBo_DonTu '" + DanhBo + "'");
-        //        ds = _cDAL_KinhDoanh.ExecuteQuery_DataSet("exec spTimKiemByBanhBo_DonTuChiTiet '" + DanhBo + "'");
-        //        //
-        //        if (dt != null && dt.Rows.Count > 0)
-        //        {
-        //            List<DonTu> lst = new List<DonTu>();
-        //            foreach (DataRow item in dt.Rows)
-        //                if (lst.Any(itemA => itemA.MaDon == item["MaDon"].ToString()) == false)
-        //                {
-        //                    DonTu en = new DonTu();
-        //                    en.MaDon = item["MaDon"].ToString();
-        //                    en.TenLD = item["TenLD"].ToString();
-        //                    if (item["CreateDate"].ToString() != "")
-        //                        en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
-        //                    en.DanhBo = item["DanhBo"].ToString();
-        //                    en.HoTen = item["HoTen"].ToString();
-        //                    en.DiaChi = item["DiaChi"].ToString();
-        //                    en.GiaBieu = item["GiaBieu"].ToString();
-        //                    en.DinhMuc = item["DinhMuc"].ToString();
-        //                    en.NoiDung = item["NoiDung"].ToString();
-
-        //                    //thêm chi tiết
-        //                    for (int i = 0; i < ds.Tables.Count; i++)
-        //                        if (ds.Tables[i].Rows.Count > 0)
-        //                        {
-        //                            switch (ds.Tables[i].Rows[0][0].ToString())
-        //                            {
-        //                                case "KTXM":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            KTXM enCT = new KTXM();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["NgayKTXM"].ToString() != "")
-        //                                                enCT.NgayKTXM = DateTime.Parse(dr[j]["NgayKTXM"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.NoiDungKiemTra = dr[j]["NoiDungKiemTra"].ToString();
-        //                                            enCT.NoiDungDongTien = dr[j]["NoiDungDongTien"].ToString();
-        //                                            if (dr[j]["NgayDongTien"].ToString() != "")
-        //                                                enCT.NgayDongTien = DateTime.Parse(dr[j]["NgayDongTien"].ToString());
-        //                                            enCT.SoTienDongTien = dr[j]["SoTienDongTien"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstKTXM.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "BamChi":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            BamChi enCT = new BamChi();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["NgayBC"].ToString() != "")
-        //                                                enCT.NgayBC = DateTime.Parse(dr[j]["NgayBC"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.TrangThaiBC = dr[j]["TrangThaiBC"].ToString();
-        //                                            enCT.TheoYeuCau = dr[j]["TheoYeuCau"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstBamChi.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "DongNuoc":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            DongNuoc enCT = new DongNuoc();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["NgayDN"].ToString() != "")
-        //                                                enCT.NgayDN = DateTime.Parse(dr[j]["NgayDN"].ToString());
-        //                                            if (dr[j]["NgayMN"].ToString() != "")
-        //                                                enCT.NgayMN = DateTime.Parse(dr[j]["NgayMN"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstDongNuoc.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "DCBD":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            DCBD enCT = new DCBD();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.GiaBieu = dr[j]["GiaBieu"].ToString();
-        //                                            enCT.GiaBieu_BD = dr[j]["GiaBieu_BD"].ToString();
-        //                                            enCT.DinhMuc = dr[j]["DinhMuc"].ToString();
-        //                                            enCT.DinhMuc_BD = dr[j]["DinhMuc_BD"].ToString();
-        //                                            enCT.HoTen_BD = dr[j]["HoTen_BD"].ToString();
-        //                                            enCT.DiaChi_BD = dr[j]["DiaChi_BD"].ToString();
-        //                                            enCT.ThongTin = dr[j]["ThongTin"].ToString() + "; Hiệu lực: " + dr[j]["HieuLucKy"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstDCBD.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "DCHD":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            DCHD enCT = new DCHD();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.GiaBieu = dr[j]["GiaBieu"].ToString();
-        //                                            enCT.GiaBieu_BD = dr[j]["GiaBieu_BD"].ToString();
-        //                                            enCT.DinhMuc = dr[j]["DinhMuc"].ToString();
-        //                                            enCT.DinhMuc_BD = dr[j]["DinhMuc_BD"].ToString();
-        //                                            enCT.TieuThu = dr[j]["TieuThu"].ToString();
-        //                                            enCT.TieuThu_BD = dr[j]["TieuThu_BD"].ToString();
-        //                                            enCT.TongCong_Start = dr[j]["TongCong_Start"].ToString();
-        //                                            enCT.TongCong_End = dr[j]["TongCong_End"].ToString();
-        //                                            enCT.TongCong_BD = dr[j]["TongCong_BD"].ToString();
-        //                                            enCT.TangGiam = dr[j]["TangGiam"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstDCHD.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "CHDB":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            CHDB enCT = new CHDB();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.LoaiCat = dr[j]["LoaiCat"].ToString();
-        //                                            enCT.LyDo = dr[j]["LyDo"].ToString();
-        //                                            enCT.GhiChuLyDo = dr[j]["GhiChuLyDo"].ToString();
-        //                                            enCT.DaLapPhieu = bool.Parse(dr[j]["DaLapPhieu"].ToString());
-        //                                            enCT.SoPhieu = dr[j]["SoPhieu"].ToString();
-        //                                            if (dr[j]["NgayLapPhieu"].ToString() != "")
-        //                                                enCT.NgayLapPhieu = DateTime.Parse(dr[j]["NgayLapPhieu"].ToString());
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstCHDB.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "PhieuCHDB":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            PhieuCHDB enCT = new PhieuCHDB();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.LyDo = dr[j]["LyDo"].ToString();
-        //                                            enCT.GhiChuLyDo = dr[j]["GhiChuLyDo"].ToString();
-        //                                            enCT.HieuLucKy = dr[j]["HieuLucKy"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstPhieuCHDB.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "TTTL":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            TTL enCT = new TTL();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.VeViec = dr[j]["VeViec"].ToString();
-        //                                            enCT.NoiDung = dr[j]["NoiDung"].ToString();
-        //                                            enCT.NoiNhan = dr[j]["NoiNhan"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstTTL.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "GianLan":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            GianLan enCT = new GianLan();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.NoiDungViPham = dr[j]["NoiDungViPham"].ToString();
-        //                                            enCT.TinhTrang = dr[j]["TinhTrang"].ToString();
-        //                                            enCT.ThanhToan1 = bool.Parse(dr[j]["ThanhToan1"].ToString());
-        //                                            enCT.ThanhToan2 = bool.Parse(dr[j]["ThanhToan2"].ToString());
-        //                                            enCT.ThanhToan3 = bool.Parse(dr[j]["ThanhToan3"].ToString());
-        //                                            enCT.XepDon = bool.Parse(dr[j]["XepDon"].ToString());
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstGianLan.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "TruyThu":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            TruyThu enCT = new TruyThu();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.NoiDung = dr[j]["NoiDung"].ToString();
-        //                                            enCT.TongTien = dr[j]["TongTien"].ToString();
-        //                                            enCT.Tongm3BinhQuan = dr[j]["Tongm3BinhQuan"].ToString();
-        //                                            enCT.TinhTrang = dr[j]["TinhTrang"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstTruyThu.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "ToTrinh":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            ToTrinh enCT = new ToTrinh();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.VeViec = dr[j]["VeViec"].ToString();
-        //                                            enCT.NoiDung = dr[j]["NoiDung"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstToTrinh.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "ThuMoi":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            ThuMoi enCT = new ThuMoi();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["CreateDate"].ToString() != "")
-        //                                                enCT.CreateDate = DateTime.Parse(dr[j]["CreateDate"].ToString());
-        //                                            enCT.DanhBo = dr[j]["DanhBo"].ToString();
-        //                                            enCT.HoTen = dr[j]["HoTen"].ToString();
-        //                                            enCT.DiaChi = dr[j]["DiaChi"].ToString();
-        //                                            enCT.Lan = dr[j]["Lan"].ToString();
-        //                                            enCT.VeViec = dr[j]["VeViec"].ToString();
-        //                                            enCT.CreateBy = dr[j]["CreateBy"].ToString();
-
-        //                                            en.lstThuMoi.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                                case "TienTrinh":
-        //                                    if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
-        //                                    {
-        //                                        DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
-
-        //                                        for (int j = 0; j < dr.Count(); j++)
-        //                                        {
-        //                                            TienTrinh enCT = new TienTrinh();
-        //                                            enCT.MaDon = dr[j]["MaDon"].ToString();
-        //                                            enCT.TabSTT = dr[j]["TabSTT"].ToString();
-        //                                            enCT.TabName = dr[j]["TabName"].ToString();
-        //                                            if (dr[j]["NgayChuyen"].ToString() != "")
-        //                                                enCT.NgayChuyen = DateTime.Parse(dr[j]["NgayChuyen"].ToString());
-        //                                            enCT.NoiChuyen = dr[j]["NoiChuyen"].ToString();
-        //                                            enCT.NoiNhan = dr[j]["NoiNhan"].ToString();
-        //                                            enCT.KTXM = dr[j]["KTXM"].ToString();
-        //                                            enCT.NoiDung = dr[j]["NoiDung"].ToString();
-
-        //                                            en.lstTienTrinh.Add(enCT);
-        //                                        }
-        //                                    }
-        //                                    break;
-        //                            }
-        //                        }
-
-        //                    lst.Add(en);
-        //                }
-
-        //            return lst;
-        //        }
-        //        else
-        //            return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //    }
-        //}
-
         /// <summary>
         /// Lấy danh sách file đã scan
         /// </summary>
@@ -1528,49 +968,6 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
-
-        /// <summary>
-        /// Tìm kiếm thông tin khách hàng bằng danh bộ
-        /// </summary>
-        /// <param name="DanhBo"></param>
-        /// <param name="checksum"></param>
-        /// <returns></returns>
-        //[Route("searchThongTinKhachHang")]
-        //[HttpGet]
-        //public IList<ThongTinKhachHang> searchThongTinKhachHang(string DanhBo, string checksum)
-        //{
-        //    try
-        //    {
-        //        if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
-        //        {
-        //            ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-        //            throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //        }
-        //        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiem('" + DanhBo + "','') order by MaHD desc");
-        //        if (dt != null && dt.Rows.Count > 0)
-        //        {
-        //            List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
-        //            foreach (DataRow item in dt.Rows)
-        //            {
-        //                ThongTinKhachHang en = new ThongTinKhachHang();
-        //                en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-        //                en.HoTen = dt.Rows[0]["HoTen"].ToString();
-        //                en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-
-        //                lst.Add(en);
-        //            }
-
-        //            return lst;
-        //        }
-        //        else
-        //            return null;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-        //    }
-        //}
 
         /// <summary>
         /// Tìm kiếm thông tin khách hàng bằng họ tên, số nhà, tên đường

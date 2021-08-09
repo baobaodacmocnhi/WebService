@@ -658,6 +658,21 @@
             <param name="message"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiZaloController.ThongBaoNgayGhiChiSoNuoc(System.String)">
+            <summary>
+            Gửi tin nhắn thông báo đến ngày ghi chỉ số nước
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiZaloController.ThongBaoPhatHanhHoaDon(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Gửi tin nhắn thông báo phát hành hóa đơn
+            </summary>
+            <param name="Nam"></param>
+            <param name="Ky"></param>
+            <param name="Dot"></param>
+            <returns></returns>
+        </member>
         <member name="P:WSTanHoa.Models.ThongTinKhachHang.DanhBo">
             <summary>
             Danh bộ

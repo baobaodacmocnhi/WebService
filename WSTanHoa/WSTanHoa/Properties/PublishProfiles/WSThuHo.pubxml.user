@@ -13,7 +13,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2020 13:56:21</publishTime>
     </File>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>07/28/2021 07:45:24</publishTime>
+      <publishTime>08/08/2021 15:37:16</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>07/31/2020 13:56:21</publishTime>
@@ -241,7 +241,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2020 13:56:56</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>07/28/2021 07:46:20</publishTime>
+      <publishTime>08/09/2021 10:44:40</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>07/31/2020 13:56:22</publishTime>
@@ -272,6 +272,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Image/giaybaotiennuoc.png">
       <publishTime>07/31/2020 13:56:23</publishTime>
+    </File>
+    <File Include="Image/giaybaotiennuoc2021.png">
+      <publishTime>08/08/2021 14:39:32</publishTime>
     </File>
     <File Include="Image/logoctycp.jpg">
       <publishTime>04/16/2020 09:57:51</publishTime>
@@ -388,7 +391,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2020 13:56:25</publishTime>
     </File>
     <File Include="Views/Zalo/Index.cshtml">
-      <publishTime>07/31/2020 13:56:25</publishTime>
+      <publishTime>08/08/2021 14:43:41</publishTime>
     </File>
     <File Include="Views/Zalo/Webhook.cshtml">
       <publishTime>07/31/2020 13:56:25</publishTime>
