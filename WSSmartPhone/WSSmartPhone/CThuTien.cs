@@ -17,16 +17,16 @@ namespace WSSmartPhone
 {
     class CThuTien
     {
-        CConnection _cDAL = new CConnection("Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
+        CConnection _cDAL = new CConnection(System.Configuration.ConfigurationManager.ConnectionStrings["HOADON_TAConnectionString"].ConnectionString);
         CKinhDoanh _cKinhDoanh = new CKinhDoanh();
         CDHN _cDHN = new CDHN();
         CDocSo _cDocSo = new CDocSo();
         dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
+        JavaScriptSerializer jss = new JavaScriptSerializer();
 
         public string DataTableToJSON(DataTable table)
         {
-            JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
-            jsSerializer.MaxJsonLength = Int32.MaxValue;
+            jss.MaxJsonLength = Int32.MaxValue;
             List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
             Dictionary<string, object> childRow;
             foreach (DataRow row in table.Rows)
@@ -38,7 +38,7 @@ namespace WSSmartPhone
                 }
                 parentRow.Add(childRow);
             }
-            return jsSerializer.Serialize(parentRow);
+            return jss.Serialize(parentRow);
         }
 
         public string GetVersion()
@@ -297,8 +297,8 @@ namespace WSSmartPhone
                     }
                 };
 
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(data);
+
+                var json = jss.Serialize(data);
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 tRequest.Headers.Add(string.Format("Authorization: key={0}", serverKey));
                 tRequest.Headers.Add(string.Format("Sender: id={0}", senderId));
@@ -355,8 +355,8 @@ namespace WSSmartPhone
                     }
                 };
 
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(data);
+
+                var json = jss.Serialize(data);
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 request.ContentLength = byteArray.Length;
                 //gắn data post
@@ -1944,8 +1944,8 @@ namespace WSSmartPhone
                     en.TenThuTien = TenThuTien;
                     en.ThanhToan = ThanhToan;
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(en);
+
+                    var json = jss.Serialize(en);
                     Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                     request.ContentLength = byteArray.Length;
                     //gắn data post
@@ -1960,8 +1960,8 @@ namespace WSSmartPhone
                         result = read.ReadToEnd();
                         read.Close();
                         respuesta.Close();
-                        JavaScriptSerializer js = new JavaScriptSerializer();
-                        var obj = js.Deserialize<dynamic>(result);
+
+                        var obj = jss.Deserialize<dynamic>(result);
                         if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                         {
                             _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and ID_HOADON=" + MaHD);
@@ -2062,8 +2062,8 @@ namespace WSSmartPhone
                     en.TenThuTien = TenThuTien;
                     en.ThanhToan = ThanhToan;
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(en);
+
+                    var json = jss.Serialize(en);
                     Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                     request.ContentLength = byteArray.Length;
                     //gắn data post
@@ -2078,8 +2078,8 @@ namespace WSSmartPhone
                         result = read.ReadToEnd();
                         read.Close();
                         respuesta.Close();
-                        JavaScriptSerializer js = new JavaScriptSerializer();
-                        var obj = js.Deserialize<dynamic>(result);
+
+                        var obj = jss.Deserialize<dynamic>(result);
                         if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                         {
                             _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and SOHOADON='" + SoHoaDon + "'");
@@ -2184,8 +2184,8 @@ namespace WSSmartPhone
                     en.TenThuTien = TenThuTien;
                     en.ThanhToan = ThanhToan;
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(en);
+
+                    var json = jss.Serialize(en);
                     Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                     request.ContentLength = byteArray.Length;
                     //gắn data post
@@ -2200,8 +2200,8 @@ namespace WSSmartPhone
                         result = read.ReadToEnd();
                         read.Close();
                         respuesta.Close();
-                        JavaScriptSerializer js = new JavaScriptSerializer();
-                        var obj = js.Deserialize<dynamic>(result);
+
+                        var obj = jss.Deserialize<dynamic>(result);
                         if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                         {
                             _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and ID_HOADON=" + MaHD);
@@ -2278,8 +2278,8 @@ namespace WSSmartPhone
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
                     en.HinhThucThanhToan = HinhThucThanhToan;
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(en);
+
+                    var json = jss.Serialize(en);
                     Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                     request.ContentLength = byteArray.Length;
                     //gắn data post
@@ -2294,8 +2294,8 @@ namespace WSSmartPhone
                         result = read.ReadToEnd();
                         read.Close();
                         respuesta.Close();
-                        JavaScriptSerializer js = new JavaScriptSerializer();
-                        var obj = js.Deserialize<dynamic>(result);
+
+                        var obj = jss.Deserialize<dynamic>(result);
                         if (obj["status"] == "OK" || obj["status"] == "ERR:7" || obj["status"] == "ERR:8")
                         {
                             string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and ID_HOADON=" + MaHD;
@@ -2378,8 +2378,8 @@ namespace WSSmartPhone
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
                     en.HinhThucThanhToan = HinhThucThanhToan;
 
-                    var serializer = new JavaScriptSerializer();
-                    var json = serializer.Serialize(en);
+
+                    var json = jss.Serialize(en);
                     Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                     request.ContentLength = byteArray.Length;
                     //gắn data post
@@ -2394,8 +2394,8 @@ namespace WSSmartPhone
                         result = read.ReadToEnd();
                         read.Close();
                         respuesta.Close();
-                        JavaScriptSerializer js = new JavaScriptSerializer();
-                        var obj = js.Deserialize<dynamic>(result);
+
+                        var obj = jss.Deserialize<dynamic>(result);
                         if (obj["status"] == "OK" || obj["status"] == "ERR:7" || obj["status"] == "ERR:8")
                         {
                             string sql = "update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and SOHOADON='" + SoHoaDon + "'";
@@ -2479,8 +2479,8 @@ namespace WSSmartPhone
                                 lstHD.Add(en);
                             }
 
-                            var serializer = new JavaScriptSerializer();
-                            var json = serializer.Serialize(lstHD);
+
+                            var json = jss.Serialize(lstHD);
                             Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                             request.ContentLength = byteArray.Length;
                             //gắn data post
@@ -2495,8 +2495,8 @@ namespace WSSmartPhone
                                 result = read.ReadToEnd();
                                 read.Close();
                                 respuesta.Close();
-                                JavaScriptSerializer js = new JavaScriptSerializer();
-                                HoaDonNopTienLoResult deserializedResult = serializer.Deserialize<HoaDonNopTienLoResult>(result);
+
+                                HoaDonNopTienLoResult deserializedResult = jss.Deserialize<HoaDonNopTienLoResult>(result);
                                 if (deserializedResult.Status == "OK")
                                 {
                                     foreach (HoaDonNopTienResult item in deserializedResult.result)
@@ -2596,8 +2596,8 @@ namespace WSSmartPhone
                                 lstHD.Add(en);
                             }
 
-                            var serializer = new JavaScriptSerializer();
-                            var json = serializer.Serialize(lstHD);
+
+                            var json = jss.Serialize(lstHD);
                             Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                             request.ContentLength = byteArray.Length;
                             //gắn data post
@@ -2612,8 +2612,8 @@ namespace WSSmartPhone
                                 result = read.ReadToEnd();
                                 read.Close();
                                 respuesta.Close();
-                                JavaScriptSerializer js = new JavaScriptSerializer();
-                                HoaDonNopTienLoResult deserializedResult = serializer.Deserialize<HoaDonNopTienLoResult>(result);
+
+                                HoaDonNopTienLoResult deserializedResult = jss.Deserialize<HoaDonNopTienLoResult>(result);
                                 if (deserializedResult.Status == "OK")
                                 {
                                     foreach (HoaDonNopTienResult item in deserializedResult.result)
@@ -2713,8 +2713,8 @@ namespace WSSmartPhone
                                 lstHD.Add(en);
                             }
 
-                            var serializer = new JavaScriptSerializer();
-                            var json = serializer.Serialize(lstHD);
+
+                            var json = jss.Serialize(lstHD);
                             Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                             request.ContentLength = byteArray.Length;
                             //gắn data post
@@ -2729,8 +2729,8 @@ namespace WSSmartPhone
                                 result = read.ReadToEnd();
                                 read.Close();
                                 respuesta.Close();
-                                JavaScriptSerializer js = new JavaScriptSerializer();
-                                HoaDonNopTienLoResult deserializedResult = serializer.Deserialize<HoaDonNopTienLoResult>(result);
+
+                                HoaDonNopTienLoResult deserializedResult = jss.Deserialize<HoaDonNopTienLoResult>(result);
                                 if (deserializedResult.Status == "OK")
                                 {
                                     foreach (HoaDonNopTienResult item in deserializedResult.result)
@@ -2887,11 +2887,23 @@ namespace WSSmartPhone
                     else
                     {
                         DataTable dt = _cDocSo.get(item.DANHBA, item.NAM.Value.ToString(), item.KY.ToString());
-                        DateTime TuNgay = DateTime.Parse(dt.Rows[0]["TuNgay"].ToString()), DenNgay = DateTime.Parse(dt.Rows[0]["DenNgay"].ToString());
-                        TinhTienNuoc(false, false, 0, item.DANHBA, Ky, Nam, TuNgay, DenNgay, item.GB.Value, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, out TongTienCuA, out ChiTietCuA, out TongTienCuB, out ChiTietCuB, out TieuThu_DieuChinhGia);
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            DateTime TuNgay = DateTime.Parse(dt.Rows[0]["TuNgay"].ToString()), DenNgay = DateTime.Parse(dt.Rows[0]["DenNgay"].ToString());
+                            TinhTienNuoc(false, false, 0, item.DANHBA, Ky, Nam, TuNgay, DenNgay, item.GB.Value, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, out TongTienCuA, out ChiTietCuA, out TongTienCuB, out ChiTietCuB, out TieuThu_DieuChinhGia);
+                        }
                     }
-                    item.ChiTietTienNuoc = ChiTietCuA + "\r\n" + ChiTietCuB;
-                    _dbThuTien.SubmitChanges();
+                    if (ChiTietCuA != "" || ChiTietCuB != "")
+                    {
+                        item.ChiTietTienNuoc = ChiTietCuA + "\r\n" + ChiTietCuB;
+                        _dbThuTien.SubmitChanges();
+                    }
+                    else
+                        if (item.TIEUTHU == 0)
+                        {
+                            item.ChiTietTienNuoc = "";
+                            _dbThuTien.SubmitChanges();
+                        }
                 }
 
                 return "true; ";
