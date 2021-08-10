@@ -67,12 +67,13 @@ namespace WSTanHoa.Controllers
                             if (vZalo.DanhBo != null && vZalo.DanhBo != "")
                             {
                                 //kiểm tra danh bộ
-                                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + vZalo.DanhBo + "' order by ID_HOADON desc");
+                                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),MLT=MALOTRINH from HOADON where DANHBA='" + vZalo.DanhBo + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
                                     vZalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                                     vZalo.HoTen = dt.Rows[0]["HoTen"].ToString();
                                     vZalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                                    vZalo.MLT = dt.Rows[0]["MLT"].ToString();
                                 }
                                 else
                                 {
