@@ -1,5 +1,5 @@
 ﻿@*@model IEnumerable<WSTanHoa.Models.Zalo>*@
-@model WSTanHoa.Models.ViewZalo
+@model WSTanHoa.Models.db.ViewZalo
 
 @{
     ViewBag.Title = "Zalo OA";
@@ -27,7 +27,7 @@
         <div class="form-group" style="display:none">
             @*@Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = @Session["IDZalo"], @class = "form-control" } })*@
             @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = TempData["IDZalo"], @class = "form-control" } })
-            <input id="submit" type="submit" value="Load" class="btn btn-default" />
+            <input id="submit" type="submit" value="Load" class="btn btn-primary" />
         </div>
 
         <h4 style="color:blue;">Danh sách danh bộ đã đăng ký trên Zalo OA Cấp nước Tân Hòa</h4>
@@ -37,7 +37,7 @@
                     @Html.ActionLink("Đăng ký mới", "Create")
                 </p>
             </h3>*@
-        <table class="table-bordered">
+        <table class="table table-bordered border-dark">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.vZalo.DanhBo)
@@ -95,7 +95,7 @@
             <div class="form-group" style="display:none">
                 @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = TempData["IDZalo"], @class = "form-control" } })
             </div>
-            <div class="form-group">
+            <div class="mb-3">
                 @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.vZalo.DanhBo, new { htmlAttributes = new { @class = "form-control", @id = "DanhBo1" } })
@@ -103,9 +103,9 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" name="action" value="Kiểm Tra" class="btn btn-default" />
+                    <input type="submit" name="action" value="Kiểm Tra" class="btn btn-primary" />
                 </div>
             </div>
         }
@@ -124,7 +124,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 @Html.LabelFor(model => model.vZalo.HoTen, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.vZalo.HoTen, new { htmlAttributes = new { @class = "form-control" } })
@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 @Html.LabelFor(model => model.vZalo.DiaChi, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.vZalo.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
@@ -140,7 +140,7 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 @Html.LabelFor(model => model.vZalo.DienThoai, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.vZalo.DienThoai, new { htmlAttributes = new { @class = "form-control" } })
@@ -148,9 +148,9 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" name="action" value="Đăng Ký" class="btn btn-default" />
+                    <input type="submit" name="action" value="Đăng Ký" class="btn btn-primary" />
                 </div>
             </div>
         }
