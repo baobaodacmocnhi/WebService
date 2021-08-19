@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSTanHoa", "WSTanHoa\WSTanHoa.csproj", "{D5E39B4F-471C-47C2-A6E5-27B9431D5670}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WSTanHoa", "WSTanHoa\WSTanHoa.csproj", "{EE6B47A1-7D6C-49C7-B946-52B620B6892D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +11,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D5E39B4F-471C-47C2-A6E5-27B9431D5670}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5E39B4F-471C-47C2-A6E5-27B9431D5670}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5E39B4F-471C-47C2-A6E5-27B9431D5670}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5E39B4F-471C-47C2-A6E5-27B9431D5670}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE6B47A1-7D6C-49C7-B946-52B620B6892D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE6B47A1-7D6C-49C7-B946-52B620B6892D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE6B47A1-7D6C-49C7-B946-52B620B6892D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE6B47A1-7D6C-49C7-B946-52B620B6892D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,12 +9,13 @@ using System.Web;
 using System.Web.Mvc;
 using WSTanHoa.Models;
 using WSTanHoa.Providers;
+using WSTanHoa.Models.db;
 
 namespace WSTanHoa.Controllers
 {
     public class KhieuNaiController : Controller
     {
-        private ModelTrungTamKhachHang db = new ModelTrungTamKhachHang();
+        private dbTrungTamKhachHang db = new dbTrungTamKhachHang();
         decimal IDZalo = -1;
 
         // GET: KhieuNai

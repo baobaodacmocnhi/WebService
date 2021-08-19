@@ -6,12 +6,11 @@ using System.Web.Mvc;
 
 namespace WSTanHoa.Controllers
 {
-    public class HomeController : Controller
+    public class ZaloChatController : Controller
     {
+        // GET: ZaloChat
         public ActionResult Index()
         {
-            ViewBag.Title = "Home Page";
-
             return View();
         }
     }

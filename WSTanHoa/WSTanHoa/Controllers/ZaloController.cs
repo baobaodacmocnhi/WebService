@@ -15,17 +15,18 @@ using System.Net.Http;
 using System.Text;
 using System.Web.Script.Serialization;
 using System.Net.Http.Headers;
+using WSTanHoa.Models.db;
 
 namespace WSTanHoa.Controllers
 {
     public class ZaloController : Controller
     {
-        ModelTrungTamKhachHang db = new ModelTrungTamKhachHang();
+        dbTrungTamKhachHang db = new dbTrungTamKhachHang();
         CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
         decimal IDZalo = -1;
 
         // GET: Zalo
-        public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo vZalo, string action)
+        public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo_DangKy vZalo, string action)
         {
             if (TempData["IDZalo"] == null)
             {
@@ -36,8 +37,8 @@ namespace WSTanHoa.Controllers
             if (TempData["IDZalo"] != null)
                 IDZalo = decimal.Parse(TempData["IDZalo"].ToString());
 
-            IEnumerable<Zalo> lstZalo = await db.Zaloes.Where(item => item.IDZalo == IDZalo).ToListAsync();
-            Zalo zalo = new Zalo();
+            IEnumerable<Zalo_DangKy> lstZalo = await db.Zalo_DangKy.Where(item => item.IDZalo == IDZalo).ToListAsync();
+            Zalo_DangKy zalo = new Zalo_DangKy();
 
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(action))
                 if (TempData["IDZalo"] != null)
@@ -81,7 +82,7 @@ namespace WSTanHoa.Controllers
                                     return View(new ViewZalo(lstZalo, vZalo));
                                 }
                                 //kiểm tra trùng
-                                if (db.Zaloes.Count(item => item.IDZalo == IDZalo && item.DanhBo == vZalo.DanhBo.Replace(" ", "")) == 0)
+                                if (db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == vZalo.DanhBo.Replace(" ", "")) == 0)
                                 {
 
                                     if (vZalo.DienThoai == null || vZalo.DienThoai == "")
@@ -94,7 +95,7 @@ namespace WSTanHoa.Controllers
                                     vZalo.CreateDate = DateTime.Now;
                                     if (IDZalo != -1)
                                     {
-                                        db.Zaloes.Add(vZalo);
+                                        db.Zalo_DangKy.Add(vZalo);
                                     }
                                     await db.SaveChangesAsync();
                                     return RedirectToAction("Index");
@@ -205,7 +206,7 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zalo zalo = await db.Zaloes.FindAsync(id);
+            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(id);
             if (zalo == null)
             {
                 return HttpNotFound();
@@ -223,7 +224,7 @@ namespace WSTanHoa.Controllers
                 DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
                 if (dt.Rows.Count > 0)
                 {
-                    Zalo en = new Zalo();
+                    Zalo_DangKy en = new Zalo_DangKy();
                     en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                     en.HoTen = dt.Rows[0]["HoTen"].ToString();
                     en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
@@ -244,7 +245,7 @@ namespace WSTanHoa.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo zalo, string Loai)
+        public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo_DangKy zalo, string Loai)
         {
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(Loai))
                 if (Session["IDZalo"] != null)
@@ -274,7 +275,7 @@ namespace WSTanHoa.Controllers
                             break;
                         case "Đăng Ký":
                             if (zalo.DanhBo != null && zalo.DanhBo != "")
-                                if (db.Zaloes.Count(item => item.IDZalo == zalo.IDZalo && item.DanhBo == zalo.DanhBo) == 0)
+                                if (db.Zalo_DangKy.Count(item => item.IDZalo == zalo.IDZalo && item.DanhBo == zalo.DanhBo) == 0)
                                 {
                                     if (zalo.DienThoai == null || zalo.DienThoai == "")
                                     {
@@ -299,7 +300,7 @@ namespace WSTanHoa.Controllers
                                         }
                                     }
                                     zalo.CreateDate = DateTime.Now;
-                                    db.Zaloes.Add(zalo);
+                                    db.Zalo_DangKy.Add(zalo);
                                     await db.SaveChangesAsync();
                                     return RedirectToAction("Index");
                                 }
@@ -316,7 +317,7 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zalo zalo = await db.Zaloes.FindAsync(IDZalo, DanhBo);
+            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
             if (zalo == null)
             {
                 return HttpNotFound();
@@ -329,7 +330,7 @@ namespace WSTanHoa.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo zalo)
+        public async Task<ActionResult> Edit([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo_DangKy zalo)
         {
             if (ModelState.IsValid)
             {
@@ -347,14 +348,14 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zalo zalo = await db.Zaloes.FindAsync(id);
+            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(id);
             if (zalo == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                db.Zaloes.Remove(zalo);
+                db.Zalo_DangKy.Remove(zalo);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
@@ -367,16 +368,16 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zalo zalo = await db.Zaloes.FindAsync(IDZalo, DanhBo);
+            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
             if (zalo == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                db.Zaloes.Remove(zalo);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                db.Zalo_DangKy.Remove(zalo);
+                await db.SaveChangesAsync();
+                return RedirectToAction("Index", "Zalo", new { id = IDZalo });
             }
             return View(zalo);
         }
@@ -386,8 +387,8 @@ namespace WSTanHoa.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(decimal id)
         {
-            Zalo zalo = await db.Zaloes.FindAsync(id);
-            db.Zaloes.Remove(zalo);
+            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(id);
+            db.Zalo_DangKy.Remove(zalo);
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -418,33 +419,39 @@ namespace WSTanHoa.Controllers
                     message = "";
                 }
                 else
-                if (details["event_name"].ToString() == "user_send_text")
+                if (details["event_name"].ToString() == "user_send_text" || details["event_name"].ToString() == "user_send_image")
                 {
                     idzalo = details["sender"]["id"].ToString();
+                    message = details["message"]["text"].ToString();
+                }
+                else
+                if (details["event_name"].ToString() == "oa_send_text" || details["event_name"].ToString() == "oa_send_image")
+                {
+                    idzalo = details["recipient"]["id"].ToString();
                     message = details["message"]["text"].ToString();
                 }
                 //log4net.ILog _log = log4net.LogManager.GetLogger("File");
                 //_log.Debug("link: " + "https://service.cskhtanhoa.com.vn/api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"));
 
-                using (var client = new HttpClient())
-                {
-                    //Passing service base url  
-                    client.BaseAddress = new Uri("https://service.cskhtanhoa.com.vn");
+                //using (var client = new HttpClient())
+                //{
+                //    //Passing service base url  
+                //    client.BaseAddress = new Uri("https://service.cskhtanhoa.com.vn");
 
-                    client.DefaultRequestHeaders.Clear();
-                    //Define request data format  
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //    client.DefaultRequestHeaders.Clear();
+                //    //Define request data format  
+                //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                    //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
-                    HttpResponseMessage Res = await client.PostAsync("api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"), null);
+                //    //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
+                //    HttpResponseMessage Res = await client.PostAsync("api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"), null);
 
-                    //Checking the response is successful or not which is sent using HttpClient  
-                    if (Res.IsSuccessStatusCode)
-                    {
-                        //_log.Debug(Res);
-                    }
-                    //returning the employee list to view  
-                }
+                //    //Checking the response is successful or not which is sent using HttpClient  
+                //    if (Res.IsSuccessStatusCode)
+                //    {
+                //        //_log.Debug(Res);
+                //    }
+                //    //returning the employee list to view  
+                //}
             }
             catch (Exception) { }
             return View();

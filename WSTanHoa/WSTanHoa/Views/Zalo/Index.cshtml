@@ -2,7 +2,7 @@
 @model WSTanHoa.Models.ViewZalo
 
 @{
-    ViewBag.Title = "Trang Chủ Zalo";
+    ViewBag.Title = "Zalo OA";
 }
 
 @Scripts.Render("~/bundles/jquery")
@@ -30,14 +30,14 @@
             <input id="submit" type="submit" value="Load" class="btn btn-default" />
         </div>
 
-        <h4 style="color:blue;">Danh sách danh bộ đã đăng ký</h4>
+        <h4 style="color:blue;">Danh sách danh bộ đã đăng ký trên Zalo OA Cấp nước Tân Hòa</h4>
 
         @*<h3>
                 <p>
                     @Html.ActionLink("Đăng ký mới", "Create")
                 </p>
             </h3>*@
-        <table class="table">
+        <table class="table-bordered">
             <tr>
                 <th>
                     @Html.DisplayNameFor(model => model.vZalo.DanhBo)

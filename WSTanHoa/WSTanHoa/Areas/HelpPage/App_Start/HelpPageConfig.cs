@@ -12,8 +12,6 @@ using System.Net.Http.Headers;
 using System.Reflection;
 using System.Web;
 using System.Web.Http;
-using System.Web.Http.ExceptionHandling;
-using WSTanHoa.Providers;
 #if Handle_PageResultOfT
 using System.Web.Http.OData;
 #endif
@@ -80,11 +78,6 @@ namespace WSTanHoa.Areas.HelpPage
             //// Uncomment the following to correct the sample response when the action returns an HttpResponseMessage with ObjectContent<string>.
             //// The sample will be generated as if the controller named "Values" and action named "Post" were returning a string.
             //config.SetActualResponseType(typeof(string), "Values", "Post");
-
-            config.SetDocumentationProvider(new XmlDocumentationProvider(HttpContext.Current.Server.MapPath("~/App_Data/XmlDocument.xml")));
-            //config.Formatters.XmlFormatter.UseXmlSerializer = false;
-            //config.Filters.Add(new CustomExceptionFilter());
-            //config.Services.Replace(typeof(IExceptionHandler), new GlobalExceptionHandler());
         }
 
 #if Handle_PageResultOfT

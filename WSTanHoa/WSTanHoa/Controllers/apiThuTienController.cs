@@ -25,7 +25,7 @@ namespace WSTanHoa.Controllers
         //    return new string[] { "value1", "value2" };
         //}
 
-        public string DataTableToJSON(DataTable table)
+        private string DataTableToJSON(DataTable table)
         {
             JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
             List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
@@ -99,7 +99,7 @@ namespace WSTanHoa.Controllers
         }
 
         [Route("getVersion")]
-        public ResultThuTien getVersion()
+        private ResultThuTien getVersion()
         {
             try
             {
@@ -120,7 +120,7 @@ namespace WSTanHoa.Controllers
             return _result;
         }
 
-        public ResultThuTien postDangNhap(string Username, string Password, string IDMobile, string UID)
+        private ResultThuTien postDangNhap(string Username, string Password, string IDMobile, string UID)
         {
             try
             {

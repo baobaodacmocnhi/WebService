@@ -19,7 +19,7 @@ namespace WSTanHoa.Controllers
         /// </summary>
         /// <returns></returns>
         [Route("getLichCupNuoc")]
-        public IList<LichCupNuoc> getLichCupNuoc()
+        private IList<LichCupNuoc> getLichCupNuoc()
         {
             DataTable dt = new DataTable();
             try
@@ -65,7 +65,7 @@ namespace WSTanHoa.Controllers
         /// <returns></returns>
         [Route("updateDaGui")]
         [HttpPost]
-        public bool updateDaGui(int ID)
+        private bool updateDaGui(int ID)
         {
             try
             {
