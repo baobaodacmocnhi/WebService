@@ -1,5 +1,5 @@
 ﻿@*@model IEnumerable<WSTanHoa.Models.Zalo>*@
-@model WSTanHoa.Models.db.ViewZalo
+@model WSTanHoa.Models.db.ZaloView
 
 @{
     ViewBag.Title = "Zalo OA";
@@ -21,7 +21,7 @@
     });
 </script>
 
-<body>
+<div class="container">
     @using (Html.BeginForm("Index", "Zalo", FormMethod.Get))
     {
         <div class="form-group" style="display:none">
@@ -30,31 +30,31 @@
             <input id="submit" type="submit" value="Load" class="btn btn-primary" />
         </div>
 
-        <h4 style="color:blue;">Danh sách danh bộ đã đăng ký trên Zalo OA Cấp nước Tân Hòa</h4>
+        <h4 class="text-primary">Danh sách danh bộ đã đăng ký trên Zalo OA Cấp nước Tân Hòa</h4>
 
         @*<h3>
                 <p>
                     @Html.ActionLink("Đăng ký mới", "Create")
                 </p>
             </h3>*@
-        <table class="table table-bordered border-dark">
+        <table class="table table-bordered border-dark mt-3 ">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.vZalo.DanhBo)
+                    @Html.DisplayNameFor(model => model.DanhBo)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.vZalo.HoTen)
+                    @Html.DisplayNameFor(model => model.HoTen)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.vZalo.DiaChi)
+                    @Html.DisplayNameFor(model => model.DiaChi)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.vZalo.DienThoai)
+                    @Html.DisplayNameFor(model => model.DienThoai)
                 </th>
                 <th></th>
             </tr>
 
-            @foreach (var item in Model.vlstZalo)
+            @foreach (var item in Model.lst)
             {
                 <tr>
                     <td>
@@ -82,9 +82,9 @@
     <div>
         @*@{ Html.RenderAction("Create", "Zalo");}*@
     </div>
-</body>
+</div>
 <hr />
-<body>
+<div class="container">
     <div class="form-horizontal">
         <h4 style="color:blue;">Đăng ký mới</h4>
 
@@ -96,10 +96,10 @@
                 @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = TempData["IDZalo"], @class = "form-control" } })
             </div>
             <div class="mb-3">
-                @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.vZalo.DanhBo, new { htmlAttributes = new { @class = "form-control", @id = "DanhBo1" } })
-                    @Html.ValidationMessageFor(model => model.vZalo.DanhBo, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.DanhBo, new { htmlAttributes = new { @class = "form-control", @id = "DanhBo1" } })
+                    @Html.ValidationMessageFor(model => model.DanhBo, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -117,34 +117,34 @@
                 @Html.Editor("id", new { htmlAttributes = new { id = "IDZalo", @Value = TempData["IDZalo"], @class = "form-control" } })
             </div>
             <div class="form-group" style="display:none">
-                @Html.LabelFor(model => model.vZalo.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.DanhBo, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.vZalo.DanhBo, new { htmlAttributes = new { @class = "form-control", @id = "DanhBo2" } })
-                    @Html.ValidationMessageFor(model => model.vZalo.DanhBo, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.DanhBo, new { htmlAttributes = new { @class = "form-control", @id = "DanhBo2" } })
+                    @Html.ValidationMessageFor(model => model.DanhBo, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.vZalo.HoTen, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.HoTen, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.vZalo.HoTen, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.vZalo.HoTen, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.HoTen, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.HoTen, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.vZalo.DiaChi, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.DiaChi, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.vZalo.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.vZalo.DiaChi, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.DiaChi, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DiaChi, "", new { @class = "text-danger" })
                 </div>
             </div>
 
             <div class="mb-3">
-                @Html.LabelFor(model => model.vZalo.DienThoai, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.DienThoai, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.vZalo.DienThoai, new { htmlAttributes = new { @class = "form-control" } })
-                    @Html.ValidationMessageFor(model => model.vZalo.DienThoai, "", new { @class = "text-danger" })
+                    @Html.EditorFor(model => model.DienThoai, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.DienThoai, "", new { @class = "text-danger" })
                 </div>
             </div>
 
@@ -165,4 +165,4 @@
             <img src="~/Image/giaybaotiennuoc2021.png" />
         </div>
     </div>
-</body>
+</div>

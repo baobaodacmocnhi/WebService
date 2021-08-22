@@ -8,16 +8,14 @@ using System.Web.Http;
 using System.Web.Script.Serialization;
 using WSTanHoa.Models;
 using WSTanHoa.Providers;
-using static WSTanHoa.Models.ResultThuTien;
 
 namespace WSTanHoa.Controllers
 {
     [RoutePrefix("api/ThuTien")]
     public class apiThuTienController : ApiController
     {
-        CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
         string _password = "thutien@2020";
-        ResultThuTien _result = new ResultThuTien();
+        apiThuTien _result = new apiThuTien();
 
         // GET api/<controller>
         //public IEnumerable<string> Get()
@@ -75,7 +73,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                return (bool)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
+                return (bool)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
             }
             catch (Exception ex)
             {
@@ -87,7 +85,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if ((int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
+                if ((int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
                     return true;
                 else
                     return false;
@@ -99,14 +97,14 @@ namespace WSTanHoa.Controllers
         }
 
         [Route("getVersion")]
-        private ResultThuTien getVersion()
+        private apiThuTien getVersion()
         {
             try
             {
                 if (checkHeader() == false)
                     return _result;
 
-                object value = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig");
+                object value = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig");
                 if (value != null)
                 {
                     _result.success = true;
@@ -120,14 +118,14 @@ namespace WSTanHoa.Controllers
             return _result;
         }
 
-        private ResultThuTien postDangNhap(string Username, string Password, string IDMobile, string UID)
+        private apiThuTien postDangNhap(string Username, string Password, string IDMobile, string UID)
         {
             try
             {
                 object MaNV = null;
-                MaNV = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+                MaNV = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
                 if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
-                    MaNV = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
+                    MaNV = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
 
                 if (MaNV == null || MaNV.ToString() == "")
                 {
@@ -136,9 +134,9 @@ namespace WSTanHoa.Controllers
                 }
 
                 //xóa máy đăng nhập MaNV khác
-                object MaNV_UID_Old = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                object MaNV_UID_Old = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
                 if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
-                    _cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                    CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
 
                 //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                 //{
@@ -150,17 +148,17 @@ namespace WSTanHoa.Controllers
                 //    }
                 //}
 
-                object MaNV_UID = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                object MaNV_UID = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
                 if (MaNV_UID != null)
                     if ((int)MaNV_UID == 0)
-                        _cDAL_ThuTien.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
                     else
-                        _cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+                        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
 
-                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV);
+                DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     _result.success = true;

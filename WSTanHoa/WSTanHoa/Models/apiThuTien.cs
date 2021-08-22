@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WSTanHoa.Models
 {
-    public class ResultThuTien
+    public class apiThuTien
     {
         public bool success { get; set; }
 
@@ -13,14 +13,14 @@ namespace WSTanHoa.Models
 
         public Logger logger { get; set; }
 
-        public ResultThuTien()
+        public apiThuTien()
         {
             success = false;
             message = "Không Có Kết Quả";
             logger = new Logger();
         }
 
-        public ResultThuTien(bool success, string message)
+        public apiThuTien(bool success, string message)
         {
             this.success = success;
             this.message = message;

@@ -137,7 +137,9 @@
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Log\" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -186,11 +188,12 @@
     </Compile>
     <Compile Include="Models\db\dbTrungTamKhachHang.cs" />
     <Compile Include="Models\db\KhieuNai.cs" />
+    <Compile Include="Models\db\ZaloView.cs" />
     <Compile Include="Models\db\Zalo_Chat.cs" />
     <Compile Include="Models\db\Zalo_DangKy.cs" />
     <Compile Include="Models\HoaDon.cs" />
     <Compile Include="Models\LichCupNuoc.cs" />
-    <Compile Include="Models\ResultThuTien.cs" />
+    <Compile Include="Models\apiThuTien.cs" />
     <Compile Include="Models\ThuHo.cs" />
     <Compile Include="Models\TrungTamKhachHang.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -203,7 +206,7 @@
     <Content Include="Areas\HelpPage\HelpPage.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\navbar-top-fixed.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Image\giaybaotiennuoc.png" />
@@ -233,9 +236,6 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
-    <Content Include="Log\2021.08.16.log" />
-    <Content Include="Log\2021.08.17.log" />
-    <Content Include="Log\2021.08.18.log" />
     <None Include="Properties\PublishProfiles\WSTanHoa.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -254,7 +254,6 @@
       <DependentUpon>Web.config</DependentUpon>
     </Content>
     <Content Include="Areas\HelpPage\Views\_ViewStart.cshtml" />
-    <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
@@ -265,10 +264,6 @@
     <Content Include="Views\KhieuNai\Edit.cshtml" />
     <Content Include="Views\KhieuNai\Index.cshtml" />
     <Content Include="Views\ZaloChat\Index.cshtml" />
-    <Content Include="Views\Zalo\Create.cshtml" />
-    <Content Include="Views\Zalo\Delete.cshtml" />
-    <Content Include="Views\Zalo\Details.cshtml" />
-    <Content Include="Views\Zalo\Edit.cshtml" />
     <Content Include="Views\Zalo\Index.cshtml" />
     <Content Include="Views\Zalo\Webhook.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

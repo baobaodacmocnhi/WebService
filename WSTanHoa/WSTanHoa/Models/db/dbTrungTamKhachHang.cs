@@ -49,15 +49,7 @@ namespace WSTanHoa.Models.db
                 .IsUnicode(false);
 
             modelBuilder.Entity<Zalo_DangKy>()
-                .Property(e => e.MLT)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Zalo_DangKy>()
                 .Property(e => e.DienThoai)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Zalo_DangKy>()
-                .Property(e => e.KyHieuPhong)
                 .IsUnicode(false);
         }
     }

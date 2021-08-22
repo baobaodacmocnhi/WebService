@@ -7,7 +7,7 @@
     <title>@ViewBag.Title</title>
 
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/modernizr")*@
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #00b3b3;">
@@ -35,7 +35,7 @@
         </div>
     </nav>
 
-    <div class="container body-content">
+    <div class="container body-content mt-3">
         @RenderBody()
         <hr />
         <footer>

@@ -1,21 +1,127 @@
-﻿
+﻿@model List<WSTanHoa.Models.db.ZaloView>
 @{
     ViewBag.Title = "Zalo OA Chat";
 }
 
-<h4>Danh sách Zalo Chat OA Cấp nước Tân Hòa</h4>
-
-<body>
-    <div class="container">
-        <div class="row">
-            <div class="col">Column</div>
-            <div class="col">Column</div>
-            <div class="w-100"></div>
-            <div class="col">Column</div>
-            <div class="col">Column</div>
+<h4 class="text-primary">Danh sách Zalo Chat OA Cấp nước Tân Hòa</h4>
+<div class="container bg-light mt-3 rounded-3">
+    <div class="row pt-3 px-3">
+        <div class="col-auto">
+            <input class="form-control" type="text" id="NoiDungTimKiem" placeholder="Nội dung tìm kiếm">
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary mb-3">Tìm Kiếm</button>
         </div>
     </div>
+</div>
+<h4>Kết Quả</h4>
+<div class="container">
+    <div class="row">
+        <div class="col-4">
+            <div class="bd-example border rounded-3 mt-3">
+                <div style="height:400px;overflow:auto">
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <th scope="row"> @item.STT</th>
+                                    <td>
+                                        @item.Avatar
+                                    </td>
+                                    <td>
+                                        @item.Name
+                                    </td>
+                                    <td>
+                                        @item.CreateDate
+                                    </td>
+                                </tr>
+                            }
 
+                        </tbody>
 
-</body>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="bd-example border rounded-3 mt-3">
+                <div style="height:400px;overflow:auto">
+                    <table class="table table-striped mb-0">
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>twitter</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>twitter</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>twitter</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>Mark</td>
+                                <td>Otto</td>
+                                <td>mdo</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Jacob</td>
+                                <td>Thornton</td>
+                                <td>fat</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td colspan="2">Larry the Bird</td>
+                                <td>twitter</td>
+                            </tr>
+                        </tbody>
 
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,13 +16,6 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/TrungTamKhachHang")]
     public class apiTrungTamKhachHangController : ApiController
     {
-        CConnection _cDAL_DHN = new CConnection(CConstantVariable.DHN);
-        CConnection _cDAL_DocSo = new CConnection(CConstantVariable.DocSo);
-        CConnection _cDAL_DocSo12 = new CConnection(CConstantVariable.DocSo12);
-        CConnection _cDAL_GanMoi = new CConnection(CConstantVariable.GanMoi);
-        CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
-        CConnection _cDAL_KinhDoanh = new CConnection(CConstantVariable.KinhDoanh);
-        CConnection _cDAL_TrungTam = new CConnection(CConstantVariable.TrungTamKhachHang);
         string _pass = "s@l@2019";
 
         /// <summary>
@@ -63,7 +56,7 @@ namespace WSTanHoa.Controllers
                              + ",NgayKiemDinh"
                              + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
                              + " from TB_DULIEUKHACHHANG where DanhBo=" + DanhBo;
-                dt.Merge(_cDAL_DHN.ExecuteQuery_DataTable(sql));
+                dt.Merge(CConstantVariable.cDAL_DHN.ExecuteQuery_DataTable(sql));
                 //lấy thông tin khách hàng đã hủy
                 if (dt == null || dt.Rows.Count == 0)
                 {
@@ -86,7 +79,7 @@ namespace WSTanHoa.Controllers
                                  + ",NgayKiemDinh"
                                  + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
                                  + " from TB_DULIEUKHACHHANG_HUYDB where DanhBo=" + DanhBo;
-                    dt.Merge(_cDAL_DHN.ExecuteQuery_DataTable(sql));
+                    dt.Merge(CConstantVariable.cDAL_DHN.ExecuteQuery_DataTable(sql));
                 }
                 //
                 if (dt != null && dt.Rows.Count > 0)
@@ -114,7 +107,7 @@ namespace WSTanHoa.Controllers
                     if (dt.Rows[0]["NgayKiemDinh"].ToString() != "")
                         en.NgayKiemDinh = DateTime.Parse(dt.Rows[0]["NgayKiemDinh"].ToString());
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
-                    if ((int)_cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
+                    if ((int)CConstantVariable.cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
                         en.ThongTin = "Có sử dụng Giếng";
                     if (en.ThongTin != "")
                         en.ThongTin += " - ";
@@ -162,10 +155,10 @@ namespace WSTanHoa.Controllers
                                + " from DocSo"
                                + " where DanhBa=" + DanhBo
                                + " order by Nam desc,CAST(Ky as int) desc";
-                dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
+                dt = CConstantVariable.cDAL_DocSo.ExecuteQuery_DataTable(sql);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    en.NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                    en.NhanVien = CConstantVariable.cDAL_DocSo.ExecuteQuery_ReturnOneValue("select N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
                     en.NhanVien += " ; " + getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
 
                     foreach (DataRow item in dt.Rows)
@@ -183,7 +176,7 @@ namespace WSTanHoa.Controllers
                 }
                 //lấy ghi chú
                 sql = "select NoiDung,CreateDate from TB_GHICHU where DanhBo=" + DanhBo + " order by CreateDate desc";
-                dt = _cDAL_DHN.ExecuteQuery_DataTable(sql);
+                dt = CConstantVariable.cDAL_DHN.ExecuteQuery_DataTable(sql);
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -221,7 +214,7 @@ namespace WSTanHoa.Controllers
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
-                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                DataTable dt_ThongTin = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
                 if (dt_ThongTin != null && dt_ThongTin.Rows.Count > 0)
                 {
                     ThongTinKhachHang en = new ThongTinKhachHang();
@@ -233,7 +226,7 @@ namespace WSTanHoa.Controllers
 
                     string result_Lich = getLichDocSo_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
-                    string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                    string result_NhanVien = CConstantVariable.cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
 
                     en.ThongTin = result_NhanVien + " ; " + result_Lich;
                     return en;
@@ -261,7 +254,7 @@ namespace WSTanHoa.Controllers
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
                                    + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))";
             //+ " order by a.CreateDate desc";
-            return _cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
+            return CConstantVariable.cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -323,7 +316,7 @@ namespace WSTanHoa.Controllers
                 int TongNo = 0;
 
                 string sql = "select * from fnTimKiem('" + DanhBo + "','') order by MaHD desc";
-                dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -368,11 +361,11 @@ namespace WSTanHoa.Controllers
                 if (TongNo > 0)
                     en.ThongTin = "Hiện còn nợ: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongNo);
 
-                int PhiMoNuoc = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+                int PhiMoNuoc = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
                 if (PhiMoNuoc > 0)
                     en.ThongTin += " ; Phí mở nước: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", PhiMoNuoc);
 
-                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnThuHoChuaDangNgan(" + DanhBo + ")");
+                dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnThuHoChuaDangNgan(" + DanhBo + ")");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     en.ThongTin += " ; Đã Thu Hộ " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(dt.Rows[0]["TongCong"].ToString())) + " - Kỳ " + dt.Rows[0]["Kys"].ToString() + " - ngày " + dt.Rows[0]["CreateDate"].ToString() + " - qua " + dt.Rows[0]["TenDichVu"].ToString();
@@ -402,7 +395,7 @@ namespace WSTanHoa.Controllers
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
-                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                DataTable dt_ThongTin = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
                 if (dt_ThongTin != null && dt_ThongTin.Rows.Count > 0)
                 {
                     ThongTinKhachHang en = new ThongTinKhachHang();
@@ -414,7 +407,7 @@ namespace WSTanHoa.Controllers
 
                     string result_Lich = getLichThuTien_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
-                    string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+                    string result_NhanVien = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
 
                     en.ThongTin = result_NhanVien + " ; " + result_Lich;
                     return en;
@@ -442,7 +435,7 @@ namespace WSTanHoa.Controllers
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
                                    + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))";
             //+ " order by a.CreateDate desc";
-            return _cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
+            return CConstantVariable.cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -527,13 +520,13 @@ namespace WSTanHoa.Controllers
             DataSet ds = new DataSet();
             try
             {
-                dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("exec spTimKiemByBanhBo_DonTu '" + DanhBo + "'");
-                ds = _cDAL_KinhDoanh.ExecuteQuery_DataSet("exec spTimKiemByBanhBo_DonTuChiTiet '" + DanhBo + "'");
+                dt = CConstantVariable.cDAL_KinhDoanh.ExecuteQuery_DataTable("exec spTimKiemByBanhBo_DonTu '" + DanhBo + "'");
+                ds = CConstantVariable.cDAL_KinhDoanh.ExecuteQuery_DataSet("exec spTimKiemByBanhBo_DonTuChiTiet '" + DanhBo + "'");
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     DonKinhDoanh enKD = new DonKinhDoanh();
-                    enKD.ThongTin = _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select dbo.fnCheckTinhTrangCanKhachHangLienHe('" + DanhBo + "')").ToString();
+                    enKD.ThongTin = CConstantVariable.cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select dbo.fnCheckTinhTrangCanKhachHangLienHe('" + DanhBo + "')").ToString();
 
                     foreach (DataRow item in dt.Rows)
                         if (enKD.lstDonTu.Any(itemA => itemA.MaDon == item["MaDon"].ToString()) == false)
@@ -934,7 +927,7 @@ namespace WSTanHoa.Controllers
                 //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 //}
-                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from fnGetHoSoScan('" + DanhBo + "') order by CreateDate desc");
+                DataTable dt = CConstantVariable.cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from fnGetHoSoScan('" + DanhBo + "') order by CreateDate desc");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     List<HoSoScan> lst = new List<HoSoScan>();
@@ -999,7 +992,7 @@ namespace WSTanHoa.Controllers
                 DataTable dt = new DataTable();
 
                 List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
-                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + checkHoTen + "','" + checkSoNha + "','" + checkTenDuong + "')");
+                dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + checkHoTen + "','" + checkSoNha + "','" + checkTenDuong + "')");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     foreach (DataRow item in dt.Rows)
@@ -1016,7 +1009,7 @@ namespace WSTanHoa.Controllers
                     }
                 }
                 //kiếm danh bộ hủy
-                //dt = _cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG_HUYDB where HOTEN like N'%" + checkHoTen + "%' and ((SONHA like N'%" + checkSoNha + "%' and TENDUONG like N'%" + checkTenDuong + "%') or (SONHA+' '+TENDUONG like N'%" + checkSoNha + " " + checkTenDuong + "%'))");
+                //dt = CConstantVariable.cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG_HUYDB where HOTEN like N'%" + checkHoTen + "%' and ((SONHA like N'%" + checkSoNha + "%' and TENDUONG like N'%" + checkTenDuong + "%') or (SONHA+' '+TENDUONG like N'%" + checkSoNha + " " + checkTenDuong + "%'))");
                 //if (dt != null && dt.Rows.Count > 0)
                 //{
                 //    foreach (DataRow item in dt.Rows)
@@ -1060,8 +1053,8 @@ namespace WSTanHoa.Controllers
                 }
                 DataTable dt = new DataTable();
 
-                dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
-                dt.Merge(_cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo=DanhBa from KhachHang where SDT like '%" + DienThoai + "%'"));
+                dt = CConstantVariable.cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
+                dt.Merge(CConstantVariable.cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo=DanhBa from KhachHang where SDT like '%" + DienThoai + "%'"));
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
@@ -1110,7 +1103,7 @@ namespace WSTanHoa.Controllers
                             + " WHERE biennhan.QUAN = q.MAQUAN AND q.MAQUAN = p.MAQUAN  AND biennhan.PHUONG = p.MAPHUONG AND lhs.MALOAI = biennhan.LOAIDON"
                             + " AND biennhan.SHS = '" + SoHoSo + "'";
 
-                dt = _cDAL_GanMoi.ExecuteQuery_DataTable(sql);
+                dt = CConstantVariable.cDAL_GanMoi.ExecuteQuery_DataTable(sql);
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -1127,7 +1120,7 @@ namespace WSTanHoa.Controllers
                                   + " NgayCoPhepDaoDuong = (select NGAYCOPHEP from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS)),"
                                   + " NgayThiCong = (select NGAYTHICONG from KH_HOSOKHACHHANG where SHS = donkh.SHS)"
                                   + " from DON_KHACHHANG donkh where SHS = '" + SoHoSo + "'";
-                    DataTable dtCT = _cDAL_GanMoi.ExecuteQuery_DataTable(sqlCT);
+                    DataTable dtCT = CConstantVariable.cDAL_GanMoi.ExecuteQuery_DataTable(sqlCT);
 
                     GhiChu enCT = new GhiChu();
                     enCT.NoiDung = "Ngày Chuyển Thiết Kế";

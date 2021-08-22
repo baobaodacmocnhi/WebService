@@ -16,9 +16,6 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuHo")]
     public class apiThuHoController : ApiController
     {
-        static readonly log4net.ILog _log = log4net.LogManager.GetLogger("File");
-        CConnection _cDAL = new CConnection(CConstantVariable.ThuTien);
-
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
         /// </summary>
@@ -32,29 +29,29 @@ namespace WSTanHoa.Controllers
             //check exist
             try
             {
-                count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where DANHBA='" + DanhBo + "'");
+                count = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where DANHBA='" + DanhBo + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+                CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             if (count == 0)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorKhongDung, ErrorResponse.ErrorCodeKhongDung);
-                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+                CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             //get hoadon tồn
             try
             {
-                dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
+                dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+                CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             //
@@ -88,7 +85,7 @@ namespace WSTanHoa.Controllers
                 else
                 {
                     ErrorResponseDetail error = new ErrorResponseDetail(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo, dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["HoTen"].ToString(), dt.Rows[0]["DiaChi"].ToString());
-                    _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+                    CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
             }
@@ -96,18 +93,18 @@ namespace WSTanHoa.Controllers
             {
                 try
                 {
-                    dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                    dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
                 }
                 catch (Exception ex)
                 {
                     ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                    _log.Error("getHoaDonTon " + error1.ToString() + " (" + DanhBo + ")");
+                    CConstantVariable.log.Error("getHoaDonTon " + error1.ToString() + " (" + DanhBo + ")");
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
                 }
                 ErrorResponseDetail error = new ErrorResponseDetail(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo, dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["HoTen"].ToString(), dt.Rows[0]["DiaChi"].ToString());
 
                 //ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo);
-                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+                CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 //throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
             }
@@ -124,12 +121,12 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                return (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+                return (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("getPhiMoNuoc " + error.ToString() + " (" + DanhBo + ")");
+                CConstantVariable.log.Error("getPhiMoNuoc " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
@@ -145,12 +142,12 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                return (int)_cDAL.ExecuteQuery_ReturnOneValue("select TienDu=dbo.fnGetTienDu(" + DanhBo + ")");
+                return (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select TienDu=dbo.fnGetTienDu(" + DanhBo + ")");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("getTienDu " + error.ToString() + " (" + DanhBo + ")");
+                CConstantVariable.log.Error("getTienDu " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
@@ -176,18 +173,18 @@ namespace WSTanHoa.Controllers
             string PasswordSQL = "";
             try
             {
-                PasswordSQL = (string)_cDAL.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
+                PasswordSQL = (string)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             if (CConstantVariable.getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -195,25 +192,25 @@ namespace WSTanHoa.Controllers
             if (TenDichVu == "" || IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
             int checkExist = 0;
             try
             {
-                checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                checkExist = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             if (checkExist > 0)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichTonTai, ErrorResponse.ErrorCodeIDGiaoDichTonTai);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -226,14 +223,14 @@ namespace WSTanHoa.Controllers
             catch
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorMaHD, ErrorResponse.ErrorCodeMaHD);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             //lấy hóa đơn tồn
             List<HoaDon> lstHD = new List<HoaDon>();
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
+                DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     foreach (DataRow item in dt.Rows)
@@ -259,7 +256,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+                CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -287,14 +284,14 @@ namespace WSTanHoa.Controllers
                                     + "         end"
                                     + "     end";
                         if (checkExist_GiaiTrach == "")
-                            checkExist_GiaiTrach += arrayMaHD[i] + " : " + _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
+                            checkExist_GiaiTrach += arrayMaHD[i] + " : " + CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
                         else
-                            checkExist_GiaiTrach += " ; " + arrayMaHD[i] + " : " + _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
+                            checkExist_GiaiTrach += " ; " + arrayMaHD[i] + " : " + CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
                     }
                     catch (Exception ex)
                     {
                         ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                        _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                        CConstantVariable.log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                         throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
                     }
 
@@ -302,13 +299,13 @@ namespace WSTanHoa.Controllers
                 if (checkExist_GiaiTrach != "")
                 {
                     ErrorResponse error1 = new ErrorResponse(ErrorResponse.ErrorGiaiTrach + ". " + checkExist_GiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
-                    _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                    CConstantVariable.log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
                 }
 
                 //return error không thanh toán đủ hóa đơn tồn
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHoaDon, ErrorResponse.ErrorCodeHoaDon);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -316,7 +313,7 @@ namespace WSTanHoa.Controllers
             if ((lstHD.Sum(item => item.TongCong) + lstHD[0].PhiMoNuoc - lstHD[0].TienDu) != (SoTien + PhiMoNuoc - TienDu) || (SoTien + PhiMoNuoc - TienDu) != TongCong)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorSoTien, ErrorResponse.ErrorCodeSoTien);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -325,12 +322,12 @@ namespace WSTanHoa.Controllers
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from TT_DichVuThuTong");
+                    int ID = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from TT_DichVuThuTong");
 
                     string SoHoaDons = "", Kys = "", sql_ChiTiet = "";
                     for (int i = 0; i < arrayMaHD.Length; i++)
                     {
-                        DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
+                        DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
                         sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
                             + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'" + TenDichVu + "'," + ID + ",'" + IDGiaoDich + "',getdate()) ";
                         if (string.IsNullOrEmpty(SoHoaDons) == true)
@@ -346,8 +343,8 @@ namespace WSTanHoa.Controllers
                     }
                     string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
                                 + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','" + Kys + "'," + SoTien + "," + PhiMoNuoc + "," + TienDu + "," + TongCong + ",N'" + TenDichVu + "','" + IDGiaoDich + "',getdate())";
-                    _cDAL.ExecuteNonQuery(sql_Tong);
-                    _cDAL.ExecuteNonQuery(sql_ChiTiet);
+                    CConstantVariable.cDAL_ThuTien.ExecuteNonQuery(sql_Tong);
+                    CConstantVariable.cDAL_ThuTien.ExecuteNonQuery(sql_ChiTiet);
                     ts.Complete();
                     return true;
                 }
@@ -355,7 +352,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
@@ -374,19 +371,19 @@ namespace WSTanHoa.Controllers
             string PasswordSQL = "";
             try
             {
-                PasswordSQL = (string)_cDAL.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
+                PasswordSQL = (string)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
             if (CConstantVariable.getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -394,39 +391,39 @@ namespace WSTanHoa.Controllers
             if (TenDichVu == "" || IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
             int checkExist = 0;
             try
             {
-                checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                checkExist = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             if (checkExist == 0)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
             //kiểm tra hóa đơn đã giải trách, không xóa được
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
+                    int count = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
                     if (count > 0)
                     {
                         ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorGiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
-                        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                         throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                     }
                 }
@@ -434,7 +431,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -442,18 +439,18 @@ namespace WSTanHoa.Controllers
             int phimonuoc = 0;
             try
             {
-                phimonuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                phimonuoc = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             if (phimonuoc > 0)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPhiMoNuoc, ErrorResponse.ErrorCodePhiMoNuoc);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -462,10 +459,10 @@ namespace WSTanHoa.Controllers
             {
                 using (TransactionScope ts = new TransactionScope())
                 {
-                    _cDAL.ExecuteNonQuery("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                    _cDAL.ExecuteNonQuery("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                    _cDAL.ExecuteNonQuery("insert TT_DichVuThuTong_Huy select * from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                    _cDAL.ExecuteNonQuery("delete TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("insert TT_DichVuThuTong_Huy select * from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("delete TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
                     ts.Complete();
                     return true;
                 }
@@ -473,7 +470,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
@@ -491,19 +488,19 @@ namespace WSTanHoa.Controllers
             if (TenDichVu == "" || IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-                _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
             DataTable dt = new DataTable();
             try
             {
-                dt = _cDAL.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -527,7 +524,7 @@ namespace WSTanHoa.Controllers
             else
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-                _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
@@ -545,19 +542,19 @@ namespace WSTanHoa.Controllers
             if (TenDichVu == "" || IDGiaoDich == "")
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-                _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
             DataTable dt = new DataTable();
             try
             {
-                dt = _cDAL.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
                 ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-                _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
 
@@ -583,7 +580,7 @@ namespace WSTanHoa.Controllers
             else
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-                _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+                CConstantVariable.log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
@@ -603,29 +600,29 @@ namespace WSTanHoa.Controllers
         //    //check exist
         //    try
         //    {
-        //        count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where DANHBA='" + DanhBo + "'");
+        //        count = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where DANHBA='" + DanhBo + "'");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+        //        CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //    if (count == 0)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorKhongDung, ErrorResponse.ErrorCodeKhongDung);
-        //        _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+        //        CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //    }
         //    //get hoadon tồn
         //    try
         //    {
-        //        dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
+        //        dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+        //        CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //    //
@@ -656,18 +653,18 @@ namespace WSTanHoa.Controllers
         //    {
         //        //try
         //        //{
-        //        //    dt = _cDAL.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+        //        //    dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
         //        //}
         //        //catch (Exception ex)
         //        //{
         //        //    ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        //    _log.Error("getHoaDonTon " + error1.ToString() + " (" + DanhBo + ")");
+        //        //    CConstantVariable.log.Error("getHoaDonTon " + error1.ToString() + " (" + DanhBo + ")");
         //        //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error1));
         //        //}
 
         //        //ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo, dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["HoTen"].ToString(), dt.Rows[0]["DiaChi"].ToString());
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHetNo, ErrorResponse.ErrorCodeHetNo);
-        //        _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+        //        CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //        //throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
         //    }
@@ -683,12 +680,12 @@ namespace WSTanHoa.Controllers
         //{
         //    try
         //    {
-        //        return (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+        //        return (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("getPhiMoNuoc " + error.ToString() + " (" + DanhBo + ")");
+        //        CConstantVariable.log.Error("getPhiMoNuoc " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //}
@@ -703,12 +700,12 @@ namespace WSTanHoa.Controllers
         //{
         //    try
         //    {
-        //        return (int)_cDAL.ExecuteQuery_ReturnOneValue("select TienDu=dbo.fnGetTienDu(" + DanhBo + ")");
+        //        return (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select TienDu=dbo.fnGetTienDu(" + DanhBo + ")");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("getTienDu " + error.ToString() + " (" + DanhBo + ")");
+        //        CConstantVariable.log.Error("getTienDu " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //}
@@ -736,18 +733,18 @@ namespace WSTanHoa.Controllers
         //    string PasswordSQL = "";
         //    try
         //    {
-        //        PasswordSQL = (string)_cDAL.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
+        //        PasswordSQL = (string)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //    if (CConstantVariable.getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
         //    }
 
@@ -755,25 +752,25 @@ namespace WSTanHoa.Controllers
         //    if (TenDichVu == "" || IDGiaoDich == "")
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //    }
 
         //    int checkExist = 0;
         //    try
         //    {
-        //        checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        checkExist = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //    if (checkExist > 0)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichTonTai, ErrorResponse.ErrorCodeIDGiaoDichTonTai);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.Found, error));
         //    }
 
@@ -786,7 +783,7 @@ namespace WSTanHoa.Controllers
         //    catch
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorMaHD, ErrorResponse.ErrorCodeMaHD);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
         //    }
 
@@ -794,7 +791,7 @@ namespace WSTanHoa.Controllers
         //    List<HoaDon> lstHD = new List<HoaDon>();
         //    try
         //    {
-        //        DataTable dt = _cDAL.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
+        //        DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
         //        if (dt != null && dt.Rows.Count > 0)
         //        {
         //            foreach (DataRow item in dt.Rows)
@@ -820,7 +817,7 @@ namespace WSTanHoa.Controllers
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
+        //        CConstantVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
         //    }
 
@@ -839,25 +836,25 @@ namespace WSTanHoa.Controllers
         //                            + " else"
         //                            + " (select TenDichVu from TT_DichVuThu where MaHD = " + arrayMaHD[i] + ")"
         //                            + " end";
-        //                checkExist_GiaiTrach = _cDAL.ExecuteQuery_ReturnOneValue(sql).ToString();
+        //                checkExist_GiaiTrach = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
         //            }
         //            catch (Exception ex)
         //            {
         //                ErrorResponse error1 = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //                _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //                CConstantVariable.log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error1));
         //            }
         //            if (checkExist_GiaiTrach != null && checkExist_GiaiTrach != "" && checkExist_GiaiTrach != "NULL")
         //            {
         //                ErrorResponse error1 = new ErrorResponse(ErrorResponse.ErrorGiaiTrach + ". " + checkExist_GiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
-        //                _log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //                CConstantVariable.log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error1));
         //            }
         //        }
 
         //        //return error không thanh toán đủ hóa đơn tồn
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHoaDon, ErrorResponse.ErrorCodeHoaDon);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
         //    }
 
@@ -865,23 +862,23 @@ namespace WSTanHoa.Controllers
         //    if ((lstHD.Sum(item => item.TongCong) + lstHD[0].PhiMoNuoc - lstHD[0].TienDu) != (SoTien + PhiMoNuoc - TienDu) || (SoTien + PhiMoNuoc - TienDu) != TongCong)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorSoTien, ErrorResponse.ErrorCodeSoTien);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
         //    }
 
         //    //insert Database
         //    try
         //    {
-        //        _cDAL.BeginTransaction();
-        //        int ID = (int)_cDAL.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
+        //        CConstantVariable.cDAL_ThuTien.BeginTransaction();
+        //        int ID = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue_Transaction("select MAX(ID)+1 from TT_DichVuThuTong");
 
         //        string SoHoaDons = "", sql_ChiTiet = "";
         //        for (int i = 0; i < arrayMaHD.Length; i++)
         //        {
-        //            DataTable dt = _cDAL.ExecuteQuery_DataTable_Transaction("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
+        //            DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable_Transaction("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
         //            sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
         //                + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'" + TenDichVu + "'," + ID + ",'" + IDGiaoDich + "',getdate()) ";
-        //            //_cDAL.ExecuteNonQuery_Transaction(sql);
+        //            //CConstantVariable.cDAL_ThuTien.ExecuteNonQuery_Transaction(sql);
         //            if (string.IsNullOrEmpty(SoHoaDons) == true)
         //                SoHoaDons = dt.Rows[0]["SoHoaDon"].ToString();
         //            else
@@ -889,16 +886,16 @@ namespace WSTanHoa.Controllers
         //        }
         //        string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
         //                    + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "'," + SoTien + "," + PhiMoNuoc + "," + TienDu + "," + TongCong + ",N'" + TenDichVu + "','" + IDGiaoDich + "',getdate())";
-        //        _cDAL.ExecuteNonQuery_Transaction(sql_Tong);
-        //        _cDAL.ExecuteNonQuery_Transaction(sql_ChiTiet);
-        //        _cDAL.CommitTransaction();
+        //        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery_Transaction(sql_Tong);
+        //        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery_Transaction(sql_ChiTiet);
+        //        CConstantVariable.cDAL_ThuTien.CommitTransaction();
         //        return true;
         //    }
         //    catch (Exception ex)
         //    {
-        //        _cDAL.RollbackTransaction();
+        //        CConstantVariable.cDAL_ThuTien.RollbackTransaction();
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //}
@@ -917,19 +914,19 @@ namespace WSTanHoa.Controllers
         //    string PasswordSQL = "";
         //    try
         //    {
-        //        PasswordSQL = (string)_cDAL.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
+        //        PasswordSQL = (string)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
 
         //    if (CConstantVariable.getSHA256(TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
         //    }
 
@@ -937,39 +934,39 @@ namespace WSTanHoa.Controllers
         //    if (TenDichVu == "" || IDGiaoDich == "")
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //    }
 
         //    int checkExist = 0;
         //    try
         //    {
-        //        checkExist = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        checkExist = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //    if (checkExist == 0)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //    }
 
         //    //kiểm tra hóa đơn đã giải trách, không xóa được
         //    try
         //    {
-        //        DataTable dt = _cDAL.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
         //        for (int i = 0; i < dt.Rows.Count; i++)
         //        {
-        //            int count = (int)_cDAL.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
+        //            int count = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
         //            if (count > 0)
         //            {
         //                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorGiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
-        //                _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //                CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
         //            }
         //        }
@@ -977,7 +974,7 @@ namespace WSTanHoa.Controllers
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
 
@@ -985,37 +982,37 @@ namespace WSTanHoa.Controllers
         //    int phimonuoc = 0;
         //    try
         //    {
-        //        phimonuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        phimonuoc = (int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //    if (phimonuoc > 0)
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPhiMoNuoc, ErrorResponse.ErrorCodePhiMoNuoc);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, error));
         //    }
 
         //    //delete Database
         //    try
         //    {
-        //        _cDAL.BeginTransaction();
-        //        _cDAL.ExecuteNonQuery_Transaction("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-        //        _cDAL.ExecuteNonQuery_Transaction("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-        //        _cDAL.ExecuteNonQuery_Transaction("insert TT_DichVuThuTong_Huy select * from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-        //        _cDAL.ExecuteNonQuery_Transaction("delete TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-        //        _cDAL.CommitTransaction();
+        //        CConstantVariable.cDAL_ThuTien.BeginTransaction();
+        //        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery_Transaction("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery_Transaction("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery_Transaction("insert TT_DichVuThuTong_Huy select * from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery_Transaction("delete TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        CConstantVariable.cDAL_ThuTien.CommitTransaction();
         //        return true;
         //    }
         //    catch (Exception ex)
         //    {
-        //        _cDAL.RollbackTransaction();
+        //        CConstantVariable.cDAL_ThuTien.RollbackTransaction();
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("deleteThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
         //}
@@ -1033,19 +1030,19 @@ namespace WSTanHoa.Controllers
         //    if (TenDichVu == "" || IDGiaoDich == "")
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-        //        _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //    }
 
         //    DataTable dt = new DataTable();
         //    try
         //    {
-        //        dt = _cDAL.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
 
@@ -1069,7 +1066,7 @@ namespace WSTanHoa.Controllers
         //    else
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-        //        _log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("getThuHo " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //    }
         //}
@@ -1087,19 +1084,19 @@ namespace WSTanHoa.Controllers
         //    if (TenDichVu == "" || IDGiaoDich == "")
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-        //        _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //    }
 
         //    DataTable dt = new DataTable();
         //    try
         //    {
-        //        dt = _cDAL.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+        //        dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
         //    }
         //    catch (Exception ex)
         //    {
         //        ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
-        //        _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.InternalServerError, error));
         //    }
 
@@ -1124,7 +1121,7 @@ namespace WSTanHoa.Controllers
         //    else
         //    {
         //        ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorIDGiaoDichKhongTonTai, ErrorResponse.ErrorCodeIDGiaoDichKhongTonTai);
-        //        _log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
+        //        CConstantVariable.log.Error("getThuHoTong " + error.ToString() + " (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
         //        throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.NotFound, error));
         //    }
         //}

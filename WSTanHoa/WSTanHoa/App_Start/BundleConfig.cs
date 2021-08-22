@@ -21,7 +21,7 @@ namespace WSTanHoa
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/navbar-top-fixed.css"));
+                      "~/Content/Site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/zalo").Include(
                       "~/Scripts/zalo.js"));

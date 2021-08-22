@@ -31,8 +31,6 @@ namespace WSTanHoa.Controllers
         //string _url = "http://service.capnuoctanhoa.com.vn:1010";
         //string _urlImage = "http://service.capnuoctanhoa.com.vn:1010/Image";
 
-        string _IDZalo = "4276209776391262580";
-
         /// <summary>
         /// webhook receive zalo, 2020 webhook từ view gọi sang api
         /// </summary>
@@ -183,7 +181,7 @@ namespace WSTanHoa.Controllers
                 //bấm bỏ quan tâm
                 if (jsonContent["event_name"].ToString() == "unfollow")
                 {
-                    //string sql = "delete Zalo_QuanTam where IDZalo=" + IDZalo;
+                    //string sql = "delete Zalo_QuanTam where IDZalo=" + jsonContent["follower"]["id"].ToString();
                     string sql = "update Zalo_QuanTam set Follow=0 where IDZalo=" + jsonContent["follower"]["id"].ToString();
                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
@@ -853,12 +851,13 @@ namespace WSTanHoa.Controllers
                 if (checksum == CConstantVariable.cheksum)
                 {
                     //string sql = "select Nam=2021, Ky=8, NgayDoc=GETDATE(), IDZalo='4276209776391262580', DanhBo='13182499650', HoTen='GIENG PTH CONG TY CO PHAN CAP NUOC TAN HOA',DiaChi='GOC TR THU DO+L/LO P.PHU THANH',DienThoai='123456789'";
-                    string sql = "select Nam, Ky, NgayDoc=CONVERT(varchar(10),NgayDoc,103), z.IDZalo, DanhBo, HoTen, DiaChi,DienThoai=(select DienThoai from [SERVER8].[DocSoTH].[dbo].[MayDS] where May=SUBSTRING(z.MLT,3,2))"
-                                + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, Zalo_DangKy z, Zalo_QuanTam zq"
-                                + " where a.ID = b.IDDocSo and c.ID = b.IDDot"
+                    string sql = "select a.Nam, a.Ky, NgayDoc = CONVERT(varchar(10), NgayDoc, 103), z.IDZalo, ttkh.DanhBo, ttkh.HoTen, DiaChi = SONHA + ' ' + TENDUONG,DienThoai = (select DienThoai from[SERVER8].[DocSoTH].[dbo].[MayDS]"
+                                + " where May = SUBSTRING(ttkh.LOTRINH, 3, 2))"
+                                + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, Zalo_DangKy z, Zalo_QuanTam zq, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh" 
+                                + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
                                 + " and CAST(NgayDoc as date) = CAST(GETDATE() as date)"
-                                + " and((TB1_From <= z.MLT and z.MLT <= TB1_To)or(TB2_From <= z.MLT and z.MLT <= TB2_To)or(TP1_From <= z.MLT and z.MLT <= TP1_To)or(TP2_From <= z.MLT and z.MLT <= TP2_To))"
-                                + " and z.IDZalo=zq.IDZalo and zq.Follow=1";
+                                + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
+                                + " and z.IDZalo=zq.IDZalo and zq.Follow= 1";
                     DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     string message;
                     foreach (DataRow item in dt.Rows)

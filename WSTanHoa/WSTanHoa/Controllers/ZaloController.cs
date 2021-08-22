@@ -21,12 +21,10 @@ namespace WSTanHoa.Controllers
 {
     public class ZaloController : Controller
     {
-        dbTrungTamKhachHang db = new dbTrungTamKhachHang();
-        CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
         decimal IDZalo = -1;
 
         // GET: Zalo
-        public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo_DangKy vZalo, string action)
+        public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,DienThoai")] ZaloView zalo, string action)
         {
             if (TempData["IDZalo"] == null)
             {
@@ -37,8 +35,18 @@ namespace WSTanHoa.Controllers
             if (TempData["IDZalo"] != null)
                 IDZalo = decimal.Parse(TempData["IDZalo"].ToString());
 
-            IEnumerable<Zalo_DangKy> lstZalo = await db.Zalo_DangKy.Where(item => item.IDZalo == IDZalo).ToListAsync();
-            Zalo_DangKy zalo = new Zalo_DangKy();
+            DataTable dtTTKH =CConstantVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo,z.DienThoai,z.DanhBo,ttkh.HoTen,DiaChi = SONHA + ' ' + TENDUONG from Zalo_DangKy z, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=z.DanhBo and IDZalo=" + IDZalo);
+            //List<ZaloView> lstZalo = new List<ZaloView>();
+            foreach (DataRow item in dtTTKH.Rows)
+            {
+                ZaloView en = new ZaloView();
+                en.IDZalo = item["IDZalo"].ToString();
+                en.DanhBo = item["DanhBo"].ToString();
+                en.HoTen = item["HoTen"].ToString();
+                en.DiaChi = item["DiaChi"].ToString();
+                en.DienThoai = item["DienThoai"].ToString();
+                zalo.lst.Add(en);
+            }
 
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(action))
                 if (TempData["IDZalo"] != null)
@@ -46,319 +54,67 @@ namespace WSTanHoa.Controllers
                     switch (action)
                     {
                         case "Kiểm Tra":
-                            if (vZalo.DanhBo != null && vZalo.DanhBo != "")
+                            if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
-                                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + vZalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+                                DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
-                                    //vZalo = await db.Zaloes.FindAsync(CConstantVariable.IDZalo, vZalo.DanhBo);
                                     zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                                     zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
                                     zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                                    return View(new ViewZalo(lstZalo, zalo));
+                                    return View(zalo);
                                 }
                                 else
                                 {
                                     ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ không đúng");
-                                    return View(new ViewZalo(lstZalo, zalo));
+                                    return View(zalo);
                                 }
                             }
                             break;
                         case "Đăng Ký":
-                            if (vZalo.DanhBo != null && vZalo.DanhBo != "")
+                            if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
                                 //kiểm tra danh bộ
-                                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),MLT=MALOTRINH from HOADON where DANHBA='" + vZalo.DanhBo + "' order by ID_HOADON desc");
+                                DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
-                                    vZalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-                                    vZalo.HoTen = dt.Rows[0]["HoTen"].ToString();
-                                    vZalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                                    vZalo.MLT = dt.Rows[0]["MLT"].ToString();
+                                    zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                                 }
                                 else
                                 {
                                     ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ không đúng");
-                                    return View(new ViewZalo(lstZalo, vZalo));
+                                    return View(zalo);
                                 }
                                 //kiểm tra trùng
-                                if (db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == vZalo.DanhBo.Replace(" ", "")) == 0)
+                                if (CConstantVariable.db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == zalo.DanhBo.Replace(" ", "")) == 0)
                                 {
-
-                                    if (vZalo.DienThoai == null || vZalo.DienThoai == "")
+                                    if (zalo.DienThoai == null || zalo.DienThoai == "")
                                     {
                                         ModelState.AddModelError("vZalo.DienThoai", "Vui lòng nhập số điện thoại");
-                                        return View(new ViewZalo(lstZalo, vZalo));
+                                        return View(zalo);
                                     }
-                                    vZalo.IDZalo = IDZalo;
-                                    //vZalo.DanhBo = vZalo.DanhBo.Replace(" ", "");
-                                    vZalo.CreateDate = DateTime.Now;
+                                    Zalo_DangKy en = new Zalo_DangKy();
+                                    en.IDZalo = IDZalo;
+                                    en.DanhBo = zalo.DanhBo.Replace(" ", "");
+                                    en.DienThoai = zalo.DienThoai.Replace(" ", "");
+                                    en.CreateDate = DateTime.Now;
                                     if (IDZalo != -1)
                                     {
-                                        db.Zalo_DangKy.Add(vZalo);
+                                        CConstantVariable.db.Zalo_DangKy.Add(en);
                                     }
-                                    await db.SaveChangesAsync();
+                                    await CConstantVariable.db.SaveChangesAsync();
                                     return RedirectToAction("Index");
                                 }
                                 else
                                 {
                                     ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ đã đăng ký rồi");
-                                    return View(new ViewZalo(lstZalo, vZalo));
+                                    return View(zalo);
                                 }
                             }
                             break;
                     }
                 }
 
-            return View(new ViewZalo(lstZalo, vZalo));
-        }
-
-        //public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo vZalo, string action)
-        //{
-        //    if (Session["IDZalo"] == null)
-        //    {
-        //        if (id != null)
-        //            Session["IDZalo"] = id.Value;
-        //    }
-
-        //    if (Session["IDZalo"] != null)
-        //        IDZalo = decimal.Parse(Session["IDZalo"].ToString());
-
-        //    IEnumerable<Zalo> lstZalo = await db.Zaloes.Where(item => item.IDZalo == IDZalo).ToListAsync();
-        //    Zalo zalo = new Zalo();
-
-        //    if (ModelState.IsValid && !String.IsNullOrWhiteSpace(action))
-        //        if (Session["IDZalo"] != null)
-        //        {
-        //            switch (action)
-        //            {
-        //                case "Kiểm Tra":
-        //                    if (vZalo.DanhBo != null && vZalo.DanhBo != "")
-        //                    {
-        //                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + vZalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
-        //                        if (dt.Rows.Count > 0)
-        //                        {
-        //                            //vZalo = await db.Zaloes.FindAsync(CConstantVariable.IDZalo, vZalo.DanhBo);
-        //                            zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-        //                            zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
-        //                            zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-        //                            return View(new ViewZalo(lstZalo, zalo));
-        //                        }
-        //                        else
-        //                        {
-        //                            ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ không đúng");
-        //                            return View(new ViewZalo(lstZalo, zalo));
-        //                        }
-        //                    }
-        //                    break;
-        //                case "Đăng Ký":
-        //                    if (vZalo.DanhBo != null && vZalo.DanhBo != "")
-        //                    {
-        //                        //kiểm tra danh bộ
-        //                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + vZalo.DanhBo + "' order by ID_HOADON desc");
-        //                        if (dt.Rows.Count > 0)
-        //                        {
-        //                            vZalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-        //                            vZalo.HoTen = dt.Rows[0]["HoTen"].ToString();
-        //                            vZalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-        //                        }
-        //                        else
-        //                        {
-        //                            ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ không đúng");
-        //                            return View(new ViewZalo(lstZalo, vZalo));
-        //                        }
-        //                        //kiểm tra trùng
-        //                        if (db.Zaloes.Count(item => item.IDZalo == IDZalo && item.DanhBo == vZalo.DanhBo.Replace(" ", "")) == 0)
-        //                        {
-
-        //                            if (vZalo.DienThoai == null || vZalo.DienThoai == "")
-        //                            {
-        //                                ModelState.AddModelError("vZalo.DienThoai", "Vui lòng nhập số điện thoại");
-        //                                return View(new ViewZalo(lstZalo, vZalo));
-        //                            }
-        //                            vZalo.IDZalo = IDZalo;
-        //                            //vZalo.DanhBo = vZalo.DanhBo.Replace(" ", "");
-        //                            vZalo.CreateDate = DateTime.Now;
-        //                            if (IDZalo != -1)
-        //                            {
-        //                                db.Zaloes.Add(vZalo);
-        //                            }
-        //                            await db.SaveChangesAsync();
-        //                            return RedirectToAction("Index");
-        //                        }
-        //                        else
-        //                        {
-        //                            ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ đã đăng ký rồi");
-        //                            return View(new ViewZalo(lstZalo, vZalo));
-        //                        }
-        //                    }
-        //                    break;
-        //            }
-        //        }
-
-        //    return View(new ViewZalo(lstZalo, vZalo));
-        //}
-
-        // GET: Zalo/Details/5
-        public async Task<ActionResult> Details(decimal? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(id);
-            if (zalo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(zalo);
-        }
-
-        // GET: Zalo/Create
-        public ActionResult Create(string DanhBo)
-        {
-            //if (ViewBag == null)
-            //    ViewBag.IDZalo = CConstantVariable.IDZalo;
-            if (DanhBo != null)
-            {
-                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
-                if (dt.Rows.Count > 0)
-                {
-                    Zalo_DangKy en = new Zalo_DangKy();
-                    en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-                    en.HoTen = dt.Rows[0]["HoTen"].ToString();
-                    en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                    return View(en);
-                }
-                else
-                {
-                    ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
-                    return View();
-                }
-            }
-
-            return View();
-        }
-
-        // POST: Zalo/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo_DangKy zalo, string Loai)
-        {
-            if (ModelState.IsValid && !String.IsNullOrWhiteSpace(Loai))
-                if (Session["IDZalo"] != null)
-                {
-                    //ViewBag.IDZalo = CConstantVariable.IDZalo;
-                    switch (Loai)
-                    {
-                        case "Kiểm Tra":
-                            if (zalo.DanhBo != null && zalo.DanhBo != "")
-                            {
-                                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
-                                if (dt.Rows.Count > 0)
-                                {
-                                    //Zalo zalo1 = await db.Zaloes.FindAsync(1, "13051375570");
-                                    //Zalo en = new Zalo();
-                                    //en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-                                    zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
-                                    zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                                    return View(zalo);
-                                }
-                                else
-                                {
-                                    ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
-                                    return View(zalo);
-                                }
-                            }
-                            break;
-                        case "Đăng Ký":
-                            if (zalo.DanhBo != null && zalo.DanhBo != "")
-                                if (db.Zalo_DangKy.Count(item => item.IDZalo == zalo.IDZalo && item.DanhBo == zalo.DanhBo) == 0)
-                                {
-                                    if (zalo.DienThoai == null || zalo.DienThoai == "")
-                                    {
-                                        ModelState.AddModelError("DienThoai", "Vui lòng nhập số điện thoại");
-                                        return View(zalo);
-                                    }
-                                    zalo.IDZalo = IDZalo;
-                                    if (zalo.HoTen == null || zalo.HoTen == "")
-                                    {
-                                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),MLT=MALOTRINH from HOADON where DANHBA='" + zalo.DanhBo + "' order by ID_HOADON desc");
-                                        if (dt.Rows.Count > 0)
-                                        {
-                                            zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-                                            zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
-                                            zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                                            zalo.MLT = dt.Rows[0]["MLT"].ToString();
-                                        }
-                                        else
-                                        {
-                                            ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
-                                            return View(zalo);
-                                        }
-                                    }
-                                    zalo.CreateDate = DateTime.Now;
-                                    db.Zalo_DangKy.Add(zalo);
-                                    await db.SaveChangesAsync();
-                                    return RedirectToAction("Index");
-                                }
-                            break;
-                    }
-                }
-            return View(zalo);
-        }
-
-        // GET: Zalo/Edit/5
-        public async Task<ActionResult> Edit(decimal? IDZalo, string DanhBo)
-        {
-            if (IDZalo == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
-            if (zalo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(zalo);
-        }
-
-        // POST: Zalo/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "IDZalo,DanhBo,HoTen,DiaChi,DienThoai")] Zalo_DangKy zalo)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(zalo).State = EntityState.Modified;
-                await db.SaveChangesAsync();
-                return RedirectToAction("Index");
-            }
-            return View(zalo);
-        }
-
-        // GET: Zalo/Delete/5
-        public async Task<ActionResult> Delete1(decimal? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(id);
-            if (zalo == null)
-            {
-                return HttpNotFound();
-            }
-            else
-            {
-                db.Zalo_DangKy.Remove(zalo);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
             return View(zalo);
         }
 
@@ -368,36 +124,25 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
+            Zalo_DangKy zalo = await CConstantVariable.db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
             if (zalo == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                db.Zalo_DangKy.Remove(zalo);
-                await db.SaveChangesAsync();
+                CConstantVariable.db.Zalo_DangKy.Remove(zalo);
+                await CConstantVariable.db.SaveChangesAsync();
                 return RedirectToAction("Index", "Zalo", new { id = IDZalo });
             }
             return View(zalo);
-        }
-
-        // POST: Zalo/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> DeleteConfirmed(decimal id)
-        {
-            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(id);
-            db.Zalo_DangKy.Remove(zalo);
-            await db.SaveChangesAsync();
-            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                db.Dispose();
+                CConstantVariable.db.Dispose();
             }
             base.Dispose(disposing);
         }
