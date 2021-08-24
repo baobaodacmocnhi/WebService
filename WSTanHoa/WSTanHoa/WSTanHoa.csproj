@@ -198,7 +198,7 @@
     <Compile Include="Models\TrungTamKhachHang.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\CConnection.cs" />
-    <Compile Include="Providers\CConstantVariable.cs" />
+    <Compile Include="Providers\CGlobalVariable.cs" />
     <Compile Include="Providers\ErrorResult.cs" />
   </ItemGroup>
   <ItemGroup>

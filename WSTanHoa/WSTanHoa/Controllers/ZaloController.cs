@@ -35,7 +35,7 @@ namespace WSTanHoa.Controllers
             if (TempData["IDZalo"] != null)
                 IDZalo = decimal.Parse(TempData["IDZalo"].ToString());
 
-            DataTable dtTTKH =CConstantVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo,z.DienThoai,z.DanhBo,ttkh.HoTen,DiaChi = SONHA + ' ' + TENDUONG from Zalo_DangKy z, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=z.DanhBo and IDZalo=" + IDZalo);
+            DataTable dtTTKH =CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo,z.DienThoai,z.DanhBo,ttkh.HoTen,DiaChi = SONHA + ' ' + TENDUONG from Zalo_DangKy z, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=z.DanhBo and IDZalo=" + IDZalo);
             //List<ZaloView> lstZalo = new List<ZaloView>();
             foreach (DataRow item in dtTTKH.Rows)
             {
@@ -56,7 +56,7 @@ namespace WSTanHoa.Controllers
                         case "Kiểm Tra":
                             if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
-                                DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+                                DataTable dt = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
                                     zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
@@ -75,7 +75,7 @@ namespace WSTanHoa.Controllers
                             if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
                                 //kiểm tra danh bộ
-                                DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+                                DataTable dt = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
                                     zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
@@ -86,7 +86,7 @@ namespace WSTanHoa.Controllers
                                     return View(zalo);
                                 }
                                 //kiểm tra trùng
-                                if (CConstantVariable.db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == zalo.DanhBo.Replace(" ", "")) == 0)
+                                if (CGlobalVariable.db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == zalo.DanhBo.Replace(" ", "")) == 0)
                                 {
                                     if (zalo.DienThoai == null || zalo.DienThoai == "")
                                     {
@@ -100,9 +100,9 @@ namespace WSTanHoa.Controllers
                                     en.CreateDate = DateTime.Now;
                                     if (IDZalo != -1)
                                     {
-                                        CConstantVariable.db.Zalo_DangKy.Add(en);
+                                        CGlobalVariable.db.Zalo_DangKy.Add(en);
                                     }
-                                    await CConstantVariable.db.SaveChangesAsync();
+                                    await CGlobalVariable.db.SaveChangesAsync();
                                     return RedirectToAction("Index");
                                 }
                                 else
@@ -124,15 +124,15 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zalo_DangKy zalo = await CConstantVariable.db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
+            Zalo_DangKy zalo = await CGlobalVariable.db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
             if (zalo == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                CConstantVariable.db.Zalo_DangKy.Remove(zalo);
-                await CConstantVariable.db.SaveChangesAsync();
+                CGlobalVariable.db.Zalo_DangKy.Remove(zalo);
+                await CGlobalVariable.db.SaveChangesAsync();
                 return RedirectToAction("Index", "Zalo", new { id = IDZalo });
             }
             return View(zalo);
@@ -142,7 +142,7 @@ namespace WSTanHoa.Controllers
         {
             if (disposing)
             {
-                CConstantVariable.db.Dispose();
+                CGlobalVariable.db.Dispose();
             }
             base.Dispose(disposing);
         }

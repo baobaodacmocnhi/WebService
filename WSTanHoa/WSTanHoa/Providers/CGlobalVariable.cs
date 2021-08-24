@@ -4,11 +4,12 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+using System.Web.Script.Serialization;
 using WSTanHoa.Models.db;
 
 namespace WSTanHoa.Providers
 {
-    public class CConstantVariable
+    public class CGlobalVariable
     {
         public static decimal IDZalo = 4276209776391262580;
         public static string DHN = "Data Source=hp_g7\\KD;Initial Catalog=CAPNUOCTANHOA;Persist Security Info=True;User ID=sa;Password=db8@tanhoa";
@@ -21,17 +22,18 @@ namespace WSTanHoa.Providers
         public static string KinhDoanh = "Data Source=serverg8-01;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string TrungTamKhachHang = "Data Source=serverg8-01;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string TrungTamKhachHangWFH = "Data Source=113.161.88.180,1133;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
-        public static string cheksum = "tanho@2022";
-
-        public static readonly log4net.ILog log = log4net.LogManager.GetLogger("File");
+        public static string cheksum = "tanho@2022";       
         public static dbTrungTamKhachHang db = new dbTrungTamKhachHang();
-        public static CConnection cDAL_DHN = new CConnection(CConstantVariable.DHN);
-        public static CConnection cDAL_DocSo = new CConnection(CConstantVariable.DocSo);
-        public static CConnection cDAL_DocSo12 = new CConnection(CConstantVariable.DocSo12);
-        public static CConnection cDAL_GanMoi = new CConnection(CConstantVariable.GanMoi);
-        public static CConnection cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
-        public static CConnection cDAL_KinhDoanh = new CConnection(CConstantVariable.KinhDoanh);
-        public static CConnection cDAL_TrungTam = new CConnection(CConstantVariable.TrungTamKhachHang);
+        public static CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        public static CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        public static CConnection cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
+        public static CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
+        public static CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        public static CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
+        public static CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHangWFH);
+
+        public static JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+        public static readonly log4net.ILog log = log4net.LogManager.GetLogger("File");
 
         public static string getSHA256(string strData)
         {
@@ -44,5 +46,6 @@ namespace WSTanHoa.Providers
             }
             return hash.ToString().ToLower();
         }
+
     }
 }

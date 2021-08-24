@@ -73,7 +73,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                return (bool)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
+                return (bool)CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
             }
             catch (Exception ex)
             {
@@ -85,7 +85,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if ((int)CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
+                if ((int)CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
                     return true;
                 else
                     return false;
@@ -104,7 +104,7 @@ namespace WSTanHoa.Controllers
                 if (checkHeader() == false)
                     return _result;
 
-                object value = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig");
+                object value = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig");
                 if (value != null)
                 {
                     _result.success = true;
@@ -123,9 +123,9 @@ namespace WSTanHoa.Controllers
             try
             {
                 object MaNV = null;
-                MaNV = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+                MaNV = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
                 if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
-                    MaNV = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
+                    MaNV = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
 
                 if (MaNV == null || MaNV.ToString() == "")
                 {
@@ -134,9 +134,9 @@ namespace WSTanHoa.Controllers
                 }
 
                 //xóa máy đăng nhập MaNV khác
-                object MaNV_UID_Old = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                object MaNV_UID_Old = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
                 if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
-                    CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                    CGlobalVariable.cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
 
                 //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                 //{
@@ -148,17 +148,17 @@ namespace WSTanHoa.Controllers
                 //    }
                 //}
 
-                object MaNV_UID = CConstantVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                object MaNV_UID = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
                 if (MaNV_UID != null)
                     if ((int)MaNV_UID == 0)
-                        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                        CGlobalVariable.cDAL_ThuTien.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
                     else
-                        CConstantVariable.cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+                        CGlobalVariable.cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
 
-                DataTable dt = CConstantVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV);
+                DataTable dt = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     _result.success = true;

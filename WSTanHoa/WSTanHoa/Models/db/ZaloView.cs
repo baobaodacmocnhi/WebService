@@ -13,6 +13,9 @@ namespace WSTanHoa.Models.db
         public string Avatar { get; set; }
         public string Name { get; set; }
         public string CreateDate { get; set; }
+        public string NguoiGui { get; set; }
+        public string NoiDung { get; set; }
+        public string Image { get; set; }
 
         [StringLength(13, MinimumLength = 11, ErrorMessage = "Danh bộ gồm 11 ký tự")]
         [Required(ErrorMessage = "Vui lòng nhập danh bộ")]

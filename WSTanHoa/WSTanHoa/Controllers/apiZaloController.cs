@@ -19,13 +19,8 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/Zalo")]
     public class apiZaloController : ApiController
     {
-        CConnection _cDAL_ThuTien = new CConnection(CConstantVariable.ThuTien);
-        CConnection _cDAL_TrungTam = new CConnection(CConstantVariable.TrungTamKhachHang);
-        CConnection _cDAL_DHN = new CConnection(CConstantVariable.DHN);
-        CConnection _cDAL_DocSo = new CConnection(CConstantVariable.DocSo);
         string access_token = "YU3XJkQE9XM8xEXEuuKk5udcuaxkacnXuONCOzYx1rMnYP9Al8C2SwoxloJ0bN0EhBZBB9AtGnI2XkLNbfrCIgM-ddsLbm9QiE3FTwxV24oeuQHhcjWqVO7xkcJlmm10Wj6POwd1F6-NxV9gf_9VLg7Ba6Aomm5VkicOLepH80sqtAaqdCC1Q_RpjJt1v7WnwjYrCfYn8MInYUSveBHe4fs7eGk9i6i2lPFw3gQnNogoWTKMteHeIkADrcxquazdsjlnVx7ZGsIqxUL6dUSZJv24a4FubI9tIsLVMlzkvPGj6G";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
-        JavaScriptSerializer _jss = new JavaScriptSerializer();
         string _url = "https://service.cskhtanhoa.com.vn";
         string _urlImage = "https://service.cskhtanhoa.com.vn/Image";
         //string _url = "http://service.capnuoctanhoa.com.vn:1010";
@@ -54,14 +49,14 @@ namespace WSTanHoa.Controllers
                     string sql = "if not exists(select * from Zalo_QuanTam where IDZalo=" + IDZalo + ")"
                         + " insert into Zalo_QuanTam(IDZalo)values(" + IDZalo + ")"
                         + " else update Zalo_QuanTam set Follow=1 where IDZalo=" + IDZalo;
-                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                    CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
                 //bấm bỏ quan tâm
                 if (event_name == "unfollow")
                 {
                     //string sql = "delete Zalo_QuanTam where IDZalo=" + IDZalo;
                     string sql = "update Zalo_QuanTam set Follow=0 where IDZalo=" + IDZalo;
-                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                    CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
                 if (event_name == "user_send_text")
                 {
@@ -96,7 +91,7 @@ namespace WSTanHoa.Controllers
                             default:
                                 //insert chat
                                 string sql = "insert into Zalo_Chat(IDZalo,NguoiGui,NoiDung)values(" + IDZalo + ",'User',N'" + message + "')";
-                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                                 //
                                 string[] messagesCSN = null;
                                 if (message.ToUpper().Contains("CSN_") == true)
@@ -134,7 +129,7 @@ namespace WSTanHoa.Controllers
                 {
                     //insert chat
                     string sql = "insert into Zalo_Chat(IDZalo,NguoiGui,NoiDung)values(" + IDZalo + ",'User',N'Gửi hình ảnh')";
-                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                    CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
                 if (event_name == "oa_send_text")
                 {
@@ -142,7 +137,7 @@ namespace WSTanHoa.Controllers
                     if (message.Contains("Hệ thống trả lời tự động\n\nDanh Bộ:") == false && message.Contains("Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng") == false)
                     {
                         string sql = "insert into Zalo_Chat(IDZalo,NguoiGui,NoiDung)values(" + IDZalo + ",'OA',N'" + message + "')";
-                        _cDAL_TrungTam.ExecuteNonQuery(sql);
+                        CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                     }
                 }
             }
@@ -176,14 +171,14 @@ namespace WSTanHoa.Controllers
                     string sql = "if not exists(select * from Zalo_QuanTam where IDZalo=" + jsonContent["follower"]["id"].ToString() + ")"
                         + " insert into Zalo_QuanTam(IDZalo)values(" + jsonContent["follower"]["id"].ToString() + ")"
                         + " else update Zalo_QuanTam set Follow=1 where IDZalo=" + jsonContent["follower"]["id"].ToString();
-                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                    CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
                 //bấm bỏ quan tâm
                 if (jsonContent["event_name"].ToString() == "unfollow")
                 {
                     //string sql = "delete Zalo_QuanTam where IDZalo=" + jsonContent["follower"]["id"].ToString();
                     string sql = "update Zalo_QuanTam set Follow=0 where IDZalo=" + jsonContent["follower"]["id"].ToString();
-                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                    CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
                 if (jsonContent["event_name"].ToString() == "user_send_text")
                 {
@@ -222,7 +217,7 @@ namespace WSTanHoa.Controllers
                                 if (message.Contains("#") == false)
                                 {
                                     string sql = "insert into Zalo_Chat(IDZalo,NguoiGui,NoiDung)values(" + IDZalo + ",'User',N'" + message + "')";
-                                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                                    CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                                 }
                                 //
                                 string[] messagesCSN = null;
@@ -265,7 +260,7 @@ namespace WSTanHoa.Controllers
                         sql = "insert into Zalo_Chat(IDZalo,NguoiGui,NoiDung,Image)values(" + jsonContent["sender"]["id"].ToString() + ",'User',N'" + jsonContent["message"]["text"].ToString() + "',N'" + jsonContent["message"]["attachments"][0]["payload"]["url"].ToString() + "')";
                     else
                         sql = "insert into Zalo_Chat(IDZalo,NguoiGui,Image)values(" + jsonContent["sender"]["id"].ToString() + ",'User',N'" + jsonContent["message"]["attachments"][0]["payload"]["url"].ToString() + "')";
-                    _cDAL_TrungTam.ExecuteNonQuery(sql);
+                    CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                 }
                 if (jsonContent["event_name"].ToString() == "oa_send_text")
                 {
@@ -275,7 +270,7 @@ namespace WSTanHoa.Controllers
                         && jsonContent["message"]["text"].ToString().Contains("Chào mừng Quý Khách Hàng đến với Zalo Official Account") == false)
                     {
                         string sql = "insert into Zalo_Chat(IDZalo,NguoiGui,NoiDung)values(" + jsonContent["recipient"]["id"].ToString() + ",'OA',N'" + jsonContent["message"]["text"].ToString() + "')";
-                        _cDAL_TrungTam.ExecuteNonQuery(sql);
+                        CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                     }
                 }
             }
@@ -291,14 +286,14 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
+                DataTable dt_DanhBo = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
                 if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
                 {
                     strResponse = sendMessageDangKy(IDZalo);
                 }
                 foreach (DataRow item in dt_DanhBo.Rows)
                 {
-                    DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 6 * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
+                    DataTable dt_HoaDon = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 6 * from fnGet12KyHoaDon(" + item["DanhBo"].ToString() + ")");
                     if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                     {
                         string content = getTTKH(item["DanhBo"].ToString());
@@ -320,7 +315,7 @@ namespace WSTanHoa.Controllers
                 }
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'get12kyhoadon',getdate())";
-                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {
@@ -332,14 +327,14 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
+                DataTable dt_DanhBo = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
                 if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
                 {
                     strResponse = sendMessageDangKy(IDZalo);
                 }
                 foreach (DataRow item in dt_DanhBo.Rows)
                 {
-                    DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetKyHoaDon(" + item["DanhBo"].ToString() + "," + Nam + "," + Ky + ")");
+                    DataTable dt_HoaDon = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetKyHoaDon(" + item["DanhBo"].ToString() + "," + Nam + "," + Ky + ")");
                     if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                     {
                         string content = getTTKH(item["DanhBo"].ToString());
@@ -360,7 +355,7 @@ namespace WSTanHoa.Controllers
                 }
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'get12kyhoadon',getdate())";
-                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {
@@ -372,7 +367,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
+                DataTable dt_DanhBo = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
                 if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
                 {
                     strResponse = sendMessageDangKy(IDZalo);
@@ -380,7 +375,7 @@ namespace WSTanHoa.Controllers
                 foreach (DataRow item in dt_DanhBo.Rows)
                 {
                     string content = getTTKH(item["DanhBo"].ToString());
-                    DataTable dt_HoaDon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
+                    DataTable dt_HoaDon = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
                     if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                     {
                         content += "Hiện đang còn nợ\n";
@@ -407,7 +402,7 @@ namespace WSTanHoa.Controllers
                 }
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'gethoadonton',getdate())";
-                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {
@@ -419,18 +414,18 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
+                DataTable dt_DanhBo = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
                 if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
                 {
                     strResponse = sendMessageDangKy(IDZalo);
                 }
                 foreach (DataRow item in dt_DanhBo.Rows)
                 {
-                    DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                    DataTable dt_ThongTin = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
 
                     string result_Lich = apiTTKH.getLichDocSo_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
 
-                    string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                    string result_NhanVien = CGlobalVariable.cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
 
                     string content = getTTKH(item["DanhBo"].ToString());
                     content += result_NhanVien + "\n"
@@ -439,7 +434,7 @@ namespace WSTanHoa.Controllers
                 }
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichdocso',getdate())";
-                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {
@@ -451,18 +446,18 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
+                DataTable dt_DanhBo = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
                 if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
                 {
                     strResponse = sendMessageDangKy(IDZalo);
                 }
                 foreach (DataRow item in dt_DanhBo.Rows)
                 {
-                    DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                    DataTable dt_ThongTin = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
 
                     string result_Lich = apiTTKH.getLichThuTien_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
 
-                    string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+                    string result_NhanVien = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
 
                     string content = getTTKH(item["DanhBo"].ToString());
                     content += result_NhanVien + "\n"
@@ -471,7 +466,7 @@ namespace WSTanHoa.Controllers
                 }
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichthutien',getdate())";
-                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {
@@ -490,7 +485,7 @@ namespace WSTanHoa.Controllers
                     strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai Danh Bộ, Vui lòng thử lại");
                 else
                 {
-                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select DanhBo,MLT=LOTRINH from TB_DULIEUKHACHHANG where DanhBo='" + messages[1].Trim() + "'");
+                    DataTable dt = CGlobalVariable.cDAL_DHN.ExecuteQuery_DataTable("select DanhBo,MLT=LOTRINH from TB_DULIEUKHACHHANG where DanhBo='" + messages[1].Trim() + "'");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         DataRow drLich = apiTTKH.getLichDocSo_Func_DataRow(dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["MLT"].ToString());
@@ -516,7 +511,7 @@ namespace WSTanHoa.Controllers
                         }
                         //kiểm tra đã gửi chỉ số nước rồi
                         string sql = "select top 1 * from DocSo_Zalo where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' order by CreateDate desc";
-                        DataTable dtResult = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
+                        DataTable dtResult = CGlobalVariable.cDAL_DocSo.ExecuteQuery_DataTable(sql);
                         if (dtResult != null && dtResult.Rows.Count > 0)
                             if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-1)
                                 || DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
@@ -528,7 +523,7 @@ namespace WSTanHoa.Controllers
                         if (IsNumber(messages[2].Trim()) == true)
                         {
                             sql = "insert into DocSo_Zalo(DanhBo,ChiSo,CreateDate)values(N'" + messages[1].Trim() + "',N'" + messages[2].Trim() + "',getdate())";
-                            if (_cDAL_DocSo.ExecuteNonQuery(sql) == true)
+                            if (CGlobalVariable.cDAL_DocSo.ExecuteNonQuery(sql) == true)
                                 strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nThành Công, Cám ơn Quý Khách Hàng đã cung cấp chỉ số nước");
                             else
                                 strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nThất Bại, Vui lòng thử lại");
@@ -620,7 +615,7 @@ namespace WSTanHoa.Controllers
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
                     StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    jsonReult deserializedResult = _jss.Deserialize<jsonReult>(read.ReadToEnd());
+                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
                     strResponse = deserializedResult.error + " : " + deserializedResult.message;
                     read.Close();
                     respuesta.Close();
@@ -696,7 +691,7 @@ namespace WSTanHoa.Controllers
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
                     StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    jsonReult deserializedResult = _jss.Deserialize<jsonReult>(read.ReadToEnd());
+                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
                     strResponse = deserializedResult.message;
                     read.Close();
                     respuesta.Close();
@@ -808,7 +803,7 @@ namespace WSTanHoa.Controllers
                              + ",DinhMucHN"
                              + ",GiaBieu"
                              + " from TB_DULIEUKHACHHANG where DanhBo=" + DanhBo;
-            DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable(sql);
+            DataTable dt = CGlobalVariable.cDAL_DHN.ExecuteQuery_DataTable(sql);
             if (dt != null && dt.Rows.Count > 0)
             {
                 return "Hệ thống trả lời tự động\n\n"
@@ -825,7 +820,7 @@ namespace WSTanHoa.Controllers
 
         private string getCSC_CSM_MoiNhat(string DanhBo)
         {
-            return _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 'CSC: '+ CONVERT(varchar(10),CSCU) + '    ' + 'CSM: ' + CONVERT(varchar(10),CSMOI) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc").ToString();
+            return CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 'CSC: '+ CONVERT(varchar(10),CSCU) + '    ' + 'CSM: ' + CONVERT(varchar(10),CSMOI) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc").ToString();
         }
 
         private string getCSC_CSM(string DanhBo, int Nam, int Ky)
@@ -833,7 +828,7 @@ namespace WSTanHoa.Controllers
             string sql = "select top 1 'CSC: '+ CONVERT(varchar(10),CSCU) + '    ' + 'CSM: ' + CONVERT(varchar(10),CSMOI) from HOADON where DANHBA='" + DanhBo + "' and NAM=" + Nam + " and KY=" + Ky
                         + " union all"
                         + " select top 1 'CSC: ' + CONVERT(varchar(10), CSCU) + '    ' + 'CSM: ' + CONVERT(varchar(10), CSMOI) from TT_HoaDonCu where DANHBA='" + DanhBo + "' and NAM=" + Nam + " and KY=" + Ky;
-            return _cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
+            return CGlobalVariable.cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
         }
 
         /// <summary>
@@ -848,17 +843,17 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CConstantVariable.cheksum)
+                if (checksum == CGlobalVariable.cheksum)
                 {
                     //string sql = "select Nam=2021, Ky=8, NgayDoc=GETDATE(), IDZalo='4276209776391262580', DanhBo='13182499650', HoTen='GIENG PTH CONG TY CO PHAN CAP NUOC TAN HOA',DiaChi='GOC TR THU DO+L/LO P.PHU THANH',DienThoai='123456789'";
                     string sql = "select a.Nam, a.Ky, NgayDoc = CONVERT(varchar(10), NgayDoc, 103), z.IDZalo, ttkh.DanhBo, ttkh.HoTen, DiaChi = SONHA + ' ' + TENDUONG,DienThoai = (select DienThoai from[SERVER8].[DocSoTH].[dbo].[MayDS]"
                                 + " where May = SUBSTRING(ttkh.LOTRINH, 3, 2))"
-                                + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, Zalo_DangKy z, Zalo_QuanTam zq, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh" 
+                                + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, Zalo_DangKy z, Zalo_QuanTam zq, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                                 + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
                                 + " and CAST(NgayDoc as date) = CAST(GETDATE() as date)"
                                 + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
                                 + " and z.IDZalo=zq.IDZalo and zq.Follow= 1";
-                    DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    DataTable dt = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     string message;
                     foreach (DataRow item in dt.Rows)
                     {
@@ -874,7 +869,7 @@ namespace WSTanHoa.Controllers
                                     + "\n***Chỉ số nước là dãy số màu đen trên đồng hồ nước"
                                     + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo_DangKy: " + item["DienThoai"];
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);
-                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'ghichisonuoc',N'" + message + "',N'" + strResponse + "')");
+                        CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'ghichisonuoc',N'" + message + "',N'" + strResponse + "')");
                     }
                 }
                 else
@@ -898,7 +893,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CConstantVariable.cheksum)
+                if (checksum == CGlobalVariable.cheksum)
                 {
                     //string sql = "select DanhBo='13011030051',HoTen='VO DAI PHAT',DiaChi='18 (763) LY THUONG KIET'"
                     //    + " ,Nam=2021,Ky=8,CSC=0,CSM=9,TuNgay='18/06/2021',DenNgay='19/07/2021',TieuThu=9,TongCong=65205,IDZalo='4276209776391262580'";
@@ -907,7 +902,7 @@ namespace WSTanHoa.Controllers
                             + " from HOADON hd, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
                             + " where CAST(hd.CreateDate as date)=CAST(DATEADD(DAY, -1, GETDATE()) as date) and hd.DANHBA=z.DanhBo"
                             + " and zq.Follow=1 and z.IDZalo=zq.IDZalo";
-                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                    DataTable dt = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     string message;
                     foreach (DataRow item in dt.Rows)
                     {
@@ -934,7 +929,7 @@ namespace WSTanHoa.Controllers
                         + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(7).ToString("dd/MM/yyyy") + " qua các kênh thanh toán gồm:";
                         message += getThongTinThanhToan();
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);
-                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'phathanhhoadon',N'" + message + "',N'" + strResponse + "')");
+                        CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'phathanhhoadon',N'" + message + "',N'" + strResponse + "')");
                     }
                 }
                 else
@@ -958,7 +953,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CConstantVariable.cheksum)
+                if (checksum == CGlobalVariable.cheksum)
                 {
                     //string sql = "select DanhBo='13011030051',HoTen='VO DAI PHAT',DiaChi='18 (763) LY THUONG KIET'"
                     //    + " ,Nam=2021,Ky=8,CSC=0,CSM=9,TuNgay='18/06/2021',DenNgay='19/07/2021',TieuThu=9,TongCong=65205,IDZalo='4276209776391262580'";
@@ -967,13 +962,13 @@ namespace WSTanHoa.Controllers
                             + " from HOADON hd, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
                             + " where hd.NGAYGIAITRACH is null and CAST(hd.CreateDate as date)=CAST(DATEADD(DAY, -8, GETDATE()) as date) and hd.DANHBA=z.DanhBo"
                             + " and zq.Follow=1 and z.IDZalo=zq.IDZalo";
-                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                    DataTable dt = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     string message;
                     DataTable dtTon;
                     decimal TongCong;
                     foreach (DataRow item in dt.Rows)
                     {
-                        dtTon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
+                        dtTon = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
                         TongCong = 0;
                         foreach (DataRow itemTon in dtTon.Rows)
                         {
@@ -992,7 +987,7 @@ namespace WSTanHoa.Controllers
                                     + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + " qua các kênh thanh toán gồm:";
                         message += getThongTinThanhToan();
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);
-                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'phathanhhoadon',N'" + message + "',N'" + strResponse + "')");
+                        CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'phathanhhoadon',N'" + message + "',N'" + strResponse + "')");
                     }
                 }
                 else
@@ -1024,15 +1019,15 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CConstantVariable.cheksum)
+                if (checksum == CGlobalVariable.cheksum)
                 {
                     string sql = "select top " + number + " * from Zalo_QuanTam where IDZalo not in (select IDZalo from Zalo_DangKy) and resenddangky=0";
-                    DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    DataTable dt = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     foreach (DataRow item in dt.Rows)
                     {
                         string message = resendMessageDangKy_Action(item["IDZalo"].ToString());
 
-                        _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set resenddangky=1,Result=N'" + message + "' where IDZalo=" + item["IDZalo"]);
+                        CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set resenddangky=1,Result=N'" + message + "' where IDZalo=" + item["IDZalo"]);
                     }
                     strResponse = "Đã xử lý";
                 }
@@ -1123,12 +1118,12 @@ namespace WSTanHoa.Controllers
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
                     StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    jsonReult deserializedResult = _jss.Deserialize<jsonReult>(read.ReadToEnd());
+                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
                     strResponse = deserializedResult.error + " : " + deserializedResult.message;
                     if (deserializedResult.error == "-213")
                     {
                         string sql2 = "update Zalo_QuanTam set Follow=0 where IDZalo=" + IDZalo;
-                        _cDAL_TrungTam.ExecuteNonQuery(sql2);
+                        CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql2);
                     }
                     read.Close();
                     respuesta.Close();
@@ -1160,41 +1155,50 @@ namespace WSTanHoa.Controllers
         /// <returns></returns>
         [Route("updateDSQuanTam")]
         [HttpGet]
-        public string updateDSQuanTam(string checksum, int number)
+        public string updateDSQuanTam(string checksum)
         {
             string strResponse = "";
             try
             {
-                if (checksum == CConstantVariable.cheksum)
+                if (checksum == CGlobalVariable.cheksum)
                 {
-                    int index = 0;
+                    int index = 0, number = 0;
+                    string url = "https://openapi.zalo.me/v2.0/oa/getfollowers?data={\"offset\":0,\"count\":1}";
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                    request.Method = "GET";
+                    request.ContentType = "application/json";
+                    request.Headers["access_token"] = access_token;
+
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        var jsonContent = JObject.Parse(read.ReadToEnd());
+                        number = int.Parse(jsonContent["data"]["total"].ToString());
+
+                        read.Close();
+                        respuesta.Close();
+                    }
+
                     while (index < number)
                     {
-                        string url = "https://openapi.zalo.me/v2.0/oa/getfollowers?data={\"offset\":" + index + ",\"count\":50}";
-                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                        url = "https://openapi.zalo.me/v2.0/oa/getfollowers?data={\"offset\":" + index + ",\"count\":50}";
+                        request = (HttpWebRequest)WebRequest.Create(url);
                         request.Method = "GET";
                         request.ContentType = "application/json";
                         request.Headers["access_token"] = access_token;
 
-                        HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                        respuesta = (HttpWebResponse)request.GetResponse();
                         if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                         {
                             StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                            //Root deserializedResult = _jss.Deserialize<Root>(read.ReadToEnd());
-                            //foreach (Follower item in deserializedResult.data.followers)
-                            //{
-                            //    string sql = "if not exists(select * from Zalo_QuanTam where IDZalo=" + item.user_id + ")"
-                            //    + " insert into Zalo_QuanTam(IDZalo)values(" + item.user_id + ")"
-                            //    + " else update Zalo_QuanTam set Follow=1 where IDZalo=" + item.user_id;
-                            //    _cDAL_TrungTam.ExecuteNonQuery(sql);
-                            //}
                             var jsonContent = JObject.Parse(read.ReadToEnd());
                             for (int i = 0; i < jsonContent["data"]["followers"].Count(); i++)
                             {
                                 string sql = "if not exists(select * from Zalo_QuanTam where IDZalo=" + jsonContent["data"]["followers"][i]["user_id"] + ")"
                                 + " insert into Zalo_QuanTam(IDZalo)values(" + jsonContent["data"]["followers"][i]["user_id"] + ")"
                                 + " else update Zalo_QuanTam set Follow=1 where IDZalo=" + jsonContent["data"]["followers"][i]["user_id"];
-                                _cDAL_TrungTam.ExecuteNonQuery(sql);
+                                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql);
                             }
                             read.Close();
                             respuesta.Close();
@@ -1226,15 +1230,15 @@ namespace WSTanHoa.Controllers
         /// <returns></returns>
         [Route("updateThongTinQuanTam")]
         [HttpGet]
-        public string updateThongTinQuanTam(string checksum, int number)
+        public string updateThongTinQuanTam(string checksum)
         {
             string strResponse = "";
             try
             {
-                if (checksum == CConstantVariable.cheksum)
+                if (checksum == CGlobalVariable.cheksum)
                 {
-                    string sql = "select top " + number + " * from Zalo_QuanTam where [Name] is null or Avatar is null order by CreateDate desc";
-                    DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    string sql = "select * from Zalo_QuanTam where [Name] is null or Avatar is null order by CreateDate desc";
+                    DataTable dt = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     foreach (DataRow item in dt.Rows)
                     {
                         string url = "https://openapi.zalo.me/v2.0/oa/getprofile?data={\"user_id\":\"" + item["IDZalo"] + "\"}";
@@ -1248,24 +1252,17 @@ namespace WSTanHoa.Controllers
                         {
                             StreamReader read = new StreamReader(respuesta.GetResponseStream());
                             var jsonContent = JObject.Parse(read.ReadToEnd());
-                            //Root deserializedResult = _jss.Deserialize<Root>(read.ReadToEnd());
-                            //if (deserializedResult.error == 0)
-                            //{
-                            //    string sql2 = "update Zalo_QuanTam set Name=N'" + deserializedResult.data.display_name.Replace("'","''") + "'"
-                            //        + ",Avatar=N'" + deserializedResult.data.avatar + "' where IDZalo=" + item["IDZalo"];
-                            //    _cDAL_TrungTam.ExecuteNonQuery(sql2);
-                            //}
                             if (jsonContent["error"].ToString() == "0")
                             {
                                 string sql2 = "update Zalo_QuanTam set Name=N'" + jsonContent["data"]["display_name"].ToString().Replace("'", "''") + "'"
                                     + ",Avatar=N'" + jsonContent["data"]["avatar"].ToString() + "' where IDZalo=" + item["IDZalo"];
-                                _cDAL_TrungTam.ExecuteNonQuery(sql2);
+                                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql2);
                             }
                             else
                                 if (jsonContent["error"].ToString() == "-213")//unfollow
                             {
                                 string sql2 = "update Zalo_QuanTam set Follow=0 where IDZalo=" + item["IDZalo"];
-                                _cDAL_TrungTam.ExecuteNonQuery(sql2);
+                                CGlobalVariable.cDAL_TrungTam.ExecuteNonQuery(sql2);
                             }
                             read.Close();
                             respuesta.Close();

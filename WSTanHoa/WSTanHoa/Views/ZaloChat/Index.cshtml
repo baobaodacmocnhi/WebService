@@ -3,120 +3,145 @@
     ViewBag.Title = "Zalo OA Chat";
 }
 
+<script type="text/javascript">
+    function TimKiem() {
+        $("#tblTimKiem tbody tr").remove();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("getTimKiem")',
+            dataType: 'json',
+            data: { NoiDungTimKiem: $("#NoiDungTimKiem").val() },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<tr onClick=getChat('" + item.IDZalo + "')>"
+                                   + "<td>"
+                                   + "      <div class='row row-cols-auto'>"
+                                   + "          <div class='col'><img src='" + item.Avatar + "' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
+                                   + "              <div class='col'><b>" + item.IDZalo + "</b></div>"
+                                   + "              <div class='col'>" + item.CreateDate + "</div>"
+                                   + "          </div>"
+                                   + "          <div class='row'>"
+                                   + "              <div class='col'>"
+                                   + "                  " + item.NoiDung + ""
+                                   + "          </div>"
+                                   + "      </div>"
+                                   + "</td>"
+                                + "</tr>";
+                    $("#tblTimKiem tbody").append(rows);
+                });
+            },
+            error: function (ex) {
+                alert("Error: " + ex.statusText);
+            }
+        });
+        return false;
+    };
+
+    function getChat(IDZalo) {
+        $("#tblChat tbody tr").remove();
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("getChat")',
+            dataType: 'json',
+            data: { IDZalo: IDZalo },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<tr>"
+                                   + "<td>"
+                                   + "      <div class='row row-cols-auto'>"
+                                   + "          <div class='col'><img src='" + item.Avatar + "' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
+                                   + "              <div class='col'><b>" + item.Name + "</b></div>"
+                                   + "              <div class='col'>" + item.CreateDate + "</div>"
+                                   + "          </div>"
+                                   + "          <div class='row'>"
+                                   + "              <div class='col'>"
+                                   + "                  " + item.NoiDung + ""
+                                   + "          </div>"
+                                   + "      </div>"
+                                   + "</td>"
+                                + "</tr>";
+                    $("#tblChat tbody").append(rows);
+                });
+            },
+            error: function (ex) {
+                alert("Error: " + ex.statusText);
+            }
+        });
+        return false;
+    };
+</script>
+
 <h4 class="text-primary">Danh sách Zalo Chat OA Cấp nước Tân Hòa</h4>
+
 <div class="container bg-light mt-3 rounded-3">
     <div class="row pt-3 px-3">
         <div class="col-auto">
-            <input class="form-control" type="text" id="NoiDungTimKiem" placeholder="Nội dung tìm kiếm">
+            <input class="form-control" type="text" id="NoiDungTimKiem" name="NoiDungTimKiem" placeholder="Nội dung tìm kiếm">
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary mb-3">Tìm Kiếm</button>
+            <button type="submit" class="btn btn-primary mb-3" onclick="TimKiem()">Tìm Kiếm</button>
         </div>
     </div>
 </div>
+
 <h4>Kết Quả</h4>
 <div class="container">
     <div class="row">
         <div class="col-4">
             <div class="bd-example border rounded-3 mt-3">
-                <div style="height:400px;overflow:auto">
-                    <table class="table table-striped mb-0">
+                <div class="overflow-auto" style="height:68vh">
+                    <table class="table table-striped" id="tblTimKiem">
                         <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <th scope="row"> @item.STT</th>
-                                    <td>
-                                        @item.Avatar
-                                    </td>
-                                    <td>
-                                        @item.Name
-                                    </td>
-                                    <td>
-                                        @item.CreateDate
-                                    </td>
-                                </tr>
-                            }
-
+                            @*@foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="#" style="text-decoration:none;color:black">
+                                                <div class="row row-cols-auto">
+                                                    <div class="col"><img src="@item.Avatar" width="50" height="50" class="rounded-circle flex-shrink-0"></div>
+                                                    <div class="col"><b class="">@item.Name</b></div>
+                                                    <div class="col"><p class="">@item.CreateDate</p></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        @item.NoiDung
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }*@
                         </tbody>
-
                     </table>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-8">
             <div class="bd-example border rounded-3 mt-3">
-                <div style="height:400px;overflow:auto">
-                    <table class="table table-striped mb-0">
+                <div class="overflow-auto" style="height:68vh">
+                    <table class="table table-striped" id="tblChat">
                         <tbody>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>twitter</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>twitter</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>twitter</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td colspan="2">Larry the Bird</td>
-                                <td>twitter</td>
-                            </tr>
+                            @*@foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>
+                                            <a href="#" style="text-decoration:none;color:black">
+                                                <div class="row row-cols-auto">
+                                                    <div class="col"><img src="@item.Avatar" width="50" height="50" class="rounded-circle flex-shrink-0"></div>
+                                                    <div class="col"><b class="">@item.Name</b></div>
+                                                    <div class="col"><p class="">@item.CreateDate</p></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col">
+                                                        @item.NoiDung
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }*@
                         </tbody>
 
                     </table>
