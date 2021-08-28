@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <link rel="shortcut icon" type="image/ico" href="~/Image/logoctycp.png">
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
@@ -13,7 +13,7 @@
     <nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #00b3b3;">
         <div class="container">
             <a class="navbar-brand">
-                <img src="~/Image/logoctycp.png" alt="" width="32" height="30" class="d-inline-block align-text-top">
+                <img src="~/Images/logoctycp.png" alt="" width="32" height="30" class="d-inline-block align-text-top">
             </a>
             @Html.ActionLink("Cấp Nước Tân Hòa Web Service", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,6 +29,9 @@
                     </li>
                     <li class="nav-item">
                         @Html.ActionLink("Zalo", "Index", "Zalo", new { area = "" }, new { @class = "nav-link active" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Zalo Chat", "Index", "ZaloChat", new { area = "" }, new { @class = "nav-link active" })
                     </li>
                 </ul>
             </div>

@@ -126,7 +126,7 @@ namespace WSTanHoa.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(khieuNai);
+            //return View(khieuNai);
         }
 
         // POST: KhieuNai/Delete/5

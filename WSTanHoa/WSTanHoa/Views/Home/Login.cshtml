@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+}
+
+<div class="container bg-light mt-3 rounded-3">
+    @using (Html.BeginForm("Login", "Home", FormMethod.Post))
+    {
+        <div class="">
+            <div class="row pt-3 px-3">
+                <div class="col-auto mx-auto">
+                    <input class="form-control" type="text" id="username" name="username" placeholder="Tài khoản">
+                </div>
+            </div>
+            <div class="row pt-3 px-3">
+                <div class="col-auto mx-auto">
+                    <input class="form-control" type="password" id="password" name="password" placeholder="Mật khẩu">
+                </div>
+            </div>
+            <div class="row pt-3 px-3">
+                <div class="col-auto mx-auto">
+                    <button type="submit" name="action" value="login" class="btn btn-primary mb-3">Tìm Kiếm</button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

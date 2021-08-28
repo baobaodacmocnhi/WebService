@@ -63,6 +63,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -84,9 +88,6 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http">
     </Reference>
@@ -209,11 +210,21 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Image\giaybaotiennuoc.png" />
-    <Content Include="Image\giaybaotiennuoc2021.png" />
-    <Content Include="Image\logoctycp.png" />
-    <Content Include="Image\zaloOACover1333x750.png" />
-    <Content Include="Image\zalothongbaotamngungcungcapnuoc.jpg" />
+    <Content Include="Images\giaybaotiennuoc.png" />
+    <Content Include="Images\giaybaotiennuoc2021.png" />
+    <Content Include="Images\logoctycp.png" />
+    <Content Include="Images\zaloOACover1333x750.png" />
+    <Content Include="Images\zalothongbaotamngungcungcapnuoc.jpg" />
+    <Content Include="Lib\lightbox2.2.11.3\css\lightbox.css" />
+    <Content Include="Lib\lightbox2.2.11.3\css\lightbox.min.css" />
+    <Content Include="Lib\lightbox2.2.11.3\images\close.png" />
+    <Content Include="Lib\lightbox2.2.11.3\images\loading.gif" />
+    <Content Include="Lib\lightbox2.2.11.3\images\next.png" />
+    <Content Include="Lib\lightbox2.2.11.3\images\prev.png" />
+    <Content Include="Lib\lightbox2.2.11.3\js\lightbox-plus-jquery.js" />
+    <Content Include="Lib\lightbox2.2.11.3\js\lightbox-plus-jquery.min.js" />
+    <Content Include="Lib\lightbox2.2.11.3\js\lightbox.js" />
+    <Content Include="Lib\lightbox2.2.11.3\js\lightbox.min.js" />
     <Content Include="Lib\log4net.dll" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -236,14 +247,19 @@
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\CollectionModelDescription.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\DisplayTemplates\ApiGroup.cshtml" />
     <Content Include="Areas\HelpPage\Views\Help\Api.cshtml" />
+    <Content Include="Lib\lightbox2.2.11.3\js\lightbox-plus-jquery.min.map" />
+    <Content Include="Lib\lightbox2.2.11.3\js\lightbox.min.map" />
     <None Include="Properties\PublishProfiles\WSTanHoa.pubxml" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-3.6.0.intellisense.js" />
+    <Content Include="Scripts\jquery-3.6.0.js" />
+    <Content Include="Scripts\jquery-3.6.0.min.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.js" />
+    <Content Include="Scripts\jquery-3.6.0.slim.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\zalo.js" />
+    <Content Include="Scripts\zalochat.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -268,12 +284,14 @@
     <Content Include="Views\Zalo\Webhook.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Scripts\jquery-3.6.0.slim.min.map" />
+    <Content Include="Scripts\jquery-3.6.0.min.map" />
+    <Content Include="Views\Home\Login.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

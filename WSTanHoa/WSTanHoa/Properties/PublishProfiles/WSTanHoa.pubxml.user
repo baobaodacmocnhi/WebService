@@ -94,7 +94,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/23/2012 15:23:58</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
-      <publishTime>08/03/2014 20:33:56</publishTime>
+      <publishTime>03/17/2021 20:03:36</publishTime>
     </File>
     <File Include="bin/roslyn/csc.exe">
       <publishTime>06/18/2015 20:19:46</publishTime>
@@ -166,10 +166,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>08/22/2021 16:20:30</publishTime>
+      <publishTime>08/28/2021 12:37:04</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
-      <publishTime>08/20/2021 14:01:24</publishTime>
+      <publishTime>08/23/2021 22:21:59</publishTime>
     </File>
     <File Include="Content/bootstrap.min.css">
       <publishTime>08/19/2021 11:14:39</publishTime>
@@ -210,6 +210,57 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Image/zalothongbaotamngungcungcapnuoc.jpg">
       <publishTime>07/31/2020 13:56:23</publishTime>
     </File>
+    <File Include="Images/giaybaotiennuoc.png">
+      <publishTime>07/31/2020 13:56:23</publishTime>
+    </File>
+    <File Include="Images/giaybaotiennuoc2021.png">
+      <publishTime>08/08/2021 14:39:32</publishTime>
+    </File>
+    <File Include="Images/logoctycp.png">
+      <publishTime>07/31/2020 13:56:23</publishTime>
+    </File>
+    <File Include="Images/zaloOACover1333x750.png">
+      <publishTime>07/31/2020 13:56:23</publishTime>
+    </File>
+    <File Include="Images/zalothongbaotamngungcungcapnuoc.jpg">
+      <publishTime>07/31/2020 13:56:23</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/css/lightbox.css">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/css/lightbox.min.css">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/images/close.png">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/images/loading.gif">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/images/next.png">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/images/prev.png">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/js/lightbox-plus-jquery.js">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/js/lightbox-plus-jquery.min.js">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/js/lightbox-plus-jquery.min.map">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/js/lightbox.js">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/js/lightbox.min.js">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
+    <File Include="Lib/lightbox2.2.11.3/js/lightbox.min.map">
+      <publishTime>08/26/2021 14:49:28</publishTime>
+    </File>
     <File Include="Lib/log4net.dll">
       <publishTime>07/31/2020 13:56:23</publishTime>
     </File>
@@ -223,7 +274,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/18/2021 21:59:37</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>08/19/2021 17:38:10</publishTime>
+      <publishTime>08/26/2021 15:14:37</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>08/19/2021 11:15:29</publishTime>
@@ -240,6 +291,24 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/jquery-1.10.2.min.map">
       <publishTime>08/19/2021 09:28:46</publishTime>
     </File>
+    <File Include="Scripts/jquery-3.6.0.js">
+      <publishTime>08/26/2021 15:08:29</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.0.min.js">
+      <publishTime>08/26/2021 15:08:29</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.0.min.map">
+      <publishTime>08/26/2021 15:08:29</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.0.slim.js">
+      <publishTime>08/26/2021 15:08:29</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.0.slim.min.js">
+      <publishTime>08/26/2021 15:08:29</publishTime>
+    </File>
+    <File Include="Scripts/jquery-3.6.0.slim.min.map">
+      <publishTime>08/26/2021 15:08:29</publishTime>
+    </File>
     <File Include="Scripts/modernizr-2.6.2.js">
       <publishTime>08/19/2021 09:28:49</publishTime>
     </File>
@@ -250,13 +319,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/19/2021 09:28:49</publishTime>
     </File>
     <File Include="Scripts/zalo.js">
-      <publishTime>07/31/2020 13:56:25</publishTime>
+      <publishTime>08/26/2021 11:28:08</publishTime>
+    </File>
+    <File Include="Scripts/zalochat.js">
+      <publishTime>08/26/2021 15:56:47</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>08/19/2021 17:50:59</publishTime>
+      <publishTime>08/26/2021 15:31:02</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>08/20/2021 22:14:11</publishTime>
+    </File>
+    <File Include="Views/Home/Login.cshtml">
+      <publishTime>08/28/2021 12:35:35</publishTime>
     </File>
     <File Include="Views/KhieuNai/Create.cshtml">
       <publishTime>08/19/2021 11:44:51</publishTime>
@@ -277,7 +352,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/19/2021 09:28:42</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>08/21/2021 15:55:02</publishTime>
+      <publishTime>08/27/2021 17:18:50</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>08/19/2021 09:28:42</publishTime>
@@ -295,19 +370,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/31/2020 13:56:25</publishTime>
     </File>
     <File Include="Views/Zalo/Index.cshtml">
-      <publishTime>08/22/2021 16:13:08</publishTime>
+      <publishTime>08/26/2021 15:25:42</publishTime>
     </File>
     <File Include="Views/Zalo/Webhook.cshtml">
       <publishTime>07/31/2020 13:56:25</publishTime>
     </File>
     <File Include="Views/ZaloChat/Index.cshtml">
-      <publishTime>08/21/2021 17:38:35</publishTime>
+      <publishTime>08/27/2021 11:56:41</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>08/19/2021 17:51:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>08/22/2021 16:20:30</publishTime>
+      <publishTime>08/28/2021 12:35:56</publishTime>
     </File>
   </ItemGroup>
 </Project>

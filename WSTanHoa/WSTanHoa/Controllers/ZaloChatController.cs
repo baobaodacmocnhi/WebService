@@ -14,9 +14,15 @@ namespace WSTanHoa.Controllers
 {
     public class ZaloChatController : Controller
     {
+        private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
         // GET: ZaloChat
-        public async Task<ActionResult> Index()
+        public ActionResult Index()
         {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("Login", "Home");
+            }
             return View();
         }
 
@@ -29,7 +35,7 @@ namespace WSTanHoa.Controllers
                         + " join Zalo_QuanTam zq on zc.IDZalo = zq.IDZalo"
                         + " where zc.NoiDung like N'%" + NoiDungTimKiem + "%'"
                         + " order by zc.CreateDate desc";
-                DataTable dt = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                DataTable dt = cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                 List<ZaloView> lst = new List<ZaloView>();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
@@ -60,7 +66,7 @@ namespace WSTanHoa.Controllers
                         + " join Zalo_QuanTam zq on zc.IDZalo = zq.IDZalo"
                         + " where zc.IDZalo = " + IDZalo
                         + " order by zc.CreateDate desc";
-                DataTable dt = CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                DataTable dt = cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                 List<ZaloView> lst = new List<ZaloView>();
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {

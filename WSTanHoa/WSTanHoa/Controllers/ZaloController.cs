@@ -22,6 +22,9 @@ namespace WSTanHoa.Controllers
     public class ZaloController : Controller
     {
         decimal IDZalo = -1;
+        private dbTrungTamKhachHang db = new dbTrungTamKhachHang();
+        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
 
         // GET: Zalo
         public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,DienThoai")] ZaloView zalo, string action)
@@ -35,7 +38,7 @@ namespace WSTanHoa.Controllers
             if (TempData["IDZalo"] != null)
                 IDZalo = decimal.Parse(TempData["IDZalo"].ToString());
 
-            DataTable dtTTKH =CGlobalVariable.cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo,z.DienThoai,z.DanhBo,ttkh.HoTen,DiaChi = SONHA + ' ' + TENDUONG from Zalo_DangKy z, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=z.DanhBo and IDZalo=" + IDZalo);
+            DataTable dtTTKH =cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo,z.DienThoai,z.DanhBo,ttkh.HoTen,DiaChi = SONHA + ' ' + TENDUONG from Zalo_DangKy z, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=z.DanhBo and IDZalo=" + IDZalo);
             //List<ZaloView> lstZalo = new List<ZaloView>();
             foreach (DataRow item in dtTTKH.Rows)
             {
@@ -56,7 +59,7 @@ namespace WSTanHoa.Controllers
                         case "Kiểm Tra":
                             if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
-                                DataTable dt = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+                                DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
                                     zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
@@ -75,7 +78,7 @@ namespace WSTanHoa.Controllers
                             if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
                                 //kiểm tra danh bộ
-                                DataTable dt = CGlobalVariable.cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+                                DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
                                     zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
@@ -86,7 +89,7 @@ namespace WSTanHoa.Controllers
                                     return View(zalo);
                                 }
                                 //kiểm tra trùng
-                                if (CGlobalVariable.db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == zalo.DanhBo.Replace(" ", "")) == 0)
+                                if (db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == zalo.DanhBo.Replace(" ", "")) == 0)
                                 {
                                     if (zalo.DienThoai == null || zalo.DienThoai == "")
                                     {
@@ -100,9 +103,9 @@ namespace WSTanHoa.Controllers
                                     en.CreateDate = DateTime.Now;
                                     if (IDZalo != -1)
                                     {
-                                        CGlobalVariable.db.Zalo_DangKy.Add(en);
+                                        db.Zalo_DangKy.Add(en);
                                     }
-                                    await CGlobalVariable.db.SaveChangesAsync();
+                                    await db.SaveChangesAsync();
                                     return RedirectToAction("Index");
                                 }
                                 else
@@ -124,83 +127,83 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Zalo_DangKy zalo = await CGlobalVariable.db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
+            Zalo_DangKy zalo = await db.Zalo_DangKy.FindAsync(IDZalo, DanhBo);
             if (zalo == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                CGlobalVariable.db.Zalo_DangKy.Remove(zalo);
-                await CGlobalVariable.db.SaveChangesAsync();
+                db.Zalo_DangKy.Remove(zalo);
+                await db.SaveChangesAsync();
                 return RedirectToAction("Index", "Zalo", new { id = IDZalo });
             }
-            return View(zalo);
+            //return View(zalo);
         }
 
         protected override void Dispose(bool disposing)
         {
             if (disposing)
             {
-                CGlobalVariable.db.Dispose();
+                db.Dispose();
             }
             base.Dispose(disposing);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Webhook()
-        {
-            try
-            {
-                Stream req = Request.InputStream;
-                req.Seek(0, System.IO.SeekOrigin.Begin);
-                string json = new StreamReader(req, Encoding.UTF8, false).ReadToEnd();
-                var details = JObject.Parse(json);
+        //[HttpPost]
+        //public async Task<ActionResult> Webhook()
+        //{
+        //    try
+        //    {
+        //        Stream req = Request.InputStream;
+        //        req.Seek(0, System.IO.SeekOrigin.Begin);
+        //        string json = new StreamReader(req, Encoding.UTF8, false).ReadToEnd();
+        //        var details = JObject.Parse(json);
 
-                string idzalo = "", message = "";
-                if (details["event_name"].ToString() == "follow" || details["event_name"].ToString() == "unfollow")
-                {
-                    idzalo = details["follower"]["id"].ToString();
-                    message = "";
-                }
-                else
-                if (details["event_name"].ToString() == "user_send_text" || details["event_name"].ToString() == "user_send_image")
-                {
-                    idzalo = details["sender"]["id"].ToString();
-                    message = details["message"]["text"].ToString();
-                }
-                else
-                if (details["event_name"].ToString() == "oa_send_text" || details["event_name"].ToString() == "oa_send_image")
-                {
-                    idzalo = details["recipient"]["id"].ToString();
-                    message = details["message"]["text"].ToString();
-                }
-                //log4net.ILog _log = log4net.LogManager.GetLogger("File");
-                //_log.Debug("link: " + "https://service.cskhtanhoa.com.vn/api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"));
+        //        string idzalo = "", message = "";
+        //        if (details["event_name"].ToString() == "follow" || details["event_name"].ToString() == "unfollow")
+        //        {
+        //            idzalo = details["follower"]["id"].ToString();
+        //            message = "";
+        //        }
+        //        else
+        //        if (details["event_name"].ToString() == "user_send_text" || details["event_name"].ToString() == "user_send_image")
+        //        {
+        //            idzalo = details["sender"]["id"].ToString();
+        //            message = details["message"]["text"].ToString();
+        //        }
+        //        else
+        //        if (details["event_name"].ToString() == "oa_send_text" || details["event_name"].ToString() == "oa_send_image")
+        //        {
+        //            idzalo = details["recipient"]["id"].ToString();
+        //            message = details["message"]["text"].ToString();
+        //        }
+        //        //log4net.ILog _log = log4net.LogManager.GetLogger("File");
+        //        //_log.Debug("link: " + "https://service.cskhtanhoa.com.vn/api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"));
 
-                //using (var client = new HttpClient())
-                //{
-                //    //Passing service base url  
-                //    client.BaseAddress = new Uri("https://service.cskhtanhoa.com.vn");
+        //        //using (var client = new HttpClient())
+        //        //{
+        //        //    //Passing service base url  
+        //        //    client.BaseAddress = new Uri("https://service.cskhtanhoa.com.vn");
 
-                //    client.DefaultRequestHeaders.Clear();
-                //    //Define request data format  
-                //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        //        //    client.DefaultRequestHeaders.Clear();
+        //        //    //Define request data format  
+        //        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                //    //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
-                //    HttpResponseMessage Res = await client.PostAsync("api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"), null);
+        //        //    //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
+        //        //    HttpResponseMessage Res = await client.PostAsync("api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"), null);
 
-                //    //Checking the response is successful or not which is sent using HttpClient  
-                //    if (Res.IsSuccessStatusCode)
-                //    {
-                //        //_log.Debug(Res);
-                //    }
-                //    //returning the employee list to view  
-                //}
-            }
-            catch (Exception) { }
-            return View();
-        }
+        //        //    //Checking the response is successful or not which is sent using HttpClient  
+        //        //    if (Res.IsSuccessStatusCode)
+        //        //    {
+        //        //        //_log.Debug(Res);
+        //        //    }
+        //        //    //returning the employee list to view  
+        //        //}
+        //    }
+        //    catch (Exception) { }
+        //    return View();
+        //}
 
 
     }

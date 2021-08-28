@@ -24,7 +24,8 @@ namespace WSTanHoa
                       "~/Content/Site.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/zalo").Include(
-                      "~/Scripts/zalo.js"));
+                      "~/Scripts/zalo.js",
+                      "~/Scripts/zalochat.js"));
         }
     }
 }

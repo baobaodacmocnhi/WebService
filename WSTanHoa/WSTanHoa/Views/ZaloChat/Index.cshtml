@@ -2,76 +2,10 @@
 @{
     ViewBag.Title = "Zalo OA Chat";
 }
+@Scripts.Render("~/bundles/zalo")
 
-<script type="text/javascript">
-    function TimKiem() {
-        $("#tblTimKiem tbody tr").remove();
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("getTimKiem")',
-            dataType: 'json',
-            data: { NoiDungTimKiem: $("#NoiDungTimKiem").val() },
-            success: function (data) {
-                var items = '';
-                $.each(data, function (i, item) {
-                    var rows = "<tr onClick=getChat('" + item.IDZalo + "')>"
-                                   + "<td>"
-                                   + "      <div class='row row-cols-auto'>"
-                                   + "          <div class='col'><img src='" + item.Avatar + "' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
-                                   + "              <div class='col'><b>" + item.IDZalo + "</b></div>"
-                                   + "              <div class='col'>" + item.CreateDate + "</div>"
-                                   + "          </div>"
-                                   + "          <div class='row'>"
-                                   + "              <div class='col'>"
-                                   + "                  " + item.NoiDung + ""
-                                   + "          </div>"
-                                   + "      </div>"
-                                   + "</td>"
-                                + "</tr>";
-                    $("#tblTimKiem tbody").append(rows);
-                });
-            },
-            error: function (ex) {
-                alert("Error: " + ex.statusText);
-            }
-        });
-        return false;
-    };
-
-    function getChat(IDZalo) {
-        $("#tblChat tbody tr").remove();
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("getChat")',
-            dataType: 'json',
-            data: { IDZalo: IDZalo },
-            success: function (data) {
-                var items = '';
-                $.each(data, function (i, item) {
-                    var rows = "<tr>"
-                                   + "<td>"
-                                   + "      <div class='row row-cols-auto'>"
-                                   + "          <div class='col'><img src='" + item.Avatar + "' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
-                                   + "              <div class='col'><b>" + item.Name + "</b></div>"
-                                   + "              <div class='col'>" + item.CreateDate + "</div>"
-                                   + "          </div>"
-                                   + "          <div class='row'>"
-                                   + "              <div class='col'>"
-                                   + "                  " + item.NoiDung + ""
-                                   + "          </div>"
-                                   + "      </div>"
-                                   + "</td>"
-                                + "</tr>";
-                    $("#tblChat tbody").append(rows);
-                });
-            },
-            error: function (ex) {
-                alert("Error: " + ex.statusText);
-            }
-        });
-        return false;
-    };
-</script>
+<link href="~/Lib/lightbox2.2.11.3/css/lightbox.css" rel="stylesheet" />
+<script src="~/Lib/lightbox2.2.11.3/js/lightbox-plus-jquery.js"></script>
 
 <h4 class="text-primary">Danh sách Zalo Chat OA Cấp nước Tân Hòa</h4>
 
@@ -121,16 +55,24 @@
         <div class="col-8">
             <div class="bd-example border rounded-3 mt-3">
                 <div class="overflow-auto" style="height:68vh">
-                    <table class="table table-striped" id="tblChat">
+                    <table class="table" id="tblChat">
                         <tbody>
                             @*@foreach (var item in Model)
                                 {
                                     <tr>
                                         <td>
                                             <a href="#" style="text-decoration:none;color:black">
-                                                <div class="row row-cols-auto">
-                                                    <div class="col"><img src="@item.Avatar" width="50" height="50" class="rounded-circle flex-shrink-0"></div>
-                                                    <div class="col"><b class="">@item.Name</b></div>
+                                                <div class="row row-cols-auto text-end">
+                                                    @if (item.NguoiGui == "User")
+                                                    {
+                                                        <div class="col"><img src="@item.Avatar" width="50" height="50" class="rounded-circle flex-shrink-0"></div>
+                                                        <div class="col"><b class="">@item.Name</b></div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="col"><img src="~/Images/logoctycp.png" width="50" height="50" class="rounded-circle flex-shrink-0"></div>
+                                                        <div class="col"><b class="">Cấp Nước Tân Hòa</b></div>
+                                                    }
                                                     <div class="col"><p class="">@item.CreateDate</p></div>
                                                 </div>
                                                 <div class="row">
@@ -143,7 +85,6 @@
                                     </tr>
                                 }*@
                         </tbody>
-
                     </table>
                 </div>
             </div>
