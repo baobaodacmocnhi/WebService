@@ -11,7 +11,7 @@ namespace WSTanHoa.Controllers
 {
     public class HomeController : Controller
     {
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanhWFH);
+        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
         public ActionResult Index()
         {
             ViewBag.Title = "Tân Hòa Service";

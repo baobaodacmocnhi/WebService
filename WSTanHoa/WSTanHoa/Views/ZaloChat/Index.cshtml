@@ -3,13 +3,11 @@
     ViewBag.Title = "Zalo OA Chat";
 }
 @Scripts.Render("~/bundles/zalo")
-
-<link href="~/Lib/lightbox2.2.11.3/css/lightbox.css" rel="stylesheet" />
-<script src="~/Lib/lightbox2.2.11.3/js/lightbox-plus-jquery.js"></script>
+@Scripts.Render("~/bundles/lightbox")
 
 <h4 class="text-primary">Danh sách Zalo Chat OA Cấp nước Tân Hòa</h4>
 
-<div class="container bg-light mt-3 rounded-3">
+<div class="container bg-light mt-3 rounded-3 shadow-sm">
     <div class="row pt-3 px-3">
         <div class="col-auto">
             <input class="form-control" type="text" id="NoiDungTimKiem" name="NoiDungTimKiem" placeholder="Nội dung tìm kiếm">
@@ -19,13 +17,13 @@
         </div>
     </div>
 </div>
-
+<br />
 <h4>Kết Quả</h4>
 <div class="container">
     <div class="row">
         <div class="col-4">
-            <div class="bd-example border rounded-3 mt-3">
-                <div class="overflow-auto" style="height:68vh">
+            <div class="bd-example border rounded-3 mt-3 shadow-sm">
+                <div class="overflow-auto" style="height:65vh">
                     <table class="table table-striped" id="tblTimKiem">
                         <tbody>
                             @*@foreach (var item in Model)
@@ -53,8 +51,8 @@
             </div>
         </div>
         <div class="col-8">
-            <div class="bd-example border rounded-3 mt-3">
-                <div class="overflow-auto" style="height:68vh">
+            <div class="bd-example border rounded-3 mt-3 shadow-sm">
+                <div class="overflow-auto" style="height:65vh">
                     <table class="table" id="tblChat">
                         <tbody>
                             @*@foreach (var item in Model)
@@ -91,3 +89,4 @@
         </div>
     </div>
 </div>
+

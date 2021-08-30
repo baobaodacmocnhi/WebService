@@ -21,7 +21,7 @@
     });
 </script>
 
-<div class="container">
+<div class="container bg-light py-2 rounded-3 shadow-sm">
     @using (Html.BeginForm("Index", "Zalo", FormMethod.Get))
     {
         <div class="form-group" style="display:none">
@@ -32,11 +32,6 @@
 
         <h4 class="text-primary">Danh sách danh bộ đã đăng ký trên Zalo OA Cấp nước Tân Hòa</h4>
 
-        @*<h3>
-                <p>
-                    @Html.ActionLink("Đăng ký mới", "Create")
-                </p>
-            </h3>*@
         <table class="table table-bordered border-dark mt-3 ">
             <tr>
                 <th>
@@ -76,15 +71,11 @@
                     </td>
                 </tr>
             }
-
         </table>
     }
-    <div>
-        @*@{ Html.RenderAction("Create", "Zalo");}*@
-    </div>
 </div>
-<hr />
-<div class="container">
+
+<div class="container bg-light mt-3 py-2 rounded-3 shadow-sm">
     <div class="form-horizontal">
         <h4 style="color:blue;">Đăng ký mới</h4>
 
@@ -154,13 +145,14 @@
                 </div>
             </div>
         }
-        <div>
-            <hr />
-            <h4>Hướng dẫn</h4>
-                <p><b>+ Mã danh bộ là dãy số gồm 11 chữ số</b></p>
-                <p><b>+ Mã danh bộ được in trên biên nhận/ giấy báo tiền nước/ hóa đơn tiền nước</b></p>
-            <br />
-            <img src="~/Images/giaybaotiennuoc2021.png" />
-        </div>
+
     </div>
+</div>
+<div>
+    <hr />
+    <h4>Hướng dẫn</h4>
+    <p><b>+ Mã danh bộ là dãy số gồm 11 chữ số</b></p>
+    <p><b>+ Mã danh bộ được in trên biên nhận/ giấy báo tiền nước/ hóa đơn tiền nước</b></p>
+    <br />
+    <img src="~/Images/giaybaotiennuoc2021.png" />
 </div>
