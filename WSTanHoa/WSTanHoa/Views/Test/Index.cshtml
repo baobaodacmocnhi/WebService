@@ -1,0 +1,218 @@
+﻿@model WSTanHoa.Models.db.ZaloView
+@{
+    ViewBag.Title = "Test";
+}
+@Scripts.Render("~/bundles/datepicker")
+
+<script>
+
+</script>
+
+
+<div class="container bg-light mt-3 rounded-3 shadow-sm">
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @using (Html.BeginForm("Index", "Test", FormMethod.Post))
+    {
+        <div class="row pt-3 px-3">
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radLoai" value="radNgayThu">
+                    <label class="form-check-label" for="radNgayThu">
+                        Ngày Thu
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radLoai" value="radNgayGiaiTrach" checked>
+                    <label class="form-check-label" for="radNgayGiaiTrach">
+                        Ngày Giải Trách
+                    </label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
+            </div>
+            <div class="col-auto">
+                <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3" name="action" value="Xem">Xem</button>
+            </div>
+        </div>
+    }
+    @if (Model.TuNgay != "")
+    {
+        <div class="mt-2">
+            <div class="fw-bold fs-5">@Html.DisplayNameFor(model => model.TuNgay) @Html.DisplayFor(model => model.TuNgay) @Html.DisplayNameFor(model => model.DenNgay) @Html.DisplayFor(model => model.DenNgay)</div>
+            <ul class="">
+                <li class="text-primary fw-bold fs-4">@Html.DisplayNameFor(model => model.SoLuong): @Html.DisplayFor(model => model.SoLuong) hđ</li>
+                <li class="text-danger fw-bold fs-4">@Html.DisplayNameFor(model => model.TongCong): @Html.DisplayFor(model => model.TongCong) đ</li>
+            </ul>
+        </div>
+    }
+</div>
+
+<div class="row row-cols-2 row-cols-lg-3 row-cols-xl-5 text-center g-2 mt-3">
+    @foreach (var item in Model.lst)
+    {
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    @if (item.Image != "")
+                    { <img src="..\..\Images\Banks\@item.Image" class="img-fluid" style="height:50px" />}
+                    else
+                    { <h2 style="height:20px">KHÁC</h2>}
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li class="fo text-primary fw-bold fs-4">@Html.DisplayFor(model => item.SoLuong) hđ</li>
+                        <li class="text-danger fw-bold fs-4">@Html.DisplayFor(model => item.TongCong) đ</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+    @*<div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/acb.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/agr.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/da.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/kb.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/mb.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/momo.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/payoo.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/shopeepay.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/vcb.png" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <img src="~/Images/Banks/vnpay.svg" class="img-fluid" style="height:50px" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card rounded-3 shadow-sm">
+                <div class="card-header py-3">
+                    <h2 style="height:20px">KHÁC</h2>
+                    <img src="" class="img-fluid" />
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mt-3 mb-4">
+                        <li>10 users included</li>
+                        <li>2 GB of storage</li>
+                    </ul>
+                </div>
+            </div>
+        </div>*@
+</div>
