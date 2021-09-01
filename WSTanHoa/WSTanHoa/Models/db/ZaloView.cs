@@ -29,19 +29,39 @@ namespace WSTanHoa.Models.db
 
         [StringLength(500)]
         //[Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
-        [Display(Name = "Dịa Chỉ")]
+        [Display(Name = "Địa Chỉ")]
         public string DiaChi { get; set; }
 
         [StringLength(10)]
         //[Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [Display(Name = "Điện Thoại")]
         public string DienThoai { get; set; }
+
+        [Display(Name = "Số Lượng")]
+        [DisplayFormat(DataFormatString = "{0:N0}")]
+        public int SoLuong { get; set; }
+
+        [Display(Name = "Tổng Cộng")]
+        [DisplayFormat(DataFormatString = "{0:N0}")]
+        public decimal TongCong { get; set; }
+
+        [Display(Name = "Từ Ngày")]
+        public string TuNgay { get; set; }
+
+        [Display(Name = "Đến Ngày")]
+        public string DenNgay { get; set; }
+
         public List<ZaloView> lst { get; set; }
+
+
         public ZaloView()
         {
             STT = "0";
             IDZalo = "-1";
-            Avatar = Name = CreateDate =DanhBo= HoTen = DiaChi = DienThoai = "";
+            Avatar = Name = CreateDate = DanhBo = HoTen = DiaChi = DienThoai
+                = NguoiGui = NoiDung = Image = TuNgay = DenNgay = "";
+            SoLuong = 0;
+            TongCong = 0;
             lst = new List<ZaloView>();
         }
     }

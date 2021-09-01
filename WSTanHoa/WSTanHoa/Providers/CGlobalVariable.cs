@@ -39,5 +39,14 @@ namespace WSTanHoa.Providers
             return hash.ToString().ToLower();
         }
 
+        public static string convertMoney(string money)
+        {
+            return String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(money));
+        }
+
+        public static string convertMoney(decimal money)
+        {
+            return String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", money);
+        }
     }
 }

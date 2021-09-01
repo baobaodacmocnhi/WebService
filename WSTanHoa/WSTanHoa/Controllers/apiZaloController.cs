@@ -868,7 +868,7 @@ namespace WSTanHoa.Controllers
                                     + " tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
                                     + "\n\n***Cú pháp báo chỉ số nước: CSN_danhbo_chisonuoc"
                                     + "\n***Chỉ số nước là dãy số màu đen trên đồng hồ nước"
-                                    + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo_DangKy: " + item["DienThoai"];
+                                    + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);
                         cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'ghichisonuoc',N'" + message + "',N'" + strResponse + "')");
                     }
