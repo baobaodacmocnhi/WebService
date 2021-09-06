@@ -487,6 +487,8 @@ namespace WSTanHoa.Controllers
                 else
                         if (messages[1].Trim().Length != 11)
                     strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai Danh Bộ, Vui lòng thử lại");
+                if (messages[2].Trim() == "" || messages[2].Trim().All(char.IsNumber) == false)
+                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai Chỉ Số Nước, Vui lòng thử lại");
                 else
                 {
                     DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DanhBo,MLT=LOTRINH from TB_DULIEUKHACHHANG where DanhBo='" + messages[1].Trim() + "'");
