@@ -4,13 +4,19 @@
 }
 @Scripts.Render("~/bundles/zalo")
 @Scripts.Render("~/bundles/lightbox")
-
+<script>
+    function keyenter() {
+        if (event.key === 'Enter') {
+            TimKiem();
+        }
+    }
+</script>
 <h4 class="text-primary">Danh sách Zalo Chat OA Cấp nước Tân Hòa</h4>
 
 <div class="container bg-light mt-3 rounded-3 shadow-sm">
     <div class="row pt-3 px-3">
         <div class="col-auto">
-            <input class="form-control" type="text" id="NoiDungTimKiem" name="NoiDungTimKiem" placeholder="Nội dung tìm kiếm">
+            <input class="form-control" type="text" id="NoiDungTimKiem" name="NoiDungTimKiem" placeholder="Nội dung tìm kiếm" onkeydown="keyenter()">
         </div>
         <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-3" onclick="TimKiem()">Tìm Kiếm</button>

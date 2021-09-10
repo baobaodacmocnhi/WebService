@@ -62,6 +62,7 @@ namespace WSTanHoa.Controllers
             try
             {
                 string sql = "select zc.IDZalo,zq.Avatar,zq.[Name],zc.CreateDate,zc.NguoiGui,zc.NoiDung,zc.Image"
+                        + " ,DienThoai=(select DienThoai from Zalo_DangKy where IDZalo=zq.IDZalo)"
                         + " from Zalo_Chat zc left"
                         + " join Zalo_QuanTam zq on zc.IDZalo = zq.IDZalo"
                         + " where zc.IDZalo = " + IDZalo
@@ -79,6 +80,7 @@ namespace WSTanHoa.Controllers
                     en.NguoiGui = dt.Rows[i]["NguoiGui"].ToString();
                     en.NoiDung = dt.Rows[i]["NoiDung"].ToString();
                     en.Image = dt.Rows[i]["Image"].ToString();
+                    en.DienThoai = dt.Rows[i]["DienThoai"].ToString();
                     lst.Add(en);
                 }
                 return CGlobalVariable.jsSerializer.Serialize(lst);

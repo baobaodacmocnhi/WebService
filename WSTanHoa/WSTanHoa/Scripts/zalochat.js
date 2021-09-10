@@ -43,13 +43,12 @@ function getChat(IDZalo) {
                                      + "<td>"
                                      + "      <div class='row row-cols-auto'>";
                 if (item.NguoiGui == 'User') {
-
                     row += "          <div class='col'><img src='" + item.Avatar + "' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
-                    + "          <div class='col'><b>" + item.Name + "</b></div>";
-
+                    + "          <div class='col'><b>" + item.Name + "</b></div>"
+                    + "          <div class='col'><b>" + item.DienThoai + "</b></div>";
                 }
                 else {
-                    row += "          <div class='col'><img src='https://service.cskhtanhoa.com.vn/Image/logoctycp.png' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
+                    row += "          <div class='col'><img src='../../Image/logoctycp.png' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
                    + "          <div class='col'><b>Cấp Nước Tân Hòa</b></div>";
                 }
                 row += "          <div class='col'>" + item.CreateDate + "</div>"
@@ -62,7 +61,6 @@ function getChat(IDZalo) {
                 + "          <div class='col'><a class='example-image-link' href='" + item.Image + "' data-lightbox='example-set' data-title='Click the right half of the image to move forward.'><img class='example-image rounded mx-auto d-block' src='" + item.Image + "' alt='' width='200' height='200'/></a></div>"
                 + "      </div>"
                 }
-
                 row += "</td>"
              + "</tr>";
                 $("#tblChat tbody").append(row);
