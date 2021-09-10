@@ -19,6 +19,7 @@ namespace WSSmartPhone
     public class wsThuTien : System.Web.Services.WebService
     {
         CThuTien _cThuTien = new CThuTien();
+        CKinhDoanh _cKinhDoanh = new CKinhDoanh();
 
         [WebMethod]
         public bool UpdateUID(string MaNV, string UID)
@@ -403,6 +404,12 @@ namespace WSSmartPhone
         public string updateChiTietTienNuoc(string Nam, string Ky, string Dot)
         {
             return _cThuTien.updateChiTietTienNuoc(int.Parse(Nam), int.Parse(Ky), int.Parse(Dot));
+        }
+
+        [WebMethod]
+        public void TinhTienNuoc(bool KhongApGiaGiam, bool ApGiaNuocCu, bool DieuChinhGia, int GiaDieuChinh, string DanhBo, int Ky, int Nam, DateTime TuNgay, DateTime DenNgay, int GiaBieu, int TyLeSH, int TyLeSX, int TyLeDV, int TyLeHCSN, int TongDinhMuc, int DinhMucHN, int TieuThu, ref int TienNuocCu, ref string ChiTietCu, ref int TienNuocMoi, ref string ChiTietMoi, ref int TieuThu_DieuChinhGia)
+        {
+            _cKinhDoanh.TinhTienNuoc(KhongApGiaGiam, ApGiaNuocCu, DieuChinhGia, GiaDieuChinh, DanhBo, Ky, Nam, TuNgay, DenNgay, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, ref  TienNuocCu, ref  ChiTietCu, ref  TienNuocMoi, ref  ChiTietMoi, ref  TieuThu_DieuChinhGia);
         }
     }
 }

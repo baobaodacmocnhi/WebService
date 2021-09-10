@@ -1811,7 +1811,7 @@ namespace WSSmartPhone.LinQ
 		
 		private int _ID_HOADON;
 		
-		private System.Nullable<int> _DOT;
+		private int _DOT;
 		
 		private string _DANHBA;
 		
@@ -1819,7 +1819,7 @@ namespace WSSmartPhone.LinQ
 		
 		private string _DUONG;
 		
-		private System.Nullable<int> _GB;
+		private int _GB;
 		
 		private System.Nullable<int> _TILESH;
 		
@@ -1831,27 +1831,27 @@ namespace WSSmartPhone.LinQ
 		
 		private System.Nullable<int> _DinhMucHN;
 		
-		private System.Nullable<decimal> _DM;
+		private System.Nullable<int> _DM;
 		
 		private string _CODE;
 		
-		private System.Nullable<decimal> _CSCU;
+		private System.Nullable<int> _CSCU;
 		
-		private System.Nullable<decimal> _CSMOI;
+		private System.Nullable<int> _CSMOI;
 		
 		private System.Nullable<int> _SONGAY;
 		
-		private System.Nullable<decimal> _TIEUTHU;
+		private System.Nullable<int> _TIEUTHU;
 		
-		private System.Nullable<decimal> _TIEUTHUBU;
+		private System.Nullable<int> _TIEUTHUBU;
 		
-		private System.Nullable<decimal> _TIEUTHUSH;
+		private System.Nullable<int> _TIEUTHUSH;
 		
-		private System.Nullable<decimal> _TIEUTHUSX;
+		private System.Nullable<int> _TIEUTHUSX;
 		
-		private System.Nullable<decimal> _TIEUTHUHCSN;
+		private System.Nullable<int> _TIEUTHUHCSN;
 		
-		private System.Nullable<decimal> _TIEUTHUDV;
+		private System.Nullable<int> _TIEUTHUDV;
 		
 		private System.Nullable<decimal> _GIABAN;
 		
@@ -1869,7 +1869,7 @@ namespace WSSmartPhone.LinQ
 		
 		private System.Nullable<decimal> _TONGCONG_BU;
 		
-		private decimal _SOPHATHANH;
+		private int _SOPHATHANH;
 		
 		private string _SOHOADON;
 		
@@ -1885,7 +1885,7 @@ namespace WSSmartPhone.LinQ
 		
 		private System.Nullable<System.DateTime> _DENNGAY;
 		
-		private System.Nullable<int> _NAM;
+		private int _NAM;
 		
 		private string _MAY;
 		
@@ -2023,13 +2023,17 @@ namespace WSSmartPhone.LinQ
 		
 		private string _CuaHangThuHo2;
 		
+		private bool _BaoCaoThue;
+		
+		private System.Nullable<int> _SoTienGiam;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
     partial void OnID_HOADONChanging(int value);
     partial void OnID_HOADONChanged();
-    partial void OnDOTChanging(System.Nullable<int> value);
+    partial void OnDOTChanging(int value);
     partial void OnDOTChanged();
     partial void OnDANHBAChanging(string value);
     partial void OnDANHBAChanged();
@@ -2037,7 +2041,7 @@ namespace WSSmartPhone.LinQ
     partial void OnHOPDONGChanged();
     partial void OnDUONGChanging(string value);
     partial void OnDUONGChanged();
-    partial void OnGBChanging(System.Nullable<int> value);
+    partial void OnGBChanging(int value);
     partial void OnGBChanged();
     partial void OnTILESHChanging(System.Nullable<int> value);
     partial void OnTILESHChanged();
@@ -2049,27 +2053,27 @@ namespace WSSmartPhone.LinQ
     partial void OnTILEDVChanged();
     partial void OnDinhMucHNChanging(System.Nullable<int> value);
     partial void OnDinhMucHNChanged();
-    partial void OnDMChanging(System.Nullable<decimal> value);
+    partial void OnDMChanging(System.Nullable<int> value);
     partial void OnDMChanged();
     partial void OnCODEChanging(string value);
     partial void OnCODEChanged();
-    partial void OnCSCUChanging(System.Nullable<decimal> value);
+    partial void OnCSCUChanging(System.Nullable<int> value);
     partial void OnCSCUChanged();
-    partial void OnCSMOIChanging(System.Nullable<decimal> value);
+    partial void OnCSMOIChanging(System.Nullable<int> value);
     partial void OnCSMOIChanged();
     partial void OnSONGAYChanging(System.Nullable<int> value);
     partial void OnSONGAYChanged();
-    partial void OnTIEUTHUChanging(System.Nullable<decimal> value);
+    partial void OnTIEUTHUChanging(System.Nullable<int> value);
     partial void OnTIEUTHUChanged();
-    partial void OnTIEUTHUBUChanging(System.Nullable<decimal> value);
+    partial void OnTIEUTHUBUChanging(System.Nullable<int> value);
     partial void OnTIEUTHUBUChanged();
-    partial void OnTIEUTHUSHChanging(System.Nullable<decimal> value);
+    partial void OnTIEUTHUSHChanging(System.Nullable<int> value);
     partial void OnTIEUTHUSHChanged();
-    partial void OnTIEUTHUSXChanging(System.Nullable<decimal> value);
+    partial void OnTIEUTHUSXChanging(System.Nullable<int> value);
     partial void OnTIEUTHUSXChanged();
-    partial void OnTIEUTHUHCSNChanging(System.Nullable<decimal> value);
+    partial void OnTIEUTHUHCSNChanging(System.Nullable<int> value);
     partial void OnTIEUTHUHCSNChanged();
-    partial void OnTIEUTHUDVChanging(System.Nullable<decimal> value);
+    partial void OnTIEUTHUDVChanging(System.Nullable<int> value);
     partial void OnTIEUTHUDVChanged();
     partial void OnGIABANChanging(System.Nullable<decimal> value);
     partial void OnGIABANChanged();
@@ -2087,7 +2091,7 @@ namespace WSSmartPhone.LinQ
     partial void OnPHI_BUChanged();
     partial void OnTONGCONG_BUChanging(System.Nullable<decimal> value);
     partial void OnTONGCONG_BUChanged();
-    partial void OnSOPHATHANHChanging(decimal value);
+    partial void OnSOPHATHANHChanging(int value);
     partial void OnSOPHATHANHChanged();
     partial void OnSOHOADONChanging(string value);
     partial void OnSOHOADONChanged();
@@ -2103,7 +2107,7 @@ namespace WSSmartPhone.LinQ
     partial void OnTUNGAYChanged();
     partial void OnDENNGAYChanging(System.Nullable<System.DateTime> value);
     partial void OnDENNGAYChanged();
-    partial void OnNAMChanging(System.Nullable<int> value);
+    partial void OnNAMChanging(int value);
     partial void OnNAMChanged();
     partial void OnMAYChanging(string value);
     partial void OnMAYChanged();
@@ -2241,6 +2245,10 @@ namespace WSSmartPhone.LinQ
     partial void OnCuaHangThuHo1Changed();
     partial void OnCuaHangThuHo2Changing(string value);
     partial void OnCuaHangThuHo2Changed();
+    partial void OnBaoCaoThueChanging(bool value);
+    partial void OnBaoCaoThueChanged();
+    partial void OnSoTienGiamChanging(System.Nullable<int> value);
+    partial void OnSoTienGiamChanged();
     #endregion
 		
 		public HOADON()
@@ -2268,8 +2276,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DOT", DbType="Int")]
-		public System.Nullable<int> DOT
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DOT", DbType="Int NOT NULL")]
+		public int DOT
 		{
 			get
 			{
@@ -2288,7 +2296,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DANHBA", DbType="NVarChar(11) NOT NULL", CanBeNull=false)]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DANHBA", DbType="Char(11) NOT NULL", CanBeNull=false)]
 		public string DANHBA
 		{
 			get
@@ -2348,8 +2356,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GB", DbType="Int")]
-		public System.Nullable<int> GB
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GB", DbType="Int NOT NULL")]
+		public int GB
 		{
 			get
 			{
@@ -2468,8 +2476,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DM", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> DM
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DM", DbType="Int")]
+		public System.Nullable<int> DM
 		{
 			get
 			{
@@ -2508,8 +2516,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CSCU", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> CSCU
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CSCU", DbType="Int")]
+		public System.Nullable<int> CSCU
 		{
 			get
 			{
@@ -2528,8 +2536,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CSMOI", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> CSMOI
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CSMOI", DbType="Int")]
+		public System.Nullable<int> CSMOI
 		{
 			get
 			{
@@ -2568,8 +2576,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHU", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> TIEUTHU
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHU", DbType="Int")]
+		public System.Nullable<int> TIEUTHU
 		{
 			get
 			{
@@ -2588,8 +2596,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUBU", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> TIEUTHUBU
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUBU", DbType="Int")]
+		public System.Nullable<int> TIEUTHUBU
 		{
 			get
 			{
@@ -2608,8 +2616,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUSH", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> TIEUTHUSH
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUSH", DbType="Int")]
+		public System.Nullable<int> TIEUTHUSH
 		{
 			get
 			{
@@ -2628,8 +2636,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUSX", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> TIEUTHUSX
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUSX", DbType="Int")]
+		public System.Nullable<int> TIEUTHUSX
 		{
 			get
 			{
@@ -2648,8 +2656,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUHCSN", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> TIEUTHUHCSN
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUHCSN", DbType="Int")]
+		public System.Nullable<int> TIEUTHUHCSN
 		{
 			get
 			{
@@ -2668,8 +2676,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUDV", DbType="Decimal(18,0)")]
-		public System.Nullable<decimal> TIEUTHUDV
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TIEUTHUDV", DbType="Int")]
+		public System.Nullable<int> TIEUTHUDV
 		{
 			get
 			{
@@ -2848,8 +2856,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SOPHATHANH", DbType="Decimal(18,0) NOT NULL")]
-		public decimal SOPHATHANH
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SOPHATHANH", DbType="Int NOT NULL")]
+		public int SOPHATHANH
 		{
 			get
 			{
@@ -3008,8 +3016,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NAM", DbType="Int")]
-		public System.Nullable<int> NAM
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NAM", DbType="Int NOT NULL")]
+		public int NAM
 		{
 			get
 			{
@@ -3028,7 +3036,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MAY", DbType="NChar(2)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MAY", DbType="VarChar(50)")]
 		public string MAY
 		{
 			get
@@ -3048,7 +3056,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STT", DbType="NChar(5)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STT", DbType="VarChar(50)")]
 		public string STT
 		{
 			get
@@ -3068,7 +3076,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MALOTRINH", DbType="NChar(10)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MALOTRINH", DbType="VarChar(50)")]
 		public string MALOTRINH
 		{
 			get
@@ -3128,7 +3136,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TENKH", DbType="VarChar(250)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TENKH", DbType="NVarChar(250)")]
 		public string TENKH
 		{
 			get
@@ -3148,7 +3156,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SO", DbType="VarChar(200)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SO", DbType="NVarChar(200)")]
 		public string SO
 		{
 			get
@@ -3408,7 +3416,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Thu2Lan_GhiChu", DbType="NVarChar(MAX)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Thu2Lan_GhiChu", DbType="NVarChar(500)")]
 		public string Thu2Lan_GhiChu
 		{
 			get
@@ -3708,7 +3716,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HIEULUC", DbType="NVarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HIEULUC", DbType="VarChar(10)")]
 		public string HIEULUC
 		{
 			get
@@ -3728,7 +3736,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NAMLD", DbType="NVarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NAMLD", DbType="VarChar(10)")]
 		public string NAMLD
 		{
 			get
@@ -3748,7 +3756,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HIEUDH", DbType="NVarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HIEUDH", DbType="NVarChar(10)")]
 		public string HIEUDH
 		{
 			get
@@ -3788,7 +3796,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoThanDHN", DbType="VarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoThanDHN", DbType="VarChar(20)")]
 		public string SoThanDHN
 		{
 			get
@@ -3888,7 +3896,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_PC", DbType="VarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name_PC", DbType="VarChar(20)")]
 		public string Name_PC
 		{
 			get
@@ -3908,7 +3916,7 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IP_PC", DbType="VarChar(50)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IP_PC", DbType="VarChar(20)")]
 		public string IP_PC
 		{
 			get
@@ -4384,6 +4392,46 @@ namespace WSSmartPhone.LinQ
 					this._CuaHangThuHo2 = value;
 					this.SendPropertyChanged("CuaHangThuHo2");
 					this.OnCuaHangThuHo2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BaoCaoThue", DbType="Bit NOT NULL")]
+		public bool BaoCaoThue
+		{
+			get
+			{
+				return this._BaoCaoThue;
+			}
+			set
+			{
+				if ((this._BaoCaoThue != value))
+				{
+					this.OnBaoCaoThueChanging(value);
+					this.SendPropertyChanging();
+					this._BaoCaoThue = value;
+					this.SendPropertyChanged("BaoCaoThue");
+					this.OnBaoCaoThueChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SoTienGiam", DbType="Int")]
+		public System.Nullable<int> SoTienGiam
+		{
+			get
+			{
+				return this._SoTienGiam;
+			}
+			set
+			{
+				if ((this._SoTienGiam != value))
+				{
+					this.OnSoTienGiamChanging(value);
+					this.SendPropertyChanging();
+					this._SoTienGiam = value;
+					this.SendPropertyChanged("SoTienGiam");
+					this.OnSoTienGiamChanged();
 				}
 			}
 		}
