@@ -2880,14 +2880,14 @@ namespace WSSmartPhone
                     if (item.DinhMucHN != null)
                         DinhMucHN = item.DinhMucHN.Value;
                     if (item.TUNGAY != null)
-                        _cKinhDoanh.TinhTienNuoc(false, false, false, 0, item.DANHBA, Ky, Nam, item.TUNGAY.Value, item.DENNGAY.Value, item.GB, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, ref TongTienCuA, ref ChiTietCuA, ref TongTienCuB, ref ChiTietCuB, ref TieuThu_DieuChinhGia);
+                        _cKinhDoanh.TinhTienNuoc(true, false, false, 0, item.DANHBA, Ky, Nam, item.TUNGAY.Value, item.DENNGAY.Value, item.GB, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, ref TongTienCuA, ref ChiTietCuA, ref TongTienCuB, ref ChiTietCuB, ref TieuThu_DieuChinhGia);
                     else
                     {
                         DataTable dt = _cDocSo.get(item.DANHBA, item.NAM.ToString(), item.KY.ToString());
                         if (dt != null && dt.Rows.Count > 0)
                         {
                             DateTime TuNgay = DateTime.Parse(dt.Rows[0]["TuNgay"].ToString()), DenNgay = DateTime.Parse(dt.Rows[0]["DenNgay"].ToString());
-                            _cKinhDoanh.TinhTienNuoc(false, false, false, 0, item.DANHBA, Ky, Nam, TuNgay, DenNgay, item.GB, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, ref TongTienCuA, ref ChiTietCuA, ref TongTienCuB, ref ChiTietCuB, ref TieuThu_DieuChinhGia);
+                            _cKinhDoanh.TinhTienNuoc(true, false, false, 0, item.DANHBA, Ky, Nam, TuNgay, DenNgay, item.GB, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, ref TongTienCuA, ref ChiTietCuA, ref TongTienCuB, ref ChiTietCuB, ref TieuThu_DieuChinhGia);
                         }
                     }
                     if (ChiTietCuA != "" || ChiTietCuB != "")
