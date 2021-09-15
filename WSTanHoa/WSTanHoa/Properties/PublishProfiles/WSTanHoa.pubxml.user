@@ -166,7 +166,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>09/09/2021 11:45:59</publishTime>
+      <publishTime>09/15/2021 10:56:26</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>08/23/2021 22:21:59</publishTime>

@@ -853,7 +853,7 @@ namespace WSTanHoa.Controllers
                                 + " where May = SUBSTRING(ttkh.LOTRINH, 3, 2))"
                                 + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, Zalo_DangKy z, Zalo_QuanTam zq, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                                 + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
-                                + " and CAST(NgayDoc as date) = CAST(GETDATE() as date)"
+                                + " and CAST(DATEADD(DAY, +1, NgayDoc) as date)=CAST(GETDATE() as date)"
                                 + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
                                 + " and z.IDZalo=zq.IDZalo and zq.Follow= 1";
                     DataTable dt = cDAL_TrungTam.ExecuteQuery_DataTable(sql);
@@ -904,7 +904,7 @@ namespace WSTanHoa.Controllers
                     string sql = "select DanhBo = DANHBA,HoTen = TENKH,DiaChi =case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end, NAM, KY"
                             + " , CSC = CSCU, CSM = CSMOI, TUNGAY = CONVERT(varchar(10), TUNGAY, 103), DENNGAY = CONVERT(varchar(10), DENNGAY, 103), TIEUTHU, TONGCONG, CODE,z.IDZalo"
                             + " from HOADON hd, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
-                            + " where CAST(hd.CreateDate as date)=CAST(DATEADD(DAY, -1, GETDATE()) as date) and hd.DANHBA=z.DanhBo"
+                            + " where CAST(hd.CreateDate as date)=CAST(GETDATE() as date) and hd.DANHBA=z.DanhBo"
                             + " and zq.Follow=1 and z.IDZalo=zq.IDZalo";
                     DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     string message, hdTon;
@@ -975,7 +975,7 @@ namespace WSTanHoa.Controllers
                     string sql = "select DanhBo = DANHBA,HoTen = TENKH,DiaChi =case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end, NAM, KY"
                             + " , CSC = CSCU, CSM = CSMOI, TUNGAY = CONVERT(varchar(10), TUNGAY, 103), DENNGAY = CONVERT(varchar(10), DENNGAY, 103), TIEUTHU, TONGCONG,z.IDZalo"
                             + " from HOADON hd, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
-                            + " where hd.NGAYGIAITRACH is null and CAST(hd.CreateDate as date)=CAST(DATEADD(DAY, -8, GETDATE()) as date) and hd.DANHBA=z.DanhBo"
+                            + " where hd.NGAYGIAITRACH is null and CAST(DATEADD(DAY, +7, hd.CreateDate) as date)=CAST(GETDATE() as date) and hd.DANHBA=z.DanhBo"
                             + " and zq.Follow=1 and z.IDZalo=zq.IDZalo";
                     DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     string message, hdTon;
