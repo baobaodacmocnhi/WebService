@@ -62,7 +62,7 @@ namespace WSTanHoa.Controllers
             try
             {
                 string sql = "select zc.IDZalo,zq.Avatar,zq.[Name],zc.CreateDate,zc.NguoiGui,zc.NoiDung,zc.Image"
-                        + " ,DienThoai=(select DienThoai from Zalo_DangKy where IDZalo=zq.IDZalo)"
+                        + " ,DienThoai=(select top 1 DienThoai from Zalo_DangKy where IDZalo=zq.IDZalo)"
                         + " from Zalo_Chat zc left"
                         + " join Zalo_QuanTam zq on zc.IDZalo = zq.IDZalo"
                         + " where zc.IDZalo = " + IDZalo
