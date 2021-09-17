@@ -32,7 +32,7 @@ namespace WSTanHoa.Models.db
         [Display(Name = "Địa Chỉ")]
         public string DiaChi { get; set; }
 
-        [StringLength(10)]
+        //[StringLength(10, MinimumLength = 10, ErrorMessage = "Điện thoại gồm 10 ký tự")]
         //[Required(ErrorMessage = "Vui lòng nhập số điện thoại")]
         [Display(Name = "Điện Thoại")]
         public string DienThoai { get; set; }

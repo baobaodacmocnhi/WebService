@@ -61,7 +61,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/19/2021 09:28:49</publishTime>
     </File>
     <File Include="Areas/HelpPage/Views/Help/Index.cshtml">
-      <publishTime>08/20/2021 10:26:52</publishTime>
+      <publishTime>09/17/2021 11:46:33</publishTime>
     </File>
     <File Include="Areas/HelpPage/Views/Help/ResourceModel.cshtml">
       <publishTime>08/19/2021 16:41:23</publishTime>
@@ -166,7 +166,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>09/16/2021 14:51:08</publishTime>
+      <publishTime>09/17/2021 22:02:51</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>08/23/2021 22:21:59</publishTime>
@@ -676,7 +676,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/19/2021 09:28:42</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>09/16/2021 14:41:34</publishTime>
+      <publishTime>09/17/2021 11:24:10</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>09/01/2021 22:23:17</publishTime>
@@ -696,20 +696,23 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Zalo/Edit.cshtml">
       <publishTime>07/31/2020 13:56:25</publishTime>
     </File>
+    <File Include="Views/Zalo/Index - Copy.cshtml">
+      <publishTime>09/16/2021 22:37:36</publishTime>
+    </File>
     <File Include="Views/Zalo/Index.cshtml">
-      <publishTime>09/16/2021 14:50:04</publishTime>
+      <publishTime>09/17/2021 11:43:00</publishTime>
     </File>
     <File Include="Views/Zalo/Webhook.cshtml">
       <publishTime>07/31/2020 13:56:25</publishTime>
     </File>
     <File Include="Views/ZaloChat/Index.cshtml">
-      <publishTime>09/09/2021 11:42:32</publishTime>
+      <publishTime>09/17/2021 15:56:45</publishTime>
     </File>
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>08/19/2021 17:51:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/01/2021 14:12:22</publishTime>
+      <publishTime>09/17/2021 11:47:50</publishTime>
     </File>
   </ItemGroup>
 </Project>

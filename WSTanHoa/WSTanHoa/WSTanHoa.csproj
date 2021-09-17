@@ -389,7 +389,6 @@
     <Content Include="Views\KhieuNai\Edit.cshtml" />
     <Content Include="Views\KhieuNai\Index.cshtml" />
     <Content Include="Views\ZaloChat\Index.cshtml" />
-    <Content Include="Views\Zalo\Index.cshtml" />
     <Content Include="Views\Zalo\Webhook.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -397,6 +396,8 @@
     <Content Include="Scripts\jquery-3.6.0.min.map" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Zalo\Index.cshtml" />
+    <Content Include="Views\Zalo\Index - Copy.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

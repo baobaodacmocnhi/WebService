@@ -853,7 +853,7 @@ namespace WSTanHoa.Controllers
                                 + " where May = SUBSTRING(ttkh.LOTRINH, 3, 2))"
                                 + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, Zalo_DangKy z, Zalo_QuanTam zq, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                                 + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
-                                + " and CAST(DATEADD(DAY, +1, NgayDoc) as date)=CAST(GETDATE() as date)"
+                                + " and CAST(DATEADD(DAY, -1, NgayDoc) as date)=CAST(GETDATE() as date)"
                                 + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
                                 + " and z.IDZalo=zq.IDZalo and zq.Follow= 1";
                     DataTable dt = cDAL_TrungTam.ExecuteQuery_DataTable(sql);

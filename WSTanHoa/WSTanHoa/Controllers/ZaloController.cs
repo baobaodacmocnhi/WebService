@@ -38,7 +38,7 @@ namespace WSTanHoa.Controllers
             if (TempData["IDZalo"] != null)
                 IDZalo = decimal.Parse(TempData["IDZalo"].ToString());
 
-            DataTable dtTTKH =cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo,z.DienThoai,z.DanhBo,ttkh.HoTen,DiaChi = SONHA + ' ' + TENDUONG from Zalo_DangKy z, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=z.DanhBo and IDZalo=" + IDZalo);
+            DataTable dtTTKH = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo,z.DienThoai,z.DanhBo,ttkh.HoTen,DiaChi = SONHA + ' ' + TENDUONG from Zalo_DangKy z, [SERVER8].[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh where ttkh.DanhBo=z.DanhBo and IDZalo=" + IDZalo);
             //List<ZaloView> lstZalo = new List<ZaloView>();
             foreach (DataRow item in dtTTKH.Rows)
             {
@@ -69,7 +69,7 @@ namespace WSTanHoa.Controllers
                                 }
                                 else
                                 {
-                                    ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ không đúng");
+                                    ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
                                     return View(zalo);
                                 }
                             }
@@ -78,22 +78,30 @@ namespace WSTanHoa.Controllers
                             if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
                                 //kiểm tra danh bộ
-                                DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+                                DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
                                 if (dt.Rows.Count > 0)
                                 {
                                     zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                                    zalo.HoTen = dt.Rows[0]["HoTen"].ToString();
+                                    zalo.DiaChi = dt.Rows[0]["DiaChi"].ToString();
                                 }
                                 else
                                 {
-                                    ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ không đúng");
+                                    ModelState.AddModelError("DanhBo", "Danh Bộ không đúng");
                                     return View(zalo);
                                 }
                                 //kiểm tra trùng
                                 if (db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == zalo.DanhBo.Replace(" ", "")) == 0)
                                 {
-                                    if (zalo.DienThoai == null || zalo.DienThoai == "")
+                                    if (zalo.DienThoai == null || zalo.DienThoai == "" )
                                     {
-                                        ModelState.AddModelError("vZalo.DienThoai", "Vui lòng nhập số điện thoại");
+                                        ModelState.AddModelError("DienThoai", "Vui lòng nhập số điện thoại");
+                                        return View(zalo);
+                                    }
+                                    else
+                                        if( zalo.DienThoai.Length < 10)
+                                    {
+                                        ModelState.AddModelError("DienThoai", "Số điện thoại không đủ 10 ký tự");
                                         return View(zalo);
                                     }
                                     Zalo_DangKy en = new Zalo_DangKy();
@@ -110,7 +118,7 @@ namespace WSTanHoa.Controllers
                                 }
                                 else
                                 {
-                                    ModelState.AddModelError("vZalo.DanhBo", "Danh Bộ đã đăng ký rồi");
+                                    ModelState.AddModelError("DanhBo", "Danh Bộ đã đăng ký rồi");
                                     return View(zalo);
                                 }
                             }
