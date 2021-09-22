@@ -1788,7 +1788,7 @@ namespace WSSmartPhone
         {
             try
             {
-                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),Result=(select Result from Temp_SyncHoaDon where SoHoaDon=HOADON.SOHOADON) from HOADON where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and SyncNopTien=0 and MaNV_DangNgan is not null and (NAM>2020 or (NAM=2020 and KY>=7)) and BaoCaoThue=0");
+                DataTable dt = _cDAL.ExecuteQuery_DataTable("select DanhBo=DANHBA,Ky=(convert(varchar(2),KY)+'/'+convert(varchar(4),NAM)),Result=(select top 1 Result from Temp_SyncHoaDon where MaHD=HOADON.ID_HOADON or SoHoaDon=HOADON.SOHOADON) from HOADON where CAST(NGAYGIAITRACH as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and SyncNopTien=0 and MaNV_DangNgan is not null and (NAM>2020 or (NAM=2020 and KY>=7)) and BaoCaoThue=0");
                 if (dt != null && dt.Rows.Count > 0)
                     return "true;" + DataTableToJSON(dt);
                 else
