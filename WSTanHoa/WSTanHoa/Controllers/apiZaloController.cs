@@ -414,6 +414,36 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("getlichdocso1")]
+        private void getlichdocso1()
+        {
+            try
+            {
+                DataTable dt_DanhBo = cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo='13182515936'");
+                //DataTable dt_DanhBo = cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
+
+                foreach (DataRow item in dt_DanhBo.Rows)
+                {
+                    DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+
+                    string result_Lich = apiTTKH.getLichDocSo_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
+
+                    string result_NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+
+                    string content = getTTKH(item["DanhBo"].ToString());
+                    content += result_NhanVien + "\n"
+                                + result_Lich;
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         private void getlichdocso(string IDZalo, ref string strResponse)
         {
             try
@@ -439,6 +469,34 @@ namespace WSTanHoa.Controllers
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichdocso',getdate())";
                 cDAL_TrungTam.ExecuteNonQuery(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpGet]
+        [Route("getlichthutien1")]
+        private void getlichthutien1()
+        {
+            try
+            {
+                DataTable dt_DanhBo = cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo='13182515936'");
+                //DataTable dt_DanhBo = cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
+                foreach (DataRow item in dt_DanhBo.Rows)
+                {
+                    DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+
+                    string result_Lich = apiTTKH.getLichThuTien_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
+
+                    string result_NhanVien = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+
+                    string content = getTTKH(item["DanhBo"].ToString());
+                    content += result_NhanVien + "\n"
+                                 + result_Lich;
+                }
+                //insert lịch sử truy vấn
             }
             catch (Exception ex)
             {
@@ -547,6 +605,56 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        private void baochisonuocR()
+        {
+            try
+            {
+                string sql1 = "select t2.IDZalo,t2.CreateDate,t2.NoiDung from"
++ " (select * from Zalo_Send where cast(CreateDate as date) >= '20210916' and loai = 'ghichisonuoc')t1,"
++ " (select * from Zalo_Chat where cast(CreateDate as date) >= '20210916' and cast(CreateDate as date) <= '20210917' and noidung like 'csn%')t2"
+ + "    where t1.IDZalo = t2.IDZalo";
+                DataTable dt1 = cDAL_TrungTam.ExecuteQuery_DataTable(sql1);
+                foreach (DataRow item in dt1.Rows)
+                {
+                    string[] messages = null;
+                    if (item["NoiDung"].ToString().ToUpper().Contains("CSN_") == true)
+                        messages = item["NoiDung"].ToString().Split('_');
+                    else
+                        if (item["NoiDung"].ToString().ToUpper().Contains("CSN-") == true)
+                        messages = item["NoiDung"].ToString().Split('-');
+                    else
+                        if (item["NoiDung"].ToString().ToUpper().Contains("CSN ") == true)
+                        messages = item["NoiDung"].ToString().Split(' ');
+                    if (messages.Count() == 3 && messages[1].Trim().Length == 11 && messages[2].Trim() != "" && messages[2].Trim().All(char.IsNumber) == true)
+                    {
+                        DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DanhBo,MLT=LOTRINH from TB_DULIEUKHACHHANG where DanhBo='" + messages[1].Trim() + "'");
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            //kiểm tra đã gửi chỉ số nước rồi
+                            string sql = "select top 1 * from DocSo_Zalo where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and cast(createdate as date)='" + DateTime.Parse(item["CreateDate"].ToString()).ToString("yyyyMMdd") + "'";
+                            DataTable dtResult = cDAL_DocSo.ExecuteQuery_DataTable(sql);
+                            if (dtResult == null || dtResult.Rows.Count == 0)
+                            {
+
+                            }
+                            //kiểm tra chỉ số nước
+                            if (IsNumber(messages[2].Trim()) == true)
+                            {
+                                sql = "insert into DocSo_Zalo(DanhBo,ChiSo,CreateDate)values(N'" + messages[1].Trim() + "',N'" + messages[2].Trim() + "','" + DateTime.Parse(item["CreateDate"].ToString()).ToString("yyyyMMdd") + "')";
+                                cDAL_DocSo.ExecuteNonQuery(sql);
+                            }
+
+                        }
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         private void tinnhankhac(string IDZalo, string message, ref string strResponse)
         {
             try
@@ -577,9 +685,7 @@ namespace WSTanHoa.Controllers
         /// <param name="IDZalo"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        //[Route("sendMessage")]
-        //[HttpGet]
-        public string sendMessage(string IDZalo, string message)
+        private string sendMessage(string IDZalo, string message)
         {
             string strResponse = "";
             try
@@ -643,9 +749,7 @@ namespace WSTanHoa.Controllers
         /// </summary>
         /// <param name="IDZalo"></param>
         /// <returns></returns>
-        //[Route("sendMessageDangKy")]
-        //[HttpGet]
-        public string sendMessageDangKy(string IDZalo)
+        private string sendMessageDangKy(string IDZalo)
         {
             string strResponse = "";
             try
@@ -719,9 +823,7 @@ namespace WSTanHoa.Controllers
         /// <param name="IDZalo"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        //[Route("sendMessageCupNuoc")]
-        //[HttpGet]
-        public string sendMessageCupNuoc(string IDZalo, string message)
+        private string sendMessageCupNuoc(string IDZalo, string message)
         {
             string strResponse = "";
             try

@@ -278,7 +278,7 @@ namespace WSTanHoa.Controllers
                         break;
                     }
                 if (result == "")
-                    result = dt.Rows[dt.Rows.Count - 1]["NoiDung"].ToString();
+                    result = dt.Rows[0]["NoiDung"].ToString();
             }
             return result;
         }
@@ -297,7 +297,7 @@ namespace WSTanHoa.Controllers
                         break;
                     }
                 if (result == null)
-                    result = dt.Rows[dt.Rows.Count - 1];
+                    result = dt.Rows[0];
             }
             return result;
         }
@@ -479,10 +479,10 @@ namespace WSTanHoa.Controllers
                     }
                 if (result == "")
                 {
-                    DateTime date = DateTime.Parse(dt.Rows[dt.Rows.Count - 1]["NgayThuTien"].ToString()).AddDays(1);
+                    DateTime date = DateTime.Parse(dt.Rows[0]["NgayThuTien"].ToString()).AddDays(1);
                     if (date.DayOfWeek == DayOfWeek.Saturday)
                         date = date.AddDays(2);
-                    result = "Kỳ " + dt.Rows[dt.Rows.Count - 1]["Ky"].ToString() + "/" + dt.Rows[dt.Rows.Count - 1]["Nam"].ToString() + " dự kiến sẽ được phát hành vào ngày " + date.ToString("dd/MM/yyyy");
+                    result = "Kỳ " + dt.Rows[0]["Ky"].ToString() + "/" + dt.Rows[0]["Nam"].ToString() + " dự kiến sẽ được phát hành vào ngày " + date.ToString("dd/MM/yyyy");
                 }
             }
             return result;
