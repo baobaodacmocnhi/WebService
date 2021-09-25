@@ -43,8 +43,10 @@ namespace WSAgribank
             string sql = "SELECT ID_HOADON AS IDkey, hd.DANHBA, hd.TENKH, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KyHD, hd.NAM as NamHD, hd.PHI as PBVMT, hd.THUE as TGTGT,hd.GIABAN as TNuoc,hd.TONGCONG as TONGCONG  "
             + " FROM HOADON hd "
             + " WHERE NGAYGIAITRACH IS NULL AND hd.DANHBA='" + db + "' AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' "
-            + " AND hd.DANHBA NOT IN (SELECT DanhBo FROM TT_DichVuThu WHERE TT_DichVuThu.Ky=hd.KY and TT_DichVuThu.Nam=hd.NAM AND TT_DichVuThu.DanhBo=hd.DANHBA) "
-                //+ " AND hd.DANHBA NOT IN (SELECT Dbo FROM SimpayDB WHERE SimpayDB.KyHD=hd.KY and SimpayDB.NamHD=hd.NAM AND SimpayDB.Dbo=hd.DANHBA)   "
+            + " and ID_HOADON not in (select MaHD from TT_DichVuThu) "
+            + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)) or (GB!=10))"
+            + " and ID_HOADON not in (select MaHD from TT_TraGop)"
+            + " and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
             + " ORDER BY NAM DESC, KY DESC ";
             DataSet ds = _cDAL.ExecuteQuery_DataSet(sql);
             int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + db + ")");
