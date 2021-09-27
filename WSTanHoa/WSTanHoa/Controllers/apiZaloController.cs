@@ -26,7 +26,7 @@ namespace WSTanHoa.Controllers
         string access_token = "YU3XJkQE9XM8xEXEuuKk5udcuaxkacnXuONCOzYx1rMnYP9Al8C2SwoxloJ0bN0EhBZBB9AtGnI2XkLNbfrCIgM-ddsLbm9QiE3FTwxV24oeuQHhcjWqVO7xkcJlmm10Wj6POwd1F6-NxV9gf_9VLg7Ba6Aomm5VkicOLepH80sqtAaqdCC1Q_RpjJt1v7WnwjYrCfYn8MInYUSveBHe4fs7eGk9i6i2lPFw3gQnNogoWTKMteHeIkADrcxquazdsjlnVx7ZGsIqxUL6dUSZJv24a4FubI9tIsLVMlzkvPGj6G";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
         string _url = "https://service.cskhtanhoa.com.vn";
-        string _urlImage = "https://service.cskhtanhoa.com.vn/Image";
+        string _urlImage = "https://service.cskhtanhoa.com.vn/Images";
         //string _url = "http://service.capnuoctanhoa.com.vn:1010";
         //string _urlImage = "http://service.capnuoctanhoa.com.vn:1010/Image";
 

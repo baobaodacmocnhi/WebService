@@ -371,7 +371,11 @@
     <Content Include="Lib\bootstrap-datepicker-1.9.0\css\bootstrap-datepicker.standalone.css.map" />
     <Content Include="Lib\bootstrap-datepicker-1.9.0\css\bootstrap-datepicker3.css.map" />
     <Content Include="Lib\bootstrap-datepicker-1.9.0\css\bootstrap-datepicker3.standalone.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
     <None Include="Properties\PublishProfiles\WSTanHoa.pubxml" />
+    <Content Include="Scripts\bootstrap.js.map" />
+    <Content Include="Scripts\bootstrap.min.js.map" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\globalscript.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />

@@ -48,7 +48,7 @@ function getChat(IDZalo) {
                     + "          <div class='col'><b>" + item.DienThoai + "</b></div>";
                 }
                 else {
-                    row += "          <div class='col'><img src='../../Image/logoctycp.png' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
+                    row += "          <div class='col'><img src='../../Images/logoctycp.png' width='50' height='50' class='rounded-circle flex-shrink-0'></div>"
                    + "          <div class='col'><b>Cấp Nước Tân Hòa</b></div>";
                 }
                 row += "          <div class='col'>" + item.CreateDate + "</div>"

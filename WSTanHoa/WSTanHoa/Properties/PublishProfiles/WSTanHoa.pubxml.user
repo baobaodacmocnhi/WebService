@@ -166,13 +166,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>09/22/2021 22:13:39</publishTime>
+      <publishTime>09/27/2021 22:32:16</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>08/23/2021 22:21:59</publishTime>
     </File>
+    <File Include="Content/bootstrap.css.map">
+      <publishTime>09/27/2021 22:30:14</publishTime>
+    </File>
     <File Include="Content/bootstrap.min.css">
       <publishTime>08/19/2021 11:14:39</publishTime>
+    </File>
+    <File Include="Content/bootstrap.min.css.map">
+      <publishTime>09/27/2021 22:30:18</publishTime>
     </File>
     <File Include="Content/Site.css">
       <publishTime>08/21/2021 15:54:30</publishTime>
@@ -568,10 +574,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/30/2021 13:16:27</publishTime>
     </File>
     <File Include="Lib/lightbox2.2.11.3/css/lightbox.css">
-      <publishTime>08/26/2021 14:49:28</publishTime>
+      <publishTime>09/27/2021 22:48:29</publishTime>
     </File>
     <File Include="Lib/lightbox2.2.11.3/css/lightbox.min.css">
-      <publishTime>08/26/2021 14:49:28</publishTime>
+      <publishTime>09/27/2021 22:48:29</publishTime>
     </File>
     <File Include="Lib/lightbox2.2.11.3/images/close.png">
       <publishTime>08/26/2021 14:49:28</publishTime>
@@ -619,10 +625,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/31/2021 16:31:11</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
-      <publishTime>08/19/2021 11:15:29</publishTime>
+      <publishTime>09/27/2021 22:41:58</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.js.map">
+      <publishTime>09/27/2021 22:31:34</publishTime>
     </File>
     <File Include="Scripts/bootstrap.min.js">
-      <publishTime>08/19/2021 11:15:29</publishTime>
+      <publishTime>09/27/2021 22:41:12</publishTime>
+    </File>
+    <File Include="Scripts/bootstrap.min.js.map">
+      <publishTime>09/27/2021 22:31:34</publishTime>
     </File>
     <File Include="Scripts/globalscript.js">
       <publishTime>08/30/2021 15:31:02</publishTime>
@@ -667,7 +679,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/26/2021 11:28:08</publishTime>
     </File>
     <File Include="Scripts/zalochat.js">
-      <publishTime>09/09/2021 11:44:19</publishTime>
+      <publishTime>09/27/2021 22:20:49</publishTime>
     </File>
     <File Include="Scripts/_references.js">
       <publishTime>08/31/2021 16:31:16</publishTime>

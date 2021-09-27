@@ -14,7 +14,7 @@ namespace WSTanHoa.Controllers
 {
     public class ZaloChatController : Controller
     {
-        private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
+        private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHangWFH);
         // GET: ZaloChat
         public ActionResult Index()
         {
