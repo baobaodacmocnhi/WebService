@@ -2124,9 +2124,9 @@ namespace WSSmartPhone
             {
                 DataTable dt;
                 if (GiaiTrach == true)
-                    dt = _cDAL.ExecuteQuery_DataTable("select SoHoaDon,NGAYGIAITRACH=(select convert(varchar, CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu where EXISTS(select * from HOADON where MaHD=" + MaHD + " and BaoCaoThue=0) and MaHD=" + MaHD);
+                    dt = _cDAL.ExecuteQuery_DataTable("select hd.SoHoaDon,NGAYGIAITRACH=(select convert(varchar, dvt.CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu dvt,HOADON hd where dvt.MaHD=hd.ID_HOADON and BaoCaoThue=0 and MaHD=" + MaHD);
                 else
-                    dt = _cDAL.ExecuteQuery_DataTable("select SoHoaDon,NGAYGIAITRACH=(select convert(varchar, CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu_Huy where EXISTS(select * from HOADON where MaHD=" + MaHD + " and BaoCaoThue=0) and MaHD=" + MaHD);
+                    dt = _cDAL.ExecuteQuery_DataTable("select hd.SoHoaDon,NGAYGIAITRACH=(select convert(varchar, dvt.CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu_Huy dvt,HOADON hd where dvt.MaHD=hd.ID_HOADON and BaoCaoThue=0 and MaHD=" + MaHD);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/thanhtoan");
