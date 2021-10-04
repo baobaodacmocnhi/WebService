@@ -84,11 +84,17 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/EntityFramework.SqlServer.dll">
       <publishTime>11/03/2015 17:43:42</publishTime>
     </File>
+    <File Include="bin/EPPlus.dll">
+      <publishTime>09/21/2021 11:06:12</publishTime>
+    </File>
     <File Include="bin/log4net.dll">
       <publishTime>07/31/2020 13:56:23</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>06/15/2015 02:06:24</publishTime>
+    </File>
+    <File Include="bin/Microsoft.IO.RecyclableMemoryStream.dll">
+      <publishTime>03/10/2021 23:48:52</publishTime>
     </File>
     <File Include="bin/Microsoft.Web.Infrastructure.dll">
       <publishTime>04/23/2012 15:23:58</publishTime>
@@ -166,7 +172,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/10/2013 17:28:38</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>09/27/2021 22:32:16</publishTime>
+      <publishTime>10/04/2021 10:26:22</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>08/23/2021 22:21:59</publishTime>
@@ -622,7 +628,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/18/2021 21:59:37</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>08/31/2021 16:31:11</publishTime>
+      <publishTime>10/02/2021 15:16:56</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>09/27/2021 22:41:58</publishTime>
@@ -745,7 +751,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>08/19/2021 17:51:36</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/17/2021 11:47:50</publishTime>
+      <publishTime>10/02/2021 16:36:33</publishTime>
     </File>
   </ItemGroup>
 </Project>

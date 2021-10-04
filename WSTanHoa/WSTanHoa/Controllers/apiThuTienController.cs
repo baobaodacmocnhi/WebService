@@ -1,9 +1,13 @@
-﻿using System;
+﻿using OfficeOpenXml;
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 using WSTanHoa.Models;
@@ -14,8 +18,8 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuTien")]
     public class apiThuTienController : ApiController
     {
-        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
-        string _password = "thutien@2020";
+        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTienWFH);
+        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanhWFH);
         apiThuTien _result = new apiThuTien();
 
         // GET api/<controller>
@@ -46,23 +50,22 @@ namespace WSTanHoa.Controllers
             try
             {
                 var headers = Request.Headers;
-                if (headers.Contains("password"))
+                if (headers.Contains("checksum"))
                 {
-                    if (headers.GetValues("password").First() == _password)
-                        _result.success = true;
-                    else
-                        _result.message = "Sai Password";
+                    if (headers.GetValues("checksum").First() != CGlobalVariable.cheksum)
+                    {
+                        _result.status = "ERR:11";
+                        _result.message = "Sai Mã Xác Nhận";
+                        return false;
+                    }
                 }
                 else
                 {
-                    _result.message = "Không Password";
-                }
-                if (_result.success == true)
-                {
-                    return true;
-                }
-                else
+                    _result.status = "ERR:10";
+                    _result.message = "Không Mã Xác Nhận";
                     return false;
+                }
+                return true;
             }
             catch (Exception ex)
             {
@@ -100,22 +103,22 @@ namespace WSTanHoa.Controllers
         [Route("getVersion")]
         private apiThuTien getVersion()
         {
-            try
-            {
-                if (checkHeader() == false)
-                    return _result;
+            //try
+            //{
+            //    if (checkHeader() == false)
+            //        return _result;
 
-                object value = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig");
-                if (value != null)
-                {
-                    _result.success = true;
-                    _result.message = value.ToString();
-                }
-            }
-            catch (Exception ex)
-            {
-                _result.message = ex.Message;
-            }
+            //    object value = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig");
+            //    if (value != null)
+            //    {
+            //        _result.success = true;
+            //        _result.message = value.ToString();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    _result.message = ex.Message;
+            //}
             return _result;
         }
 
@@ -162,7 +165,7 @@ namespace WSTanHoa.Controllers
                 DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    _result.success = true;
+                    
                     _result.message = DataTableToJSON(dt);
                 }
                 else
@@ -170,6 +173,49 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
+                _result.message = ex.Message;
+            }
+            return _result;
+        }
+
+        [HttpGet]
+        [Route("exportExcelHDDCBCT")]
+        public apiThuTien exportExcelHDDCBCT(string NgayGiaiTrach)
+        {
+            HttpResponseMessage response = response = Request.CreateResponse(HttpStatusCode.OK);
+            try
+            {
+                //if (checkHeader() == true)
+                {
+                    MediaTypeHeaderValue mediaType = MediaTypeHeaderValue.Parse("application/octet-stream");
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    byte[] excelFile;
+                    using (var package = new ExcelPackage())
+                    {
+                        var worksheet = package.Workbook.Worksheets.Add("Sheet1");
+                        string sql = "select 'Đợt'=ctdchd.Dot,'Kỳ'=ctdchd.Ky,'Năm'=ctdchd.Nam,'Danh Bộ'=DanhBo,'Số Phát Hành'=SoPhatHanh,'Số Hóa Đơn Cũ'=ctdchd.SoHoaDon"
+                                    + " ,'Giá Biểu Cũ'=ctdchd.GiaBieu,'Định Mức Cũ'=ctdchd.DinhMuc,'Tiêu Thụ Cũ'=ctdchd.TieuThu"
+                                    + " ,'Tiền Nước Cũ' = TienNuoc_Start,'Thuế GTGT Cũ' = ThueGTGT_Start,'Phí BVMT Cũ' = PhiBVMT_Start,'Tổng Cộng Cũ' = TongCong_Start"
+                                    + " ,'Giá Biểu Mới' = GiaBieu_BD,'Định Mức Mới' = DinhMuc_BD,'Tiêu Thụ Mới' = TieuThu_BD"
+                                    + " ,'Tiền Nước Mới' = TienNuoc_End,'Thuế GTGT Mới' = ThueGTGT_End,'Phí BVMT Mới' = PhiBVMT_End,'Tổng Cộng Mới' = TongCong_End"
+                                    + " from HOADON hd,[SERVER11].[KTKS_DonKH].[dbo].[DCBD_ChiTietHoaDon] ctdchd"
+                                    + " where hd.BaoCaoThue=1 and CAST(NGAYGIAITRACH as date)='" + DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null"
+                                    + " and hd.DANHBA=ctdchd.DanhBo and hd.NAM= ctdchd.Nam and hd.Ky= ctdchd.Ky";
+                        DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                        worksheet.Cells["A1"].LoadFromDataTable(dt, true);
+                        byte[] bytes = package.GetAsByteArray();
+                        excelFile = bytes;
+                    }
+                    string fileName = "TanHoa.HDDCBCT." + NgayGiaiTrach.Replace("/", ".") + ".xlsx";
+                    MemoryStream memoryStream = new MemoryStream(excelFile);
+                    response.Content = new StreamContent(memoryStream);
+                    response.Content.Headers.ContentType = mediaType;
+                    response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("fileName") { FileName = fileName };
+                }
+            }
+            catch (Exception ex)
+            {
+                _result.status = "ERR:0";
                 _result.message = ex.Message;
             }
             return _result;

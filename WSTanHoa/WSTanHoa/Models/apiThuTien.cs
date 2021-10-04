@@ -7,7 +7,7 @@ namespace WSTanHoa.Models
 {
     public class apiThuTien
     {
-        public bool success { get; set; }
+        public string status { get; set; }
 
         public string message { get; set; }
 
@@ -15,16 +15,11 @@ namespace WSTanHoa.Models
 
         public apiThuTien()
         {
-            success = false;
-            message = "Không Có Kết Quả";
+            status = "OK";
+            message = "";
             logger = new Logger();
         }
 
-        public apiThuTien(bool success, string message)
-        {
-            this.success = success;
-            this.message = message;
-        }
 
         public class Logger
         {

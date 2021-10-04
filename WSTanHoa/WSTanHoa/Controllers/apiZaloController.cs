@@ -1160,7 +1160,7 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
-        public string resendMessageDangKy_Action(string IDZalo)
+        private string resendMessageDangKy_Action(string IDZalo)
         {
             string strResponse = "";
             try
