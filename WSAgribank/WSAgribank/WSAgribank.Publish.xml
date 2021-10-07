@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
-  <publishProfile publishUrl="C:\Users\Admin\Desktop\test" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="THService.asmx" publishTime="07/31/2020 13:56:20" />
-    <file relUrl="bin/WSAgribank.pdb" publishTime="09/25/2021 10:01:53" />
-    <file relUrl="Web.config" publishTime="09/25/2021 10:02:35" />
-    <file relUrl="bin/WSAgribank.dll" publishTime="09/25/2021 10:01:53" />
+  <publishProfile publishUrl="C:\Users\BaoBao\Desktop\agr" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="THService.asmx" publishTime="04/17/2019 16:20:57" />
+    <file relUrl="bin/WSAgribank.pdb" publishTime="10/07/2021 16:06:33" />
+    <file relUrl="Web.config" publishTime="07/21/2020 16:53:24" />
+    <file relUrl="bin/WSAgribank.dll" publishTime="10/07/2021 16:06:33" />
   </publishProfile>
 </publishData>
