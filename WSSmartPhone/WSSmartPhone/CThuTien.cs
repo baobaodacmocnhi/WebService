@@ -392,7 +392,7 @@ namespace WSSmartPhone
                             + " ,GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end"
                             + " ,TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
                             + " ,ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
-                            + " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=hd.ID_HOADON and TONGCONG_END is null) then 'true' else 'false' end"
+                            //+ " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=hd.ID_HOADON and TONGCONG_END is null) then 'true' else 'false' end"
                             + " ,ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end"
                 //+ " ,DangNgan_DienThoai=case when MaNV_DangNgan=" + MaNV + " then DangNgan_DienThoai else 'false' end"
                             + " ,DangNgan_DienThoai"
@@ -413,6 +413,7 @@ namespace WSSmartPhone
                             + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
+                            + " and hd.DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet where ChanHoaDon=1)"
                             + " order by MLT asc,ID_HOADON desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -424,7 +425,7 @@ namespace WSSmartPhone
                             + " ,GiaiTrach=case when hd.NgayGiaiTrach is not null then 'true' else 'false' end"
                             + " ,TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
                             + " ,ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
-                            + " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=hd.ID_HOADON and TONGCONG_END is null) then 'true' else 'false' end"
+                            //+ " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=hd.ID_HOADON and TONGCONG_END is null) then 'true' else 'false' end"
                             + " ,ModifyDate=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then (select CreateDate from TT_DichVuThu where MaHD=hd.ID_HOADON) else NULL end"
                 //+ " ,DangNgan_DienThoai=case when MaNV_DangNgan=" + MaNV + " then DangNgan_DienThoai else 'false' end"
                             + " ,DangNgan_DienThoai"
@@ -445,6 +446,7 @@ namespace WSSmartPhone
                             + " and ((NAM>2020 or (NAM=2020 and Ky>=7)) or (GB!=10 and DinhMucHN is null))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
+                            + " and hd.DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet where ChanHoaDon=1)"
                             + " order by MLT asc,ID_HOADON desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -492,7 +494,7 @@ namespace WSSmartPhone
                 switch (LoaiXuLy)
                 {
                     case "DangNgan":
-                        return "false;Tính năng đã bị Khóa";
+                        //return "false;Tính năng đã bị Khóa";
                         if (checkActiveMobile(MaNV) == false)
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(Ngay.ToString("yyyyMMdd")) == true)
@@ -522,7 +524,7 @@ namespace WSSmartPhone
                         sql += " where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "DongPhi":
-                        return "false;Tính năng đã bị Khóa";
+                        //return "false;Tính năng đã bị Khóa";
                         //if (checkActiveMobile(MaNV) == false)
                         //    return "false,Chưa Active Mobile";
                         //if (checkChotDangNgan(Ngay) == true)
@@ -576,7 +578,7 @@ namespace WSSmartPhone
                         sql += " update HOADON set TBDongNuoc_MaNV=" + MaNV + ",TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_Location='" + Location + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is null ";
                         break;
                     case "XoaDangNgan":
-                        return "false;Tính năng đã bị Khóa";
+                        //return "false;Tính năng đã bị Khóa";
                         if (checkQuyenXoa(MaNV) == false)
                             return "false;Tính năng này tạm thời ẩn";
                         if (checkActiveMobile(MaNV) == false)
@@ -586,7 +588,7 @@ namespace WSSmartPhone
                         sql += " update HOADON set XoaDangNgan_MaNV_DienThoai=" + MaNV + ",XoaDangNgan_Ngay_DienThoai='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',XoaDangNgan_Location_DienThoai='" + Location + "',DangNgan_DienThoai=0,DangNgan_Ton=0,MaNV_DangNgan=NULL,NGAYGIAITRACH=NULL,ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and NGAYGIAITRACH is not null ";
                         break;
                     case "XoaDongPhi":
-                        return "false;Tính năng đã bị Khóa";
+                        //return "false;Tính năng đã bị Khóa";
                         if (checkQuyenXoa(MaNV) == false)
                             return "false;Tính năng này tạm thời ẩn";
                         //if (checkActiveMobile(MaNV) == false)
@@ -894,7 +896,7 @@ namespace WSSmartPhone
                             + " ,GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=ctdn.MaHD) then 'true' else 'false' end"
                             + " ,TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=ctdn.MaHD) then 'true' else 'false' end"
                             + " ,ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=ctdn.MaHD) then 'true' else 'false' end"
-                            + " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=ctdn.MaHD and TONGCONG_END is null) then 'true' else 'false' end"
+                            //+ " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=ctdn.MaHD and TONGCONG_END is null) then 'true' else 'false' end"
                             + " ,PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA))"
                             + " ,PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=ctdn.MaHD and a.ID=b.IDDichVu)"
                             + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
@@ -920,7 +922,7 @@ namespace WSSmartPhone
                             + " GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
                             + " TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=ctdn.MaHD) then 'true' else 'false' end,"
                             + " ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=ctdn.MaHD) then 'true' else 'false' end,"
-                            + " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=ctdn.MaHD and TONGCONG_END is null) then 'true' else 'false' end"
+                            //+ " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=ctdn.MaHD and TONGCONG_END is null) then 'true' else 'false' end"
                             + " PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA)),"
                             + " PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong a,TT_DichVuThu b where b.MaHD=ctdn.MaHD and a.ID=b.IDDichVu),"
                             + " LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=ctdn.MaHD) then 'true' else 'false' end"
@@ -1292,7 +1294,7 @@ namespace WSSmartPhone
                  + " ,GiaiTrach=case when exists(select ID_HOADON from HOADON where NGAYGIAITRACH is not null and ID_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
                  + " ,TamThu=case when exists(select ID_TAMTHU from TAMTHU where FK_HOADON=hd.ID_HOADON) then 'true' else 'false' end"
                  + " ,ThuHo=case when exists(select MaHD from TT_DichVuThu where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
-                 + " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=hd.ID_HOADON and TONGCONG_END is null) then 'true' else 'false' end"
+                 //+ " ,ChoDCHD=case when exists(select ID_DIEUCHINH_HD from DIEUCHINH_HD where FK_HOADON=hd.ID_HOADON and TONGCONG_END is null) then 'true' else 'false' end"
                  + " ,PhiMoNuoc=(select dbo.fnGetPhiMoNuoc(hd.DANHBA))"
                  + " ,PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong where MaHDs like '%'+CONVERT(varchar(8),hd.ID_HOADON)+'%')"
                  + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
