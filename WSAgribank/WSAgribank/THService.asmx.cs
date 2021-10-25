@@ -47,6 +47,7 @@ namespace WSAgribank
             + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)) or (GB!=10))"
             + " and ID_HOADON not in (select MaHD from TT_TraGop)"
             + " and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
+            + " and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
             + " and DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
             + " ORDER BY NAM DESC, KY DESC ";
             DataSet ds = _cDAL.ExecuteQuery_DataSet(sql);
