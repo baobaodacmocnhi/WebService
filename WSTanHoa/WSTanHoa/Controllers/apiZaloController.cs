@@ -1033,7 +1033,7 @@ namespace WSTanHoa.Controllers
                         TongCongNo = 0;
                         hdTon = "";
                         foreach (DataRow itemTon in dtTon.Rows)
-                            if (itemTon["Nam"].ToString() != item["Nam"].ToString() && itemTon["Ky"].ToString() != item["Ky"].ToString())
+                            if (int.Parse(itemTon["Nam"].ToString()) < int.Parse(item["Nam"].ToString()) || (int.Parse(itemTon["Nam"].ToString()) == int.Parse(item["Nam"].ToString()) && int.Parse(itemTon["Ky"].ToString()) < int.Parse(item["Ky"].ToString())))
                             {
                                 hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đ";
                                 TongCongNo += decimal.Parse(itemTon["TongCong"].ToString());
@@ -1130,6 +1130,52 @@ namespace WSTanHoa.Controllers
                     + " Để được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
                     + "\nTrân trọng!";
             return str;
+        }
+
+        /// <summary>
+        /// Gửi tin nhắn thông báo đã thanh toán hóa đơn
+        /// </summary>
+        /// <param name="MaHD"></param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("ThongBaoDaThanhToanHoaDon")]
+        [HttpGet]
+        public string ThongBaoDaThanhToanHoaDon(int MaHD, string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    string sql = "select DanhBo = DANHBA,HoTen = TENKH,DiaChi =case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end, NAM, KY"
+                            + " , CSC = CSCU, CSM = CSMOI, TUNGAY = CONVERT(varchar(10), TUNGAY, 103), DENNGAY = CONVERT(varchar(10), DENNGAY, 103), TIEUTHU, TONGCONG, CODE,z.IDZalo"
+                            + " from HOADON hd, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [SERVER11].[TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
+                            + " where hd.ID_HOADON=" + MaHD + " and hd.DANHBA=z.DanhBo"
+                            + " and zq.Follow=1 and z.IDZalo=zq.IDZalo";
+                    DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                    string message;
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
+                                    + "\nĐịa chỉ: " + item["DiaChi"]
+                                    + "\nDanh bộ: " + item["DanhBo"]
+                                    + "\n\nCảm ơn Quý khách đã thanh toán hóa đơn tiền nước kỳ " + item["Ky"] + "/" + item["Nam"]
+                                    + ", với số tiền " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đ"
+                                    + "\nĐể được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
+                                    + "\nTrân trọng!";
+                        strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                        cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + item["DanhBo"] + "',N'thanhtoanhoadon',N'" + message + "',N'" + strResponse + "')");
+                    }
+                    strResponse = "Đã xử lý";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
         }
 
         [Route("resendMessageDangKy")]

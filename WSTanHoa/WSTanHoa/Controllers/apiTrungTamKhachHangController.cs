@@ -16,7 +16,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/TrungTamKhachHang")]
     public class apiTrungTamKhachHangController : ApiController
     {
-        string _pass = "s@l@2019"; 
+        string _pass = "s@l@2019";
         private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
@@ -114,6 +114,10 @@ namespace WSTanHoa.Controllers
                     if (dt.Rows[0]["NgayKiemDinh"].ToString() != "")
                         en.NgayKiemDinh = DateTime.Parse(dt.Rows[0]["NgayKiemDinh"].ToString());
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
+                    if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
+                        en.ThongTin = "Có Đơn trong 14 ngày gần nhất";
+                    if (en.ThongTin != "")
+                        en.ThongTin += " - ";
                     if ((int)cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
                         en.ThongTin = "Có sử dụng Giếng";
                     if (en.ThongTin != "")
