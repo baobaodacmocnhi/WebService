@@ -1127,7 +1127,7 @@ namespace WSTanHoa.Controllers
                     + "\n  - Hoặc chuyển khoản cho Công ty Cổ phần Cấp nước Tân Hòa theo số tài khoản 6220 4311 01100092 tại Ngân hàng Nông nghiệp và Phát triển nông thôn Việt Nam-Chi nhánh Chợ Lớn(AGR), số tài khoản 046 100 057 3975 tại Ngân hàng TMCP Ngoại thương Việt Nam-Chi nhánh Tân Bình Dương(VCB), số tài khoản 201 110 067 9999 tại Ngân hàng TMCP Quân đội-Chi nhánh Bắc Sài Gòn(MB),..."
                     + "\nKhi thanh toán tiền nước, Quý khách cần ghi rõ số danh bộ, kỳ hóa đơn, địa chỉ và số điện thoại."
                     + "\nNếu đã thanh toán vui lòng bỏ qua thông báo này."
-                    + " Để được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
+                    + "\n\nĐể được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
                     + "\nTrân trọng!";
             return str;
         }
@@ -1161,7 +1161,7 @@ namespace WSTanHoa.Controllers
                                     + "\nDanh bộ: " + item["DanhBo"]
                                     + "\n\nCảm ơn Quý khách đã thanh toán hóa đơn tiền nước kỳ " + item["Ky"] + "/" + item["Nam"]
                                     + ", với số tiền " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đ"
-                                    + "\nĐể được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
+                                    + "\n\nĐể được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
                                     + "\nTrân trọng!";
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);
                         cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + item["DanhBo"] + "',N'thanhtoanhoadon',N'" + message + "',N'" + strResponse + "')");
