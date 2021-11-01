@@ -39,12 +39,24 @@
                     <li class="nav-item">
                         @Html.ActionLink("API", "Index", "Help", new { area = "" }, new { @class = "nav-link active" })
                     </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Zalo", "Index", "Zalo", new { area = "" }, new { @class = "nav-link active" })
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" id="menuZalo" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Zalo
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuZalo">
+                            <li>@Html.ActionLink("Zalo", "Index", "Zalo", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Zalo Chat", "Index", "ZaloChat", new { area = "" }, new { @class = "nav-link active" })</li>
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Zalo Chat", "Index", "ZaloChat", new { area = "" }, new { @class = "nav-link active" })
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" id="menuQLDHN" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            QLĐHN
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuQLDHN">
+                            <li>@Html.ActionLink("Báo Chỉ Số Nước", "BaoChiSoNuoc", "QLDHN", new { area = "" }, new { @class = "nav-link active" })</li>
+                        </ul>
                     </li>
+
                 </ul>
             </div>
         </header>
