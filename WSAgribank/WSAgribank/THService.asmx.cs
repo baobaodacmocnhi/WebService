@@ -40,7 +40,8 @@ namespace WSAgribank
         [WebMethod]
         public DataSet W_Bill(string db, string ten, string matkhau)
         {
-            string sql = "SELECT ID_HOADON AS IDkey, hd.DANHBA, hd.TENKH, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KyHD, hd.NAM as NamHD, hd.PHI as PBVMT, hd.THUE as TGTGT,hd.GIABAN as TNuoc,hd.TONGCONG as TONGCONG  "
+            string sql = "select * from" 
+                + " SELECT ID_HOADON AS IDkey, hd.DANHBA, hd.TENKH, SO as SONHA,DUONG as TENDUONG,hd.GB,hd.DM, hd.DOT, hd.KY as KyHD, hd.NAM as NamHD, hd.PHI as PBVMT, hd.THUE as TGTGT,hd.GIABAN as TNuoc,hd.TONGCONG as TONGCONG  "
             + " FROM HOADON hd "
             + " WHERE NGAYGIAITRACH IS NULL AND hd.DANHBA='" + db + "' AND 'AGRIBANK'= '" + ten + "' AND DAY(GETDATE())='" + matkhau + "' "
             + " and ID_HOADON not in (select MaHD from TT_DichVuThu) "
@@ -48,7 +49,8 @@ namespace WSAgribank
             + " and ID_HOADON not in (select MaHD from TT_TraGop)"
             + " and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
             + " and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
-            + " and DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
+            + " )t1"
+            + " where DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
             + " ORDER BY NAM DESC, KY DESC ";
             DataSet ds = _cDAL.ExecuteQuery_DataSet(sql);
             int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + db + ")");
