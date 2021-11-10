@@ -263,8 +263,8 @@ namespace WSTanHoa.Controllers
                                    + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
                                    + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
-                                   + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))";
-            //+ " order by a.CreateDate desc";
+                                   + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))"
+                                   + " order by NgayDoc desc";
             return cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
         }
 
@@ -478,7 +478,7 @@ namespace WSTanHoa.Controllers
                         DateTime date = DateTime.Parse(item["NgayThuTien"].ToString()).AddDays(1);
                         if (date.DayOfWeek == DayOfWeek.Saturday)
                             date = date.AddDays(2);
-                        result = "Kỳ " + item["Ky"].ToString() + "/" + item["Nam"].ToString() + " dự kiến sẽ được phát hành vào ngày " + date.ToString("dd/MM/yyyy");
+                        result = "Kỳ " + item["Ky"].ToString() + "/" + item["Nam"].ToString() + " dự kiến sẽ được phát hành hóa đơn vào ngày " + date.ToString("dd/MM/yyyy");
                         break;
                     }
                 if (result == "")
@@ -486,7 +486,7 @@ namespace WSTanHoa.Controllers
                     DateTime date = DateTime.Parse(dt.Rows[0]["NgayThuTien"].ToString()).AddDays(1);
                     if (date.DayOfWeek == DayOfWeek.Saturday)
                         date = date.AddDays(2);
-                    result = "Kỳ " + dt.Rows[0]["Ky"].ToString() + "/" + dt.Rows[0]["Nam"].ToString() + " dự kiến sẽ được phát hành vào ngày " + date.ToString("dd/MM/yyyy");
+                    result = "Kỳ " + dt.Rows[0]["Ky"].ToString() + "/" + dt.Rows[0]["Nam"].ToString() + " dự kiến sẽ được phát hành hóa đơn vào ngày " + date.ToString("dd/MM/yyyy");
                 }
             }
             return result;

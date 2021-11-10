@@ -172,7 +172,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>10/27/2021 08:40:12</publishTime>
+      <publishTime>11/10/2021 09:03:05</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -711,11 +711,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/KhieuNai/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
+    <File Include="Views/QLDHN/BaoChiSoNuoc.cshtml">
+      <publishTime>11/01/2021 15:55:16</publishTime>
+    </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>10/27/2021 08:10:12</publishTime>
+      <publishTime>11/01/2021 15:56:27</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
