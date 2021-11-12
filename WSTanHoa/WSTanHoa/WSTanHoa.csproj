@@ -190,6 +190,7 @@
     <Compile Include="Controllers\apiTrungTamKhachHangController.cs" />
     <Compile Include="Controllers\apiZaloController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\KhieuNaiController.cs" />
     <Compile Include="Controllers\KTCNController.cs" />
     <Compile Include="Controllers\QLDHNController.cs" />
@@ -429,6 +430,7 @@
     <Content Include="Views\Zalo\Index.cshtml" />
     <Content Include="Views\Zalo\Index - Copy.cshtml" />
     <Content Include="Views\QLDHN\BaoChiSoNuoc.cshtml" />
+    <Content Include="Views\KhachHang\ThongTin.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
