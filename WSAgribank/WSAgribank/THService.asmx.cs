@@ -51,7 +51,7 @@ namespace WSAgribank
             + " and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
             + " )t1"
             //+ " where DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
-            + " ORDER BY NAM DESC, KY DESC ";
+            + " ORDER BY NamHD DESC, KyHD DESC ";
             DataSet ds = _cDAL.ExecuteQuery_DataSet(sql);
             int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + db + ")");
             if (ds.Tables[0].Rows.Count > 0 && PhiMoNuoc > 0)
