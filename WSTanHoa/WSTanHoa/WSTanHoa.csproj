@@ -192,7 +192,6 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\KhieuNaiController.cs" />
-    <Compile Include="Controllers\KTCNController.cs" />
     <Compile Include="Controllers\QLDHNController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
@@ -214,7 +213,6 @@
     <Compile Include="Models\db\Zalo_Chat.cs" />
     <Compile Include="Models\db\Zalo_DangKy.cs" />
     <Compile Include="Models\HoaDon.cs" />
-    <Compile Include="Models\LichCupNuoc.cs" />
     <Compile Include="Models\apiThuTien.cs" />
     <Compile Include="Models\ThuHo.cs" />
     <Compile Include="Models\TrungTamKhachHang.cs" />
@@ -346,6 +344,17 @@
     <Content Include="Lib\bootstrap-datepicker-1.9.0\locales\bootstrap-datepicker.vi.min.js" />
     <Content Include="Lib\bootstrap-datepicker-1.9.0\locales\bootstrap-datepicker.zh-CN.min.js" />
     <Content Include="Lib\bootstrap-datepicker-1.9.0\locales\bootstrap-datepicker.zh-TW.min.js" />
+    <Content Include="Lib\kendo\css\kendo.common.min.css" />
+    <Content Include="Lib\kendo\css\kendo.default.min.css" />
+    <Content Include="Lib\kendo\css\kendo.default.mobile.min.css" />
+    <Content Include="Lib\kendo\images\kendoui.ttf" />
+    <Content Include="Lib\kendo\images\kendoui.woff" />
+    <None Include="Lib\kendo\js\kendo.all.min.intellisense.js" />
+    <Content Include="Lib\kendo\images\back.png" />
+    <Content Include="Lib\kendo\images\kendoui.svg" />
+    <Content Include="Lib\kendo\images\wp8_icons.png" />
+    <Content Include="Lib\kendo\images\wp8_inverseicons.png" />
+    <Content Include="Lib\kendo\js\kendo.all.min.js" />
     <Content Include="Lib\lightbox2.2.11.3\css\lightbox.css" />
     <Content Include="Lib\lightbox2.2.11.3\css\lightbox.min.css" />
     <Content Include="Lib\lightbox2.2.11.3\images\close.png" />
@@ -386,6 +395,10 @@
     <Content Include="Lib\bootstrap-datepicker-1.9.0\css\bootstrap-datepicker3.standalone.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Lib\kendo\css\kendo.common.min.css.map" />
+    <Content Include="Lib\kendo\css\kendo.default.min.css.map" />
+    <Content Include="Lib\kendo\css\kendo.default.mobile.min.css.map" />
+    <Content Include="Lib\kendo\js\kendo.all.min.js.map" />
     <None Include="Properties\PublishProfiles\WSTanHoa.pubxml" />
     <Content Include="Scripts\bootstrap.js.map" />
     <Content Include="Scripts\bootstrap.min.js.map" />

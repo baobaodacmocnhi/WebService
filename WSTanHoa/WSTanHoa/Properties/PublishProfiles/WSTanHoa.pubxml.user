@@ -172,7 +172,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>11/10/2021 09:03:05</publishTime>
+      <publishTime>11/15/2021 14:52:16</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -579,6 +579,48 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Lib/bootstrap-datepicker-1.9.0/locales/bootstrap-datepicker.zh-TW.min.js">
       <publishTime>10/27/2021 08:10:11</publishTime>
     </File>
+    <File Include="Lib/kendo/css/kendo.common.min.css">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/css/kendo.common.min.css.map">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/css/kendo.default.min.css">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/css/kendo.default.min.css.map">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/css/kendo.default.mobile.min.css">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/css/kendo.default.mobile.min.css.map">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/images/back.png">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/images/kendoui.svg">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/images/kendoui.ttf">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/images/kendoui.woff">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/images/wp8_icons.png">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/images/wp8_inverseicons.png">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/js/kendo.all.min.js">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
+    <File Include="Lib/kendo/js/kendo.all.min.js.map">
+      <publishTime>05/31/2021 18:56:38</publishTime>
+    </File>
     <File Include="Lib/lightbox2.2.11.3/css/lightbox.css">
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
@@ -688,13 +730,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>10/27/2021 08:10:12</publishTime>
+      <publishTime>11/15/2021 14:01:36</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Home/Login.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
+    </File>
+    <File Include="Views/KhachHang/ThongTin.cshtml">
+      <publishTime>11/15/2021 14:44:10</publishTime>
     </File>
     <File Include="Views/KhieuNai/Create.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -718,7 +763,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>11/01/2021 15:56:27</publishTime>
+      <publishTime>11/15/2021 09:30:45</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>

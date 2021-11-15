@@ -99,6 +99,14 @@ namespace WSTanHoa.Models
         /// </summary>
         public string ThongTin { get; set; }
 
+        public string NVDocSo { get; set; }
+
+        public string NVThuTien { get; set; }
+
+        public List<HoaDonThuTien> lstHoaDon { get; set; }
+
+        public List<ChartData> ChartData { get; set; }
+
         public ThongTinKhachHang()
         {
             DanhBo = "";
@@ -119,6 +127,10 @@ namespace WSTanHoa.Models
             NgayKiemDinh = null;
             HieuLuc = "";
             ThongTin = "";
+            NVDocSo = "";
+            NVThuTien = "";
+            lstHoaDon = new List<HoaDonThuTien>();
+            ChartData = new List<ChartData>();
         }
     }
 
@@ -266,6 +278,10 @@ namespace WSTanHoa.Models
         /// </summary>
         public string Ky { get; set; }
 
+        public string CSC { get; set; }
+
+        public string CSM { get; set; }
+
         /// <summary>
         /// Tiêu Thụ
         /// </summary>
@@ -344,6 +360,8 @@ namespace WSTanHoa.Models
             DinhMucHN = "";
             SoHoaDon = "";
             Ky = "";
+            CSC = "";
+            CSM = "";
             TieuThu = "";
             GiaBan = "";
             ThueGTGT = "";
@@ -358,6 +376,22 @@ namespace WSTanHoa.Models
             LenhHuy = false;
             ToTrinh = false;
         }
+
+    }
+
+    public class ChartData
+    {
+        public string Ky { get; set; }
+        public int TieuThu { get; set; }
+        public decimal ThanhTien { get; set; }
+
+        public ChartData()
+        {
+            Ky = "";
+            TieuThu = 0;
+            ThanhTien = 0;
+        }
+
     }
 
     #endregion
