@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
-  <publishProfile publishUrl="C:\Users\Admin\Desktop\test" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="11/14/2021 20:27:11" />
-    <file relUrl="Service.asmx" publishTime="07/31/2020 13:56:21" />
-    <file relUrl="wsThuTien.asmx" publishTime="07/31/2020 13:56:21" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="11/14/2021 20:27:11" />
-    <file relUrl="Web.config" publishTime="10/28/2021 18:58:17" />
+  <publishProfile publishUrl="C:\Users\BaoBao\Desktop\WSSmartPhone" deleteExistingFiles="False" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="True" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="11/24/2021 15:19:58" />
+    <file relUrl="Service.asmx" publishTime="12/22/2017 09:29:04" />
+    <file relUrl="Web.config" publishTime="11/24/2021 15:20:23" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="11/24/2021 15:19:58" />
+    <file relUrl="wsThuTien.asmx" publishTime="06/27/2018 08:17:45" />
   </publishProfile>
 </publishData>

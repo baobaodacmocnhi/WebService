@@ -415,7 +415,7 @@ namespace WSSmartPhone
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
                             + " )t1"
-                            //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
+                //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                             + " order by MLT asc,MaHD desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -450,7 +450,7 @@ namespace WSSmartPhone
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
                             + " )t1"
-                            //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
+                //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                             + " order by MLT asc,MaHD desc";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -1307,7 +1307,7 @@ namespace WSSmartPhone
                  + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
-                 //+ " and hd.DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
+                //+ " and hd.DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                  + "";
             return DataTableToJSON(_cDAL.ExecuteQuery_DataTable(sql));
         }
@@ -1992,7 +1992,7 @@ namespace WSSmartPhone
                 }
                 else
                 {
-                    result = "false;Hóa Đơn không có";
+                    result = "false;TH: Hóa Đơn không có";
                     DataTable dtBCT = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where BaoCaoThue=1 and ID_HOADON=" + MaHD);
                     if (dtBCT != null && dtBCT.Rows.Count > 0)
                     {
@@ -2110,7 +2110,7 @@ namespace WSSmartPhone
                 }
                 else
                 {
-                    result = "false;Hóa Đơn không có";
+                    result = "false;TH: Hóa Đơn không có";
                     DataTable dtBCT = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where BaoCaoThue=0 and SOHOADON='" + SoHoaDon + "'");
                     if (dtBCT != null && dtBCT.Rows.Count > 0)
                     {
@@ -2235,8 +2235,22 @@ namespace WSSmartPhone
                 }
                 else
                 {
-                    result = "false;Hóa Đơn không có";
-                    _cDAL.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                    result = "false;TH: Hóa Đơn không có";
+                    DataTable dtBCT = new DataTable();
+                    if (GiaiTrach == true)
+                        dtBCT = _cDAL.ExecuteQuery_DataTable("select hd.SoHoaDon,NGAYGIAITRACH=(select convert(varchar, dvt.CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu dvt,HOADON hd where dvt.MaHD=hd.ID_HOADON and BaoCaoThue=1 and MaHD=" + MaHD);
+                    else
+                        dtBCT = _cDAL.ExecuteQuery_DataTable("select hd.SoHoaDon,NGAYGIAITRACH=(select convert(varchar, dvt.CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu_Huy dvt,HOADON hd where dvt.MaHD=hd.ID_HOADON and BaoCaoThue=1 and MaHD=" + MaHD);
+                    if (dtBCT != null && dtBCT.Rows.Count > 0)
+                    {
+                        string ThanhToan = "-1";
+                        if (GiaiTrach == true)
+                            ThanhToan = "1";
+                        else
+                            ThanhToan = "0";
+                        _cDAL.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and ID_HOADON=" + MaHD);
+                        _cDAL.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
+                    }
                 }
             }
             catch (Exception ex)
@@ -2545,7 +2559,7 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        result = "false;" + "Hóa Đơn không có";
+                        result = "false;TH: Hóa Đơn không có";
                         DataTable dtBCT = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and BaoCaoThue=1 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                         foreach (DataRow item in dtBCT.Rows)
                         {
@@ -2663,7 +2677,7 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        result = "false;" + "Hóa Đơn không có";
+                        result = "false;TH: Hóa Đơn không có";
                         DataTable dtBCT = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY<12 and DCHD=0 and BaoCaoThue=1 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                         foreach (DataRow item in dtBCT.Rows)
                         {
@@ -2780,7 +2794,7 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        result = "false;" + "Hóa Đơn không có";
+                        result = "false;TH: Hóa Đơn không có";
                         DataTable dtBCT = _cDAL.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and KY=12 and DCHD=0 and BaoCaoThue=1 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                         foreach (DataRow item in dtBCT.Rows)
                         {
