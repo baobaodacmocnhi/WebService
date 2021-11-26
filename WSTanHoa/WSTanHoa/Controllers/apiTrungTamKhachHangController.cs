@@ -84,7 +84,7 @@ namespace WSTanHoa.Controllers
                                  + ",ViTriDHN"
                                  + ",NgayThay"
                                  + ",NgayKiemDinh"
-                                 + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
+                                 + ",HieuLuc=N'Het '+HieuLucHuy"
                                  + " from TB_DULIEUKHACHHANG_HUYDB where DanhBo=" + DanhBo;
                     dt.Merge(cDAL_DHN.ExecuteQuery_DataTable(sql));
                 }
@@ -155,7 +155,7 @@ namespace WSTanHoa.Controllers
                 DataTable dt = new DataTable();
 
                 //lấy lịch ghi chỉ số
-                string sql = "select top(12) Ky=CONVERT(char(2),Ky)+'/'+CONVERT(char(4),Nam)"
+                string sql = "select top(12) KyHD=CONVERT(char(2),Ky)+'/'+CONVERT(char(4),Nam),Ky,Nam"
                                //+ ",NgayDoc=CONVERT(char(10),DenNgay,103)"
                                + ",NgayDoc=DenNgay"
                                + ",CodeMoi"
@@ -175,7 +175,8 @@ namespace WSTanHoa.Controllers
                     foreach (DataRow item in dt.Rows)
                     {
                         GhiChiSo enCT = new GhiChiSo();
-                        enCT.Ky = item["Ky"].ToString();
+                        enCT.Ky = item["KyHD"].ToString();
+                        //enCT.Ky = "<a target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/docso/imagehtml/" + item["Nam"].ToString() + item["Ky"].ToString() + DanhBo + "'>" + item["KyHD"].ToString() + "</a>";
                         if (item["NgayDoc"].ToString() != "")
                             enCT.NgayDoc = DateTime.Parse(item["NgayDoc"].ToString());
                         enCT.CodeMoi = item["CodeMoi"].ToString();
