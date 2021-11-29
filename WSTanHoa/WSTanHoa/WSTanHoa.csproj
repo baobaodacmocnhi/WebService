@@ -194,6 +194,7 @@
     <Compile Include="Controllers\KhieuNaiController.cs" />
     <Compile Include="Controllers\QLDHNController.cs" />
     <Compile Include="Controllers\TestController.cs" />
+    <Compile Include="Controllers\ThuongVuController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\ZaloChatController.cs" />
     <Compile Include="Controllers\ZaloController.cs" />
@@ -413,6 +414,46 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\zalo.js" />
     <Content Include="Scripts\zalochat.js" />
+    <Content Include="hdsdcrm.htm" />
+    <Content Include="hdsd_files\colorschememapping.xml" />
+    <Content Include="hdsd_files\filelist.xml" />
+    <Content Include="hdsd_files\header.htm" />
+    <Content Include="hdsd_files\image001.png" />
+    <Content Include="hdsd_files\image003.png" />
+    <Content Include="hdsd_files\image005.png" />
+    <Content Include="hdsd_files\image007.png" />
+    <Content Include="hdsd_files\image009.png" />
+    <Content Include="hdsd_files\image011.png" />
+    <Content Include="hdsd_files\image013.png" />
+    <Content Include="hdsd_files\image015.png" />
+    <Content Include="hdsd_files\image017.png" />
+    <Content Include="hdsd_files\image019.png" />
+    <Content Include="hdsd_files\image021.png" />
+    <Content Include="hdsd_files\image023.png" />
+    <Content Include="hdsd_files\image025.png" />
+    <Content Include="hdsd_files\image027.png" />
+    <Content Include="hdsd_files\image029.png" />
+    <Content Include="hdsd_files\image031.png" />
+    <Content Include="hdsd_files\image033.png" />
+    <Content Include="hdsd_files\image035.jpg" />
+    <Content Include="hdsd_files\image036.jpg" />
+    <Content Include="hdsd_files\image037.jpg" />
+    <Content Include="hdsd_files\image038.jpg" />
+    <Content Include="hdsd_files\image039.jpg" />
+    <Content Include="hdsd_files\image040.jpg" />
+    <Content Include="hdsd_files\image041.jpg" />
+    <Content Include="hdsd_files\image042.jpg" />
+    <Content Include="hdsd_files\image043.jpg" />
+    <Content Include="hdsd_files\image044.jpg" />
+    <Content Include="hdsd_files\image045.jpg" />
+    <Content Include="hdsd_files\image046.jpg" />
+    <Content Include="hdsd_files\image047.jpg" />
+    <Content Include="hdsd_files\image048.jpg" />
+    <Content Include="hdsd_files\image049.jpg" />
+    <Content Include="hdsd_files\image050.jpg" />
+    <Content Include="hdsd_files\image051.jpg" />
+    <Content Include="hdsd_files\item0041.xml" />
+    <Content Include="hdsd_files\props042.xml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -444,6 +485,8 @@
     <Content Include="Views\Zalo\Index - Copy.cshtml" />
     <Content Include="Views\QLDHN\BaoChiSoNuoc.cshtml" />
     <Content Include="Views\KhachHang\ThongTin.cshtml" />
+    <Content Include="Views\ThuongVu\viewFile.cshtml" />
+    <Content Include="hdsd_files\themedata.thmx" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

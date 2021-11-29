@@ -172,7 +172,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>11/26/2021 15:14:00</publishTime>
+      <publishTime>11/29/2021 16:24:40</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -206,6 +206,129 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Global.asax">
       <publishTime>10/27/2021 08:10:10</publishTime>
+    </File>
+    <File Include="hdsdcrm.htm">
+      <publishTime>11/29/2021 16:24:14</publishTime>
+    </File>
+    <File Include="hdsd_files/colorschememapping.xml">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/filelist.xml">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/header.htm">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image001.png">
+      <publishTime>11/29/2021 16:11:23</publishTime>
+    </File>
+    <File Include="hdsd_files/image003.png">
+      <publishTime>11/29/2021 16:11:23</publishTime>
+    </File>
+    <File Include="hdsd_files/image005.png">
+      <publishTime>11/29/2021 16:11:23</publishTime>
+    </File>
+    <File Include="hdsd_files/image007.png">
+      <publishTime>11/29/2021 16:11:23</publishTime>
+    </File>
+    <File Include="hdsd_files/image009.png">
+      <publishTime>11/29/2021 16:11:23</publishTime>
+    </File>
+    <File Include="hdsd_files/image011.png">
+      <publishTime>11/29/2021 16:11:23</publishTime>
+    </File>
+    <File Include="hdsd_files/image013.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image015.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image017.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image019.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image021.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image023.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image025.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image027.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image029.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image031.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image033.png">
+      <publishTime>11/29/2021 16:11:24</publishTime>
+    </File>
+    <File Include="hdsd_files/image035.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image036.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image037.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image038.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image039.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image040.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image041.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image042.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image043.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image044.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image045.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image046.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image047.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image048.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image049.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image050.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/image051.jpg">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/item0041.xml">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/props042.xml">
+      <publishTime>11/29/2021 16:12:00</publishTime>
+    </File>
+    <File Include="hdsd_files/themedata.thmx">
+      <publishTime>11/29/2021 16:12:00</publishTime>
     </File>
     <File Include="Image/giaybaotiennuoc.png">
       <publishTime>07/31/2020 13:56:23</publishTime>
@@ -767,6 +890,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
+    </File>
+    <File Include="Views/ThuongVu/viewFile.cshtml">
+      <publishTime>11/29/2021 10:30:29</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>10/27/2021 08:10:12</publishTime>

@@ -175,8 +175,8 @@ namespace WSTanHoa.Controllers
                     foreach (DataRow item in dt.Rows)
                     {
                         GhiChiSo enCT = new GhiChiSo();
-                        enCT.Ky = item["KyHD"].ToString();
-                        //enCT.Ky = "<a target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/docso/imagehtml/" + item["Nam"].ToString() + item["Ky"].ToString() + DanhBo + "'>" + item["KyHD"].ToString() + "</a>";
+                        //enCT.Ky = item["KyHD"].ToString();
+                        enCT.Ky = "<a target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/docso/imagehtml/" + item["Nam"].ToString() + item["Ky"].ToString() + DanhBo + "'>" + item["KyHD"].ToString() + "</a>";
                         if (item["NgayDoc"].ToString() != "")
                             enCT.NgayDoc = DateTime.Parse(item["NgayDoc"].ToString());
                         enCT.CodeMoi = item["CodeMoi"].ToString();
@@ -570,7 +570,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     KTXM enCT = new KTXM();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=KTXM_ChiTiet_Hinh&IDFileName=IDKTXM_ChiTiet&IDFileContent=" + dr[j]["MaCTKTXM"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["NgayKTXM"].ToString() != "")
@@ -597,7 +597,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     BamChi enCT = new BamChi();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=BamChi_ChiTiet_Hinh&IDFileName=IDBamChi_ChiTiet&IDFileContent=" + dr[j]["MaCTBC"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["NgayBC"].ToString() != "")
@@ -621,7 +621,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     DongNuoc enCT = new DongNuoc();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=DongNuoc_ChiTiet_Hinh&IDFileName=IDDongNuoc_ChiTiet&IDFileContent=" + dr[j]["MaCTDN"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["NgayDN"].ToString() != "")
@@ -645,7 +645,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     DCBD enCT = new DCBD();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=DCBD_ChiTietBienDong_Hinh&IDFileName=IDDCBD_ChiTietBienDong&IDFileContent=" + dr[j]["MaDC"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -676,7 +676,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     DCHD enCT = new DCHD();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=DCBD_ChiTietHoaDon_Hinh&IDFileName=IDDCBD_ChiTietHoaDon&IDFileContent=" + dr[j]["MaDC"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -710,7 +710,11 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     CHDB enCT = new CHDB();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    if (dr[j]["LoaiCat"].ToString() == "Cắt Tạm")
+                                                        enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=CHDB_ChiTietCatTam_Hinh&IDFileName=IDCHDB_ChiTietCatTam&IDFileContent=" + dr[j]["MaCH"].ToString() + "'>File Scan</a>";
+                                                    else
+                                                        if (dr[j]["LoaiCat"].ToString() == "Cắt Hủy")
+                                                        enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=CHDB_ChiTietCatHuy_Hinh&IDFileName=IDCHDB_ChiTietCatHuy&IDFileContent=" + dr[j]["MaCH"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -739,7 +743,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     PhieuCHDB enCT = new PhieuCHDB();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=CHDB_Phieu_Hinh&IDFileName=IDCHDB_Phieu&IDFileContent=" + dr[j]["MaYCCHDB"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -764,7 +768,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     TTL enCT = new TTL();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=ThuTraLoi_ChiTiet_Hinh&IDFileName=IDThuTraLoi_ChiTiet&IDFileContent=" + dr[j]["MaCTTTTL"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -789,7 +793,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     GianLan enCT = new GianLan();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=GianLan_ChiTiet_Hinh&IDFileName=IDGianLan_ChiTiet&IDFileContent=" + dr[j]["ID"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -817,7 +821,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     TruyThu enCT = new TruyThu();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=TruyThuTienNuoc_ChiTiet_Hinh&IDFileName=IDTruyThuTienNuoc_ChiTiet&IDFileContent=" + dr[j]["IDCT"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -843,7 +847,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     ToTrinh enCT = new ToTrinh();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=ToTrinh_ChiTiet_Hinh&IDFileName=IDToTrinh_ChiTiet&IDFileContent=" + dr[j]["IDCT"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -867,7 +871,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     ThuMoi enCT = new ThuMoi();
-                                                    enCT.MaDon = dr[j]["MaDon"].ToString();
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=ThuMoi_ChiTiet_Hinh&IDFileName=IDThuMoi_ChiTiet&IDFileContent=" + dr[j]["IDCT"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -907,10 +911,8 @@ namespace WSTanHoa.Controllers
                                             break;
                                     }
                                 }
-
                             enKD.lstDonTu.Add(en);
                         }
-
                     return enKD;
                 }
                 else
@@ -1196,7 +1198,6 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
-
 
 
     }
