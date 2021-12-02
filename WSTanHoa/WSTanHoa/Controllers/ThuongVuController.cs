@@ -36,5 +36,20 @@ namespace WSTanHoa.Controllers
                 return null;
         }
 
+        public ActionResult ThongTinKhachHang(string DanhBo)
+        {
+            return Redirect("http://113.161.88.180:8585/index.aspx");
+        }
+
+        public ActionResult TinhTienNuoc(string DanhBo)
+        {
+            if (DanhBo != null && DanhBo != "")
+            {
+                return View();
+            }
+            else
+                return View();
+        }
+
     }
 }

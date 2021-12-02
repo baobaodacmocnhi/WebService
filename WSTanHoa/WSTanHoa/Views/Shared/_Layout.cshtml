@@ -8,12 +8,21 @@
     @Styles.Render("~/Content/css")
     @*@Scripts.Render("~/bundles/modernizr")*@
     <style>
+        @@media screen and (max-width: 991px) {
+            body {
+                margin-top: 50px;
+            }
+        }
+         @@media screen and (max-width: 767px) {
+            body {
+                margin-top: 5px;
+            }
+        }
         @@media screen and (max-width: 421px) {
             body {
                 margin-top: 40px;
             }
         }
-
         @@media screen and (max-width: 365px) {
             body {
                 margin-top: 80px;
@@ -56,14 +65,15 @@
                             <li>@Html.ActionLink("Báo Chỉ Số Nước", "BaoChiSoNuoc", "QLDHN", new { area = "" }, new { @class = "nav-link active" })</li>
                         </ul>
                     </li>
-                    @*<li class="nav-item dropdown">
-                        <a class="nav-link active dropdown-toggle" href="#" id="menuKhachHang" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Khách Hàng
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" id="menuThuongVu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Thương Vụ
                         </a>
-                        <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuKhachHang">
-                            <li>@Html.ActionLink("Thông Tin", "ThongTin", "KhachHang", new { area = "" }, new { @class = "nav-link active" })</li>
+                        <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuThuongVu">
+                            <li>@Html.ActionLink("Thông Tin Khách Hàng", "ThongTinKhachHang", "ThuongVu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Tính Tiền Nước", "TinhTienNuoc", "ThuongVu", new { area = "" }, new { @class = "nav-link active" })</li>
                         </ul>
-                    </li>*@
+                    </li>
                 </ul>
             </div>
         </header>

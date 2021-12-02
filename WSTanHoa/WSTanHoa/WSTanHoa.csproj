@@ -487,6 +487,7 @@
     <Content Include="Views\KhachHang\ThongTin.cshtml" />
     <Content Include="Views\ThuongVu\viewFile.cshtml" />
     <Content Include="hdsd_files\themedata.thmx" />
+    <Content Include="Views\ThuongVu\TinhTienNuoc.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
