@@ -3,18 +3,223 @@
     ViewBag.Title = "Tính Tiền Nước";
 }
 
-<div class="row">
-    <div class="col">
-        <label>Danh Bộ</label>
-        <input type="number" class="form-control" id="txtDanhBo">
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@using (Html.BeginForm("TinhTienNuoc", "ThuongVu", FormMethod.Post))
+{
+    <div class="row">
+        <div class="col">
+            <label>Danh Bộ</label>
+            <input type="number" class="form-control form-control-sm" name="txtDanhBo" value="@ViewBag.txtDanhBo">
+        </div>
+        <div class="col">
+            <label>Năm</label>
+            <input type="number" class="form-control form-control-sm" name="txtNam" value="@ViewBag.txtNam">
+        </div>
+        <div class="col">
+            <label>Kỳ</label>
+            <input type="number" class="form-control form-control-sm" name="txtKy" value="@ViewBag.txtKy">
+        </div>
+        <div class="col align-self-center">
+            <button type="submit" class="btn btn-primary">Tìm Kiếm</button>
+        </div>
     </div>
-    <div class="col">
-        <label>Năm</label>
-        <input type="number" class="form-control" id="txtNam">
-    </div>
-    <div class="col">
-        <label>Kỳ</label>
-        <input type="number" class="form-control" id="txtKy">
-    </div>
-</div>
 
+    <div class="container bg-light mt-3 rounded-3 shadow-sm">
+        <div class="row pt-2">
+            <div class="col">
+                <label>Từ Ngày</label>
+                <input type="date" for class="form-control form-control-sm" name="txtTuNgay" value="@ViewBag.txtTuNgay">
+            </div>
+            <div class="col">
+                <label>Đến Ngày</label>
+                <input type="date" class="form-control form-control-sm" name="txtDenNgay" value="@ViewBag.txtDenNgay">
+            </div>
+            <div class="col">
+                <label>Số Ngày</label>
+                <input type="number" class="form-control form-control-sm" name="txtSoNgay" value="@ViewBag.txtTongSoNgay">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>%SH</label>
+                <input type="number" class="form-control form-control-sm" name="txtSH" value="@ViewBag.txtSH">
+            </div>
+            <div class="col">
+                <label>%SX</label>
+                <input type="number" class="form-control form-control-sm" name="txtSX" value="@ViewBag.txtSX">
+            </div>
+            <div class="col">
+                <label>%DV</label>
+                <input type="number" class="form-control form-control-sm" name="txtDV" value="@ViewBag.txtDV">
+            </div>
+            <div class="col">
+                <label>%HCSN</label>
+                <input type="number" class="form-control form-control-sm" name="txtHCSN" value="@ViewBag.txtHCSN">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>GB</label>
+                <input type="number" class="form-control form-control-sm" name="txtGiaBieu" value="@ViewBag.txtGiaBieu">
+            </div>
+            <div class="col">
+                <label>ĐM</label>
+                <input type="number" class="form-control form-control-sm" name="txtDinhMuc" value="@ViewBag.txtDinhMuc">
+            </div>
+            <div class="col">
+                <label>ĐM HN</label>
+                <input type="number" class="form-control form-control-sm" name="txtDinhMucHN" value="@ViewBag.txtDinhMucHN">
+            </div>
+            <div class="col">
+                <label>TT</label>
+                <input type="number" class="form-control form-control-sm" name="txtTieuThu" value="@ViewBag.txtTieuThu">
+            </div>
+        </div>
+
+        <div class="row mt-2 text-center">
+            <div class="col">
+                <button type="submit" class="btn btn-primary">Tính</button>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <div class="card rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <b>Tính Giá Cũ</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <label>Số Ngày Cũ</label>
+                                <input type="number" class="form-control form-control-sm" name="txtSoNgayCu" value="@ViewBag.txtSoNgayCu">
+                            </div>
+                            <div class="col">
+                                <label>ĐM</label>
+                                <input type="number" class="form-control form-control-sm" name="txtDinhMucCu" value="@ViewBag.txtDinhMucCu">
+                            </div>
+                            <div class="col">
+                                <label>ĐM HN</label>
+                                <input type="number" class="form-control form-control-sm" name="txtDinhMucHNCu" value="@ViewBag.txtDinhMucHNCu">
+                            </div>
+                            <div class="col">
+                                <label>TT</label>
+                                <input type="number" class="form-control form-control-sm" name="txtTieuThuCu" value="@ViewBag.txtTieuThuCu">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Chi Tiết Cũ</label>
+                                <textarea class="form-control form-control-sm" name="txtChiTietCu" rows="5">@ViewBag.txtChiTietCu</textarea>
+                            </div>
+                            <div class="col">
+                                <label>Chi Tiết TDVTN Cũ</label>
+                                <textarea class="form-control form-control-sm" name="txtChiTietTDVTNCu" rows="5">@ViewBag.txtChiTietTDVTNCu</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Giá Bán Cũ</label>
+                                <input type="text" class="form-control form-control-sm" name="txtGiaBanCu" value="@ViewBag.txtGiaBanCu">
+                            </div>
+                            <div class="col">
+                                <label>TDVTN Cũ</label>
+                                <input type="text" class="form-control form-control-sm" name="txtTDVTNCu" value="@ViewBag.txtTDVTNCu">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <b>   Tính Giá Mới</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <label>Số Ngày Mới</label>
+                                <input type="number" class="form-control form-control-sm" name="txtSoNgayMoi" value="@ViewBag.txtSoNgayMoi">
+                            </div>
+                            <div class="col">
+                                <label>ĐM</label>
+                                <input type="number" class="form-control form-control-sm" name="txtDinhMucMoi" value="@ViewBag.txtDinhMucMoi">
+                            </div>
+                            <div class="col">
+                                <label>ĐM HN</label>
+                                <input type="number" class="form-control form-control-sm" name="txtDinhMucHNMoi" value="@ViewBag.txtDinhMucHNMoi">
+                            </div>
+                            <div class="col">
+                                <label>TT</label>
+                                <input type="number" class="form-control form-control-sm" name="txtTieuThuMoi" value="@ViewBag.txtTieuThuMoi">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Chi Tiết Mới</label>
+                                <textarea class="form-control form-control-sm" name="txtChiTietMoi" rows="5">@ViewBag.txtChiTietMoi</textarea>
+                            </div>
+                            <div class="col">
+                                <label>Chi Tiết TDVTN Mới</label>
+                                <textarea class="form-control form-control-sm" name="txtChiTietTDVTNMoi" rows="5">@ViewBag.txtChiTietTDVTNMoi</textarea>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Giá Bán Mới</label>
+                                <input type="text" class="form-control form-control-sm" name="txtGiaBanMoi" value="@ViewBag.txtGiaBanMoi">
+                            </div>
+                            <div class="col">
+                                <label>TDVTN Mới</label>
+                                <input type="text" class="form-control form-control-sm" name="txtTDVTNMoi" value="@ViewBag.txtTDVTNMoi">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col">
+                <div class="card rounded-3 shadow-sm">
+                    <div class="card-header py-3">
+                        <b>  Tổng Cộng</b>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <label>Giá Bán</label>
+                                <input type="text" class="form-control form-control-sm fw-bold" name="txtGiaBan" value="@ViewBag.txtGiaBan">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Thuế GTGT</label>
+                                <input type="text" class="form-control form-control-sm fw-bold" name="txtThueGTGT" value="@ViewBag.txtThueGTGT">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>TDVTN</label>
+                                <input type="text" class="form-control form-control-sm fw-bold" name="txtTDVTN" value="@ViewBag.txtTDVTN">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Thuế GTGT TDVTN</label>
+                                <input type="text" class="form-control form-control-sm fw-bold" name="txtThueGTGTTDVTN" value="@ViewBag.txtThueGTGTTDVTN">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label>Tổng Cộng</label>
+                                <input type="text" class="form-control form-control-sm fw-bold" name="txtTongCong" value="@ViewBag.txtTongCong">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}

@@ -172,7 +172,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>11/29/2021 16:24:40</publishTime>
+      <publishTime>12/07/2021 16:31:58</publishTime>
+    </File>
+    <File Include="bin/WSTanHoa.XmlSerializers.dll">
+      <publishTime>12/07/2021 16:31:58</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -886,10 +889,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>11/15/2021 09:30:45</publishTime>
+      <publishTime>12/02/2021 15:56:00</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
+    </File>
+    <File Include="Views/ThuongVu/TinhTienNuoc.cshtml">
+      <publishTime>12/07/2021 16:33:45</publishTime>
     </File>
     <File Include="Views/ThuongVu/viewFile.cshtml">
       <publishTime>11/29/2021 10:30:29</publishTime>
@@ -924,8 +930,11 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/_ViewStart.cshtml">
       <publishTime>10/27/2021 08:10:13</publishTime>
     </File>
+    <File Include="Web References/WebReference/Reference.map">
+      <publishTime>12/07/2021 16:27:12</publishTime>
+    </File>
     <File Include="Web.config">
-      <publishTime>10/27/2021 08:40:12</publishTime>
+      <publishTime>12/07/2021 16:27:32</publishTime>
     </File>
   </ItemGroup>
 </Project>

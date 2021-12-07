@@ -326,6 +326,7 @@ namespace WSTanHoa.Controllers
                 ThuTien en = new ThuTien();
                 DataTable dt = new DataTable();
                 int TongNo = 0;
+                bool CNKD = false;
 
                 string sql = "select * from fnTimKiem('" + DanhBo + "','') order by MaHD desc";
                 dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
@@ -349,10 +350,15 @@ namespace WSTanHoa.Controllers
                         enCT.PhiBVMT = item["PhiBVMT"].ToString();
                         enCT.TongCong = item["TongCong"].ToString();
                         if (item["NgayGiaiTrach"].ToString() != "")
+                        {
                             if (item["DangNgan"].ToString() != "CNKĐ")
                                 enCT.NgayGiaiTrach = DateTime.Parse(item["NgayGiaiTrach"].ToString());
                             else
+                            {
                                 TongNo += int.Parse(item["TongCong"].ToString());
+                                CNKD = true;
+                            }
+                        }
                         else
                             TongNo += int.Parse(item["TongCong"].ToString());
                         enCT.DangNgan = item["DangNgan"].ToString();
@@ -371,7 +377,10 @@ namespace WSTanHoa.Controllers
                 en.ThongTin = "Hết nợ";
 
                 if (TongNo > 0)
-                    en.ThongTin = "Hiện còn nợ: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", TongNo);
+                    if (CNKD == false)
+                        en.ThongTin = "Hiện còn nợ: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", TongNo);
+                    else
+                        en.ThongTin = "Hiện còn nợ (CNKĐ): " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", TongNo);
 
                 int PhiMoNuoc = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
                 if (PhiMoNuoc > 0)
