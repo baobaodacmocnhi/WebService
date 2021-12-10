@@ -865,7 +865,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/KhachHang/ThongTin.cshtml">
-      <publishTime>11/16/2021 09:52:12</publishTime>
+      <publishTime>12/10/2021 09:04:53</publishTime>
     </File>
     <File Include="Views/KhieuNai/Create.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
