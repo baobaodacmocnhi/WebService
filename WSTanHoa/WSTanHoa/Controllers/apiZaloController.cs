@@ -414,36 +414,6 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        [HttpGet]
-        [Route("getlichdocso1")]
-        private void getlichdocso1()
-        {
-            try
-            {
-                DataTable dt_DanhBo = cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo='13182515936'");
-                //DataTable dt_DanhBo = cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
-
-                foreach (DataRow item in dt_DanhBo.Rows)
-                {
-                    DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
-
-                    string result_Lich = apiTTKH.getLichDocSo_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
-
-                    string result_NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
-
-                    string content = getTTKH(item["DanhBo"].ToString());
-                    content += result_NhanVien + "\n"
-                                + result_Lich;
-
-                }
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
         private void getlichdocso(string IDZalo, ref string strResponse)
         {
             try
@@ -469,34 +439,6 @@ namespace WSTanHoa.Controllers
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichdocso',getdate())";
                 cDAL_TrungTam.ExecuteNonQuery(sql);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        [HttpGet]
-        [Route("getlichthutien1")]
-        private void getlichthutien1()
-        {
-            try
-            {
-                DataTable dt_DanhBo = cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo='13182515936'");
-                //DataTable dt_DanhBo = cDAL_TrungTam.ExecuteQuery_DataTable("select DanhBo from Zalo_DangKy where IDZalo=" + IDZalo + "");
-                foreach (DataRow item in dt_DanhBo.Rows)
-                {
-                    DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
-
-                    string result_Lich = apiTTKH.getLichThuTien_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
-
-                    string result_NhanVien = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
-
-                    string content = getTTKH(item["DanhBo"].ToString());
-                    content += result_NhanVien + "\n"
-                                 + result_Lich;
-                }
-                //insert lịch sử truy vấn
             }
             catch (Exception ex)
             {
