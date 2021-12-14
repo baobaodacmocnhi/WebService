@@ -2,8 +2,8 @@
 <publishData>
   <publishProfile publishUrl="C:\Users\BaoBao\Desktop\agr" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
     <file relUrl="THService.asmx" publishTime="04/17/2019 16:20:57" />
-    <file relUrl="bin/WSAgribank.pdb" publishTime="11/26/2021 13:58:13" />
+    <file relUrl="bin/WSAgribank.pdb" publishTime="12/14/2021 16:03:15" />
     <file relUrl="Web.config" publishTime="11/15/2021 08:09:27" />
-    <file relUrl="bin/WSAgribank.dll" publishTime="11/26/2021 13:58:13" />
+    <file relUrl="bin/WSAgribank.dll" publishTime="12/14/2021 16:03:15" />
   </publishProfile>
 </publishData>
