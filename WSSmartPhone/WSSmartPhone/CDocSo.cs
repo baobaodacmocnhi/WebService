@@ -14,7 +14,7 @@ namespace WSSmartPhone
     {
         //CConnection _DAL = new CConnection("Data Source=113.161.88.180,1833;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db8@tanhoa");
         CConnection _DAL = new CConnection("Data Source=hp_g7\\kd;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db8@tanhoa");
-        
+
         //public bool CapNhat(string ID, string DanhBo, int Nam, int Ky, string CodeMoi, string TTDHNMoi, int CSMoi, int GiaBieu, int DinhMuc, string Latitude, string Longitude, out int TieuThu, out int TongCong)
         //{
         //    int GiaBan, PhiBVMT, ThueGTGT;
@@ -155,7 +155,13 @@ namespace WSSmartPhone
             return tieuthu;
         }
 
-
+        public bool checkKhongTinhPBVMT(string DanhBo)
+        {
+            if (_DAL.ExecuteQuery_ReturnOneValue("select DanhBo from DanhBoKPBVMT where DanhBo='" + DanhBo + "'") != null)
+                return true;
+            else
+                return false;
+        }
 
 
     }
