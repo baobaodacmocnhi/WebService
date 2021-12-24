@@ -306,7 +306,7 @@ namespace WSTanHoa.Controllers
                         {
                             content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
                                 + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
-                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3\n";
+                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
                             if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                 content += "       " + itemHD["ChiTietTienNuoc"].ToString();
                             content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
@@ -346,7 +346,7 @@ namespace WSTanHoa.Controllers
                         {
                             content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
                                 + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
-                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3\n";
+                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
                             if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                 content += "       " + itemHD["ChiTietTienNuoc"].ToString();
                             content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
@@ -387,7 +387,7 @@ namespace WSTanHoa.Controllers
                         {
                             content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
                                 + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
-                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m3\n";
+                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
                             if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                 content += "       " + itemHD["ChiTietTienNuoc"].ToString();
                             content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
