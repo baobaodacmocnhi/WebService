@@ -69,6 +69,7 @@
     <Compile Include="CBaoBao.cs" />
     <Compile Include="CDHN.cs" />
     <Compile Include="CDocSo.cs" />
+    <Compile Include="CGlobalVariable.cs" />
     <Compile Include="CKinhDoanh.cs" />
     <Compile Include="CThuTien.cs" />
     <Compile Include="CConnection.cs" />
