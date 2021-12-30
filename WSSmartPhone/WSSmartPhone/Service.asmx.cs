@@ -17,7 +17,6 @@ namespace WSSmartPhone
     public class Service : System.Web.Services.WebService
     {
         CBaoBao _cBaoBao = new CBaoBao();
-        CDocSo _cDocSo = new CDocSo();
         CThuTien _cThuTien = new CThuTien();
 
         #region BaoBao
