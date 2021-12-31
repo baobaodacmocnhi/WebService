@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="HOADON_TA" Class="dbThuTienDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=113.161.88.180,1933;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="HOADON_TAConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="WebSettings" ConnectionString="Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="HOADON_TAConnectionString" Provider="System.Data.SqlClient" />
   <Table Name="dbo.TT_DongNuoc" Member="TT_DongNuocs">
     <Type Name="TT_DongNuoc">
       <Column Name="MaDN" Type="System.Decimal" DbType="Decimal(18,0) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -156,7 +156,7 @@
       <Column Name="NgayChanTienDu" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="HIEULUC" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
       <Column Name="NAMLD" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Column Name="HIEUDH" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="HIEUDH" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
       <Column Name="KhoaTienDu" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="SoThanDHN" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
       <Column Name="DCHD" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
@@ -190,6 +190,11 @@
       <Column Name="CuaHangThuHo2" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
       <Column Name="BaoCaoThue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="SoTienGiam" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ThueGTGT_TDVTN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LNTTC" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="LNTTM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PBVMT2021" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="TDVTN2022" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </Type>
   </Table>
 </Database>

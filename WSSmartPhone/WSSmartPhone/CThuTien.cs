@@ -3004,7 +3004,11 @@ namespace WSSmartPhone
                         + ",DenNgay=CONVERT(varchar(10),DenNgay,103),Nam,Ky,Dot FROM DocSo WHERE DocSoID='" + DocSoID + "'";
                 DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
                 string DanhBo = dt.Rows[0]["DanhBa"].ToString().Trim();
-                string CodeMoi = dt.Rows[0]["CodeMoi"].ToString().Trim();
+                string CodeMoi = "";
+                if (dt.Rows[0]["CodeMoi"].ToString().Trim().Contains("X") == false)
+                    CodeMoi = dt.Rows[0]["CodeMoi"].ToString().Trim();
+                else
+                    CodeMoi = "4";
                 string CSC = dt.Rows[0]["CSCu"].ToString().Trim();
                 string CSM = dt.Rows[0]["CSMoi"].ToString().Trim();
                 string TieuThuMoi = dt.Rows[0]["TieuThuMoi"].ToString().Trim();
@@ -3016,11 +3020,11 @@ namespace WSSmartPhone
                 string rST_ID = this.getRST_ID(CodeMoi);
 
                 string cmdText = "INSERT INTO ADMIN.\"TMP$MR\" (ID, BRANCH_CODE, \"YEAR\", PERIOD, BC_CODE, CUSTOMER_NO, MR_STATUS, THIS_READING, CONSUMPTION, DATE_READING, CREATED_ON, CREATED_BY, BOOK_NO, OIB, EMP_ID, RST_ID) VALUES ("
-                            + ID + ",'TH'," + dt.Rows[0]["Nam"].ToString().Trim() + "," + dt.Rows[0]["Ky"].ToString().Trim() + ",'" + dt.Rows[0]["Dot"].ToString().Trim() + "','" + DanhBo + "','" + CodeMoi + "'," + CSM + "," + TieuThuMoi + ",to_date('" + NgayDoc + "','DD/MM/YYYY'),to_date('" + DateTime.Now.ToString("dd/MM/yyyy") + "','DD/MM/YYYY'),'TH_HANDHELD','" + May + "','" + STT + "',3824,rST_ID)";
+                            + ID + ",'TH'," + dt.Rows[0]["Nam"].ToString().Trim() + "," + dt.Rows[0]["Ky"].ToString().Trim() + ",'" + dt.Rows[0]["Dot"].ToString().Trim() + "','" + DanhBo + "','" + CodeMoi + "'," + CSM + "," + TieuThuMoi + ",to_date('" + NgayDoc + "','DD/MM/YYYY'),to_date('" + DateTime.Now.ToString("dd/MM/yyyy") + "','DD/MM/YYYY'),'TH_HANDHELD','" + May + "','" + STT + "',3824," + rST_ID + ")";
                 if (CodeMoi.Length > 0 && (CodeMoi.Substring(0, 1) == "5" || CodeMoi.Substring(0, 1) == "8" || CodeMoi.Substring(0, 1) == "M"))
                 {
                     cmdText = "INSERT INTO ADMIN.\"TMP$MR\" (ID, BRANCH_CODE, \"YEAR\", PERIOD, BC_CODE, CUSTOMER_NO, MR_STATUS, LAST_READING, THIS_READING, CONSUMPTION, DATE_READING, CREATED_ON, CREATED_BY, BOOK_NO, OIB, EMP_ID,RST_ID) VALUES ("
-                            + ID + ",'TH'," + dt.Rows[0]["Nam"].ToString().Trim() + "," + dt.Rows[0]["Ky"].ToString().Trim() + ",'" + dt.Rows[0]["Dot"].ToString().Trim() + "','" + DanhBo + "','" + CodeMoi + "'," + CSC + "," + CSM + "," + TieuThuMoi + ",to_date('" + NgayDoc + "','DD/MM/YYYY'),to_date('" + DateTime.Now.ToString("dd/MM/yyyy") + "','DD/MM/YYYY'),'TH_HANDHELD','" + May + "','" + STT + "',3824,rST_ID)";
+                            + ID + ",'TH'," + dt.Rows[0]["Nam"].ToString().Trim() + "," + dt.Rows[0]["Ky"].ToString().Trim() + ",'" + dt.Rows[0]["Dot"].ToString().Trim() + "','" + DanhBo + "','" + CodeMoi + "'," + CSC + "," + CSM + "," + TieuThuMoi + ",to_date('" + NgayDoc + "','DD/MM/YYYY'),to_date('" + DateTime.Now.ToString("dd/MM/yyyy") + "','DD/MM/YYYY'),'TH_HANDHELD','" + May + "','" + STT + "',3824," + rST_ID + ")";
                 }
                 this.OpenConnectionTCT();
                 OdbcCommand odbcCommand = new OdbcCommand(cmdText, this.connTongCT);

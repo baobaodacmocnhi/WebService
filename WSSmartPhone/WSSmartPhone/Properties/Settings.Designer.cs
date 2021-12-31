@@ -22,15 +22,5 @@ namespace WSSmartPhone.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.90.6:82/wsbilling.asmx")]
-        public string WSSmartPhone_wrBilling_wsBilling {
-            get {
-                return ((string)(this["WSSmartPhone_wrBilling_wsBilling"]));
-            }
-        }
     }
 }
