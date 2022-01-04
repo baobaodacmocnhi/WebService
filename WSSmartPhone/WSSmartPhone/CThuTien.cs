@@ -229,6 +229,12 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
+        public string getDS_Nam()
+        {
+            string sql = "select * from ViewGetNamHD order by Nam desc";
+            return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
+        }
+
         //send notification
         public bool CheckConnection_Firebase()
         {
