@@ -58,6 +58,15 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" id="menuThuongVu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Thương Vụ
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuThuongVu">
+                            <li>@Html.ActionLink("Thông Tin Khách Hàng", "ThongTinKhachHang", "ThuongVu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Tính Tiền Nước", "TinhTienNuoc", "ThuongVu", new { area = "" }, new { @class = "nav-link active" })</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
                         <a class="nav-link active dropdown-toggle" href="#" id="menuQLDHN" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             QLĐHN
                         </a>
@@ -66,12 +75,11 @@
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link active dropdown-toggle" href="#" id="menuThuongVu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Thương Vụ
+                        <a class="nav-link active dropdown-toggle" href="#" id="menuThuTien" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Thu Tiền
                         </a>
-                        <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuThuongVu">
-                            <li>@Html.ActionLink("Thông Tin Khách Hàng", "ThongTinKhachHang", "ThuongVu", new { area = "" }, new { @class = "nav-link active" })</li>
-                            <li>@Html.ActionLink("Tính Tiền Nước", "TinhTienNuoc", "ThuongVu", new { area = "" }, new { @class = "nav-link active" })</li>
+                        <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuThuTien">
+                            <li><a class="nav-link active" href="http://113.161.88.180:81/app/thutien.apk">Tải app</a></li>
                         </ul>
                     </li>
                 </ul>
