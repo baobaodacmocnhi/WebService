@@ -3109,6 +3109,11 @@ namespace WSSmartPhone
             return _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from GiaNuoc_Giam where Nam like '%" + Nam + "%' and Ky like '%" + Ky.ToString("00") + "%' and GiaBieu like '%" + GiaBieu + "%'");
         }
 
+        public bool HasValue(double value)
+        {
+            return !Double.IsNaN(value) && !Double.IsInfinity(value);
+        }
+
         //chi tiết tiền nước
         private const int _GiamTienNuoc = 10;
 
@@ -3214,6 +3219,8 @@ namespace WSSmartPhone
                         if (TieuThu <= DinhMucHN + DinhMuc)
                         {
                             double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                            if (HasValue(TyLe) == false)
+                                TyLe = 0;
                             int TieuThuHN = 0, TieuThuDC = 0;
                             TieuThuHN = (int)Math.Round(TieuThu * TyLe, 0, MidpointRounding.AwayFromZero);
                             TieuThuDC = TieuThu - TieuThuHN;
@@ -3378,6 +3385,8 @@ namespace WSSmartPhone
                             if (TieuThu <= DinhMucHN + DinhMuc)
                             {
                                 double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                                if (HasValue(TyLe) == false)
+                                    TyLe = 0;
                                 int TieuThuHN = 0, TieuThuDC = 0;
                                 TieuThuHN = (int)Math.Round(TieuThu * TyLe, 0, MidpointRounding.AwayFromZero);
                                 TieuThuDC = TieuThu - TieuThuHN;
@@ -3460,6 +3469,8 @@ namespace WSSmartPhone
                             if (_SH <= DinhMucHN + DinhMuc)
                             {
                                 double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                                if (HasValue(TyLe) == false)
+                                    TyLe = 0;
                                 int TieuThuHN = 0, TieuThuDC = 0;
                                 TieuThuHN = (int)Math.Round(_SH * TyLe, 0, MidpointRounding.AwayFromZero);
                                 TieuThuDC = _SH - TieuThuHN;
@@ -3581,6 +3592,8 @@ namespace WSSmartPhone
                             {
                                 //double TyLe = Math.Round((double)DinhMucHN / (DinhMucHN + DinhMuc), 2);
                                 double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                                if (HasValue(TyLe) == false)
+                                    TyLe = 0;
                                 int TieuThuHN = 0, TieuThuDC = 0;
                                 TieuThuHN = (int)Math.Round(TieuThu * TyLe, 0, MidpointRounding.AwayFromZero);
                                 TieuThuDC = TieuThu - TieuThuHN;
@@ -3664,6 +3677,8 @@ namespace WSSmartPhone
                             if (_SH <= DinhMucHN + DinhMuc)
                             {
                                 double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                                if (HasValue(TyLe) == false)
+                                    TyLe = 0;
                                 int TieuThuHN = 0, TieuThuDC = 0;
                                 TieuThuHN = (int)Math.Round(_SH * TyLe, 0, MidpointRounding.AwayFromZero);
                                 TieuThuDC = _SH - TieuThuHN;
@@ -3812,6 +3827,8 @@ namespace WSSmartPhone
                             if (_SH <= DinhMucHN + DinhMuc)
                             {
                                 double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                                if (HasValue(TyLe) == false)
+                                    TyLe = 0;
                                 int TieuThuHN = 0, TieuThuDC = 0;
                                 TieuThuHN = (int)Math.Round(_SH * TyLe, 0, MidpointRounding.AwayFromZero);
                                 TieuThuDC = _SH - TieuThuHN;
@@ -3965,6 +3982,8 @@ namespace WSSmartPhone
                             if (TieuThu <= DinhMucHN + DinhMuc)
                             {
                                 double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                                if (HasValue(TyLe) == false)
+                                    TyLe = 0;
                                 int TieuThuHN = 0, TieuThuDC = 0;
                                 TieuThuHN = (int)Math.Round(TieuThu * TyLe, 0, MidpointRounding.AwayFromZero);
                                 TieuThuDC = TieuThu - TieuThuHN;
@@ -4048,6 +4067,8 @@ namespace WSSmartPhone
                             if (_SH <= DinhMucHN + DinhMuc)
                             {
                                 double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                                if (HasValue(TyLe) == false)
+                                    TyLe = 0;
                                 int TieuThuHN = 0, TieuThuDC = 0;
                                 TieuThuHN = (int)Math.Round(_SH * TyLe, 0, MidpointRounding.AwayFromZero);
                                 TieuThuDC = _SH - TieuThuHN;
@@ -4174,6 +4195,8 @@ namespace WSSmartPhone
                         if (_SH <= DinhMucHN + DinhMuc)
                         {
                             double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                            if (HasValue(TyLe) == false)
+                                TyLe = 0;
                             int TieuThuHN = 0, TieuThuDC = 0;
                             TieuThuHN = (int)Math.Round(_SH * TyLe, 0, MidpointRounding.AwayFromZero);
                             TieuThuDC = _SH - TieuThuHN;
@@ -4523,6 +4546,8 @@ namespace WSSmartPhone
                         if (TieuThu <= DinhMucHN + DinhMuc)
                         {
                             double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                            if (HasValue(TyLe) == false)
+                                TyLe = 0;
                             int TieuThuHN = 0, TieuThuDC = 0;
                             TieuThuHN = (int)Math.Round(TieuThu * TyLe, 0, MidpointRounding.AwayFromZero);
                             TieuThuDC = TieuThu - TieuThuHN;
@@ -4744,6 +4769,8 @@ namespace WSSmartPhone
                         if (_SH <= DinhMucHN + DinhMuc)
                         {
                             double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                            if (HasValue(TyLe) == false)
+                                TyLe = 0;
                             int TieuThuHN = 0, TieuThuDC = 0;
                             TieuThuHN = (int)Math.Round(_SH * TyLe, 0, MidpointRounding.AwayFromZero);
                             TieuThuDC = _SH - TieuThuHN;
@@ -4876,6 +4903,8 @@ namespace WSSmartPhone
                         if (_SH <= DinhMucHN + DinhMuc)
                         {
                             double TyLe = (double)DinhMucHN / (DinhMucHN + DinhMuc);
+                            if (HasValue(TyLe) == false)
+                                TyLe = 0;
                             int TieuThuHN = 0, TieuThuDC = 0;
                             TieuThuHN = (int)Math.Round(_SH * TyLe, 0, MidpointRounding.AwayFromZero);
                             TieuThuDC = _SH - TieuThuHN;
