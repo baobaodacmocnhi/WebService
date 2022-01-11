@@ -190,7 +190,7 @@
       <Column Name="CuaHangThuHo2" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
       <Column Name="BaoCaoThue" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="SoTienGiam" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="ThueGTGT_TDVTN" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="ThueGTGT_TDVTN" Type="System.Decimal" DbType="Decimal(18,0)" CanBeNull="true" />
       <Column Name="LNTTC" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="LNTTM" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="PBVMT2021" Type="System.Int32" DbType="Int" CanBeNull="true" />

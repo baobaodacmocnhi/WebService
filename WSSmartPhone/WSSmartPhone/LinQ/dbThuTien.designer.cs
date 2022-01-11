@@ -2027,7 +2027,7 @@ namespace WSSmartPhone.LinQ
 		
 		private System.Nullable<int> _SoTienGiam;
 		
-		private System.Nullable<int> _ThueGTGT_TDVTN;
+		private System.Nullable<decimal> _ThueGTGT_TDVTN;
 		
 		private System.Nullable<int> _LNTTC;
 		
@@ -2259,7 +2259,7 @@ namespace WSSmartPhone.LinQ
     partial void OnBaoCaoThueChanged();
     partial void OnSoTienGiamChanging(System.Nullable<int> value);
     partial void OnSoTienGiamChanged();
-    partial void OnThueGTGT_TDVTNChanging(System.Nullable<int> value);
+    partial void OnThueGTGT_TDVTNChanging(System.Nullable<decimal> value);
     partial void OnThueGTGT_TDVTNChanged();
     partial void OnLNTTCChanging(System.Nullable<int> value);
     partial void OnLNTTCChanged();
@@ -4456,8 +4456,8 @@ namespace WSSmartPhone.LinQ
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ThueGTGT_TDVTN", DbType="Int")]
-		public System.Nullable<int> ThueGTGT_TDVTN
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ThueGTGT_TDVTN", DbType="Decimal(18,0)")]
+		public System.Nullable<decimal> ThueGTGT_TDVTN
 		{
 			get
 			{

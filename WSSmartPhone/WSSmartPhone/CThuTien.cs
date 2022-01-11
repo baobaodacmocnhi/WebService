@@ -1828,8 +1828,8 @@ namespace WSSmartPhone
         string userName = "tanhoaapi";
         string passWord = "tanhoaapi@sawaco.com.vn#2020";
         string branchcode = "TH";
-        string pattern21E = "01GTKT0/002";
-        string pattern22E = "01GTKT0/003";
+        //string pattern21E = "01GTKT0/002";
+        //string pattern22E = "01GTKT0/003";
         //string serial = "CT/20E";
 
         public class HoaDonThanhToan
@@ -1886,6 +1886,11 @@ namespace WSSmartPhone
 
         #endregion
 
+        public string getBieuMau(string KyHieu)
+        {
+            return _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select BieuMau from TT_BieuMauHoaDon where KyHieu='" + KyHieu + "'").ToString();
+        }
+
         public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
             string result = "";
@@ -1940,7 +1945,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
-                    en.pattern = pattern21E;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayThanhToan = NgayThanhToan;
@@ -2057,7 +2062,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
-                    en.pattern = pattern21E;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));;
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayThanhToan = NgayThanhToan;
@@ -2178,7 +2183,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
-                    en.pattern = pattern21E;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));;
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayThanhToan = NgayThanhToan;
@@ -2287,7 +2292,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonNopTien en = new HoaDonNopTien();
                     en.branchcode = branchcode;
-                    en.pattern = pattern21E;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));;
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayNopTien = NgayNopTien;
@@ -2383,7 +2388,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonNopTien en = new HoaDonNopTien();
                     en.branchcode = branchcode;
-                    en.pattern = pattern21E;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));;
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayNopTien = NgayNopTien;
@@ -2466,7 +2471,7 @@ namespace WSSmartPhone
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
                         for (int i = 0; i < SL; i++)
                         {
-                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern21E) + "&serial=" + HttpUtility.UrlEncode(itemSerial["serial"].ToString()));
+                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(getBieuMau(itemSerial["serial"].ToString())) + "&serial=" + HttpUtility.UrlEncode(itemSerial["serial"].ToString()));
                             request.Method = "POST";
                             request.Headers.Add("taxcode", taxCode);
                             request.Headers.Add("username", userName);
@@ -2575,7 +2580,7 @@ namespace WSSmartPhone
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
                         for (int i = 0; i < SL; i++)
                         {
-                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern21E) + "&serial=" + HttpUtility.UrlEncode(itemSerial["serial"].ToString()));
+                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(getBieuMau(itemSerial["serial"].ToString())) + "&serial=" + HttpUtility.UrlEncode(itemSerial["serial"].ToString()));
                             request.Method = "POST";
                             request.Headers.Add("taxcode", taxCode);
                             request.Headers.Add("username", userName);
@@ -2685,7 +2690,7 @@ namespace WSSmartPhone
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
                         for (int i = 0; i < SL; i++)
                         {
-                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(pattern21E) + "&serial=" + HttpUtility.UrlEncode(itemSerial["serial"].ToString()));
+                            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptienlo?branchCode=" + branchcode + "&pattern=" + HttpUtility.UrlEncode(getBieuMau(itemSerial["serial"].ToString())) + "&serial=" + HttpUtility.UrlEncode(itemSerial["serial"].ToString()));
                             request.Method = "POST";
                             request.Headers.Add("taxcode", taxCode);
                             request.Headers.Add("username", userName);
