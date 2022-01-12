@@ -417,10 +417,10 @@ namespace WSSmartPhone
                             + " from HOADON hd"
                             + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                             + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)) or (GB!=10))"
+                             + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
                             + " )t1"
                 //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                             + " order by MLT asc,MaHD desc";
@@ -452,10 +452,10 @@ namespace WSSmartPhone
                             + " from HOADON hd"
                             + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV + " and MAY>=" + TuMay + " and MAY<=" + DenMay
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)) or (GB!=10))"
+                            + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
                             + " )t1"
                 //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                             + " order by MLT asc,MaHD desc";
@@ -1313,7 +1313,7 @@ namespace WSSmartPhone
                  + " ,PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong where MaHDs like '%'+CONVERT(varchar(8),hd.ID_HOADON)+'%')"
                  + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
                  + " from HOADON hd where DANHBA='" + DanhBo + "' and NGAYGIAITRACH is null and hd.ID_HOADON not in (" + MaHDs + ")"
-                 + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)) or (GB!=10))"
+                 + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                  + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
@@ -2062,7 +2062,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6)); ;
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayThanhToan = NgayThanhToan;
@@ -2183,7 +2183,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6)); ;
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayThanhToan = NgayThanhToan;
@@ -2292,7 +2292,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonNopTien en = new HoaDonNopTien();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6)); ;
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayNopTien = NgayNopTien;
@@ -2388,7 +2388,7 @@ namespace WSSmartPhone
                     //};
                     HoaDonNopTien en = new HoaDonNopTien();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));;
+                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6)); ;
                     en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
                     en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
                     en.NgayNopTien = NgayNopTien;
@@ -2926,7 +2926,7 @@ namespace WSSmartPhone
                 ThueGTGT = 0;
                 PhiBVMT = 0;
                 TongCong = 0;
-                string sql = "EXEC	[dbo].[spTinhTieuThu]"
+                string sql = "EXEC [dbo].[spTinhTieuThu]"
                    + " @DANHBO = N'" + DocSoID.Substring(6, 11) + "',"
                    + " @KY = " + DocSoID.Substring(4, 2) + ","
                    + " @NAM = " + DocSoID.Substring(0, 4) + ","
@@ -2935,8 +2935,41 @@ namespace WSSmartPhone
                 TieuThu = (int)_cDAL_DocSo.ExecuteQuery_ReturnOneValue(sql);
                 if (TieuThu < 0)
                     return false;
-                DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo from DocSoID='" + DocSoID + "'");
-                DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong from BienDongID='" + DocSoID + "'");
+                DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
+                DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
+                if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
+                {
+                    int TienNuocA = 0, TienNuocB = 0, PhiBVMTA = 0, PhiBVMTB = 0, TieuThu_DieuChinhGia = 0;
+                    string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
+                    TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
+                         , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
+                         , int.Parse(dtBienDong.Rows[0]["DM"].ToString()), int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocA, ref ChiTietA, ref TienNuocB, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTA, ref ChiTietPhiBVMTA, ref PhiBVMTB, ref ChiTietPhiBVMTB);
+                    GiaBan = TienNuocA + TienNuocB;
+                    ThueGTGT = (int)Math.Round((double)(TienNuocA + TienNuocB) * 5 / 100, 0, MidpointRounding.AwayFromZero);
+                    PhiBVMT = PhiBVMTA + PhiBVMTB;
+                    TongCong = GiaBan + ThueGTGT + PhiBVMT;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool tinhCodeTieuThu(string DocSoID, string Code, int TieuThu, out int GiaBan, out int ThueGTGT, out int PhiBVMT, out int TongCong)
+        {
+            try
+            {
+                GiaBan = 0;
+                ThueGTGT = 0;
+                PhiBVMT = 0;
+                TongCong = 0;
+                if (TieuThu < 0)
+                    return false;
+                DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
+                DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
                 {
                     int TienNuocA = 0, TienNuocB = 0, PhiBVMTA = 0, PhiBVMTB = 0, TieuThu_DieuChinhGia = 0;

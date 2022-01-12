@@ -57,10 +57,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool tinhCodeTieuThu(string DocSoID, string Code, int CSM, out int TieuThu, out int GiaBan, out int ThueGTGT, out int PhiBVMT, out int TongCong)
+        public bool tinhCodeTieuThu_TieuThu(string DocSoID, string Code, int TieuThu, out int GiaBan, out int ThueGTGT, out int PhiBVMT, out int TongCong)
+        {
+            return _cThuTien.tinhCodeTieuThu(DocSoID, Code, TieuThu, out GiaBan, out ThueGTGT, out PhiBVMT, out TongCong);
+        }
+
+        [WebMethod]
+        public bool tinhCodeTieuThu_CSM(string DocSoID, string Code, int CSM, out int TieuThu, out int GiaBan, out int ThueGTGT, out int PhiBVMT, out int TongCong)
         {
             return _cThuTien.tinhCodeTieuThu(DocSoID, Code, CSM, out TieuThu, out GiaBan, out ThueGTGT, out PhiBVMT, out TongCong);
         }
-
     }
 }
