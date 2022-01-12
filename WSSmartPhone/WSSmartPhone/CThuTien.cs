@@ -417,7 +417,7 @@ namespace WSSmartPhone
                             + " from HOADON hd"
                             + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                             + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
+                            //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
@@ -452,7 +452,7 @@ namespace WSSmartPhone
                             + " from HOADON hd"
                             + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV + " and MAY>=" + TuMay + " and MAY<=" + DenMay
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
+                            //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
@@ -1313,7 +1313,7 @@ namespace WSSmartPhone
                  + " ,PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong where MaHDs like '%'+CONVERT(varchar(8),hd.ID_HOADON)+'%')"
                  + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
                  + " from HOADON hd where DANHBA='" + DanhBo + "' and NGAYGIAITRACH is null and hd.ID_HOADON not in (" + MaHDs + ")"
-                 + " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
+                 //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                  + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
