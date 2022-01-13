@@ -298,9 +298,14 @@ namespace WSTanHoa.Models
         public string ThueGTGT { get; set; }
 
         /// <summary>
-        /// Phí BVMT
+        /// Tiền dịch vụ thoát nước
         /// </summary>
         public string PhiBVMT { get; set; }
+
+        /// <summary>
+        /// Thuế TDVTN
+        /// </summary>
+        public string PhiBVMT_Thue { get; set; }
 
         /// <summary>
         /// Tổng cộng

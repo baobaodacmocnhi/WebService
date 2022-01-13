@@ -348,6 +348,7 @@ namespace WSTanHoa.Controllers
                         enCT.GiaBan = item["GiaBan"].ToString();
                         enCT.ThueGTGT = item["ThueGTGT"].ToString();
                         enCT.PhiBVMT = item["PhiBVMT"].ToString();
+                        enCT.PhiBVMT_Thue = item["PhiBVMT_Thue"].ToString();
                         enCT.TongCong = item["TongCong"].ToString();
                         if (item["NgayGiaiTrach"].ToString() != "")
                         {
