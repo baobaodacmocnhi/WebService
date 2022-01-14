@@ -417,7 +417,7 @@ namespace WSSmartPhone
                             + " from HOADON hd"
                             + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
+                //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
@@ -452,7 +452,7 @@ namespace WSSmartPhone
                             + " from HOADON hd"
                             + " where (NAM<" + Nam + " or (NAM=" + Nam + " and Ky<=" + Ky + ")) and DOT>=" + FromDot + " and DOT<=" + ToDot + " and MaNV_HanhThu=" + MaNV + " and MAY>=" + TuMay + " and MAY<=" + DenMay
                             + " and (NGAYGIAITRACH is null or CAST(NGAYGIAITRACH as date)=CAST(GETDATE() as date))"
-                            //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
+                //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
@@ -1313,7 +1313,7 @@ namespace WSSmartPhone
                  + " ,PhiMoNuocThuHo=(select PhiMoNuoc from TT_DichVuThuTong where MaHDs like '%'+CONVERT(varchar(8),hd.ID_HOADON)+'%')"
                  + " ,LenhHuy=case when exists(select MaHD from TT_LenhHuy where MaHD=hd.ID_HOADON) then 'true' else 'false' end"
                  + " from HOADON hd where DANHBA='" + DanhBo + "' and NGAYGIAITRACH is null and hd.ID_HOADON not in (" + MaHDs + ")"
-                 //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
+                //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                  + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
@@ -2852,12 +2852,12 @@ namespace WSSmartPhone
         {
             try
             {
-                string ChiTietCuA = "", ChiTietCuB = "", ChiTietPhiBVMTCuA = "", ChiTietPhiBVMTCuB = "";
-                int TyleSH = 0, TyLeSX = 0, TyLeDV = 0, TyLeHCSN = 0, TongTienCuA = 0, TongTienCuB = 0, PhiBVMTCuA = 0, PhiBVMTCuB = 0, TieuThu_DieuChinhGia = 0, DinhMucHN = 0;
+                string ChiTietNamCu = "", ChiTietNamMoi = "", ChiTietPhiBVMTNamCu = "", ChiTietPhiBVMTNamMoi = "";
+                int TyleSH = 0, TyLeSX = 0, TyLeDV = 0, TyLeHCSN = 0, TongTienNamCu = 0, TongTienNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0, DinhMucHN = 0, TienNuoc = 0, ThueGTGT = 0, TDVTN = 0, ThueTDVTN = 0;
                 List<HOADON> lst = _dbThuTien.HOADONs.Where(item => item.NAM == Nam && item.KY == Ky && item.DOT == Dot && item.ChiTietTienNuoc == null).ToList();
                 foreach (HOADON item in lst)
                 {
-                    ChiTietCuA = ChiTietCuB = "";
+                    ChiTietNamCu = ChiTietNamMoi = "";
                     TyleSH = TyLeSX = TyLeDV = TyLeHCSN = DinhMucHN = 0;
                     if (item.TILESH != null && item.TILESH.Value != 0)
                         TyleSH = item.TILESH.Value;
@@ -2870,19 +2870,19 @@ namespace WSSmartPhone
                     if (item.DinhMucHN != null)
                         DinhMucHN = item.DinhMucHN.Value;
                     if (item.TUNGAY != null)
-                        TinhTienNuoc(true, false, false, 0, item.DANHBA, Ky, Nam, item.TUNGAY.Value, item.DENNGAY.Value, item.GB, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, ref TongTienCuA, ref ChiTietCuA, ref TongTienCuB, ref ChiTietCuB, ref TieuThu_DieuChinhGia, ref  PhiBVMTCuA, ref  ChiTietPhiBVMTCuA, ref  PhiBVMTCuB, ref ChiTietPhiBVMTCuB);
+                        TinhTienNuoc(true, false, false, 0, item.DANHBA, Ky, Nam, item.TUNGAY.Value, item.DENNGAY.Value, item.GB, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, ref TongTienNamCu, ref ChiTietNamCu, ref TongTienNamMoi, ref ChiTietNamMoi, ref TieuThu_DieuChinhGia, ref  PhiBVMTNamCu, ref  ChiTietPhiBVMTNamCu, ref  PhiBVMTNamMoi, ref ChiTietPhiBVMTNamMoi, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                     else
                     {
                         DataTable dt = getDocSo(item.DANHBA, item.NAM.ToString(), item.KY.ToString());
                         if (dt != null && dt.Rows.Count > 0)
                         {
                             DateTime TuNgay = DateTime.Parse(dt.Rows[0]["TuNgay"].ToString()), DenNgay = DateTime.Parse(dt.Rows[0]["DenNgay"].ToString());
-                            TinhTienNuoc(true, false, false, 0, item.DANHBA, Ky, Nam, TuNgay, DenNgay, item.GB, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, ref TongTienCuA, ref ChiTietCuA, ref TongTienCuB, ref ChiTietCuB, ref TieuThu_DieuChinhGia, ref  PhiBVMTCuA, ref  ChiTietPhiBVMTCuA, ref  PhiBVMTCuB, ref ChiTietPhiBVMTCuB);
+                            TinhTienNuoc(true, false, false, 0, item.DANHBA, Ky, Nam, TuNgay, DenNgay, item.GB, TyleSH, TyLeSX, TyLeDV, TyLeHCSN, (int)item.DM.Value, DinhMucHN, (int)item.TIEUTHU.Value, ref TongTienNamCu, ref ChiTietNamCu, ref TongTienNamMoi, ref ChiTietNamMoi, ref TieuThu_DieuChinhGia, ref  PhiBVMTNamCu, ref  ChiTietPhiBVMTNamCu, ref  PhiBVMTNamMoi, ref ChiTietPhiBVMTNamMoi, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                         }
                     }
-                    if (ChiTietCuA != "" || ChiTietCuB != "")
+                    if (ChiTietNamCu != "" || ChiTietNamMoi != "")
                     {
-                        item.ChiTietTienNuoc = ChiTietCuA + "\r\n" + ChiTietCuB;
+                        item.ChiTietTienNuoc = ChiTietNamCu + "\r\n" + ChiTietNamMoi;
                         _dbThuTien.SubmitChanges();
                     }
                     else
@@ -2918,14 +2918,11 @@ namespace WSSmartPhone
                 return false;
         }
 
-        public bool tinhCodeTieuThu(string DocSoID, string Code, int CSM, out int TieuThu, out int GiaBan, out int ThueGTGT, out int PhiBVMT, out int TongCong)
+        public bool tinhCodeTieuThu(string DocSoID, string Code, int CSM, out int TieuThu, out int TienNuoc, out int ThueGTGT, out int TDVTN, out int ThueTDVTN)
         {
             try
             {
-                GiaBan = 0;
-                ThueGTGT = 0;
-                PhiBVMT = 0;
-                TongCong = 0;
+                TienNuoc = ThueGTGT = TDVTN = ThueTDVTN = 0;
                 string sql = "EXEC [dbo].[spTinhTieuThu]"
                    + " @DANHBO = N'" + DocSoID.Substring(6, 11) + "',"
                    + " @KY = " + DocSoID.Substring(4, 2) + ","
@@ -2939,17 +2936,12 @@ namespace WSSmartPhone
                 DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
                 {
-                    int TienNuocA = 0, TienNuocB = 0, PhiBVMTA = 0, PhiBVMTB = 0, TieuThu_DieuChinhGia = 0;
+                    int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
                     TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
                          , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
-                         , int.Parse(dtBienDong.Rows[0]["DM"].ToString()), int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocA, ref ChiTietA, ref TienNuocB, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTA, ref ChiTietPhiBVMTA, ref PhiBVMTB, ref ChiTietPhiBVMTB);
-                    GiaBan = TienNuocA + TienNuocB;
-                    ThueGTGT = (int)Math.Round((double)(TienNuocA + TienNuocB) * 5 / 100, 0, MidpointRounding.AwayFromZero);
-                    PhiBVMT = PhiBVMTA + PhiBVMTB;
-                    TongCong = GiaBan + ThueGTGT + PhiBVMT;
+                         , int.Parse(dtBienDong.Rows[0]["DM"].ToString()), int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                 }
-
                 return true;
             }
             catch (Exception ex)
@@ -2958,29 +2950,22 @@ namespace WSSmartPhone
             }
         }
 
-        public bool tinhCodeTieuThu(string DocSoID, string Code, int TieuThu, out int GiaBan, out int ThueGTGT, out int PhiBVMT, out int TongCong)
+        public bool tinhCodeTieuThu(string DocSoID, string Code, int TieuThu, out int TienNuoc, out int ThueGTGT, out int TDVTN, out int ThueTDVTN)
         {
             try
             {
-                GiaBan = 0;
-                ThueGTGT = 0;
-                PhiBVMT = 0;
-                TongCong = 0;
+                TienNuoc = ThueGTGT = TDVTN = ThueTDVTN = 0;
                 if (TieuThu < 0)
                     return false;
                 DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
                 DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
                 {
-                    int TienNuocA = 0, TienNuocB = 0, PhiBVMTA = 0, PhiBVMTB = 0, TieuThu_DieuChinhGia = 0;
+                    int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
                     TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
                          , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
-                         , int.Parse(dtBienDong.Rows[0]["DM"].ToString()), int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocA, ref ChiTietA, ref TienNuocB, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTA, ref ChiTietPhiBVMTA, ref PhiBVMTB, ref ChiTietPhiBVMTB);
-                    GiaBan = TienNuocA + TienNuocB;
-                    ThueGTGT = (int)Math.Round((double)(TienNuocA + TienNuocB) * 5 / 100, 0, MidpointRounding.AwayFromZero);
-                    PhiBVMT = PhiBVMTA + PhiBVMTB;
-                    TongCong = GiaBan + ThueGTGT + PhiBVMT;
+                         , int.Parse(dtBienDong.Rows[0]["DM"].ToString()), int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                 }
 
                 return true;
@@ -5073,7 +5058,7 @@ namespace WSSmartPhone
             }
         }
 
-        public void TinhTienNuoc(bool KhongApGiaGiam, bool ApGiaNuocCu, bool DieuChinhGia, int GiaDieuChinh, string DanhBo, int Ky, int Nam, DateTime TuNgay, DateTime DenNgay, int GiaBieu, int TyLeSH, int TyLeSX, int TyLeDV, int TyLeHCSN, int TongDinhMuc, int DinhMucHN, int TieuThu, ref int TienNuocCu, ref string ChiTietCu, ref int TienNuocMoi, ref string ChiTietMoi, ref int TieuThu_DieuChinhGia, ref int PhiBVMTCu, ref string ChiTietPhiBVMTCu, ref int PhiBVMTMoi, ref string ChiTietPhiBVMTMoi)
+        public void TinhTienNuoc(bool KhongApGiaGiam, bool ApGiaNuocCu, bool DieuChinhGia, int GiaDieuChinh, string DanhBo, int Ky, int Nam, DateTime TuNgay, DateTime DenNgay, int GiaBieu, int TyLeSH, int TyLeSX, int TyLeDV, int TyLeHCSN, int TongDinhMuc, int DinhMucHN, int TieuThu, ref int TienNuocNamCu, ref string ChiTietNamCu, ref int TienNuocNamMoi, ref string ChiTietNamMoi, ref int TieuThu_DieuChinhGia, ref int PhiBVMTNamCu, ref string ChiTietPhiBVMTNamCu, ref int PhiBVMTNamMoi, ref string ChiTietPhiBVMTNamMoi, ref int TienNuoc, ref int ThueGTGT, ref int TDVTN, ref int ThueTDVTN)
         {
             DataTable dtGiaNuoc = getDS_GiaNuoc();
             //check giảm giá
@@ -5081,8 +5066,8 @@ namespace WSSmartPhone
                 checkExists_GiamGiaNuoc(Nam, Ky, GiaBieu, ref dtGiaNuoc);
 
             int index = -1;
-            TienNuocCu = TienNuocMoi = PhiBVMTCu = PhiBVMTMoi = 0;
-            ChiTietCu = ChiTietMoi = ChiTietPhiBVMTCu = ChiTietPhiBVMTMoi = "";
+            TienNuocNamCu = TienNuocNamMoi = PhiBVMTNamCu = PhiBVMTNamMoi = TienNuoc = ThueGTGT = TDVTN = ThueTDVTN = 0;
+            ChiTietNamCu = ChiTietNamMoi = ChiTietPhiBVMTNamCu = ChiTietPhiBVMTNamMoi = "";
             TieuThu_DieuChinhGia = 0;
             for (int i = 0; i < dtGiaNuoc.Rows.Count; i++)
                 if (TuNgay.Date < DateTime.Parse(dtGiaNuoc.Rows[i]["NgayTangGia"].ToString()).Date && DateTime.Parse(dtGiaNuoc.Rows[i]["NgayTangGia"].ToString()).Date < DenNgay.Date)
@@ -5099,7 +5084,7 @@ namespace WSSmartPhone
                 if (DenNgay.Date < new DateTime(2019, 11, 15))
                 {
                     List<int> lstGiaNuoc = new List<int> { int.Parse(dtGiaNuoc.Rows[index]["SHTM"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHVM1"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHVM2"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SX"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["HCSN"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["KDDV"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHN"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["PhiBVMT"].ToString()) };
-                    TienNuocCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuoc, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, 0, TieuThu, out ChiTietCu, out TieuThu_DieuChinhGia, out PhiBVMTCu, out ChiTietPhiBVMTCu);
+                    TienNuocNamCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuoc, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, 0, TieuThu, out ChiTietNamCu, out TieuThu_DieuChinhGia, out PhiBVMTNamCu, out ChiTietPhiBVMTNamCu);
                 }
                 else
                     if (TuNgay.Date < DateTime.Parse(dtGiaNuoc.Rows[index]["NgayTangGia"].ToString()).Date && DateTime.Parse(dtGiaNuoc.Rows[index]["NgayTangGia"].ToString()).Date < DenNgay.Date)
@@ -5124,31 +5109,45 @@ namespace WSSmartPhone
                             List<int> lstGiaNuocMoi = new List<int> { int.Parse(dtGiaNuoc.Rows[index]["SHTM"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHVM1"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHVM2"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SX"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["HCSN"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["KDDV"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHN"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["PhiBVMT"].ToString()) };
                             //lần đầu áp dụng giá biểu 10, tổng áp giá mới luôn
                             if (TuNgay.Date < new DateTime(2019, 11, 15) && new DateTime(2019, 11, 15) < DenNgay.Date && GiaBieu == 10)
-                                TienNuocCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuocMoi, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMucCu, DinhMucHN_Cu, TieuThuCu, out ChiTietCu, out TieuThu_DieuChinhGia, out PhiBVMTCu, out ChiTietPhiBVMTCu);
+                                TienNuocNamCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuocMoi, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMucCu, DinhMucHN_Cu, TieuThuCu, out ChiTietNamCu, out TieuThu_DieuChinhGia, out PhiBVMTNamCu, out ChiTietPhiBVMTNamCu);
                             else
-                                TienNuocCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuocCu, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMucCu, DinhMucHN_Cu, TieuThuCu, out ChiTietCu, out TieuThu_DieuChinhGia, out PhiBVMTCu, out ChiTietPhiBVMTCu);
-                            TienNuocMoi = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuocMoi, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMucMoi, DinhMucHN_Moi, TieuThuMoi, out ChiTietMoi, out TieuThu_DieuChinhGia, out PhiBVMTMoi, out ChiTietPhiBVMTMoi);
+                                TienNuocNamCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuocCu, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMucCu, DinhMucHN_Cu, TieuThuCu, out ChiTietNamCu, out TieuThu_DieuChinhGia, out PhiBVMTNamCu, out ChiTietPhiBVMTNamCu);
+                            TienNuocNamMoi = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuocMoi, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMucMoi, DinhMucHN_Moi, TieuThuMoi, out ChiTietNamMoi, out TieuThu_DieuChinhGia, out PhiBVMTNamMoi, out ChiTietPhiBVMTNamMoi);
                         }
                         else
                         {
                             List<int> lstGiaNuocCu = new List<int> { int.Parse(dtGiaNuoc.Rows[index - 1]["SHTM"].ToString()), int.Parse(dtGiaNuoc.Rows[index - 1]["SHVM1"].ToString()), int.Parse(dtGiaNuoc.Rows[index - 1]["SHVM2"].ToString()), int.Parse(dtGiaNuoc.Rows[index - 1]["SX"].ToString()), int.Parse(dtGiaNuoc.Rows[index - 1]["HCSN"].ToString()), int.Parse(dtGiaNuoc.Rows[index - 1]["KDDV"].ToString()), int.Parse(dtGiaNuoc.Rows[index - 1]["SHN"].ToString()), int.Parse(dtGiaNuoc.Rows[index - 1]["PhiBVMT"].ToString()) };
-                            TienNuocCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuocCu, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, out ChiTietCu, out TieuThu_DieuChinhGia, out PhiBVMTCu, out ChiTietPhiBVMTCu);
+                            TienNuocNamCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuocCu, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, out ChiTietNamCu, out TieuThu_DieuChinhGia, out PhiBVMTNamCu, out ChiTietPhiBVMTNamCu);
                         }
                     }
                     else
                     {
                         List<int> lstGiaNuoc = new List<int> { int.Parse(dtGiaNuoc.Rows[index]["SHTM"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHVM1"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHVM2"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SX"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["HCSN"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["KDDV"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["SHN"].ToString()), int.Parse(dtGiaNuoc.Rows[index]["PhiBVMT"].ToString()) };
-                        TienNuocCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuoc, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, out ChiTietCu, out TieuThu_DieuChinhGia, out PhiBVMTCu, out ChiTietPhiBVMTCu);
+                        TienNuocNamCu = TinhTienNuoc(DieuChinhGia, GiaDieuChinh, lstGiaNuoc, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, out ChiTietNamCu, out TieuThu_DieuChinhGia, out PhiBVMTNamCu, out ChiTietPhiBVMTNamCu);
                     }
                 if (checkKhongTinhPBVMT(DanhBo) == true)
                 {
-                    PhiBVMTCu = PhiBVMTMoi = 0;
-                    ChiTietPhiBVMTCu = ChiTietPhiBVMTMoi = "";
+                    PhiBVMTNamCu = PhiBVMTNamMoi = 0;
+                    ChiTietPhiBVMTNamCu = ChiTietPhiBVMTNamMoi = "";
                 }
-            }
-            else
-            {
-
+                TienNuoc = TienNuocNamCu + TienNuocNamMoi;
+                ThueGTGT = (int)Math.Round((double)(TienNuocNamCu + TienNuocNamMoi) * 5 / 100, 0, MidpointRounding.AwayFromZero);
+                TDVTN = PhiBVMTNamCu + PhiBVMTNamMoi;
+                //Từ 2022 Phí BVMT -> Tiền Dịch Vụ Thoát Nước
+                if ((TuNgay.Year < 2021) || (TuNgay.Year == 2021 && DenNgay.Year == 2021))
+                {
+                    ThueTDVTN = 0;
+                }
+                else
+                    if (TuNgay.Year == 2021 && DenNgay.Year == 2022)
+                    {
+                        ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamMoi) * 10 / 100, 0, MidpointRounding.AwayFromZero);
+                    }
+                    else
+                        if (TuNgay.Year >= 2022)
+                        {
+                            ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamCu + PhiBVMTNamMoi) * 10 / 100, 0, MidpointRounding.AwayFromZero);
+                        }
             }
         }
 

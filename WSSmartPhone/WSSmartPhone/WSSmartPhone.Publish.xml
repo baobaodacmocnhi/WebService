@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
-  <publishProfile publishUrl="C:\Users\Admin\Desktop\WSSmartPhone" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="Service.asmx" publishTime="12/31/2021 20:43:20" />
-    <file relUrl="WSSmartPhone.Publish.xml" publishTime="01/12/2022 21:28:21" />
-    <file relUrl="wsThuTien.asmx" publishTime="12/31/2021 20:43:20" />
-    <file relUrl="wsDHN.asmx" publishTime="12/31/2021 20:43:20" />
-    <file relUrl="Web.config" publishTime="01/12/2022 21:41:00" />
-    <file relUrl="wsBilling.asmx" publishTime="12/31/2021 20:43:20" />
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="01/12/2022 21:41:00" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="01/12/2022 21:41:00" />
+  <publishProfile publishUrl="C:\Users\BaoBao\Desktop\WSSmartPhone" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
+    <file relUrl="Service.asmx" publishTime="12/22/2017 09:29:04" />
+    <file relUrl="WSSmartPhone.Publish.xml" publishTime="01/14/2022 14:37:25" />
+    <file relUrl="wsThuTien.asmx" publishTime="06/27/2018 08:17:45" />
+    <file relUrl="wsDHN.asmx" publishTime="12/28/2021 09:14:31" />
+    <file relUrl="Web.config" publishTime="01/14/2022 14:37:38" />
+    <file relUrl="wsBilling.asmx" publishTime="12/30/2021 09:14:39" />
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="01/14/2022 14:21:35" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="01/14/2022 14:21:35" />
   </publishProfile>
 </publishData>

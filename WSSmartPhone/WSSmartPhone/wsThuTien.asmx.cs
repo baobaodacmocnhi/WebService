@@ -412,9 +412,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public void TinhTienNuoc(bool KhongApGiaGiam, bool ApGiaNuocCu, bool DieuChinhGia, int GiaDieuChinh, string DanhBo, int Ky, int Nam, DateTime TuNgay, DateTime DenNgay, int GiaBieu, int TyLeSH, int TyLeSX, int TyLeDV, int TyLeHCSN, int TongDinhMuc, int DinhMucHN, int TieuThu, ref int TienNuocCu, ref string ChiTietCu, ref int TienNuocMoi, ref string ChiTietMoi, ref int TieuThu_DieuChinhGia, ref int PhiBVMTCu, ref string ChiTietPhiBVMTCu, ref int PhiBVMTMoi, ref string ChiTietPhiBVMTMoi)
+        public void TinhTienNuoc(bool KhongApGiaGiam, bool ApGiaNuocCu, bool DieuChinhGia, int GiaDieuChinh, string DanhBo, int Ky, int Nam, DateTime TuNgay, DateTime DenNgay, int GiaBieu, int TyLeSH, int TyLeSX, int TyLeDV, int TyLeHCSN, int TongDinhMuc, int DinhMucHN, int TieuThu, ref int TienNuocNamCu, ref string ChiTietNamCu, ref int TienNuocNamMoi, ref string ChiTietNamMoi, ref int TieuThu_DieuChinhGia, ref int PhiBVMTNamCu, ref string ChiTietPhiBVMTNamCu, ref int PhiBVMTNamMoi, ref string ChiTietPhiBVMTNamMoi, ref int TienNuoc, ref int ThueGTGT, ref int TDVTN, ref int ThueTDVTN)
         {
-            _cThuTien.TinhTienNuoc(KhongApGiaGiam, ApGiaNuocCu, DieuChinhGia, GiaDieuChinh, DanhBo, Ky, Nam, TuNgay, DenNgay, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, ref  TienNuocCu, ref  ChiTietCu, ref  TienNuocMoi, ref  ChiTietMoi, ref  TieuThu_DieuChinhGia, ref  PhiBVMTCu, ref  ChiTietPhiBVMTCu, ref  PhiBVMTMoi, ref  ChiTietPhiBVMTMoi);
+            _cThuTien.TinhTienNuoc(KhongApGiaGiam, ApGiaNuocCu, DieuChinhGia, GiaDieuChinh, DanhBo, Ky, Nam, TuNgay, DenNgay, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, ref  TienNuocNamCu, ref  ChiTietNamCu, ref  TienNuocNamMoi, ref  ChiTietNamMoi, ref  TieuThu_DieuChinhGia, ref  PhiBVMTNamCu, ref  ChiTietPhiBVMTNamCu, ref  PhiBVMTNamMoi, ref  ChiTietPhiBVMTNamMoi, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
         }
 
 
