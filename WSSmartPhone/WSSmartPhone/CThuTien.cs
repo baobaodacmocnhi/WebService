@@ -2929,7 +2929,11 @@ namespace WSSmartPhone
                    + " @NAM = " + DocSoID.Substring(0, 4) + ","
                    + " @CODE = N'" + Code + "',"
                    + " @CSMOI = " + CSM;
-                TieuThu = (int)_cDAL_DocSo.ExecuteQuery_ReturnOneValue(sql);
+                object result=_cDAL_DocSo.ExecuteQuery_ReturnOneValue(sql);
+                if (result != null)
+                    TieuThu = (int)result;
+                else
+                    TieuThu = 0;
                 if (TieuThu < 0)
                     return false;
                 DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
@@ -2967,7 +2971,6 @@ namespace WSSmartPhone
                          , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
                          , int.Parse(dtBienDong.Rows[0]["DM"].ToString()), int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                 }
-
                 return true;
             }
             catch (Exception ex)
