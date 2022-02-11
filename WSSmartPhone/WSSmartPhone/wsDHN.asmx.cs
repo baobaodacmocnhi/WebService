@@ -22,7 +22,7 @@ namespace WSSmartPhone
         CThuTien _cThuTien = new CThuTien();
 
         [WebMethod]
-        public bool insertBilling(string DocSoID, string checksum)
+        public bool insertBilling(string DocSoID, string checksum, out string message)
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(@"http://192.168.90.6:82/wsbilling.asmx?op=insertBilling");
             webRequest.Headers.Add(@"SOAP:Action");
@@ -51,7 +51,13 @@ namespace WSSmartPhone
                 using (StreamReader rd = new StreamReader(response.GetResponseStream()))
                 {
                     string soapResult = rd.ReadToEnd();
-                    return bool.Parse(soapResult);
+                    bool result;
+                    Boolean.TryParse(soapResult, out result);
+                    message = soapResult;
+                    if (result == true)
+                        return true;
+                    else
+                        return false;
                 }
             }
         }
