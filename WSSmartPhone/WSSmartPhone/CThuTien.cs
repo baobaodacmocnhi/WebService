@@ -2903,6 +2903,102 @@ namespace WSSmartPhone
 
         #region QLĐHN
 
+        public string GetVersion_DHN()
+        {
+            return _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select Version from DeviceConfig").ToString();
+        }
+
+        public bool UpdateUID_DHN(string MaNV, string UID)
+        {
+            return _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
+        }
+
+        public string DangNhaps_DHN(string Username, string Password, string IDMobile, string UID)
+        {
+            try
+            {
+                object MaNV = null;
+                MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+                if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
+                    MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
+
+                if (MaNV == null || MaNV.ToString() == "")
+                    return "false;Sai mật khẩu hoặc IDMobile";
+
+                //xóa máy đăng nhập MaNV khác
+                object MaNV_UID_Old = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
+                    _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+
+                //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
+                //{
+                //    DataTable dt = _cDAL.ExecuteQuery_DataTable("select UID from TT_DeviceSigned where MaNV=" + MaNV);
+                //    foreach (DataRow item in dt.Rows)
+                //    {
+                //        SendNotificationToClient("Thông Báo Đăng Xuất", "Hệ thống server gửi đăng xuất đến thiết bị", item["UID"].ToString(), "DangXuat", "DangXuat", "false", "");
+                //        _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + item["UID"].ToString() + "'");
+                //    }
+                //}
+
+                object MaNV_UID = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                if (MaNV_UID != null)
+                    if ((int)MaNV_UID == 0)
+                        _cDAL_DocSo.ExecuteNonQuery("insert DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                    else
+                        _cDAL_DocSo.ExecuteNonQuery("update DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+
+                //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
+
+                return "true;" + DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,MaTo,DienThoai from NguoiDung where MaND=" + MaNV));
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string DangXuats_DHN(string Username, string UID)
+        {
+            try
+            {
+                //string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
+
+                //_cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+
+                return _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string DangXuats_Person_DHN(string Username, string UID)
+        {
+            try
+            {
+                object MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
+
+                if (MaNV != null)
+                    _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+
+                return _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
+            }
+            catch (Exception ex)
+            {
+                return "false;" + ex.Message;
+            }
+        }
+
+        public string getDS_Nam_DHN()
+        {
+            string sql = "select Nam=CAST(SUBSTRING(BillID,0,5)as int)"
+                          + " from BillState"
+                          + " group by SUBSTRING(BillID,0,5)"
+                          + " order by Nam desc";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
         //đọc số
         public DataTable getDocSo(string DanhBo, string Nam, string Ky)
         {

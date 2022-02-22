@@ -22,6 +22,42 @@ namespace WSSmartPhone
         CThuTien _cThuTien = new CThuTien();
 
         [WebMethod]
+        public string GetVersion()
+        {
+            return _cThuTien.GetVersion_DHN();
+        }
+
+        [WebMethod]
+        public bool UpdateUID(string MaNV, string UID)
+        {
+            return _cThuTien.UpdateUID_DHN(MaNV, UID);
+        }
+
+        [WebMethod]
+        public string DangNhaps(string Username, string Password, string IDMobile, string UID)
+        {
+            return _cThuTien.DangNhaps_DHN(Username, Password, IDMobile, UID);
+        }
+
+        [WebMethod]
+        public string DangXuats(string Username, string UID)
+        {
+            return _cThuTien.DangXuats_DHN(Username, UID);
+        }
+
+        [WebMethod]
+        public string DangXuats_Person(string Username, string UID)
+        {
+            return _cThuTien.DangXuats_Person_DHN(Username, UID);
+        }
+
+        [WebMethod]
+        public string getDS_Nam()
+        {
+            return _cThuTien.getDS_Nam_DHN();
+        }
+
+        [WebMethod]
         public bool insertBilling(string DocSoID, string checksum, out string message)
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(@"http://192.168.90.6:82/wsbilling.asmx?op=insertBilling");
@@ -73,5 +109,7 @@ namespace WSSmartPhone
         {
             return _cThuTien.tinhCodeTieuThu(DocSoID, Code, CSM, out TieuThu, out GiaBan, out ThueGTGT, out PhiBVMT, out TongCong);
         }
+
+
     }
 }
