@@ -2949,7 +2949,7 @@ namespace WSSmartPhone
 
                 //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,MaTo,DienThoai from NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,Doi,ToTruong,MaTo,DienThoai from NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -2999,6 +2999,39 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
+        public string getDS_To_DHN()
+        {
+            string sql = "select MaTo,TenTo,HanhThu from [To] where HanhThu=1";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_NhanVien_HanhThu_DHN()
+        {
+            string sql = "select MaND,HoTen,May,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from NguoiDung where MaND!=0 and May is not null and An=0 order by STT asc";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_NhanVien_DHN()
+        {
+            string sql = "select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and An=0 order by STT asc";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_NhanVien_DHN(string MaTo)
+        {
+            string sql = "select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May)
+        {
+            string sql = "select MLT=kh.LOTRINH,DanhBo=DanhBa,HoTen=kh.HOTEN,DiaChi=kh.SONHA+' '+kh.TENDUONG"
+                        + " ,"
+                        + " from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
+                        + " where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and May=" + May;
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
         //đọc số
         public DataTable getDocSo(string DanhBo, string Nam, string Ky)
         {
@@ -3025,7 +3058,7 @@ namespace WSSmartPhone
                    + " @NAM = " + DocSoID.Substring(0, 4) + ","
                    + " @CODE = N'" + Code + "',"
                    + " @CSMOI = " + CSM;
-                object result=_cDAL_DocSo.ExecuteQuery_ReturnOneValue(sql);
+                object result = _cDAL_DocSo.ExecuteQuery_ReturnOneValue(sql);
                 if (result != null)
                     TieuThu = (int)result;
                 else

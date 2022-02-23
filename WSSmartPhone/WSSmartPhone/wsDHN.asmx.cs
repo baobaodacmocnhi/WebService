@@ -58,6 +58,36 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string GetDSTo()
+        {
+            return _cThuTien.getDS_To_DHN();
+        }
+
+        [WebMethod]
+        public string getDS_NhanVien_HanhThu()
+        {
+            return _cThuTien.getDS_NhanVien_HanhThu_DHN();
+        }
+
+        [WebMethod]
+        public string GetDSNhanVienTo(string MaTo)
+        {
+            return _cThuTien.getDS_NhanVien_DHN(MaTo);
+        }
+
+        [WebMethod]
+        public string getDS_NhanVien()
+        {
+            return _cThuTien.getDS_NhanVien_DHN();
+        }
+
+        [WebMethod]
+        public string getDS_DocSo(string Nam, string Ky, string Dot, string May)
+        {
+            return _cThuTien.getDS_DocSo_DHN(Nam, Ky, Dot, May);
+        }
+
+        [WebMethod]
         public bool insertBilling(string DocSoID, string checksum, out string message)
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(@"http://192.168.90.6:82/wsbilling.asmx?op=insertBilling");
