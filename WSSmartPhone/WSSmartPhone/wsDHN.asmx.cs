@@ -88,6 +88,20 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string getDS_Code()
+        {
+            return _cThuTien.getDS_Code_DHN();
+        }
+
+        [WebMethod]
+        public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string MaNV)
+        {
+            return _cThuTien.ghiChiSo_DHN(ID, Code, ChiSo, HinhDHN, MaNV);
+        }
+
+
+
+        [WebMethod]
         public bool insertBilling(string DocSoID, string checksum, out string message)
         {
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(@"http://192.168.90.6:82/wsbilling.asmx?op=insertBilling");
