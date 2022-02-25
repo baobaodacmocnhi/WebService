@@ -94,12 +94,40 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string MaNV)
+        public string getDS_ViTriDHN()
         {
-            return _cThuTien.ghiChiSo_DHN(ID, Code, ChiSo, HinhDHN, MaNV);
+            return _cThuTien.getDS_ViTriDHN();
         }
 
+        [WebMethod]
+        public string get_GhiChu(string DanhBo)
+        {
+            return _cThuTien.get_GhiChu_DHN(DanhBo);
+        }
 
+        [WebMethod]
+        public bool update_GhiChu(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string MaNV)
+        {
+            return _cThuTien.update_GhiChu_DHN(DanhBo,SoNha, TenDuong, ViTri1, ViTri2, Gieng,MaNV);
+        }
+
+        [WebMethod]
+        public bool update_DienThoai(string DanhBo, string DienThoai, string HoTen, string MaNV)
+        {
+            return _cThuTien.update_DienThoai_DHN(DanhBo, DienThoai, HoTen, MaNV);
+        }
+
+        [WebMethod]
+        public bool delete_DienThoai(string DanhBo, string DienThoai)
+        {
+            return _cThuTien.delete_DienThoai_DHN(DanhBo, DienThoai);
+        }
+
+        [WebMethod]
+        public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV)
+        {
+            return _cThuTien.ghiChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV);
+        }
 
         [WebMethod]
         public bool insertBilling(string DocSoID, string checksum, out string message)
