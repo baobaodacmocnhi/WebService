@@ -3227,7 +3227,7 @@ namespace WSSmartPhone
                         + " if exists(select DanhBo from SDT_DHN where DanhBo=@DanhBo and DienThoai=@DienThoai)"
                         + " update SDT_DHN set HoTen=@HoTen,SoChinh=@SoChinh,ModifyBy=" + MaNV + ",ModifyDate=GETDATE() where DanhBo=@DanhBo and DienThoai=@DienThoai"
                         + " else"
-                        + " insert into SDT_DHN(DanhBo,DienThoai,HoTen,SoChinh,CreateBy,CreateDate)values(@DanhBo,@DienThoai,@HoTen,@SoChinh," + MaNV + ",GETDATE())";
+                        + " insert into SDT_DHN(DanhBo,DienThoai,HoTen,SoChinh,GhiChu,CreateBy,CreateDate)values(@DanhBo,@DienThoai,@HoTen,@SoChinh,N'P.KH'," + MaNV + ",GETDATE())";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
