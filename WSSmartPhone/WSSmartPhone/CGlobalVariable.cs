@@ -22,10 +22,11 @@ namespace WSSmartPhone
         public string error;
         public string alert;
         public string message;
+        public string hoadonton;
         public CResult()
         {
             success = false;
-            error = message = alert = "";
+            error = message = alert = hoadonton="";
         }
     }
 

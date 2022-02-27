@@ -106,19 +106,25 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool update_GhiChu(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string MaNV)
+        public string update_GhiChu(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string MaNV)
         {
-            return _cThuTien.update_GhiChu_DHN(DanhBo,SoNha, TenDuong, ViTri1, ViTri2, Gieng,MaNV);
+            return _cThuTien.update_GhiChu_DHN(DanhBo, SoNha, TenDuong, ViTri1, ViTri2, Gieng, MaNV);
         }
 
         [WebMethod]
-        public bool update_DienThoai(string DanhBo, string DienThoai, string HoTen, string MaNV)
+        public string getDS_DienThoai(string DanhBo)
         {
-            return _cThuTien.update_DienThoai_DHN(DanhBo, DienThoai, HoTen, MaNV);
+            return _cThuTien.getDS_DienThoai_DHN(DanhBo);
         }
 
         [WebMethod]
-        public bool delete_DienThoai(string DanhBo, string DienThoai)
+        public string update_DienThoai(string DanhBo, string DienThoai, string HoTen, string SoChinh, string MaNV)
+        {
+            return _cThuTien.update_DienThoai_DHN(DanhBo, DienThoai, HoTen, SoChinh, MaNV);
+        }
+
+        [WebMethod]
+        public string delete_DienThoai(string DanhBo, string DienThoai)
         {
             return _cThuTien.delete_DienThoai_DHN(DanhBo, DienThoai);
         }
