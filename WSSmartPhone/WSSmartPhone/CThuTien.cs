@@ -3054,6 +3054,44 @@ namespace WSSmartPhone
                         + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
 
             ;
+            DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
+            for (int i = 0; i < length; i++)
+            {
+                
+            }
+            return DataTableToJSON(dt);
+        }
+
+        public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May, string Code)
+        {
+            string sql = "DECLARE @LastNamKy INT;"
+                        + " SET @LastNamKy = " + Nam + " * 12 + " + Ky + ";"
+                        + " IF (OBJECT_ID('tempdb.dbo.#ChiSo', 'U') IS NOT NULL) DROP TABLE #ChiSo;"
+                        + " SELECT DanhBa, MAX([ChiSo0]) AS [ChiSo0], MAX([ChiSo1]) AS [ChiSo1], MAX([ChiSo2]) AS [ChiSo2], MAX([Code0]) AS [Code0],"
+                        + "     MAX([Code1]) AS [Code1], MAX([Code2]) AS [Code2], MAX([TieuThu0]) AS [TieuThu0], MAX([TieuThu1]) AS [TieuThu1],"
+                        + "     MAX([TieuThu2]) AS [TieuThu2]"
+                        + "     INTO #ChiSo"
+                        + "     FROM ("
+                        + "         SELECT DanhBa, 'ChiSo'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS ChiSoKy, 'Code'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS CodeKy,"
+                        + "             'TieuThu'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS TieuThuKy, [CSCu], [CodeCu], [TieuThuCu]"
+                        + "             FROM [DocSoTH].[dbo].[DocSo]"
+                        + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and PhanMay=" + May + ") src"
+                        + "     PIVOT (MAX([CSCu]) FOR ChiSoKy IN ([ChiSo0],[ChiSo1],[ChiSo2])) piv_cs"
+                        + "     PIVOT (MAX([CodeCu]) FOR CodeKy IN ([Code0],[Code1],[Code2])) piv_code"
+                        + "     PIVOT (MAX([TieuThuCu]) FOR TieuThuKy IN ([TieuThu0],[TieuThu1],[TieuThu2])) piv_tt"
+                        + "     GROUP BY DanhBa;"
+                        + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot"
+                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2"
+                        + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
+                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,cs.*"
+                        + "                          ,kh.Gieng,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
+                        + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + ")"
+                        + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
+                        + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
+                        + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
+                        + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " and CodeMoi='" + Code + "' and not exists(select * from BillState where BillID=" + Nam + Ky + Dot + " and izDS=1) order by ds.MLT1 asc";
+
+            ;
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
@@ -3134,7 +3172,7 @@ namespace WSSmartPhone
 
         public string get_GhiChu_DHN(string DanhBo)
         {
-            string sql = "select SoNha,TenDuong,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,Gieng from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ","") + "'";
+            string sql = "select SoNha,TenDuong,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,Gieng from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'";
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable(sql));
         }
 
