@@ -26,12 +26,16 @@ namespace WSSmartPhone
         public CResult()
         {
             success = false;
-            error = message = alert = hoadonton="";
+            error = message = alert = hoadonton = "";
         }
     }
 
     public class CHoaDon
     {
         public int TieuThu, TienNuoc, ThueGTGT, PhiBVMT, PhiBVMT_Thue, TongCong;
+        public CHoaDon()
+        {
+            TieuThu = TienNuoc = ThueGTGT = PhiBVMT = PhiBVMT_Thue = TongCong = 0;
+        }
     }
 }
