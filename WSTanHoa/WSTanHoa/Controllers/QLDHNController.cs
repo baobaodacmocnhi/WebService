@@ -13,5 +13,10 @@ namespace WSTanHoa.Controllers
         {
             return View();
         }
+
+        public ActionResult TaiApp()
+        {
+            return Redirect("http://113.161.88.180:81/app/docso.apk");
+        }
     }
 }

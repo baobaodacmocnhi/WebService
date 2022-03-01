@@ -172,10 +172,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>02/28/2022 08:23:36</publishTime>
+      <publishTime>03/01/2022 08:51:22</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>02/28/2022 08:23:38</publishTime>
+      <publishTime>03/01/2022 08:51:23</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -865,7 +865,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/KhachHang/ThongTin.cshtml">
-      <publishTime>10/12/2021 09:04:53</publishTime>
+      <publishTime>12/10/2021 09:04:53</publishTime>
     </File>
     <File Include="Views/KhieuNai/Create.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -883,19 +883,19 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/QLDHN/BaoChiSoNuoc.cshtml">
-      <publishTime>01/11/2021 15:55:16</publishTime>
+      <publishTime>11/01/2021 15:55:16</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>02/28/2022 16:47:43</publishTime>
+      <publishTime>03/01/2022 08:54:11</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/ThuongVu/TinhTienNuoc.cshtml">
-      <publishTime>08/12/2021 15:49:33</publishTime>
+      <publishTime>12/08/2021 15:49:33</publishTime>
     </File>
     <File Include="Views/ThuongVu/viewFile.cshtml">
       <publishTime>11/29/2021 10:30:29</publishTime>
@@ -931,10 +931,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:13</publishTime>
     </File>
     <File Include="Web References/WebReference/Reference.map">
-      <publishTime>07/12/2021 16:27:12</publishTime>
+      <publishTime>12/07/2021 16:27:12</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>07/12/2021 16:27:32</publishTime>
+      <publishTime>12/07/2021 16:27:32</publishTime>
     </File>
   </ItemGroup>
 </Project>

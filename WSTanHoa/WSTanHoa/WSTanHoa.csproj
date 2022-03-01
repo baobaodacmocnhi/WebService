@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Log\" />
+    <Folder Include="Views\ThuTien\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Controllers\QLDHNController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ThuongVuController.cs" />
+    <Compile Include="Controllers\ThuTienController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\ZaloChatController.cs" />
     <Compile Include="Controllers\ZaloController.cs" />
