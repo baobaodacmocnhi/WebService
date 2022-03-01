@@ -23,6 +23,7 @@ namespace WSSmartPhone
         dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
         CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
         JavaScriptSerializer jss = new JavaScriptSerializer();
 
@@ -3024,6 +3025,11 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
+        public string getDS_ViTriDHN()
+        {
+            return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable("select KyHieu from ViTriDHN"));
+        }
+
         public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May)
         {
             string sql = "DECLARE @LastNamKy INT;"
@@ -3045,7 +3051,7 @@ namespace WSSmartPhone
                         + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot"
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
-                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,cs.*"
+                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + ")"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
@@ -3074,7 +3080,7 @@ namespace WSSmartPhone
                 {
                     iDot--;
                 }
-                dt.Merge(getDS_DocSo_DHN(iNam.ToString("0000"), iKy.ToString("00"), iDot.ToString("00"), May, "K"));
+                dt.Merge(getDS_DocSo_DHN(iNam.ToString("0000"), iKy.ToString("00"), iDot.ToString("00"), May, "F"));
                 i--;
             }
             return DataTableToJSON(dt);
@@ -3101,14 +3107,14 @@ namespace WSSmartPhone
                         + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot"
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
-                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,cs.*"
+                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + ")"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
                         + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
-                        + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " and CodeMoi='" + Code + "' and not exists(select * from BillState where BillID=" + Nam + Ky + Dot + " and izDS=1) order by ds.MLT1 asc";
+                        + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " and CodeMoi like '" + Code + "%' and not exists(select * from BillState where BillID=" + Nam + Ky + Dot + " and izDS=1) order by ds.MLT1 asc";
 
             ;
             return _cDAL_DocSo.ExecuteQuery_DataTable(sql);
@@ -3172,6 +3178,31 @@ namespace WSSmartPhone
             return jss.Serialize(result);
         }
 
+        public byte[] getHinh_DHN(string ID)
+        {
+            byte[] hinh = null;
+            string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+            string filename = ID.Substring(6, 11) + ".jpg";
+            bool fileExists = File.Exists(folder + @"\" + filename);
+            if (fileExists == true)
+            {
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    Image img = Image.FromFile(folder + @"\" + filename);
+                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    hinh = ms.ToArray();
+                }
+            }
+            else
+            {
+                string sql = "SELECT top 1 Image " +
+                   "FROM DocSoTH_Hinh.dbo.HinhDHN " +
+                   "WHERE HinhDHNID =" + ID;
+                hinh = (byte[])_cDAL_DocSo12.ExecuteQuery_ReturnOneValue(sql);
+            }
+            return hinh;
+        }
+
         public bool ghiHinh_DHN(string ID, string HinhDHN)
         {
             try
@@ -3195,11 +3226,6 @@ namespace WSSmartPhone
             {
                 throw ex;
             }
-        }
-
-        public string getDS_ViTriDHN()
-        {
-            return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable("select KyHieu from ViTriDHN"));
         }
 
         public string get_GhiChu_DHN(string DanhBo)

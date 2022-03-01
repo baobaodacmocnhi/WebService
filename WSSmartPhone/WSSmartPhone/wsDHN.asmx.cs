@@ -100,6 +100,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public byte[] get_Hinh(string ID)
+        {
+            return _cThuTien.getHinh_DHN(ID);
+        }
+
+        [WebMethod]
         public string get_GhiChu(string DanhBo)
         {
             return _cThuTien.get_GhiChu_DHN(DanhBo);
