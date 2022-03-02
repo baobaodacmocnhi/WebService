@@ -3059,31 +3059,31 @@ namespace WSSmartPhone
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
                         + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
-
             ;
-            DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
-            int i = 4, iNam = int.Parse(Nam), iKy = int.Parse(Ky), iDot = int.Parse(Dot);
-            while (i > 0)
-            {
-                if (iDot == 1)
-                {
-                    iDot = 20;
-                    if (iKy == 1)
-                    {
-                        iKy = 12;
-                        iNam--;
-                    }
-                    else
-                        iKy--;
-                }
-                else
-                {
-                    iDot--;
-                }
-                dt.Merge(getDS_DocSo_DHN(iNam.ToString("0000"), iKy.ToString("00"), iDot.ToString("00"), May, "F"));
-                i--;
-            }
-            return DataTableToJSON(dt);
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+            //DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
+            //int i = 4, iNam = int.Parse(Nam), iKy = int.Parse(Ky), iDot = int.Parse(Dot);
+            //while (i > 0)
+            //{
+            //    if (iDot == 1)
+            //    {
+            //        iDot = 20;
+            //        if (iKy == 1)
+            //        {
+            //            iKy = 12;
+            //            iNam--;
+            //        }
+            //        else
+            //            iKy--;
+            //    }
+            //    else
+            //    {
+            //        iDot--;
+            //    }
+            //    dt.Merge(getDS_DocSo_DHN(iNam.ToString("0000"), iKy.ToString("00"), iDot.ToString("00"), May, "F"));
+            //    i--;
+            //}
+            //return DataTableToJSON(dt);
         }
 
         public DataTable getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May, string Code)
@@ -3115,7 +3115,6 @@ namespace WSSmartPhone
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
                         + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " and CodeMoi like '" + Code + "%' and not exists(select * from BillState where BillID=" + Nam + Ky + Dot + " and izDS=1) order by ds.MLT1 asc";
-
             ;
             return _cDAL_DocSo.ExecuteQuery_DataTable(sql);
         }
@@ -3135,7 +3134,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN order by stt asc"));
         }
 
-        public string ghiChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV)
+        public string ghiChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
         {
             CResult result = new CResult();
             try
@@ -3143,31 +3142,46 @@ namespace WSSmartPhone
                 if (checkChot_BillState_DHN(ID.Substring(0, 4), ID.Substring(3, 2), Dot) == true)
                 {
                     result.success = false;
-                    result.message = "Đã chốt dữ liệu";
+                    result.error = "Đã chốt dữ liệu";
                 }
                 else
                     if (checkXuLy_DHN(ID) == true)
                     {
                         result.success = false;
-                        result.message = "Tổ đã xử lý";
+                        result.error = "Tổ đã xử lý";
                     }
                     else
                     {
                         CHoaDon hd = new CHoaDon();
                         bool success = tinhCodeTieuThu(ID, Code, int.Parse(ChiSo), out hd.TieuThu, out hd.TienNuoc, out hd.ThueGTGT, out hd.PhiBVMT, out hd.PhiBVMT_Thue);
-                        if (success == true)
+                        if (hd.TieuThu < 0)
                         {
-                            hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
-                            string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
-                                + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",TongTien=" + hd.TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
-                            success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                            success = ghiHinh_DHN(ID, HinhDHN);
-                            result.success = success;
-                            DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + ID.Substring(6, 11) + ")");
-                            if (dt.Rows.Count > 0)
-                                result.hoadonton = jss.Serialize(dt);
+                            result.success = false;
+                            result.error = "Tiêu Thụ âm = " + hd.TieuThu;
                         }
-                        result.message = jss.Serialize(hd);
+                        else
+                            if (success == true)
+                            {
+                                hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
+                                string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
+                                    + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",TongTien=" + hd.TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
+                                success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                                success = ghiHinh_DHN(ID, HinhDHN);
+                                result.success = success;
+                                if (hd.TieuThu == 0)
+                                {
+                                    result.alert = "Tiêu Thụ = " + hd.TieuThu;
+                                }
+                                else
+                                    if (hd.TieuThu > 0 && hd.TieuThu >= int.Parse(TBTT) * 1.4)
+                                    {
+                                        result.alert = "Tiêu Thụ bất thường " + hd.TieuThu;
+                                    }
+                                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select KyHD,TongCong from fnGetHoaDonTon(" + ID.Substring(6, 11) + ")");
+                                if (dt.Rows.Count > 0)
+                                    result.hoadonton = DataTableToJSON(dt);
+                                result.message = jss.Serialize(hd);
+                            }
                     }
             }
             catch (Exception ex)

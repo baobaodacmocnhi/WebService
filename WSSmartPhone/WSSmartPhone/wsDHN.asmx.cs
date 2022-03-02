@@ -136,9 +136,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV)
+        public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
         {
-            return _cThuTien.ghiChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV);
+            return _cThuTien.ghiChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV, TBTT);
         }
 
         [WebMethod]
@@ -193,7 +193,6 @@ namespace WSSmartPhone
         {
             return _cThuTien.tinhCodeTieuThu(DocSoID, Code, CSM, out TieuThu, out GiaBan, out ThueGTGT, out PhiBVMT, out TongCong);
         }
-
 
     }
 }

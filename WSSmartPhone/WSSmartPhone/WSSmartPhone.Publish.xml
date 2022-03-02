@@ -2,12 +2,12 @@
 <publishData>
   <publishProfile publishUrl="C:\Users\BaoBao\Desktop\WSSmartPhone" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
     <file relUrl="Service.asmx" publishTime="12/22/2017 09:29:04" />
-    <file relUrl="WSSmartPhone.Publish.xml" publishTime="03/01/2022 15:56:11" />
+    <file relUrl="WSSmartPhone.Publish.xml" publishTime="03/02/2022 16:07:04" />
     <file relUrl="wsThuTien.asmx" publishTime="06/27/2018 08:17:45" />
     <file relUrl="wsDHN.asmx" publishTime="12/28/2021 09:14:31" />
     <file relUrl="Web.config" publishTime="03/01/2022 11:14:42" />
     <file relUrl="wsBilling.asmx" publishTime="12/30/2021 09:14:39" />
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="03/01/2022 16:20:29" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="03/01/2022 16:20:30" />
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="03/02/2022 16:19:29" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="03/02/2022 16:19:29" />
   </publishProfile>
 </publishData>
