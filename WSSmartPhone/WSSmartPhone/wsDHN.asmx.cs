@@ -136,6 +136,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public bool xoaHinh(string ID)
+        {
+            return _cThuTien.xoaHinh_DHN(ID);
+        }
+
+        [WebMethod]
         public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
         {
             return _cThuTien.ghiChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV, TBTT);
@@ -194,5 +200,11 @@ namespace WSSmartPhone
             return _cThuTien.tinhCodeTieuThu(DocSoID, Code, CSM, out TieuThu, out GiaBan, out ThueGTGT, out PhiBVMT, out TongCong);
         }
 
+        //send notification
+        [WebMethod]
+        public string SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)
+        {
+            return _cThuTien.SendNotificationToClient_DHN(Title, Content, UID, Action, NameUpdate, ValueUpdate, ID);
+        }
     }
 }

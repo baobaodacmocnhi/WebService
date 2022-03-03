@@ -343,13 +343,11 @@ namespace WSSmartPhone
             {
                 string serverKey = "AAAAYRLMnTg:APA91bH4MPTCqY4WntyOtKOo-DARDX3fIFXDihCdNyxRVzZilsP_pWE9kMYrWDyUjo-XGgX7IZuSzwz-zZYHgMyMLtTx9S3YdrSAwyqNgHjNaWehxtu5Usnd36q1lEo6e2zQRx7R6Wf3";
                 string senderId = "416927227192";
-
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://fcm.googleapis.com/fcm/send");
                 request.Method = "POST";
                 request.Headers.Add("Authorization", "key=" + serverKey);
                 request.Headers.Add("Sender", "id=" + senderId);
                 request.ContentType = "application/json";
-
                 var data = new
                 {
                     to = UID,
@@ -363,8 +361,6 @@ namespace WSSmartPhone
                         ID = ID,
                     }
                 };
-
-
                 var json = jss.Serialize(data);
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 request.ContentLength = byteArray.Length;
@@ -372,7 +368,6 @@ namespace WSSmartPhone
                 Stream dataStream = request.GetRequestStream();
                 dataStream.Write(byteArray, 0, byteArray.Length);
                 dataStream.Close();
-
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
@@ -3194,27 +3189,34 @@ namespace WSSmartPhone
 
         public byte[] getHinh_DHN(string ID)
         {
-            byte[] hinh = null;
-            string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
-            string filename = ID.Substring(6, 11) + ".jpg";
-            bool fileExists = File.Exists(folder + @"\" + filename);
-            if (fileExists == true)
+            try
             {
-                using (MemoryStream ms = new MemoryStream())
+                byte[] hinh = null;
+                string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+                string filename = ID.Substring(6, 11) + ".jpg";
+                bool fileExists = File.Exists(folder + @"\" + filename);
+                if (fileExists == true)
                 {
-                    Image img = Image.FromFile(folder + @"\" + filename);
-                    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    hinh = ms.ToArray();
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        Image img = Image.FromFile(folder + @"\" + filename);
+                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        hinh = ms.ToArray();
+                    }
                 }
+                else
+                {
+                    string sql = "SELECT top 1 Image " +
+                       "FROM DocSoTH_Hinh.dbo.HinhDHN " +
+                       "WHERE HinhDHNID =" + ID;
+                    hinh = (byte[])_cDAL_DocSo12.ExecuteQuery_ReturnOneValue(sql);
+                }
+                return hinh;
             }
-            else
+            catch
             {
-                string sql = "SELECT top 1 Image " +
-                   "FROM DocSoTH_Hinh.dbo.HinhDHN " +
-                   "WHERE HinhDHNID =" + ID;
-                hinh = (byte[])_cDAL_DocSo12.ExecuteQuery_ReturnOneValue(sql);
+                return null;
             }
-            return hinh;
         }
 
         public bool ghiHinh_DHN(string ID, string HinhDHN)
@@ -3234,6 +3236,25 @@ namespace WSSmartPhone
                         ms.WriteTo(fs);
                     }
                 }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool xoaHinh_DHN(string ID)
+        {
+            try
+            {
+                string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+                string filename = ID.Substring(6, 11) + ".jpg";
+                bool folderExists = Directory.Exists(folder);
+                if (!folderExists)
+                    Directory.CreateDirectory(folder);
+                if (File.Exists(folder + @"\" + filename) == true)
+                    File.Delete(folder + @"\" + filename);
                 return true;
             }
             catch (Exception ex)
@@ -3413,6 +3434,63 @@ namespace WSSmartPhone
             {
                 throw ex;
             }
+        }
+
+        public string SendNotificationToClient_DHN(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)
+        {
+            string responseMess = "";
+            try
+            {
+                string serverKey = "AAAAEFkFujs:APA91bEkg2KLk53WsmZXHxTfU2AgElSDTq1GG5UsUAsCffgrXlex3wGU3rnp0iWX-GAgIm0JW9Qvq22aCQy0X-ns8LyrvPSHzmk1w2iSdK440VxRYHL9nOdNaKAAaAo_iXB7wlZCrdQi";
+                string senderId = "70213024315";
+
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://fcm.googleapis.com/fcm/send");
+                request.Method = "POST";
+                request.Headers.Add("Authorization", "key=" + serverKey);
+                request.Headers.Add("Sender", "id=" + senderId);
+                request.ContentType = "application/json";
+
+                var data = new
+                {
+                    to = UID,
+                    data = new
+                    {
+                        Title = Title,
+                        Body = Content,
+                        Action = Action,
+                        NameUpdate = NameUpdate,
+                        ValueUpdate = ValueUpdate,
+                        ID = ID,
+                    }
+                };
+
+
+                var json = jss.Serialize(data);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                request.ContentLength = byteArray.Length;
+                //gắn data post
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    responseMess = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                }
+                else
+                {
+                    responseMess = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                responseMess = "Error: " + ex.Message;
+            }
+            return responseMess;
         }
 
         //đồng hồ nước
