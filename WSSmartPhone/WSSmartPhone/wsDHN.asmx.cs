@@ -88,6 +88,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string getDS_HoaDonTon(string Nam, string Ky, string Dot, string May)
+        {
+            return _cThuTien.getDS_HoaDonTon_DHN(Nam, Ky, Dot, May);
+        }
+
+        [WebMethod]
         public string getDS_Code()
         {
             return _cThuTien.getDS_Code_DHN();
@@ -102,7 +108,7 @@ namespace WSSmartPhone
         [WebMethod]
         public byte[] get_Hinh(string ID)
         {
-            return _cThuTien.getHinh_DHN(ID);
+            return _cThuTien.get_Hinh_DHN(ID);
         }
 
         [WebMethod]
@@ -138,13 +144,13 @@ namespace WSSmartPhone
         [WebMethod]
         public bool xoaHinh(string ID)
         {
-            return _cThuTien.xoaHinh_DHN(ID);
+            return _cThuTien.xoa_Hinh_DHN(ID);
         }
 
         [WebMethod]
         public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
         {
-            return _cThuTien.ghiChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV, TBTT);
+            return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV, TBTT);
         }
 
         [WebMethod]

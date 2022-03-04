@@ -44,6 +44,8 @@ namespace WSSmartPhone
             return jss.Serialize(parentRow);
         }
 
+        #region Thu Tiền
+
         public string GetVersion()
         {
             return _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Version from TT_DeviceConfig").ToString();
@@ -2898,6 +2900,8 @@ namespace WSSmartPhone
             }
         }
 
+        #endregion
+
         #region QLĐHN
 
         public string GetVersion_DHN()
@@ -3055,6 +3059,7 @@ namespace WSSmartPhone
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
                         + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
             ;
+            //string sql = "EXEC [dbo].[spGetDSDocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
             //DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
             //int i = 4, iNam = int.Parse(Nam), iKy = int.Parse(Ky), iDot = int.Parse(Dot);
@@ -3079,6 +3084,23 @@ namespace WSSmartPhone
             //    i--;
             //}
             //return DataTableToJSON(dt);
+        }
+
+        public string getDS_HoaDonTon_DHN(string Nam, string Ky, string Dot, string May)
+        {
+            string sql = "select MaHD=hd.ID_HOADON,DanhBo=hd.DANHBA,KyHD=(right('0' + ltrim(rtrim(convert(varchar(2),hd.KY))), 2)+'/'+convert(varchar(4),hd.NAM))"
+                    + " 	,hd.GiaBan,ThueGTGT=hd.THUE,PhiBVMT=hd.PHI,PhiBVMT_Thue=case when hd.ThueGTGT_TDVTN is null then 0 else hd.ThueGTGT_TDVTN end,hd.TongCong"
+                    + " 	from HOADON hd,server8.DocSoTH.dbo.DocSo ds"
+                    + " 	where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May
+                    + " 	and hd.DANHBA=ds.DanhBa and NGAYGIAITRACH is null"
+                    + " 	and ID_HOADON not in (select MaHD from TT_DichVuThu)"
+                    + " 	and ID_HOADON not in (select MaHD from TT_TraGop)"
+                    + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
+                    + " 	and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)--chặn thu hộ"
+                    + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
+                    + " 	order by ds.MLT1,ds.DanhBa,hd.ID_HOADON";
+            //string sql = "EXEC [dbo].[spGetDSHoaDonTon_DocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
+            return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
         public DataTable getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May, string Code)
@@ -3129,7 +3151,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN order by stt asc"));
         }
 
-        public string ghiChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
+        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
         {
             CResult result = new CResult();
             try
@@ -3149,20 +3171,21 @@ namespace WSSmartPhone
                     {
                         CHoaDon hd = new CHoaDon();
                         bool success = tinhCodeTieuThu(ID, Code, int.Parse(ChiSo), out hd.TieuThu, out hd.TienNuoc, out hd.ThueGTGT, out hd.PhiBVMT, out hd.PhiBVMT_Thue);
-                        if (hd.TieuThu < 0)
+                        if (success == true)
                         {
-                            result.success = false;
-                            result.error = "Tiêu Thụ âm = " + hd.TieuThu;
-                        }
-                        else
-                            if (success == true)
+                            if (hd.TieuThu < 0)
+                            {
+                                result.success = false;
+                                result.error = "Tiêu Thụ âm = " + hd.TieuThu;
+                            }
+                            else
                             {
                                 hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
                                 string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
                                     + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",TongTien=" + hd.TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
                                 success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                                success = ghiHinh_DHN(ID, HinhDHN);
-                                result.success = success;
+                                success = ghi_Hinh_DHN(ID, HinhDHN);
+                                result.success = true;
                                 if (hd.TieuThu == 0)
                                 {
                                     result.alert = "Tiêu Thụ = " + hd.TieuThu;
@@ -3172,11 +3195,16 @@ namespace WSSmartPhone
                                     {
                                         result.alert = "Tiêu Thụ bất thường " + hd.TieuThu;
                                     }
-                                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select KyHD,TongCong from fnGetHoaDonTon(" + ID.Substring(6, 11) + ")");
-                                if (dt.Rows.Count > 0)
-                                    result.hoadonton = DataTableToJSON(dt);
-                                result.message = jss.Serialize(hd);
                             }
+                            result.message = jss.Serialize(hd);
+                            //DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select KyHD,TongCong from fnGetHoaDonTon(" + ID.Substring(6, 11) + ")");
+                            //if (dt.Rows.Count > 0)
+                            //    result.hoadonton = DataTableToJSON(dt);
+                        }
+                        else
+                        {
+                            result.success = false;
+                        }
                     }
             }
             catch (Exception ex)
@@ -3187,7 +3215,7 @@ namespace WSSmartPhone
             return jss.Serialize(result);
         }
 
-        public byte[] getHinh_DHN(string ID)
+        public byte[] get_Hinh_DHN(string ID)
         {
             try
             {
@@ -3219,7 +3247,7 @@ namespace WSSmartPhone
             }
         }
 
-        public bool ghiHinh_DHN(string ID, string HinhDHN)
+        public bool ghi_Hinh_DHN(string ID, string HinhDHN)
         {
             try
             {
@@ -3244,7 +3272,7 @@ namespace WSSmartPhone
             }
         }
 
-        public bool xoaHinh_DHN(string ID)
+        public bool xoa_Hinh_DHN(string ID)
         {
             try
             {
