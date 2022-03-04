@@ -3184,8 +3184,8 @@ namespace WSSmartPhone
                                 string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
                                     + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",TongTien=" + hd.TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
                                 success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                                success = ghi_Hinh_DHN(ID, HinhDHN);
-                                result.success = true;
+                                //success = ghi_Hinh_DHN(ID, HinhDHN);
+                                result.success = success;
                                 if (hd.TieuThu == 0)
                                 {
                                     result.alert = "Tiêu Thụ = " + hd.TieuThu;

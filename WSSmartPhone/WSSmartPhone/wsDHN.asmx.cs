@@ -106,12 +106,6 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public byte[] get_Hinh(string ID)
-        {
-            return _cThuTien.get_Hinh_DHN(ID);
-        }
-
-        [WebMethod]
         public string get_GhiChu(string DanhBo)
         {
             return _cThuTien.get_GhiChu_DHN(DanhBo);
@@ -142,7 +136,19 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool xoaHinh(string ID)
+        public byte[] get_Hinh(string ID)
+        {
+            return _cThuTien.get_Hinh_DHN(ID);
+        }
+
+        [WebMethod]
+        public bool ghi_Hinh(string ID,string HinhDHN)
+        {
+            return _cThuTien.ghi_Hinh_DHN(ID, HinhDHN);
+        }
+
+        [WebMethod]
+        public bool xoa_Hinh(string ID)
         {
             return _cThuTien.xoa_Hinh_DHN(ID);
         }
