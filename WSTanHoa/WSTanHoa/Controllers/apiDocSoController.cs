@@ -286,6 +286,7 @@ namespace WSTanHoa.Controllers
                                        + "," + flagCBChayNguoc
                                        + "," + flagCBNamCham
                                        + "," + flagCBKhoOng
+
                                        + "," + flagCBMoHop
                                        + "," + obj["Longitude"]
                                        + "," + obj["Latitude"]

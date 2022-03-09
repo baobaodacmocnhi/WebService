@@ -23,7 +23,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
-        string access_token = "YU3XJkQE9XM8xEXEuuKk5udcuaxkacnXuONCOzYx1rMnYP9Al8C2SwoxloJ0bN0EhBZBB9AtGnI2XkLNbfrCIgM-ddsLbm9QiE3FTwxV24oeuQHhcjWqVO7xkcJlmm10Wj6POwd1F6-NxV9gf_9VLg7Ba6Aomm5VkicOLepH80sqtAaqdCC1Q_RpjJt1v7WnwjYrCfYn8MInYUSveBHe4fs7eGk9i6i2lPFw3gQnNogoWTKMteHeIkADrcxquazdsjlnVx7ZGsIqxUL6dUSZJv24a4FubI9tIsLVMlzkvPGj6G";
+        string access_token = "hqmC5iHrvJ6kG0KMmNxjCwzA3nRCQQzCprOIQCChi1N1GLDBsnxFRC9wAowiJiy5pYPHHwLFzs6fDKazfctoJRyLQnMCQuam-WiRM-PMYIxGD1rLub6XTkqU5YxXUxDsoI1I5lbrja_M8YCsw1gwJDP49HszBO91dmqsFRvYW7MM2nilha6ESR0MQ2oIOOnRhrne69KIysM5R4ysgmp1KA1bFIsF9vWIuWSTOyfXYqdX63GFo2pGJV9POmdy3jH_drPQ79KGqr-7VqPwXIF7AlDnPLth3V06zK9WTU4CxbOqMmtH4iTlxZq";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
         string _url = "https://service.cskhtanhoa.com.vn";
         string _urlImage = "https://service.cskhtanhoa.com.vn/Images";

@@ -154,7 +154,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Log\" />
-    <Folder Include="Views\apiDocSo\" />
     <Folder Include="Views\ThuTien\" />
   </ItemGroup>
   <ItemGroup>
