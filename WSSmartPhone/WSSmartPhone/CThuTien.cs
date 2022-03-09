@@ -3042,7 +3042,7 @@ namespace WSSmartPhone
                         + "         SELECT DanhBa, 'ChiSo'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS ChiSoKy, 'Code'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS CodeKy,"
                         + "             'TieuThu'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS TieuThuKy, [CSCu], [CodeCu], [TieuThuCu]"
                         + "             FROM [DocSoTH].[dbo].[DocSo]"
-                        + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and PhanMay=" + May + ") src"
+                        + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and (PhanMay=" + May + " or May=" + May + ")) src"
                         + "     PIVOT (MAX([CSCu]) FOR ChiSoKy IN ([ChiSo0],[ChiSo1],[ChiSo2])) piv_cs"
                         + "     PIVOT (MAX([CodeCu]) FOR CodeKy IN ([Code0],[Code1],[Code2])) piv_code"
                         + "     PIVOT (MAX([TieuThuCu]) FOR TieuThuKy IN ([TieuThu0],[TieuThu1],[TieuThu2])) piv_tt"
@@ -3058,7 +3058,6 @@ namespace WSSmartPhone
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
                         + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
-            ;
             //string sql = "EXEC [dbo].[spGetDSDocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
             //DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
@@ -3204,6 +3203,10 @@ namespace WSSmartPhone
                         else
                         {
                             result.success = false;
+                            if (hd.TieuThu < 0)
+                            {
+                                result.error = "Tiêu Thụ âm = " + hd.TieuThu;
+                            }
                         }
                     }
             }
