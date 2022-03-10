@@ -3058,31 +3058,7 @@ namespace WSSmartPhone
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
                         + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
-            //string sql = "EXEC [dbo].[spGetDSDocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
-            //DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
-            //int i = 4, iNam = int.Parse(Nam), iKy = int.Parse(Ky), iDot = int.Parse(Dot);
-            //while (i > 0)
-            //{
-            //    if (iDot == 1)
-            //    {
-            //        iDot = 20;
-            //        if (iKy == 1)
-            //        {
-            //            iKy = 12;
-            //            iNam--;
-            //        }
-            //        else
-            //            iKy--;
-            //    }
-            //    else
-            //    {
-            //        iDot--;
-            //    }
-            //    dt.Merge(getDS_DocSo_DHN(iNam.ToString("0000"), iKy.ToString("00"), iDot.ToString("00"), May, "F"));
-            //    i--;
-            //}
-            //return DataTableToJSON(dt);
         }
 
         public string getDS_HoaDonTon_DHN(string Nam, string Ky, string Dot, string May)
@@ -3155,6 +3131,8 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
+                if (ChiSo == "")
+                    ChiSo = "0";
                 if (checkChot_BillState_DHN(ID.Substring(0, 4), ID.Substring(3, 2), Dot) == true)
                 {
                     result.success = false;
@@ -3179,6 +3157,14 @@ namespace WSSmartPhone
                             }
                             else
                             {
+                                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
+                                if (dt != null && dt.Rows.Count > 0)
+                                {
+                                    if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K"))
+                                        Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
+                                    if (Code.Substring(0, 1) == "F" || Code.Substring(0, 1) == "6")
+                                        ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
+                                }
                                 hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
                                 string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
                                     + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",TongTien=" + hd.TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
@@ -3220,27 +3206,54 @@ namespace WSSmartPhone
 
         public byte[] get_Hinh_DHN(string ID)
         {
+            //try
+            //{
+            //    byte[] hinh = null;
+            //    string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+            //    string filename = ID.Substring(6, 11) + ".jpg";
+            //    bool fileExists = File.Exists(folder + @"\" + filename);
+            //    if (fileExists == true)
+            //    {
+            //        using (MemoryStream ms = new MemoryStream())
+            //        {
+            //            Image img = Image.FromFile(folder + @"\" + filename);
+            //            img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+            //            hinh = ms.ToArray();
+            //        }
+            //    }
+            //    else
+            //    {
+            //        string sql = "SELECT top 1 Image " +
+            //           "FROM DocSoTH_Hinh.dbo.HinhDHN " +
+            //           "WHERE HinhDHNID =" + ID;
+            //        hinh = (byte[])_cDAL_DocSo12.ExecuteQuery_ReturnOneValue(sql);
+            //    }
+            //    return hinh;
+            //}
+            //catch
+            //{
+            //    return null;
+            //}
             try
             {
                 byte[] hinh = null;
-                string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
-                string filename = ID.Substring(6, 11) + ".jpg";
-                bool fileExists = File.Exists(folder + @"\" + filename);
-                if (fileExists == true)
+
+                string sql = "SELECT top 1 Image " +
+                   "FROM DocSoTH_Hinh.dbo.HinhDHN " +
+                   "WHERE HinhDHNID =" + ID;
+                hinh = (byte[])_cDAL_DocSo12.ExecuteQuery_ReturnOneValue(sql);
+                if (hinh == null)
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        Image img = Image.FromFile(folder + @"\" + filename);
-                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                        hinh = ms.ToArray();
-                    }
-                }
-                else
-                {
-                    string sql = "SELECT top 1 Image " +
-                       "FROM DocSoTH_Hinh.dbo.HinhDHN " +
-                       "WHERE HinhDHNID =" + ID;
-                    hinh = (byte[])_cDAL_DocSo12.ExecuteQuery_ReturnOneValue(sql);
+                    string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+                    string filename = ID.Substring(6, 11) + ".jpg";
+                    bool fileExists = File.Exists(folder + @"\" + filename);
+                    if (fileExists == true)
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            Image img = Image.FromFile(folder + @"\" + filename);
+                            img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                            hinh = ms.ToArray();
+                        }
                 }
                 return hinh;
             }
@@ -3339,22 +3352,30 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
-                string flagSoChinh = bool.Parse(SoChinh) == true ? "1" : "0";
-                string sql = "declare @DanhBo char(11)"
-                        + " declare @DienThoai varchar(15)"
-                        + " declare @HoTen nvarchar(50)"
-                        + " declare @SoChinh bit"
-                        + " declare @GhiChu nvarchar(50)"
-                        + " set @DanhBo='" + DanhBo.Replace(" ", "") + "'"
-                        + " set @DienThoai='" + DienThoai + "'"
-                        + " set @HoTen=N'" + HoTen + "'"
-                        + " set @SoChinh=" + flagSoChinh
-                        + " set @GhiChu=N'Đ. QLĐHN'"
-                        + " if exists(select DanhBo from SDT_DHN where DanhBo=@DanhBo and DienThoai=@DienThoai)"
-                        + " update SDT_DHN set HoTen=@HoTen,SoChinh=@SoChinh,GhiChu=@GhiChu,ModifyBy=" + MaNV + ",ModifyDate=GETDATE() where DanhBo=@DanhBo and DienThoai=@DienThoai"
-                        + " else"
-                        + " insert into SDT_DHN(DanhBo,DienThoai,HoTen,SoChinh,GhiChu,CreateBy,CreateDate)values(@DanhBo,@DienThoai,@HoTen,@SoChinh,@GhiChu," + MaNV + ",GETDATE())";
-                result.success = _cDAL_DHN.ExecuteNonQuery(sql);
+                if (DienThoai.Length != 11 || DienThoai.All(char.IsNumber) == false)
+                {
+                    result.success = false;
+                    result.error = "Không đủ 10 số";
+                }
+                else
+                {
+                    string flagSoChinh = bool.Parse(SoChinh) == true ? "1" : "0";
+                    string sql = "declare @DanhBo char(11)"
+                            + " declare @DienThoai varchar(15)"
+                            + " declare @HoTen nvarchar(50)"
+                            + " declare @SoChinh bit"
+                            + " declare @GhiChu nvarchar(50)"
+                            + " set @DanhBo='" + DanhBo.Replace(" ", "") + "'"
+                            + " set @DienThoai='" + DienThoai + "'"
+                            + " set @HoTen=N'" + HoTen + "'"
+                            + " set @SoChinh=" + flagSoChinh
+                            + " set @GhiChu=N'Đ. QLĐHN'"
+                            + " if exists(select DanhBo from SDT_DHN where DanhBo=@DanhBo and DienThoai=@DienThoai)"
+                            + " update SDT_DHN set HoTen=@HoTen,SoChinh=@SoChinh,GhiChu=@GhiChu,ModifyBy=" + MaNV + ",ModifyDate=GETDATE() where DanhBo=@DanhBo and DienThoai=@DienThoai"
+                            + " else"
+                            + " insert into SDT_DHN(DanhBo,DienThoai,HoTen,SoChinh,GhiChu,CreateBy,CreateDate)values(@DanhBo,@DienThoai,@HoTen,@SoChinh,@GhiChu," + MaNV + ",GETDATE())";
+                    result.success = _cDAL_DHN.ExecuteNonQuery(sql);
+                }
             }
             catch (Exception ex)
             {
