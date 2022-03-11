@@ -27,7 +27,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
 
         // GET: Zalo
-        public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo,DienThoai")] ZaloView zalo, string action)
+        public async Task<ActionResult> Index(decimal? id, [Bind(Include = "IDZalo,DanhBo")] ZaloView zalo, string action)
         {
             if (TempData["IDZalo"] == null)
             {
@@ -47,7 +47,7 @@ namespace WSTanHoa.Controllers
                 en.DanhBo = item["DanhBo"].ToString();
                 en.HoTen = item["HoTen"].ToString();
                 en.DiaChi = item["DiaChi"].ToString();
-                en.DienThoai = item["DienThoai"].ToString();
+                //en.DienThoai = item["DienThoai"].ToString();
                 zalo.lst.Add(en);
             }
 
@@ -93,21 +93,21 @@ namespace WSTanHoa.Controllers
                                 //kiểm tra trùng
                                 if (db.Zalo_DangKy.Count(item => item.IDZalo == IDZalo && item.DanhBo == zalo.DanhBo.Replace(" ", "")) == 0)
                                 {
-                                    if (zalo.DienThoai == null || zalo.DienThoai == "" )
-                                    {
-                                        ModelState.AddModelError("DienThoai", "Vui lòng nhập số điện thoại");
-                                        return View(zalo);
-                                    }
-                                    else
-                                        if( zalo.DienThoai.Length < 10)
-                                    {
-                                        ModelState.AddModelError("DienThoai", "Số điện thoại không đủ 10 ký tự");
-                                        return View(zalo);
-                                    }
+                                    //if (zalo.DienThoai == null || zalo.DienThoai == "" )
+                                    //{
+                                    //    ModelState.AddModelError("DienThoai", "Vui lòng nhập số điện thoại");
+                                    //    return View(zalo);
+                                    //}
+                                    //else
+                                    //    if( zalo.DienThoai.Length < 10)
+                                    //{
+                                    //    ModelState.AddModelError("DienThoai", "Số điện thoại không đủ 10 ký tự");
+                                    //    return View(zalo);
+                                    //}
                                     Zalo_DangKy en = new Zalo_DangKy();
                                     en.IDZalo = IDZalo;
                                     en.DanhBo = zalo.DanhBo.Replace(" ", "");
-                                    en.DienThoai = zalo.DienThoai.Replace(" ", "");
+                                    //en.DienThoai = zalo.DienThoai.Replace(" ", "");
                                     en.CreateDate = DateTime.Now;
                                     if (IDZalo != -1)
                                     {

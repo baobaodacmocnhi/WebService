@@ -35,9 +35,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.DiaChi)
                     </th>
-                    <th>
+                    @*<th>
                         @Html.DisplayNameFor(model => model.DienThoai)
-                    </th>
+                    </th>*@
                     <th></th>
                 </tr>
                 @foreach (var item in Model.lst)
@@ -52,9 +52,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.DiaChi)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.DienThoai)
-                        </td>
+                        </td>*@
                         <td>
                             @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
                             @Html.ActionLink("Edit", "Edit", new { IDZalo = item.IDZalo, DanhBo = item.DanhBo }) |*@
@@ -103,13 +103,13 @@
                 </div>
             </div>
 
-            <div class="mb-3">
+            @*<div class="mb-3">
                 @Html.LabelFor(model => model.DienThoai, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.DienThoai, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
                     @Html.ValidationMessageFor(model => model.DienThoai, "", new { @class = "text-danger" })
                 </div>
-            </div>
+            </div>*@
 
             <div class="mb-3">
                 <div class="col-md-offset-2 col-md-10">
