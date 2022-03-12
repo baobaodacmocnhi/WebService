@@ -3269,8 +3269,7 @@ namespace WSSmartPhone
             {
                 string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
                 string filename = ID.Substring(6, 11) + ".jpg";
-                bool folderExists = Directory.Exists(folder);
-                if (!folderExists)
+                if (Directory.Exists(folder) == false)
                     Directory.CreateDirectory(folder);
                 byte[] hinh = System.Convert.FromBase64String(HinhDHN);
                 using (var ms = new MemoryStream(hinh))
@@ -3294,9 +3293,6 @@ namespace WSSmartPhone
             {
                 string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
                 string filename = ID.Substring(6, 11) + ".jpg";
-                bool folderExists = Directory.Exists(folder);
-                if (!folderExists)
-                    Directory.CreateDirectory(folder);
                 if (File.Exists(folder + @"\" + filename) == true)
                     File.Delete(folder + @"\" + filename);
                 return true;
@@ -3352,7 +3348,7 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
-                if (DienThoai.Length != 11 || DienThoai.All(char.IsNumber) == false)
+                if (DienThoai.Length != 10 || DienThoai.All(char.IsNumber) == false)
                 {
                     result.success = false;
                     result.error = "Không đủ 10 số";
@@ -3684,7 +3680,69 @@ namespace WSSmartPhone
 
         #endregion
 
-        #region Kinh Doanh
+        #region Thương Vụ
+
+        public byte[] get_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName)
+        {
+            try
+            {
+                byte[] hinh = null;
+                if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        Image img = Image.FromFile(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
+                        img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        hinh = ms.ToArray();
+                    }
+                return hinh;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public bool ghi_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName, string HinhDHN)
+        {
+            try
+            {
+                string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai;
+                if (Directory.Exists(folder) == false)
+                    Directory.CreateDirectory(folder);
+                //
+                folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT;
+                if (Directory.Exists(folder) == false)
+                    Directory.CreateDirectory(folder);
+
+                byte[] hinh = System.Convert.FromBase64String(HinhDHN);
+                using (var ms = new MemoryStream(hinh))
+                {
+                    using (var fs = new FileStream(folder + @"\" + FileName, FileMode.Create))
+                    {
+                        ms.WriteTo(fs);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool xoa_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName)
+        {
+            try
+            {
+                if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
+                    File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         //kinh doanh
         public DataTable getDS_GiaNuoc()

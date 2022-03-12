@@ -65,6 +65,7 @@
     <Content Include="wsBilling.asmx" />
     <Content Include="wsDHN.asmx" />
     <Content Include="WSSmartPhone.Publish.xml" />
+    <Content Include="wsThuongVu.asmx" />
     <Content Include="wsThuTien.asmx" />
   </ItemGroup>
   <ItemGroup>
@@ -93,6 +94,10 @@
     </Compile>
     <Compile Include="wsDHN.asmx.cs">
       <DependentUpon>wsDHN.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wsThuongVu.asmx.cs">
+      <DependentUpon>wsThuongVu.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wsThuTien.asmx.cs">
