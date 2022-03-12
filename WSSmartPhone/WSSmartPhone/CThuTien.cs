@@ -3706,11 +3706,11 @@ namespace WSSmartPhone
         {
             try
             {
-                string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai;
-                if (Directory.Exists(folder) == false)
-                    Directory.CreateDirectory(folder);
+                //string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai;
+                //if (Directory.Exists(folder) == false)
+                //    Directory.CreateDirectory(folder);
                 //
-                folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT;
+                string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT;
                 if (Directory.Exists(folder) == false)
                     Directory.CreateDirectory(folder);
 

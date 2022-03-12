@@ -13,8 +13,8 @@ namespace WSSmartPhone
         public static string DocSo12 = "Data Source=server12;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db12@tanhoa";
         public static string ThuTien = "Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string KinhDoanh = "Data Source=serverg8-01;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
-        public static string pathHinhDHN = @"\\192.168.90.241\hinhdhn";
-        public static string pathHinhTV = @"\\192.168.90.241\ThuongVu";
+        public static string pathHinhDHN = @"\\192.168.90.241\HinhDHN";
+        public static string pathHinhTV = @"\\192.168.90.241\HinhDHN\ThuongVu";
     }
 
     public class CResult
