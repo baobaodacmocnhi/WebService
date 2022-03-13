@@ -25,7 +25,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool ghi_Hinh(string FolderLoai, string FolderIDCT, string FileName, string HinhDHN)
+        public bool ghi_Hinh(string FolderLoai, string FolderIDCT, string FileName, byte[] HinhDHN)
         {
             return _cThuTien.ghi_Hinh_TV(FolderLoai, FolderIDCT, FileName, HinhDHN);
         }
@@ -34,6 +34,12 @@ namespace WSSmartPhone
         public bool xoa_Hinh(string FolderLoai, string FolderIDCT, string FileName)
         {
             return _cThuTien.xoa_Hinh_TV(FolderLoai, FolderIDCT, FileName);
+        }
+
+        [WebMethod]
+        public bool xoa_Folder_Hinh(string FolderLoai, string FolderIDCT)
+        {
+            return _cThuTien.xoa_Folder_TV(FolderLoai, FolderIDCT);
         }
 
     }

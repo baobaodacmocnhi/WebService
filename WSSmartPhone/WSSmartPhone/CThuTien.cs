@@ -3730,12 +3730,61 @@ namespace WSSmartPhone
             }
         }
 
+        public bool ghi_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName, byte[] HinhDHN)
+        {
+            try
+            {
+                //string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai;
+                //if (Directory.Exists(folder) == false)
+                //    Directory.CreateDirectory(folder);
+                //
+                string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT;
+                if (Directory.Exists(folder) == false)
+                    Directory.CreateDirectory(folder);
+
+                using (var ms = new MemoryStream(HinhDHN))
+                {
+                    using (var fs = new FileStream(folder + @"\" + FileName, FileMode.Create))
+                    {
+                        ms.WriteTo(fs);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool xoa_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName)
         {
             try
             {
                 if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
                     File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
+                string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT, "*.*", SearchOption.AllDirectories);
+                if (allfiles.Length == 0)
+                    File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool xoa_Folder_TV(string FolderLoai, string FolderIDCT)
+        {
+            try
+            {
+                string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT, "*.*", SearchOption.AllDirectories);
+                foreach (string item in allfiles)
+                {
+                    if (File.Exists(item) == true)
+                        File.Delete(item);
+                }
+                File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 return true;
             }
             catch (Exception ex)
