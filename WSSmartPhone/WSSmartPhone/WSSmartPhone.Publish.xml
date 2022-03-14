@@ -3,12 +3,12 @@
   <publishProfile publishUrl="C:\Users\Admin\Desktop\WSSmartPhone" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
     <file relUrl="Service.asmx" publishTime="12/31/2021 20:43:20" />
     <file relUrl="wsThuongVu.asmx" publishTime="03/12/2022 14:07:44" />
-    <file relUrl="WSSmartPhone.Publish.xml" publishTime="03/14/2022 20:15:06" />
+    <file relUrl="WSSmartPhone.Publish.xml" publishTime="03/14/2022 21:12:07" />
     <file relUrl="wsThuTien.asmx" publishTime="12/31/2021 20:43:20" />
     <file relUrl="wsDHN.asmx" publishTime="12/31/2021 20:43:20" />
     <file relUrl="Web.config" publishTime="03/14/2022 21:12:05" />
     <file relUrl="wsBilling.asmx" publishTime="12/31/2021 20:43:20" />
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="03/14/2022 21:12:05" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="03/14/2022 21:12:05" />
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="03/14/2022 21:27:50" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="03/14/2022 21:27:51" />
   </publishProfile>
 </publishData>

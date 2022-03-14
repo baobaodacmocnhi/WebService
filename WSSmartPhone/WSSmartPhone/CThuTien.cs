@@ -3763,8 +3763,8 @@ namespace WSSmartPhone
             {
                 if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
                     File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
-                string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT, "*.*", SearchOption.AllDirectories);
-                if (allfiles.Length == 0)
+                string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                if (allfiles == null || allfiles.Length == 0)
                     Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 return true;
             }
@@ -3778,7 +3778,7 @@ namespace WSSmartPhone
         {
             try
             {
-                string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT, "*.*", SearchOption.AllDirectories);
+                string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 foreach (string item in allfiles)
                 {
                     if (File.Exists(item) == true)
