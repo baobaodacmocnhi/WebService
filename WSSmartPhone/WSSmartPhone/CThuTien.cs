@@ -3765,7 +3765,7 @@ namespace WSSmartPhone
                     File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
                 string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT, "*.*", SearchOption.AllDirectories);
                 if (allfiles.Length == 0)
-                    File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                    Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 return true;
             }
             catch (Exception ex)
@@ -3784,7 +3784,7 @@ namespace WSSmartPhone
                     if (File.Exists(item) == true)
                         File.Delete(item);
                 }
-                File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 return true;
             }
             catch (Exception ex)
