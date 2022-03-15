@@ -112,9 +112,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string update_GhiChu(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string MaNV)
+        public string update_GhiChu(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string GhiChu, string MaNV)
         {
-            return _cThuTien.update_GhiChu_DHN(DanhBo, SoNha, TenDuong, ViTri1, ViTri2, Gieng, MaNV);
+            return _cThuTien.update_GhiChu_DHN(DanhBo, SoNha, TenDuong, ViTri1, ViTri2, Gieng, GhiChu, MaNV);
         }
 
         [WebMethod]
@@ -142,7 +142,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool ghi_Hinh(string ID,string HinhDHN)
+        public bool ghi_Hinh(string ID, string HinhDHN)
         {
             return _cThuTien.ghi_Hinh_DHN(ID, HinhDHN);
         }

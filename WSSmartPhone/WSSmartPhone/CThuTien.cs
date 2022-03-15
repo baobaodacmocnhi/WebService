@@ -3051,7 +3051,7 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
+                        + "                          ,kh.Gieng,kh.GhiChu,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + ")"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
                         + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
@@ -3309,14 +3309,14 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable(sql));
         }
 
-        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string MaNV)
+        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string GhiChu, string MaNV)
         {
             CResult result = new CResult();
             try
             {
                 string flagGieng = bool.Parse(Gieng) == true ? "1" : "0";
                 string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri1 + "',ViTriDHN2=N'" + ViTri2
-                    + "',Gieng=" + flagGieng + ",MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
+                    + "',Gieng=" + flagGieng + ",GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -3761,10 +3761,17 @@ namespace WSSmartPhone
         {
             try
             {
-                if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
-                    File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
-                string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
-                if (allfiles == null || allfiles.Length == 0)
+                //if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
+                //    File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
+                //string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                //if (allfiles == null || allfiles.Length == 0)
+                //    Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                bool flag = false;
+                foreach (string files in Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT))
+                {
+                    flag = true;
+                }
+                if (flag == false)
                     Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 return true;
             }
@@ -3778,11 +3785,16 @@ namespace WSSmartPhone
         {
             try
             {
-                string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
-                foreach (string item in allfiles)
+                //string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                //foreach (string item in allfiles)
+                //{
+                //    if (File.Exists(item) == true)
+                //        File.Delete(item);
+                //}
+                foreach (string files in Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT))
                 {
-                    if (File.Exists(item) == true)
-                        File.Delete(item);
+                    FileInfo fileInfo = new FileInfo(files);
+                    fileInfo.Delete(); //delete the files first. 
                 }
                 Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 return true;
