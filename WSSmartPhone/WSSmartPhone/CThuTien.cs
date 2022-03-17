@@ -3785,18 +3785,15 @@ namespace WSSmartPhone
         {
             try
             {
-                //string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
-                //foreach (string item in allfiles)
-                //{
-                //    if (File.Exists(item) == true)
-                //        File.Delete(item);
-                //}
-                foreach (string files in Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT))
+                if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT) == true)
                 {
-                    FileInfo fileInfo = new FileInfo(files);
-                    fileInfo.Delete(); //delete the files first. 
+                    foreach (string files in Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT))
+                    {
+                        if (File.Exists(files) == true)
+                            File.Delete(files);
+                    }
+                    Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 }
-                Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
                 return true;
             }
             catch (Exception ex)
