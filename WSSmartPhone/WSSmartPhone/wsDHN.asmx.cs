@@ -106,6 +106,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string getDS_PhieuChuyen()
+        {
+            return _cThuTien.getDS_PhieuChuyen();
+        }
+
+        [WebMethod]
         public string get_GhiChu(string DanhBo)
         {
             return _cThuTien.get_GhiChu_DHN(DanhBo);
