@@ -21,25 +21,25 @@ namespace WSSmartPhone
         [WebMethod]
         public byte[] get_Hinh(string FolderLoai, string FolderIDCT, string FileName)
         {
-            return _cThuTien.get_Hinh_TV(FolderLoai, FolderIDCT, FileName);
+            return _cThuTien.get_Hinh_241(CGlobalVariable.pathHinhTV, FolderLoai, FolderIDCT, FileName);
         }
 
         [WebMethod]
         public bool ghi_Hinh(string FolderLoai, string FolderIDCT, string FileName, byte[] HinhDHN)
         {
-            return _cThuTien.ghi_Hinh_TV(FolderLoai, FolderIDCT, FileName, HinhDHN);
+            return _cThuTien.ghi_Hinh_241(CGlobalVariable.pathHinhTV, FolderLoai, FolderIDCT, FileName, HinhDHN);
         }
 
         [WebMethod]
         public bool xoa_Hinh(string FolderLoai, string FolderIDCT, string FileName)
         {
-            return _cThuTien.xoa_Hinh_TV(FolderLoai, FolderIDCT, FileName);
+            return _cThuTien.xoa_Hinh_241(CGlobalVariable.pathHinhTV, FolderLoai, FolderIDCT, FileName);
         }
 
         [WebMethod]
         public bool xoa_Folder_Hinh(string FolderLoai, string FolderIDCT)
         {
-            return _cThuTien.xoa_Folder_TV(FolderLoai, FolderIDCT);
+            return _cThuTien.xoa_Folder_241(CGlobalVariable.pathHinhTV, FolderLoai, FolderIDCT);
         }
 
     }

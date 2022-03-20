@@ -224,5 +224,30 @@ namespace WSSmartPhone
         {
             return _cThuTien.SendNotificationToClient_DHN(Title, Content, UID, Action, NameUpdate, ValueUpdate, ID);
         }
+
+        [WebMethod]
+        public byte[] get_Hinh_MaHoa(string FolderLoai, string FolderIDCT, string FileName)
+        {
+            return _cThuTien.get_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, FolderLoai, FolderIDCT, FileName);
+        }
+
+        [WebMethod]
+        public bool ghi_Hinh_MaHoa(string FolderLoai, string FolderIDCT, string FileName, byte[] HinhDHN)
+        {
+            return _cThuTien.ghi_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, FolderLoai, FolderIDCT, FileName, HinhDHN);
+        }
+
+        [WebMethod]
+        public bool xoa_Hinh_MaHoa(string FolderLoai, string FolderIDCT, string FileName)
+        {
+            return _cThuTien.xoa_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, FolderLoai, FolderIDCT, FileName);
+        }
+
+        [WebMethod]
+        public bool xoa_Folder_Hinh_MaHoa(string FolderLoai, string FolderIDCT)
+        {
+            return _cThuTien.xoa_Folder_241(CGlobalVariable.pathHinhDHNMaHoa, FolderLoai, FolderIDCT);
+        }
+
     }
 }

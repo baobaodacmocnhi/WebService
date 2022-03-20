@@ -3444,7 +3444,7 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
-                result.message = DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),CreateDate,103),NoiDung from MaHoa_DonTu where DanhBo='" + DanhBo.Replace(" ", "") + "' order by CreateDate desc"));
+                result.message = DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),CreateDate,103),NoiDung,TinhTrang from MaHoa_DonTu where DanhBo='" + DanhBo.Replace(" ", "") + "' order by CreateDate desc"));
                 result.success = true;
             }
             catch (Exception ex)
@@ -3741,15 +3741,15 @@ namespace WSSmartPhone
 
         #region Thương Vụ
 
-        public byte[] get_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName)
+        public byte[] get_Hinh_241(string pathroot,string FolderLoai, string FolderIDCT, string FileName)
         {
             try
             {
                 byte[] hinh = null;
-                if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
+                if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
                     using (MemoryStream ms = new MemoryStream())
                     {
-                        Image img = Image.FromFile(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
+                        Image img = Image.FromFile(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
                         img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                         hinh = ms.ToArray();
                     }
@@ -3761,22 +3761,16 @@ namespace WSSmartPhone
             }
         }
 
-        public bool ghi_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName, string HinhDHN)
+        public bool ghi_Hinh_241(string pathroot, string FolderLoai, string FolderIDCT, string FileName, string HinhDHN)
         {
             try
             {
-                //string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai;
-                //if (Directory.Exists(folder) == false)
-                //    Directory.CreateDirectory(folder);
-                //
-                string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT;
-                if (Directory.Exists(folder) == false)
-                    Directory.CreateDirectory(folder);
-
+                if (Directory.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == false)
+                    Directory.CreateDirectory(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT);
                 byte[] hinh = System.Convert.FromBase64String(HinhDHN);
                 using (var ms = new MemoryStream(hinh))
                 {
-                    using (var fs = new FileStream(folder + @"\" + FileName, FileMode.Create))
+                    using (var fs = new FileStream(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName, FileMode.Create))
                     {
                         ms.WriteTo(fs);
                     }
@@ -3789,21 +3783,15 @@ namespace WSSmartPhone
             }
         }
 
-        public bool ghi_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName, byte[] HinhDHN)
+        public bool ghi_Hinh_241(string pathroot, string FolderLoai, string FolderIDCT, string FileName, byte[] HinhDHN)
         {
             try
             {
-                //string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai;
-                //if (Directory.Exists(folder) == false)
-                //    Directory.CreateDirectory(folder);
-                //
-                string folder = CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT;
-                if (Directory.Exists(folder) == false)
-                    Directory.CreateDirectory(folder);
-
+                if (Directory.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == false)
+                    Directory.CreateDirectory(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT);
                 using (var ms = new MemoryStream(HinhDHN))
                 {
-                    using (var fs = new FileStream(folder + @"\" + FileName, FileMode.Create))
+                    using (var fs = new FileStream(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName, FileMode.Create))
                     {
                         ms.WriteTo(fs);
                     }
@@ -3816,22 +3804,19 @@ namespace WSSmartPhone
             }
         }
 
-        public bool xoa_Hinh_TV(string FolderLoai, string FolderIDCT, string FileName)
+        public bool xoa_Hinh_241(string pathroot, string FolderLoai, string FolderIDCT, string FileName)
         {
             try
             {
-                //if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
-                //    File.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
-                //string[] allfiles = Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
-                //if (allfiles == null || allfiles.Length == 0)
-                //    Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
+                    File.Delete(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
                 bool flag = false;
-                foreach (string files in Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT))
+                foreach (string files in Directory.GetFiles(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT))
                 {
                     flag = true;
                 }
                 if (flag == false)
-                    Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                    Directory.Delete(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT);
                 return true;
             }
             catch (Exception ex)
@@ -3840,18 +3825,18 @@ namespace WSSmartPhone
             }
         }
 
-        public bool xoa_Folder_TV(string FolderLoai, string FolderIDCT)
+        public bool xoa_Folder_241(string pathroot, string FolderLoai, string FolderIDCT)
         {
             try
             {
-                if (File.Exists(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT) == true)
+                if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == true)
                 {
-                    foreach (string files in Directory.GetFiles(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT))
+                    foreach (string files in Directory.GetFiles(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT))
                     {
                         if (File.Exists(files) == true)
                             File.Delete(files);
                     }
-                    Directory.Delete(CGlobalVariable.pathHinhTV + @"\" + FolderLoai + @"\" + FolderIDCT);
+                    Directory.Delete(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT);
                 }
                 return true;
             }
