@@ -3029,11 +3029,6 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable("select KyHieu from ViTriDHN"));
         }
 
-        public string getDS_PhieuChuyen()
-        {
-            return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable("select [Name] from MaHoa_PhieuChuyen"));
-        }
-
         public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May)
         {
             string sql = "DECLARE @LastNamKy INT;"
@@ -3126,11 +3121,17 @@ namespace WSSmartPhone
             return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select * from DocSo where DocSoID=" + ID + " and StaCapNhat='1') then 'true' else 'false' end").ToString());
         }
 
+        public bool checkNgayDoc_DHN(string Nam, string Ky, string Dot, string May)
+        {
+            return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select * from DocSoTruoc where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and May=" + May + ") then 'true' else 'false' end").ToString());
+        }
+
         public string getDS_Code_DHN()
         {
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN order by stt asc"));
         }
 
+        //ghi chỉ số
         public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
         {
             CResult result = new CResult();
@@ -3308,6 +3309,7 @@ namespace WSSmartPhone
             }
         }
 
+        //ghi chú
         public string get_GhiChu_DHN(string DanhBo)
         {
             string sql = "select SoNha,TenDuong,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,Gieng from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'";
@@ -3401,7 +3403,13 @@ namespace WSSmartPhone
             return jss.Serialize(result);
         }
 
-        public string ghi_PhieuChuyen(string DanhBo, string NoiDung, string MaNV)
+        //phiếu chuyển
+        public string getDS_PhieuChuyen_DHN()
+        {
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select [Name] from MaHoa_PhieuChuyen"));
+        }
+
+        public string ghi_DonTu_DHN(string DanhBo, string NoiDung, string GhiChu, string MaNV)
         {
             CResult result = new CResult();
             try
@@ -3410,10 +3418,10 @@ namespace WSSmartPhone
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     string ID = "";
-                    object checkExists = _cDAL_DHN.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                    object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
                     if (checkExists != null)
                     {
-                        object stt = _cDAL_DHN.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                        object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
                         if (stt != null)
                             ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
                     }
@@ -3421,13 +3429,13 @@ namespace WSSmartPhone
                     {
                         ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
                     }
-                    string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate)values"
+                    string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate)values"
                         + "("
                         + ID + ",'" + dt.Rows[0]["MLT"] + "','" + DanhBo + "',N'" + dt.Rows[0]["HoTen"] + "',N'" + dt.Rows[0]["DiaChi"] + "'"
-                        + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + dt.Rows[0]["DinhMucHN"] + ",N'" + NoiDung + "'," + dt.Rows[0]["Dot"]
+                        + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + dt.Rows[0]["DinhMucHN"] + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
                         + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate()"
                         + ")";
-                    result.success = _cDAL_DHN.ExecuteNonQuery(sql);
+                    result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
                 }
                 result.success = false;
             }
@@ -3439,12 +3447,12 @@ namespace WSSmartPhone
             return jss.Serialize(result);
         }
 
-        public string getDS_PhieuChuyen(string DanhBo)
+        public string getDS_DonTu_DHN(string DanhBo)
         {
             CResult result = new CResult();
             try
             {
-                result.message = DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),CreateDate,103),NoiDung,TinhTrang from MaHoa_DonTu where DanhBo='" + DanhBo.Replace(" ", "") + "' order by CreateDate desc"));
+                result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),CreateDate,103),NoiDung,TinhTrang from MaHoa_DonTu where DanhBo='" + DanhBo.Replace(" ", "") + "' order by CreateDate desc"));
                 result.success = true;
             }
             catch (Exception ex)
@@ -3741,7 +3749,7 @@ namespace WSSmartPhone
 
         #region Thương Vụ
 
-        public byte[] get_Hinh_241(string pathroot,string FolderLoai, string FolderIDCT, string FileName)
+        public byte[] get_Hinh_241(string pathroot, string FolderLoai, string FolderIDCT, string FileName)
         {
             try
             {

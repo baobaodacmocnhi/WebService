@@ -105,12 +105,7 @@ namespace WSSmartPhone
             return _cThuTien.getDS_ViTriDHN();
         }
 
-        [WebMethod]
-        public string getDS_PhieuChuyen()
-        {
-            return _cThuTien.getDS_PhieuChuyen();
-        }
-
+        //ghi chú
         [WebMethod]
         public string get_GhiChu(string DanhBo)
         {
@@ -247,6 +242,25 @@ namespace WSSmartPhone
         public bool xoa_Folder_Hinh_MaHoa(string FolderLoai, string FolderIDCT)
         {
             return _cThuTien.xoa_Folder_241(CGlobalVariable.pathHinhDHNMaHoa, FolderLoai, FolderIDCT);
+        }
+
+        //phiếu chuyển
+        [WebMethod]
+        public string getDS_PhieuChuyen()
+        {
+            return _cThuTien.getDS_PhieuChuyen_DHN();
+        }
+
+        [WebMethod]
+        public string ghi_DonTu(string DanhBo, string NoiDung, string GhiChu, string MaNV)
+        {
+            return _cThuTien.ghi_DonTu_DHN(DanhBo, NoiDung, GhiChu, MaNV);
+        }
+
+        [WebMethod]
+        public string getDS_DonTu(string DanhBo)
+        {
+            return _cThuTien.getDS_DonTu_DHN(DanhBo);
         }
 
     }
