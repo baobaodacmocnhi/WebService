@@ -3029,53 +3029,9 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable("select KyHieu from ViTriDHN"));
         }
 
-        public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May)
+        public string getDS_Code_DHN()
         {
-            string sql = "DECLARE @LastNamKy INT;"
-                        + " SET @LastNamKy = " + Nam + " * 12 + " + Ky + ";"
-                        + " IF (OBJECT_ID('tempdb.dbo.#ChiSo', 'U') IS NOT NULL) DROP TABLE #ChiSo;"
-                        + " SELECT DanhBa, MAX([ChiSo0]) AS [ChiSo0], MAX([ChiSo1]) AS [ChiSo1], MAX([ChiSo2]) AS [ChiSo2], MAX([Code0]) AS [Code0],"
-                        + "     MAX([Code1]) AS [Code1], MAX([Code2]) AS [Code2], MAX([TieuThu0]) AS [TieuThu0], MAX([TieuThu1]) AS [TieuThu1],"
-                        + "     MAX([TieuThu2]) AS [TieuThu2]"
-                        + "     INTO #ChiSo"
-                        + "     FROM ("
-                        + "         SELECT DanhBa, 'ChiSo'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS ChiSoKy, 'Code'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS CodeKy,"
-                        + "             'TieuThu'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS TieuThuKy, [CSCu], [CodeCu], [TieuThuCu]"
-                        + "             FROM [DocSoTH].[dbo].[DocSo]"
-                        + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and (PhanMay=" + May + " or May=" + May + ")) src"
-                        + "     PIVOT (MAX([CSCu]) FOR ChiSoKy IN ([ChiSo0],[ChiSo1],[ChiSo2])) piv_cs"
-                        + "     PIVOT (MAX([CodeCu]) FOR CodeKy IN ([Code0],[Code1],[Code2])) piv_code"
-                        + "     PIVOT (MAX([TieuThuCu]) FOR TieuThuKy IN ([TieuThu0],[TieuThu1],[TieuThu2])) piv_tt"
-                        + "     GROUP BY DanhBa;"
-                        + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot"
-                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2"
-                        + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
-                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.GhiChu,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
-                        + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + ")"
-                        + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
-                        + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
-                        + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
-                        + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
-                        + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
-            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
-        }
-
-        public string getDS_HoaDonTon_DHN(string Nam, string Ky, string Dot, string May)
-        {
-            string sql = "select MaHD=hd.ID_HOADON,DanhBo=hd.DANHBA,KyHD=(right('0' + ltrim(rtrim(convert(varchar(2),hd.KY))), 2)+'/'+convert(varchar(4),hd.NAM))"
-                    + " 	,hd.GiaBan,ThueGTGT=hd.THUE,PhiBVMT=hd.PHI,PhiBVMT_Thue=case when hd.ThueGTGT_TDVTN is null then 0 else hd.ThueGTGT_TDVTN end,hd.TongCong"
-                    + " 	from HOADON hd,server8.DocSoTH.dbo.DocSo ds"
-                    + " 	where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May
-                    + " 	and hd.DANHBA=ds.DanhBa and NGAYGIAITRACH is null"
-                    + " 	and ID_HOADON not in (select MaHD from TT_DichVuThu)"
-                    + " 	and ID_HOADON not in (select MaHD from TT_TraGop)"
-                    + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                    + " 	and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)--chặn thu hộ"
-                    + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
-                    + " 	order by ds.MLT1,ds.DanhBa,hd.ID_HOADON";
-            //string sql = "EXEC [dbo].[spGetDSHoaDonTon_DocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
-            return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN order by stt asc"));
         }
 
         public DataTable getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May, string Code)
@@ -3126,12 +3082,66 @@ namespace WSSmartPhone
             return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select * from DocSoTruoc where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and May=" + May + ") then 'true' else 'false' end").ToString());
         }
 
-        public string getDS_Code_DHN()
+        //ghi chỉ số
+        public string getDS_GiaNuoc_DHN()
         {
-            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN order by stt asc"));
+            return DataTableToJSON(_cDAL_KinhDoanh.ExecuteQuery_DataTable("SELECT ID,Name,SHN,SHTM,SHVM1,SHVM2,SX,HCSN,KDDV,NgayTangGia=CONVERT(char(10),NgayTangGia,103),PhiBVMT FROM GiaNuoc2"));
         }
 
-        //ghi chỉ số
+        public string getDS_KhongTinhPBVMT_DHN()
+        {
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo from DanhBoKPBVMT"));
+        }
+
+        public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May)
+        {
+            string sql = "DECLARE @LastNamKy INT;"
+                        + " SET @LastNamKy = " + Nam + " * 12 + " + Ky + ";"
+                        + " IF (OBJECT_ID('tempdb.dbo.#ChiSo', 'U') IS NOT NULL) DROP TABLE #ChiSo;"
+                        + " SELECT DanhBa, MAX([ChiSo0]) AS [ChiSo0], MAX([ChiSo1]) AS [ChiSo1], MAX([ChiSo2]) AS [ChiSo2], MAX([Code0]) AS [Code0],"
+                        + "     MAX([Code1]) AS [Code1], MAX([Code2]) AS [Code2], MAX([TieuThu0]) AS [TieuThu0], MAX([TieuThu1]) AS [TieuThu1],"
+                        + "     MAX([TieuThu2]) AS [TieuThu2]"
+                        + "     INTO #ChiSo"
+                        + "     FROM ("
+                        + "         SELECT DanhBa, 'ChiSo'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS ChiSoKy, 'Code'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS CodeKy,"
+                        + "             'TieuThu'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS TieuThuKy, [CSCu], [CodeCu], [TieuThuCu]"
+                        + "             FROM [DocSoTH].[dbo].[DocSo]"
+                        + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and (PhanMay=" + May + " or May=" + May + ")) src"
+                        + "     PIVOT (MAX([CSCu]) FOR ChiSoKy IN ([ChiSo0],[ChiSo1],[ChiSo2])) piv_cs"
+                        + "     PIVOT (MAX([CodeCu]) FOR CodeKy IN ([Code0],[Code1],[Code2])) piv_code"
+                        + "     PIVOT (MAX([TieuThuCu]) FOR TieuThuKy IN ([TieuThu0],[TieuThu1],[TieuThu2])) piv_tt"
+                        + "     GROUP BY DanhBa;"
+                        + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot"
+                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC"
+                        + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
+                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
+                        + "                          ,kh.Gieng,kh.GhiChu,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
+                        + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + ")"
+                        + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
+                        + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
+                        + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
+                        + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
+                        + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_HoaDonTon_DHN(string Nam, string Ky, string Dot, string May)
+        {
+            string sql = "select MaHD=hd.ID_HOADON,DanhBo=hd.DANHBA,KyHD=(right('0' + ltrim(rtrim(convert(varchar(2),hd.KY))), 2)+'/'+convert(varchar(4),hd.NAM))"
+                    + " 	,hd.GiaBan,ThueGTGT=hd.THUE,PhiBVMT=hd.PHI,PhiBVMT_Thue=case when hd.ThueGTGT_TDVTN is null then 0 else hd.ThueGTGT_TDVTN end,hd.TongCong"
+                    + " 	from HOADON hd,server8.DocSoTH.dbo.DocSo ds"
+                    + " 	where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May
+                    + " 	and hd.DANHBA=ds.DanhBa and NGAYGIAITRACH is null"
+                    + " 	and ID_HOADON not in (select MaHD from TT_DichVuThu)"
+                    + " 	and ID_HOADON not in (select MaHD from TT_TraGop)"
+                    + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
+                    + " 	and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)--chặn thu hộ"
+                    + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
+                    + " 	order by ds.MLT1,ds.DanhBa,hd.ID_HOADON";
+            //string sql = "EXEC [dbo].[spGetDSHoaDonTon_DocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
+            return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
+        }
+
         public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
         {
             CResult result = new CResult();
@@ -3166,9 +3176,9 @@ namespace WSSmartPhone
                                 DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
                                 if (dt != null && dt.Rows.Count > 0)
                                 {
-                                    if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K"))
+                                    if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
                                         Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
-                                    if (Code.Substring(0, 1) == "F" || Code.Substring(0, 1) == "6")
+                                    if (Code.Substring(0, 1) == "F" || Code == "61")
                                         ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
                                 }
                                 hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
@@ -3182,9 +3192,9 @@ namespace WSSmartPhone
                                     result.alert = "Tiêu Thụ = " + hd.TieuThu;
                                 }
                                 else
-                                    if (hd.TieuThu > 0 && hd.TieuThu >= int.Parse(TBTT) * 1.4)
+                                    if (hd.TieuThu > 0 && (hd.TieuThu < int.Parse(TBTT) * 1.4 || hd.TieuThu >= int.Parse(TBTT) * 1.4))
                                     {
-                                        result.alert = "Tiêu Thụ bất thường " + hd.TieuThu;
+                                        result.alert = "Tiêu Thụ bất thường = " + hd.TieuThu;
                                     }
                             }
                             result.message = jss.Serialize(hd);
@@ -3200,6 +3210,40 @@ namespace WSSmartPhone
                                 result.error = "Tiêu Thụ âm = " + hd.TieuThu;
                             }
                         }
+                    }
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return jss.Serialize(result);
+        }
+
+        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV)
+        {
+            CResult result = new CResult();
+            try
+            {
+                if (ChiSo == "")
+                    ChiSo = "0";
+                if (checkChot_BillState_DHN(ID.Substring(0, 4), ID.Substring(3, 2), Dot) == true)
+                {
+                    result.success = false;
+                    result.error = "Đã chốt dữ liệu";
+                }
+                else
+                    if (checkXuLy_DHN(ID) == true)
+                    {
+                        result.success = false;
+                        result.error = "Tổ đã xử lý";
+                    }
+                    else
+                    {
+                        string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
+                            + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",TongTien=" + TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
+                        result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                        result.success = ghi_Hinh_DHN(ID, HinhDHN);
                     }
             }
             catch (Exception ex)
@@ -3414,7 +3458,7 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
-                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 MLT=MALOTRINH,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN,Dot,Ky,Nam,Phuong,Quan from HOADON where DanhBa='" + DanhBo + "' order by ID_HOADON desc");
+                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 MLT=MALOTRINH,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN,Dot,Ky,Nam,Phuong,Quan,HopDong from HOADON where DanhBa='" + DanhBo + "' order by ID_HOADON desc");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     string ID = "";
@@ -3429,15 +3473,22 @@ namespace WSSmartPhone
                     {
                         ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
                     }
-                    string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate)values"
+                    string DinhMucHN = "NULL";
+                    if (dt.Rows[0]["DinhMucHN"].ToString() != "")
+                        DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
+                    string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate,HopDong)values"
                         + "("
                         + ID + ",'" + dt.Rows[0]["MLT"] + "','" + DanhBo + "',N'" + dt.Rows[0]["HoTen"] + "',N'" + dt.Rows[0]["DiaChi"] + "'"
-                        + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + dt.Rows[0]["DinhMucHN"] + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
-                        + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate()"
+                        + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + DinhMucHN + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
+                        + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
                         + ")";
                     result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                    CHoaDon hd = new CHoaDon();
+                    hd.TieuThu = int.Parse(ID);
+                    result.message = jss.Serialize(hd);
                 }
-                result.success = false;
+                else
+                    result.success = false;
             }
             catch (Exception ex)
             {
@@ -3452,7 +3503,7 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
-                result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),CreateDate,103),NoiDung,TinhTrang from MaHoa_DonTu where DanhBo='" + DanhBo.Replace(" ", "") + "' order by CreateDate desc"));
+                result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),CreateDate,103),NoiDung,TinhTrang from MaHoa_DonTu where DanhBo='" + DanhBo + "' order by CreateDate desc"));
                 result.success = true;
             }
             catch (Exception ex)
@@ -3461,6 +3512,22 @@ namespace WSSmartPhone
                 result.error = ex.Message;
             }
             return jss.Serialize(result);
+        }
+
+        public bool ghi_Hinh_DonTu_DHN(string ID, string Hinh, string MaNV)
+        {
+            try
+            {
+                string filename = DateTime.Now.ToString("dd.MM.yyyy HH.mm.ss");
+                string sql = "insert into MaHoa_DonTu_Hinh(ID,IDParent,Name,Loai,CreateBy,CreateDate)values((select case when exists(select ID from MaHoa_DonTu_Hinh) then (select MAX(ID)+1 from MaHoa_DonTu_Hinh) else 1 end)," + ID + ",N'" + filename + "',N'.jpg'," + MaNV + ",getdate())";
+                _cDAL_DocSo.ExecuteNonQuery(sql);
+                ghi_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, "DonTu", ID, filename + ".jpg", Hinh);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         //        select
@@ -3837,7 +3904,7 @@ namespace WSSmartPhone
         {
             try
             {
-                if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == true)
+                if (Directory.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == true)
                 {
                     foreach (string files in Directory.GetFiles(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT))
                     {
@@ -3845,8 +3912,10 @@ namespace WSSmartPhone
                             File.Delete(files);
                     }
                     Directory.Delete(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT);
+                    return true;
                 }
-                return true;
+                else
+                    return false;
             }
             catch (Exception ex)
             {

@@ -82,6 +82,30 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string getDS_Code()
+        {
+            return _cThuTien.getDS_Code_DHN();
+        }
+
+        [WebMethod]
+        public string getDS_ViTriDHN()
+        {
+            return _cThuTien.getDS_ViTriDHN();
+        }
+
+        [WebMethod]
+        public string getDS_GiaNuoc()
+        {
+            return _cThuTien.getDS_GiaNuoc_DHN();
+        }
+
+        [WebMethod]
+        public string getDS_KhongTinhPBVMT()
+        {
+            return _cThuTien.getDS_KhongTinhPBVMT_DHN();
+        }
+
+        [WebMethod]
         public string getDS_DocSo(string Nam, string Ky, string Dot, string May)
         {
             return _cThuTien.getDS_DocSo_DHN(Nam, Ky, Dot, May);
@@ -93,17 +117,6 @@ namespace WSSmartPhone
             return _cThuTien.getDS_HoaDonTon_DHN(Nam, Ky, Dot, May);
         }
 
-        [WebMethod]
-        public string getDS_Code()
-        {
-            return _cThuTien.getDS_Code_DHN();
-        }
-
-        [WebMethod]
-        public string getDS_ViTriDHN()
-        {
-            return _cThuTien.getDS_ViTriDHN();
-        }
 
         //ghi chú
         [WebMethod]
@@ -154,10 +167,17 @@ namespace WSSmartPhone
             return _cThuTien.xoa_Hinh_DHN(ID);
         }
 
+        //đọc số
         [WebMethod]
         public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
         {
             return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV, TBTT);
+        }
+
+        [WebMethod]
+        public string ghiChiSo_GianTiep(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV)
+        {
+            return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, TieuThu, TienNuoc, ThueGTGT, PhiBVMT, PhiBVMT_Thue, TongCong, HinhDHN, Dot, MaNV);
         }
 
         [WebMethod]
@@ -255,6 +275,12 @@ namespace WSSmartPhone
         public string ghi_DonTu(string DanhBo, string NoiDung, string GhiChu, string MaNV)
         {
             return _cThuTien.ghi_DonTu_DHN(DanhBo, NoiDung, GhiChu, MaNV);
+        }
+
+        [WebMethod]
+        public string ghi_Hinh_DonTu(string ID, string Hinh, string MaNV)
+        {
+            return _cThuTien.ghi_Hinh_DonTu_DHN(ID, Hinh, MaNV).ToString();
         }
 
         [WebMethod]
