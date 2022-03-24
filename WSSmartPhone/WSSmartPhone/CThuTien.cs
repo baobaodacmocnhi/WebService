@@ -3334,8 +3334,8 @@ namespace WSSmartPhone
                 string sql = " if exists(select ID from Temp_HinhDHN where ID=N'" + ID + "')"
                             + " update Temp_HinhDHN set Hinh=N'" + HinhDHN + "' where ID=N'" + ID + "'"
                             + " else"
-                            + " insert into Temp_HinhDHN(ID,Hinh)values(N'" + ID + "',N'" + HinhDHN + "')"; ;
-                return true;
+                            + " insert into Temp_HinhDHN(ID,Hinh)values(N'" + ID + "',N'" + HinhDHN + "')";
+                return _cDAL_DocSo.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {
@@ -3834,6 +3834,7 @@ namespace WSSmartPhone
                         img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                         hinh = ms.ToArray();
                     }
+                
                 return hinh;
             }
             catch
