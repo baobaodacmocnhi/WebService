@@ -3243,7 +3243,7 @@ namespace WSSmartPhone
                         string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
                             + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",TongTien=" + TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
                         result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                        result.success = ghi_Hinh_DHN(ID, HinhDHN);
+                        //result.success = ghi_Hinh_DHN(ID, HinhDHN);
                     }
             }
             catch (Exception ex)
@@ -3317,18 +3317,24 @@ namespace WSSmartPhone
         {
             try
             {
-                string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
-                string filename = ID.Substring(6, 11) + ".jpg";
-                if (Directory.Exists(folder) == false)
-                    Directory.CreateDirectory(folder);
-                byte[] hinh = System.Convert.FromBase64String(HinhDHN);
-                using (var ms = new MemoryStream(hinh))
-                {
-                    using (var fs = new FileStream(folder + @"\" + filename, FileMode.Create))
-                    {
-                        ms.WriteTo(fs);
-                    }
-                }
+                //string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+                //string filename = ID.Substring(6, 11) + ".jpg";
+                //if (Directory.Exists(folder) == false)
+                //    Directory.CreateDirectory(folder);
+                //if (File.Exists(folder + @"\" + filename) == true)
+                //    File.Delete(folder + @"\" + filename);
+                //byte[] hinh = System.Convert.FromBase64String(HinhDHN);
+                //using (var ms = new MemoryStream(hinh))
+                //{
+                //    using (var fs = new FileStream(folder + @"\" + filename, FileMode.Create))
+                //    {
+                //        ms.WriteTo(fs);
+                //    }
+                //}
+                string sql = " if exists(select ID from Temp_HinhDHN where ID=N'" + ID + "')"
+                            + " update Temp_HinhDHN set Hinh=N'" + HinhDHN + "' where ID=N'" + ID + "'"
+                            + " else"
+                            + " insert into Temp_HinhDHN(ID,Hinh)values(N'" + ID + "',N'" + HinhDHN + "')"; ;
                 return true;
             }
             catch (Exception ex)
@@ -3842,6 +3848,8 @@ namespace WSSmartPhone
             {
                 if (Directory.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == false)
                     Directory.CreateDirectory(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT);
+                if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
+                    File.Delete(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
                 byte[] hinh = System.Convert.FromBase64String(HinhDHN);
                 using (var ms = new MemoryStream(hinh))
                 {
@@ -3864,6 +3872,8 @@ namespace WSSmartPhone
             {
                 if (Directory.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == false)
                     Directory.CreateDirectory(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT);
+                if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
+                    File.Delete(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
                 using (var ms = new MemoryStream(HinhDHN))
                 {
                     using (var fs = new FileStream(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName, FileMode.Create))
