@@ -162,6 +162,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public bool ghi_Hinh_NAT(string ID, string HinhDHN)
+        {
+            return _cThuTien.ghi_Hinh_DHN_NAT(ID, HinhDHN);
+        }
+
+        [WebMethod]
         public bool xoa_Hinh(string ID)
         {
             return _cThuTien.xoa_Hinh_DHN(ID);
