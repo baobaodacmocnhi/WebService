@@ -112,6 +112,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string getDS_DocSo_Ton(string Nam, string Ky, string Dot, string May)
+        {
+            return _cThuTien.getDS_DocSo_Ton_DHN(Nam, Ky, Dot, May);
+        }
+
+        [WebMethod]
         public string getDS_HoaDonTon(string Nam, string Ky, string Dot, string May)
         {
             return _cThuTien.getDS_HoaDonTon_DHN(Nam, Ky, Dot, May);

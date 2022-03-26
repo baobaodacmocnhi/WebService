@@ -3112,7 +3112,7 @@ namespace WSSmartPhone
                         + "     PIVOT (MAX([TieuThuCu]) FOR TieuThuKy IN ([TieuThu0],[TieuThu1],[TieuThu2])) piv_tt"
                         + "     GROUP BY DanhBa;"
                         + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot"
-                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC"
+                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,kh.GhiChu,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
@@ -3122,6 +3122,12 @@ namespace WSSmartPhone
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
                         + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_DocSo_Ton_DHN(string Nam, string Ky, string Dot, string May)
+        {
+            string sql = "select DocSoID from DocSo where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and PhanMay=" + May + " and (CodeMoi like '' or CodeMoi is null or CodeMoi like 'F%')";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
@@ -3187,9 +3193,10 @@ namespace WSSmartPhone
                                 }
                                 hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
                                 string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
-                                    + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",TongTien=" + hd.TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
+                                    + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
                                 success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                                //success = ghi_Hinh_DHN(ID, HinhDHN);
+                                if (HinhDHN != "")
+                                    success = ghi_Hinh_DHN(ID, HinhDHN);
                                 result.success = success;
                                 if (hd.TieuThu == 0)
                                 {
@@ -3245,9 +3252,10 @@ namespace WSSmartPhone
                     else
                     {
                         string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
-                            + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",TongTien=" + TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
+                            + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
                         result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                        //result.success = ghi_Hinh_DHN(ID, HinhDHN);
+                        if (HinhDHN != "")
+                            result.success = ghi_Hinh_DHN(ID, HinhDHN);
                     }
             }
             catch (Exception ex)
@@ -3322,14 +3330,15 @@ namespace WSSmartPhone
         {
             try
             {
-                //string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
-                //string filename = ID.Substring(6, 11) + ".jpg";
-                //if (Directory.Exists(folder) == false)
-                //    Directory.CreateDirectory(folder);
-                //if (File.Exists(folder + @"\" + filename) == true)
-                //    File.Delete(folder + @"\" + filename);
-                //byte[] hinh = System.Convert.FromBase64String(HinhDHN);
-                //File.WriteAllBytes(folder + @"\" + filename, hinh);
+                string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+                string filename = ID.Substring(6, 11) + ".jpg";
+                if (Directory.Exists(folder) == false)
+                    Directory.CreateDirectory(folder);
+                if (File.Exists(folder + @"\" + filename) == true)
+                    File.Delete(folder + @"\" + filename);
+                byte[] hinh = System.Convert.FromBase64String(HinhDHN);
+                File.WriteAllBytes(folder + @"\" + filename, hinh);
+                return true;
                 //using (var ms = new MemoryStream(hinh))
                 //{
                 //    using (var fs = new FileStream(folder + @"\" + filename, FileMode.Create))
@@ -3337,11 +3346,12 @@ namespace WSSmartPhone
                 //        ms.WriteTo(fs);
                 //    }
                 //}
-                string sql = " if exists(select ID from Temp_HinhDHN where ID=N'" + ID + "')"
-                            + " update Temp_HinhDHN set Hinh=N'" + HinhDHN + "' where ID=N'" + ID + "'"
-                            + " else"
-                            + " insert into Temp_HinhDHN(ID,Hinh)values(N'" + ID + "',N'" + HinhDHN + "')";
-                return _cDAL_DocSo.ExecuteNonQuery(sql);
+
+                //string sql = " if exists(select ID from Temp_HinhDHN where ID=N'" + ID + "')"
+                //            + " update Temp_HinhDHN set Hinh=N'" + HinhDHN + "' where ID=N'" + ID + "'"
+                //            + " else"
+                //            + " insert into Temp_HinhDHN(ID,Hinh)values(N'" + ID + "',N'" + HinhDHN + "')";
+                //return _cDAL_DocSo.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {
