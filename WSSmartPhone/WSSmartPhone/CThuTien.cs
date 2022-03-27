@@ -3127,7 +3127,7 @@ namespace WSSmartPhone
 
         public string getDS_DocSo_Ton_DHN(string Nam, string Ky, string Dot, string May)
         {
-            string sql = "select DocSoID,CodeMoi,CSMoi from DocSo where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and PhanMay=" + May;
+            string sql = "select DocSoID,CodeMoi,CSMoi from DocSo where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and PhanMay=" + May + " order by MLT1 asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
