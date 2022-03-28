@@ -3202,7 +3202,7 @@ namespace WSSmartPhone
                                 hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
                                 string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
                                     + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong
-                                    + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate(),NgayTaoDS=(SELECT CONVERT(VARCHAR(10), GETDATE(), 103) + ' ' + CONVERT(VARCHAR(8), GETDATE(), 108)) where DocSoID='" + ID + "'";
+                                    + ",NVCapNhat='" + MaNV + "',NgayCapNhat=getdate(),NgayTaoDS=(SELECT CONVERT(VARCHAR(10), GETDATE(), 103) + ' ' + CONVERT(VARCHAR(8), GETDATE(), 108)) where DocSoID='" + ID + "'";
                                 success = _cDAL_DocSo.ExecuteNonQuery(sql);
                                 if (HinhDHN != "")
                                     success = ghi_Hinh_DHN(ID, HinhDHN);
@@ -3262,7 +3262,7 @@ namespace WSSmartPhone
                     {
                         string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
                             + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong
-                            + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate(),NgayTaoDS='" + NgayDS + "' where DocSoID='" + ID + "'";
+                            + ",NVCapNhat='" + MaNV + "',NgayCapNhat=getdate(),NgayTaoDS='" + NgayDS + "' where DocSoID='" + ID + "'";
                         result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
                         if (HinhDHN != "")
                             result.success = ghi_Hinh_DHN(ID, HinhDHN);
