@@ -3096,7 +3096,15 @@ namespace WSSmartPhone
         public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May)
         {
             string sql = "DECLARE @LastNamKy INT;"
-                        + " SET @LastNamKy = " + Nam + " * 12 + " + Ky + ";"
+                        + " declare @Nam int"
+                        + " declare @Ky char(2)"
+                        + " declare @Dot char(2)"
+                        + " declare @May char(2)"
+                        + " set @Nam=" + Nam
+                        + " set @Ky='" + Ky + "'"
+                        + " set @Dot='" + Dot + "'"
+                        + " set @May='" + May + "'"
+                        + " SET @LastNamKy = @Nam * 12  + @Ky;"
                         + " IF (OBJECT_ID('tempdb.dbo.#ChiSo', 'U') IS NOT NULL) DROP TABLE #ChiSo;"
                         + " SELECT DanhBa, MAX([ChiSo0]) AS [ChiSo0], MAX([ChiSo1]) AS [ChiSo1], MAX([ChiSo2]) AS [ChiSo2], MAX([Code0]) AS [Code0],"
                         + "     MAX([Code1]) AS [Code1], MAX([Code2]) AS [Code2], MAX([TieuThu0]) AS [TieuThu0], MAX([TieuThu1]) AS [TieuThu1],"
@@ -3106,28 +3114,28 @@ namespace WSSmartPhone
                         + "         SELECT DanhBa, 'ChiSo'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS ChiSoKy, 'Code'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS CodeKy,"
                         + "             'TieuThu'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS TieuThuKy, [CSCu], [CodeCu], [TieuThuCu]"
                         + "             FROM [DocSoTH].[dbo].[DocSo]"
-                        + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and (PhanMay=" + May + " or May=" + May + ")) src"
+                        + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and (PhanMay=@May or May=@May)) src"
                         + "     PIVOT (MAX([CSCu]) FOR ChiSoKy IN ([ChiSo0],[ChiSo1],[ChiSo2])) piv_cs"
                         + "     PIVOT (MAX([CodeCu]) FOR CodeKy IN ([Code0],[Code1],[Code2])) piv_code"
                         + "     PIVOT (MAX([TieuThuCu]) FOR TieuThuKy IN ([TieuThu0],[TieuThu1],[TieuThu2])) piv_tt"
                         + "     GROUP BY DanhBa;"
-                        + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot"
+                        + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot,ds.PhanMay"
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,kh.GhiChu,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
-                        + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + ")"
+                        + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
                         + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
-                        + "                          where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May + " order by ds.MLT1 asc";
+                        + "                          where ds.Nam=@Nam and ds.Ky=@Ky and ds.Dot=@Dot and ds.PhanMay=@May order by ds.MLT1 asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
         public string getDS_DocSo_Ton_DHN(string Nam, string Ky, string Dot, string May)
         {
-            string sql = "select DocSoID,CodeMoi,CSMoi from DocSo where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and PhanMay=" + May + " order by MLT1 asc";
+            string sql = "select DocSoID,CodeMoi,CSMoi from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' order by MLT1 asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
@@ -3136,7 +3144,7 @@ namespace WSSmartPhone
             string sql = "select MaHD=hd.ID_HOADON,DanhBo=hd.DANHBA,KyHD=(right('0' + ltrim(rtrim(convert(varchar(2),hd.KY))), 2)+'/'+convert(varchar(4),hd.NAM))"
                     + " 	,hd.GiaBan,ThueGTGT=hd.THUE,PhiBVMT=hd.PHI,PhiBVMT_Thue=case when hd.ThueGTGT_TDVTN is null then 0 else hd.ThueGTGT_TDVTN end,hd.TongCong"
                     + " 	from HOADON hd,server8.DocSoTH.dbo.DocSo ds"
-                    + " 	where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.Dot=" + Dot + " and ds.PhanMay=" + May
+                    + " 	where ds.Nam=" + Nam + " and ds.Ky='" + Ky + "' and ds.Dot='" + Dot + "' and ds.PhanMay='" + May + "'"
                     + " 	and hd.DANHBA=ds.DanhBa and NGAYGIAITRACH is null"
                     + " 	and ID_HOADON not in (select MaHD from TT_DichVuThu)"
                     + " 	and ID_HOADON not in (select MaHD from TT_TraGop)"
@@ -3193,7 +3201,8 @@ namespace WSSmartPhone
                                 }
                                 hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
                                 string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
-                                    + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
+                                    + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong
+                                    + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate(),NgayTaoDS=(SELECT CONVERT(VARCHAR(10), GETDATE(), 103) + ' ' + CONVERT(VARCHAR(8), GETDATE(), 108)) where DocSoID='" + ID + "'";
                                 success = _cDAL_DocSo.ExecuteNonQuery(sql);
                                 if (HinhDHN != "")
                                     success = ghi_Hinh_DHN(ID, HinhDHN);
@@ -3231,7 +3240,7 @@ namespace WSSmartPhone
             return jss.Serialize(result);
         }
 
-        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV)
+        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV, string NgayDS)
         {
             CResult result = new CResult();
             try
@@ -3252,7 +3261,8 @@ namespace WSSmartPhone
                     else
                     {
                         string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
-                            + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate() where DocSoID=" + ID;
+                            + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong
+                            + ",NVCapNhat=" + MaNV + ",NgayCapNhat=getdate(),NgayTaoDS='" + NgayDS + "' where DocSoID='" + ID + "'";
                         result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
                         if (HinhDHN != "")
                             result.success = ghi_Hinh_DHN(ID, HinhDHN);

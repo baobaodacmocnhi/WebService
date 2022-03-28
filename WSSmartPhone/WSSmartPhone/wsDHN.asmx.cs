@@ -187,9 +187,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string ghiChiSo_GianTiep(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV)
+        public string ghiChiSo_GianTiep(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV, string NgayDS)
         {
-            return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, TieuThu, TienNuoc, ThueGTGT, PhiBVMT, PhiBVMT_Thue, TongCong, HinhDHN, Dot, MaNV);
+            return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, TieuThu, TienNuoc, ThueGTGT, PhiBVMT, PhiBVMT_Thue, TongCong, HinhDHN, Dot, MaNV, NgayDS);
         }
 
         [WebMethod]
