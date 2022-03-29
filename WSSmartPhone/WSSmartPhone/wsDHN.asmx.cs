@@ -106,6 +106,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public bool checkNgayDoc(string Nam, string Ky, string Dot, string May)
+        {
+            return _cThuTien.checkNgayDoc_DHN(Nam, Ky, Dot, May);
+        }
+
+        [WebMethod]
         public string getDS_DocSo(string Nam, string Ky, string Dot, string May)
         {
             return _cThuTien.getDS_DocSo_DHN(Nam, Ky, Dot, May);

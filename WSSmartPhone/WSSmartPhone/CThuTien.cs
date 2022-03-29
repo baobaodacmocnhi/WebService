@@ -26,6 +26,7 @@ namespace WSSmartPhone
         CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
+        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
         JavaScriptSerializer jss = new JavaScriptSerializer();
 
         public string DataTableToJSON(DataTable table)
@@ -3047,7 +3048,10 @@ namespace WSSmartPhone
 
         public bool checkNgayDoc_DHN(string Nam, string Ky, string Dot, string May)
         {
-            return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select Nam from DocSoTruoc where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and May='" + May + "') then 'true' else 'false' end").ToString());
+            if (bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select Nam from DocSoTruoc where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and May='" + May + "') then 'true' else 'false' end").ToString()) == true)
+                return true;
+            else
+                return bool.Parse(_cDAL_TTKH.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and dsct.NgayDoc<=CAST(GETDATE() as date) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
         }
 
         //ghi chỉ số
@@ -3091,8 +3095,9 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.GhiChu,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
+                        + "                          ,kh.Gieng,kh.GhiChu"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
+                        + "                          ,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
                         + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
