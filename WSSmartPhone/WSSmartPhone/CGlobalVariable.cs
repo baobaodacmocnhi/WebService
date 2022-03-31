@@ -36,9 +36,11 @@ namespace WSSmartPhone
     public class CHoaDon
     {
         public int TieuThu, TienNuoc, ThueGTGT, PhiBVMT, PhiBVMT_Thue, TongCong;
+        public string CSC;
         public CHoaDon()
         {
             TieuThu = TienNuoc = ThueGTGT = PhiBVMT = PhiBVMT_Thue = TongCong = 0;
+            CSC = "";
         }
     }
 }

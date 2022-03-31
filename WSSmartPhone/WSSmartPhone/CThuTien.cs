@@ -3051,7 +3051,7 @@ namespace WSSmartPhone
             if (bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select Nam from DocSoTruoc where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and May='" + May + "') then 'true' else 'false' end").ToString()) == true)
                 return true;
             else
-                return bool.Parse(_cDAL_TTKH.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and dsct.NgayDoc<=CAST(GETDATE() as date) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
+                return bool.Parse(_cDAL_TTKH.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and ((dsct.NgayDoc=CAST(DATEADD(day,1,GETDATE()) as date) and CONVERT(varchar(10),GETDATE(),108)>='17:00:00') or dsct.NgayDoc<=CAST(GETDATE() as date)) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
         }
 
         //ghi chỉ số
@@ -3112,6 +3112,18 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
+        public string getDS_Hinh_Ton_DHN(string Nam, string Ky, string Dot, string May)
+        {
+            string sql = "select DocSoID,GhiHinh=CAST(0 as bit) from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' order by MLT1 asc";
+            DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
+            for (int i = 0; i < dt.Rows.Count; i++)
+                if (checkExists_Hinh_DHN(dt.Rows[0]["DocSoID"].ToString()) == true)
+                {
+                    dt.Rows[0]["GhiHinh"] = 1;
+                }
+            return DataTableToJSON(dt);
+        }
+
         public string getDS_HoaDonTon_DHN(string Nam, string Ky, string Dot, string May)
         {
             string sql = "select MaHD=hd.ID_HOADON,DanhBo=hd.DANHBA,KyHD=(right('0' + ltrim(rtrim(convert(varchar(2),hd.KY))), 2)+'/'+convert(varchar(4),hd.NAM))"
@@ -3164,7 +3176,10 @@ namespace WSSmartPhone
                                 if (dt != null && dt.Rows.Count > 0)
                                 {
                                     if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
+                                    {
                                         Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
+                                        hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
+                                    }
                                     if (Code.Substring(0, 1) == "F" || Code == "61")
                                         ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
                                     if (Code.Substring(0, 1) == "K")
@@ -3324,46 +3339,12 @@ namespace WSSmartPhone
                 byte[] hinh = System.Convert.FromBase64String(HinhDHN);
                 File.WriteAllBytes(folder + @"\" + filename, hinh);
                 return true;
-                //using (var ms = new MemoryStream(hinh))
-                //{
-                //    using (var fs = new FileStream(folder + @"\" + filename, FileMode.Create))
-                //    {
-                //        ms.WriteTo(fs);
-                //    }
-                //}
 
                 //string sql = " if exists(select ID from Temp_HinhDHN where ID=N'" + ID + "')"
                 //            + " update Temp_HinhDHN set Hinh=N'" + HinhDHN + "' where ID=N'" + ID + "'"
                 //            + " else"
                 //            + " insert into Temp_HinhDHN(ID,Hinh)values(N'" + ID + "',N'" + HinhDHN + "')";
                 //return _cDAL_DocSo.ExecuteNonQuery(sql);
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-        public bool ghi_Hinh_DHN_NAT(string ID, string HinhDHN)
-        {
-            try
-            {
-                string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
-                string filename = ID.Substring(6, 11) + ".jpg";
-                if (Directory.Exists(folder) == false)
-                    Directory.CreateDirectory(folder);
-                if (File.Exists(folder + @"\" + filename) == true)
-                    File.Delete(folder + @"\" + filename);
-                byte[] hinh = System.Convert.FromBase64String(HinhDHN);
-                File.WriteAllBytes(folder + @"\" + filename, hinh);
-                //using (var ms = new MemoryStream(hinh))
-                //{
-                //    using (var fs = new FileStream(folder + @"\" + filename, FileMode.Create))
-                //    {
-                //        ms.WriteTo(fs);
-                //    }
-                //}
-                return true;
             }
             catch (Exception ex)
             {
@@ -3380,6 +3361,20 @@ namespace WSSmartPhone
                 if (File.Exists(folder + @"\" + filename) == true)
                     File.Delete(folder + @"\" + filename);
                 return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool checkExists_Hinh_DHN(string ID)
+        {
+            try
+            {
+                string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+                string filename = ID.Substring(6, 11) + ".jpg";
+                return File.Exists(folder + @"\" + filename);
             }
             catch (Exception ex)
             {
@@ -3857,12 +3852,6 @@ namespace WSSmartPhone
                 byte[] hinh = null;
                 if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
                     hinh = File.ReadAllBytes(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
-                //using (MemoryStream ms = new MemoryStream())
-                //{
-                //    Image img = Image.FromFile(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
-                //    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                //    hinh = ms.ToArray();
-                //}
 
                 return hinh;
             }
@@ -3882,13 +3871,6 @@ namespace WSSmartPhone
                     File.Delete(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
                 byte[] hinh = System.Convert.FromBase64String(HinhDHN);
                 File.WriteAllBytes(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName, hinh);
-                //using (var ms = new MemoryStream(hinh))
-                //{
-                //    using (var fs = new FileStream(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName, FileMode.Create))
-                //    {
-                //        ms.WriteTo(fs);
-                //    }
-                //}
                 return true;
             }
             catch (Exception ex)
@@ -3906,13 +3888,6 @@ namespace WSSmartPhone
                 if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
                     File.Delete(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
                 File.WriteAllBytes(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName, HinhDHN);
-                //using (var ms = new MemoryStream(HinhDHN))
-                //{
-                //    using (var fs = new FileStream(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName, FileMode.Create))
-                //    {
-                //        ms.WriteTo(fs);
-                //    }
-                //}
                 return true;
             }
             catch (Exception ex)

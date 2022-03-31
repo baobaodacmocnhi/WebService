@@ -124,6 +124,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string getDS_Hinh_Ton(string Nam, string Ky, string Dot, string May)
+        {
+            return _cThuTien.getDS_Hinh_Ton_DHN(Nam, Ky, Dot, May);
+        }
+
+        [WebMethod]
         public string getDS_HoaDonTon(string Nam, string Ky, string Dot, string May)
         {
             return _cThuTien.getDS_HoaDonTon_DHN(Nam, Ky, Dot, May);
@@ -174,15 +180,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool ghi_Hinh_NAT(string ID, string HinhDHN)
-        {
-            return _cThuTien.ghi_Hinh_DHN_NAT(ID, HinhDHN);
-        }
-
-        [WebMethod]
         public bool xoa_Hinh(string ID)
         {
             return _cThuTien.xoa_Hinh_DHN(ID);
+        }
+
+        [WebMethod]
+        public bool checkExists_Hinh(string ID)
+        {
+            return _cThuTien.checkExists_Hinh_DHN(ID);
         }
 
         //đọc số
