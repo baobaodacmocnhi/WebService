@@ -907,6 +907,18 @@ namespace WSTanHoa.Controllers
                     string message;
                     foreach (DataRow item in dt.Rows)
                     {
+                        //message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
+                        //            + "\nĐịa chỉ: " + item["DiaChi"]
+                        //            + "\nDanh bộ: " + item["DanhBo"]
+                        //            + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
+                        //            //+ " .Nhưng do giãn cách xã hội nhân viên Công ty không thể đến ghi chỉ số nước. Kính mong"
+                        //            //+ " Quý khách hàng cung cấp chỉ số nước để Công ty tính đúng lượng nước tiêu thụ thực tế"
+                        //            //+ " của Quý khách."
+                        //            + "\nTrường hợp Quý khách đi vắng, Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
+                        //            + "\nTrường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
+                        //            + "\n\n***Cú pháp báo chỉ số nước: CSN_danhbo_chisonuoc"
+                        //            + "\n***Chỉ số nước là dãy số màu đen trên đồng hồ nước"
+                        //            + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
                         message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
                                     + "\nĐịa chỉ: " + item["DiaChi"]
                                     + "\nDanh bộ: " + item["DanhBo"]
@@ -916,7 +928,7 @@ namespace WSTanHoa.Controllers
                                     //+ " của Quý khách."
                                     + "\nTrường hợp Quý khách đi vắng, Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
                                     + "\nTrường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
-                                    + "\n\n***Cú pháp báo chỉ số nước: CSN_danhbo_chisonuoc"
+                                    + "\n\n***Truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc?DanhBo=" + item["DanhBo"]
                                     + "\n***Chỉ số nước là dãy số màu đen trên đồng hồ nước"
                                     + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);

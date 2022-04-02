@@ -259,7 +259,7 @@ namespace WSTanHoa.Controllers
         {
             string sql_Lich = "WITH docso AS(select top 2 KY, NAM from [SERVER8].[DocSoTH].[dbo].[DocSo] where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
                                    + " select distinct NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103)"
-                                   + " ,NgayDoc,NgayChuyenListing,NgayThuTien,a.Ky,a.Nam"
+                                   + " ,NgayDoc,NgayChuyenListing,NgayThuTien,a.Ky,a.Nam,Dot=b.IDDot"
                                    + " from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c,docso where a.ID=b.IDDocSo and c.ID=b.IDDot and ((a.Nam>docso.Nam) or (a.Nam=docso.Nam and a.Ky>=docso.Ky))"
                                    + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
                                    + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
