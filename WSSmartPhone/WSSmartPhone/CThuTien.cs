@@ -2950,7 +2950,7 @@ namespace WSSmartPhone
                     else
                         _cDAL_DocSo.ExecuteNonQuery("update DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
-                _cDAL_DocSo.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
+                _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
                 return "true;" + DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,Doi,ToTruong,MaTo,DienThoai from NguoiDung where MaND=" + MaNV));
             }
@@ -3065,6 +3065,17 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo from DanhBoKPBVMT"));
         }
 
+        //        select
+        //    g1.DanhBo
+        //    , stuff((
+        //        select ' | ' + g.DienThoai+' '+g.HoTen
+        //        from SDT_DHN g        
+        //        where g.DanhBo = g1.DanhBo        
+        //        order by g.DienThoai
+        //        for xml path('')
+        //    ),1,2,'') as DienThoai
+        //from SDT_DHN g1
+        //group by g1.DanhBo
         public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May)
         {
             string sql = "DECLARE @LastNamKy INT;"
@@ -3091,17 +3102,30 @@ namespace WSSmartPhone
                         + "     PIVOT (MAX([CodeCu]) FOR CodeKy IN ([Code0],[Code1],[Code2])) piv_code"
                         + "     PIVOT (MAX([TieuThuCu]) FOR TieuThuKy IN ([TieuThu0],[TieuThu1],[TieuThu2])) piv_tt"
                         + "     GROUP BY DanhBa;"
+                        + "     with sdt as("
+                        + "        select g1.DanhBo"
+                        + "        , stuff(("
+                        + "            select ' | ' + g.DienThoai+' '+g.HoTen"
+                        + "            from CAPNUOCTANHOA.dbo.SDT_DHN g"
+                        + "            where g.DanhBo = g1.DanhBo and SoChinh=1"
+                        + "            order by CreateDate desc"
+                        + "            for xml path('')"
+                        + "        ),1,2,'') as DienThoai"
+                        + "        from CAPNUOCTANHOA.dbo.SDT_DHN g1"
+                        + "        group by g1.DanhBo)"
                         + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot,ds.PhanMay"
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,kh.GhiChu"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
-                        + "                          ,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
+                        //+ "                          ,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
+                        + "                          ,DienThoai=sdt.DienThoai"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
                         + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
+                        + "                          left join sdt on sdt.DanhBo=ds.DanhBa"
                         + "                          where ds.Nam=@Nam and ds.Ky=@Ky and ds.Dot=@Dot and ds.PhanMay=@May order by ds.MLT1 asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
@@ -3559,17 +3583,6 @@ namespace WSSmartPhone
             }
         }
 
-        //        select
-        //    g1.DanhBo
-        //    , stuff((
-        //        select ' | ' + g.DienThoai+' '+g.HoTen
-        //        from SDT_DHN g        
-        //        where g.DanhBo = g1.DanhBo        
-        //        order by g.DienThoai
-        //        for xml path('')
-        //    ),1,2,'') as DienThoai
-        //from SDT_DHN g1
-        //group by g1.DanhBo
 
         //đọc số
         public DataTable getDocSo(string DanhBo, string Nam, string Ky)
