@@ -240,7 +240,8 @@ namespace WSTanHoa.Controllers
                                 {
                                     if (messagesCSN[0].Trim().ToUpper() == "CSN")
                                     {
-                                        baochisonuoc(IDZalo, messagesCSN, ref strResponse);
+                                        //baochisonuoc(IDZalo, messagesCSN, ref strResponse);
+                                        strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nVui lòng truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc");
                                     }
                                 }
                                 else
@@ -928,7 +929,7 @@ namespace WSTanHoa.Controllers
                                     //+ " của Quý khách."
                                     + "\nTrường hợp Quý khách đi vắng, Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
                                     + "\nTrường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
-                                    + "\n\n***Truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc?DanhBo=" + item["DanhBo"]
+                                    + "\n\n***Truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc?function=KiemTra&DanhBo=" + item["DanhBo"]
                                     + "\n***Chỉ số nước là dãy số màu đen trên đồng hồ nước"
                                     + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);

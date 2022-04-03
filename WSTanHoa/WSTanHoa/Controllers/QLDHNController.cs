@@ -21,7 +21,7 @@ namespace WSTanHoa.Controllers
 
         public ActionResult BaoChiSoNuoc(string function, string DanhBo, string ChiSo, HttpPostedFileBase Hinh)
         {
-            if (function == "Kiểm Tra" || (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != ""))
+            if (function == "KiemTra")
             {
                 if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
                 {
@@ -37,15 +37,15 @@ namespace WSTanHoa.Controllers
                 }
             }
             else
-                if (function == "Gửi")
+                if (function == "Gui")
             {
                 if (DanhBo == "")
                     ModelState.AddModelError("", "Thiếu Danh Bộ");
                 if (ChiSo == "")
                     ModelState.AddModelError("", "Thiếu Chỉ Số Nước");
-                if (Hinh.ContentLength <= 0)
+                if (Hinh == null || Hinh.ContentLength <= 0)
                     ModelState.AddModelError("", "Thiếu Chỉ Hình ĐHN");
-                if (DanhBo != "" && ChiSo != "" && Hinh.ContentLength > 0)
+                if (DanhBo != "" && ChiSo != "" && Hinh != null && Hinh.ContentLength > 0)
                 {
                     DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
                     DataRow drLich = apiTTKH.getLichDocSo_Func_DataRow(dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["MLT"].ToString());

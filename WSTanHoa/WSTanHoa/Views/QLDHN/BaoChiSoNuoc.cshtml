@@ -42,7 +42,7 @@
                         <tr>
                             <td><label class="form-label small">Danh Bộ:</label></td>
                             <td><input type="number" class="form-control fw-bold" name="DanhBo" value="@ViewBag.DanhBo"></td>
-                            <td><button type="submit" class="btn btn-primary" name="function" value="Kiểm Tra">Kiểm Tra</button></td>
+                            <td><button type="submit" class="btn btn-primary" name="function" value="KiemTra">Kiểm Tra</button></td>
                         </tr>
                         <tr>
                             <td><label class="form-label small">Khách Hàng:</label></td>
@@ -57,7 +57,7 @@
                 @using (Html.BeginForm("BaoChiSoNuoc", "QLDHN", FormMethod.Post, new { encType = "multipart/form-data" }))
                 {
                     <table>
-                        <tr style="visibility:hidden">
+                        <tr style="visibility:collapse">
                             <td><label class="form-label small">Danh Bộ:</label></td>
                             <td><input type="number" class="form-control fw-bold" name="DanhBo" value="@ViewBag.DanhBo"></td>
                         </tr>
@@ -68,7 +68,7 @@
                         <tr>
                             <td><label class="form-label small">Hình ĐHN:</label></td>
                             <td><input type="file" class="form-control" name="Hinh" accept="image/png, image/jpeg"></td>
-                            <td><button type="submit" class="btn btn-primary" name="function" value="Gửi">Gửi</button></td>
+                            <td><button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button></td>
                         </tr>
                         <tr>
                             <td colspan="3">
