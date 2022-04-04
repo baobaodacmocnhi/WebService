@@ -237,6 +237,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\wrDHN\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\XmlDocument.xml" />
@@ -479,6 +484,11 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
     <None Include="Web References\WebReference\wsthutien.disco" />
+    <Content Include="Web References\wrDHN\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web References\wrDHN\wsdhn.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -514,6 +524,7 @@
     <Content Include="hdsd_files\themedata.thmx" />
     <Content Include="Views\ThuongVu\TinhTienNuoc.cshtml" />
     <None Include="Web References\WebReference\wsthutien.wsdl" />
+    <None Include="Web References\wrDHN\wsdhn.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -533,6 +544,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>WSTanHoa_WebReference_wsThuTien</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://192.168.90.11:81/wsdhn.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\wrDHN\</RelPath>
+      <UpdateFromURL>http://192.168.90.11:81/wsdhn.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WSTanHoa_wrDHN_wsDHN</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>

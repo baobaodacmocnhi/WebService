@@ -70,7 +70,7 @@ namespace WSTanHoa.Controllers
                         return View();
                     }
                     //kiểm tra đã gửi chỉ số nước rồi
-                    DataTable dtResult = cDAL_DocSo.ExecuteQuery_DataTable("select top 1 * from DocSo_Web where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and Nam=" + drLich["Nam"].ToString() + " and Ky=" + drLich["Ky"].ToString() + " and Dot=" + drLich["Dot"].ToString() + " order by CreateDate desc");
+                    DataTable dtResult = cDAL_DocSo.ExecuteQuery_DataTable("select top 1 * from DocSo where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + " and ChuBao=1'");
                     if (dtResult != null && dtResult.Rows.Count > 0)
                         if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-1)
                             || DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
@@ -83,8 +83,14 @@ namespace WSTanHoa.Controllers
                     SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo,Hinh)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ",@Hinh)");
                     command.Parameters.Add("@Hinh", SqlDbType.Image).Value = ImageToByte(resizedImage);
                     bool result = cDAL_DocSo.ExecuteNonQuery(command);
-                    if (result == true)
+                    wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
+                    string jsonresult = wsDHN.ghiChiSo(drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString(), "40", ChiSo, Convert.ToBase64String(ImageToByte(resizedImage)), int.Parse(drLich["Dot"].ToString()).ToString("00"), "Chủ Báo", "0");
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(jsonresult);
+                    if (obj["success"] == true)
+                    {
+                        cDAL_DocSo.ExecuteNonQuery("update DocSo set ChuBao=1 where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + "'");
                         ModelState.AddModelError("", "Thành Công, Cám ơn Quý Khách Hàng đã cung cấp chỉ số nước");
+                    }
                     else
                         ModelState.AddModelError("", "Thất Bại, Vui lòng thử lại");
                 }

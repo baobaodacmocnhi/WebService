@@ -32,5 +32,15 @@ namespace WSTanHoa.Properties {
                 return ((string)(this["WSTanHoa_WebReference_wsThuTien"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://192.168.90.11:81/wsdhn.asmx")]
+        public string WSTanHoa_wrDHN_wsDHN {
+            get {
+                return ((string)(this["WSTanHoa_wrDHN_wsDHN"]));
+            }
+        }
     }
 }
