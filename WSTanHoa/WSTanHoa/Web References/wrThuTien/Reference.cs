@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace WSTanHoa.WebReference {
+namespace WSTanHoa.wrThuTien {
     using System;
     using System.Web.Services;
     using System.Diagnostics;
@@ -151,7 +151,7 @@ namespace WSTanHoa.WebReference {
         
         /// <remarks/>
         public wsThuTien() {
-            this.Url = global::WSTanHoa.Properties.Settings.Default.WSTanHoa_WebReference_wsThuTien;
+            this.Url = global::WSTanHoa.Properties.Settings.Default.WSTanHoa_wrThuTien_wsThuTien;
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;

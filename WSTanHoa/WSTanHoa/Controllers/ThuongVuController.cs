@@ -128,7 +128,7 @@ namespace WSTanHoa.Controllers
                     //
                     int GiaBanCu = 0, GiaBanMoi = 0, ThueGTGT = 0, PhiBVMTCu = 0, PhiBVMTMoi = 0, ThueGTGTTDVTN = 0, TongCong = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietCu = "", ChiTietMoi = "", ChiTietPhiBVMTCu = "", ChiTietPhiBVMTMoi = "";
-                    WebReference.wsThuTien ws = new WebReference.wsThuTien();
+                    wrThuTien.wsThuTien ws = new wrThuTien.wsThuTien();
                     string[] TuNgays = collection["txtTuNgay"].ToString().Split('-');
                     string[] DenNgays = collection["txtDenNgay"].ToString().Split('-');
                     ws.TinhTienNuoc(false, false, false, 0, collection["txtDanhBo"].ToString(), int.Parse(collection["txtKy"].ToString()), int.Parse(collection["txtNam"].ToString()), new DateTime(int.Parse(TuNgays[0]), int.Parse(TuNgays[1]), int.Parse(TuNgays[2])), new DateTime(int.Parse(DenNgays[0]), int.Parse(DenNgays[1]), int.Parse(DenNgays[2])), int.Parse(collection["txtGiaBieu"].ToString()), int.Parse(collection["txtSH"].ToString()), int.Parse(collection["txtSX"].ToString()), int.Parse(collection["txtDV"].ToString()), int.Parse(collection["txtHCSN"].ToString()), int.Parse(collection["txtDinhMuc"].ToString()), int.Parse(collection["txtDinhMucHN"].ToString()), int.Parse(collection["txtTieuThu"].ToString()), ref GiaBanCu, ref ChiTietCu, ref GiaBanMoi, ref ChiTietMoi, ref TieuThu_DieuChinhGia, ref PhiBVMTCu, ref ChiTietPhiBVMTCu, ref PhiBVMTMoi, ref ChiTietPhiBVMTMoi);
