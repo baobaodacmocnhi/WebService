@@ -3117,7 +3117,7 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.GhiChu"
+                        + "                          ,kh.Gieng,kh.GhiChu,ds.ChuBao"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         //+ "                          ,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
                         + "                          ,DienThoai=sdt.DienThoai"
@@ -3229,6 +3229,8 @@ namespace WSSmartPhone
                                         result.alert = "Tiêu Thụ bất thường = " + hd.TieuThu;
                                     }
                             }
+                            hd.CodeMoi = Code;
+                            hd.ChiSoMoi = ChiSo;
                             result.message = jss.Serialize(hd);
                             //DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select KyHD,TongCong from fnGetHoaDonTon(" + ID.Substring(6, 11) + ")");
                             //if (dt.Rows.Count > 0)
