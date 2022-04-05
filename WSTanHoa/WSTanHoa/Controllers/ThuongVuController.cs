@@ -83,7 +83,6 @@ namespace WSTanHoa.Controllers
                         {
                             //int TieuThu_DieuChinhGia;
                             int TongSoNgay = (int)((DateTime.Parse(collection["txtDenNgay"].ToString()).Date - DateTime.Parse(collection["txtTuNgay"].ToString()).Date).TotalDays);
-
                             int SoNgayCu = (int)((DateTime.Parse(dtGiaNuoc.Rows[index]["NgayTangGia"].ToString()).Date - DateTime.Parse(collection["txtTuNgay"].ToString()).Date).TotalDays);
                             int TieuThuCu = (int)Math.Round(double.Parse(collection["txtTieuThu"].ToString()) * SoNgayCu / TongSoNgay, 0, MidpointRounding.AwayFromZero);
                             int TieuThuMoi = int.Parse(collection["txtTieuThu"].ToString()) - TieuThuCu;

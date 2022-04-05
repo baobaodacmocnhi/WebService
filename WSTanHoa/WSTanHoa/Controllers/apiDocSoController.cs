@@ -293,7 +293,7 @@ namespace WSTanHoa.Controllers
                                        + "," + obj["Altitude"]
                                        + "," + obj["Interval"]
                                        + ",'" + obj["Time"] + "',N'All')";
-                        CGlobalVariable.log.Error("apiDocSo " + sql);
+                        //CGlobalVariable.log.Error("apiDocSo " + sql);
                         return _cDAL_DocSo.ExecuteNonQuery(sql);
                     }
                     else
