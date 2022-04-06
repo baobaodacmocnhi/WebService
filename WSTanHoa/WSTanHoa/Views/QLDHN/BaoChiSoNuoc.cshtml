@@ -66,12 +66,15 @@
                             <td><input type="number" class="form-control fw-bold" name="ChiSo" value=""></td>
                         </tr>
                         <tr>
+                            <td colspan="3"><label class="form-label small">Chỉ số nước là dãy số MÀU ĐEN NỀN TRẮNG trên đồng hồ nước</label></td>
+                        </tr>
+                        <tr>
                             <td><label class="form-label small">Hình ĐHN:</label></td>
                             <td><input type="file" class="form-control" name="Hinh" accept="image/png, image/jpeg"></td>
                             <td><button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button></td>
                         </tr>
                         <tr>
-                            <td colspan="3">
+                            <td colspan="3" class="mt-1">
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                 @Html.AntiForgeryToken()
                             </td>
