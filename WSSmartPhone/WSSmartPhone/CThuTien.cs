@@ -3119,7 +3119,7 @@ namespace WSSmartPhone
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,kh.GhiChu,ds.ChuBao"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
-                        //+ "                          ,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
+                //+ "                          ,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
                         + "                          ,DienThoai=sdt.DienThoai"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
                         + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
@@ -3706,6 +3706,7 @@ namespace WSSmartPhone
                     responseMess = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
+                    _cDAL_DHN.ExecuteNonQuery("insert into Temp(Name,Value,MaHD,Result)values(N'" + Title + "|" + Content + "|" + Action + "|" + NameUpdate + "',N'" + ValueUpdate + "',N'" + ID + "',N'" + responseMess + "')");
                 }
                 else
                 {
