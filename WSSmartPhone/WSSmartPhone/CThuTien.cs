@@ -3706,7 +3706,7 @@ namespace WSSmartPhone
                     responseMess = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
-                    _cDAL_DHN.ExecuteNonQuery("insert into Temp(Name,Value,MaHD,Result)values(N'" + Title + "|" + Content + "|" + Action + "|" + NameUpdate + "',N'" + ValueUpdate + "',N'" + ID + "',N'" + responseMess + "')");
+                    _cDAL_DocSo.ExecuteNonQuery("insert into Temp(Name,Value,MaHD,Result)values(N'" + Title + "|" + Content + "|" + Action + "|" + NameUpdate + "',N'" + ValueUpdate + "',N'" + ID + "',N'" + responseMess + "')");
                 }
                 else
                 {
