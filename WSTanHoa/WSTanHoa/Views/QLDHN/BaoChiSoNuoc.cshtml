@@ -8,14 +8,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-
     @Styles.Render("~/Content/css")
-    <link href="~/Lib/kendo/css/kendo.common.min.css" rel="stylesheet" />
-    <link href="~/Lib/kendo/css/kendo.default.min.css" rel="stylesheet" />
-    <link href="~/Lib/kendo/css/kendo.default.mobile.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
-    <script src="~/Lib/kendo/js/kendo.all.min.js"></script>
-
 </head>
 
 <body style="background-color:#85d8f3;margin-top:-30px">
@@ -33,7 +27,7 @@
     <div class="container mt-3">
         <div class="card mt-3 rounded-3 shadow-sm">
             <div class="card-header">
-                <h4 class="text-primary">Báo Chỉ Số Nước</h4>
+                <h4 class="text-primary">@ViewBag.Title</h4>
             </div>
             <div class="card-body">
                 @using (Html.BeginForm("BaoChiSoNuoc", "QLDHN", FormMethod.Get))
@@ -66,7 +60,7 @@
                             <td><input type="number" class="form-control fw-bold" name="ChiSo" value=""></td>
                         </tr>
                         <tr>
-                            <td colspan="3"><label class="form-label small">Chỉ số nước là dãy số MÀU ĐEN NỀN TRẮNG trên đồng hồ nước</label></td>
+                            <td colspan="3"><label class="form-label small">Chỉ số nước là dãy số <b>MÀU ĐEN NỀN TRẮNG</b> trên đồng hồ nước</label></td>
                         </tr>
                         <tr>
                             <td><label class="form-label small">Hình ĐHN:</label></td>

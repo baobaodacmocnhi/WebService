@@ -483,6 +483,7 @@
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
+    <Content Include="Views\ThuongVu\DangKyDinhMuc.cshtml" />
     <None Include="Web References\wrThuTien\wsthutien.disco" />
     <Content Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
