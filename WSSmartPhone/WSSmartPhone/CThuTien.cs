@@ -3512,7 +3512,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select [Name] from MaHoa_PhieuChuyen where App=1"));
         }
 
-        public string ghi_DonTu_DHN(string DanhBo, string NoiDung, string GhiChu, string MaNV)
+        public string ghi_DonTu_DHN(string DanhBo, string NoiDung, string GhiChu, string Hinh, string MaNV)
         {
             CResult result = new CResult();
             try
@@ -3545,6 +3545,8 @@ namespace WSSmartPhone
                             + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
                             + ")";
                         result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                        if (Hinh != "")
+                            result.success = ghi_Hinh_DonTu_DHN(ID, Hinh, MaNV);
                         CHoaDon hd = new CHoaDon();
                         hd.TieuThu = int.Parse(ID);
                         result.message = jss.Serialize(hd);

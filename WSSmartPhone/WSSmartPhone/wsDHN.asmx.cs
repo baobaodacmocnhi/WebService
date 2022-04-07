@@ -296,9 +296,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string ghi_DonTu(string DanhBo, string NoiDung, string GhiChu, string MaNV)
+        public string ghi_DonTu(string DanhBo, string NoiDung, string GhiChu,string Hinh, string MaNV)
         {
-            return _cThuTien.ghi_DonTu_DHN(DanhBo, NoiDung, GhiChu, MaNV);
+            return _cThuTien.ghi_DonTu_DHN(DanhBo, NoiDung, GhiChu,Hinh, MaNV);
         }
 
         [WebMethod]
