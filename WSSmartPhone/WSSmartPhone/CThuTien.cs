@@ -3202,14 +3202,18 @@ namespace WSSmartPhone
                                     if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
                                     {
                                         Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
-                                        hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
                                     }
                                     if (Code.Substring(0, 1) == "F" || Code == "61")
                                         ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
-                                    if (Code.Substring(0, 1) == "K")
-                                        ChiSo = dt.Rows[0]["CSCu"].ToString();
-                                    if (Code.Substring(0, 1) == "N")
-                                        ChiSo = "0";
+                                    else
+                                        if (Code.Substring(0, 1) == "K")
+                                            ChiSo = dt.Rows[0]["CSCu"].ToString();
+                                        else
+                                            if (Code.Substring(0, 1) == "N")
+                                                ChiSo = "0";
+                                            else
+                                                if (Code == "5N")
+                                                    hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
                                 }
                                 hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
                                 string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
@@ -3516,31 +3520,40 @@ namespace WSSmartPhone
                 DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 MLT=MALOTRINH,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN,Dot,Ky,Nam,Phuong,Quan,HopDong from HOADON where DanhBa='" + DanhBo + "' order by ID_HOADON desc");
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    string ID = "";
-                    object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                    if (checkExists != null)
+                    object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where DanhBo='" + DanhBo + "' and NoiDung=N'" + NoiDung + "' and cast(getdate() as date)=cast(createdate as date)");
+                    if (checkExists == null)
                     {
-                        object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                        if (stt != null)
-                            ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
+                        string ID = "";
+                        checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                        if (checkExists != null)
+                        {
+                            object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                            if (stt != null)
+                                ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
+                        }
+                        else
+                        {
+                            ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
+                        }
+                        string DinhMucHN = "NULL";
+                        if (dt.Rows[0]["DinhMucHN"].ToString() != "")
+                            DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
+                        string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate,HopDong)values"
+                            + "("
+                            + ID + ",'" + dt.Rows[0]["MLT"] + "','" + DanhBo + "',N'" + dt.Rows[0]["HoTen"] + "',N'" + dt.Rows[0]["DiaChi"] + "'"
+                            + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + DinhMucHN + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
+                            + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
+                            + ")";
+                        result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                        CHoaDon hd = new CHoaDon();
+                        hd.TieuThu = int.Parse(ID);
+                        result.message = jss.Serialize(hd);
                     }
                     else
                     {
-                        ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
+                        result.success = false;
+                        result.error = "Danh Bộ đã lập Đơn cùng nội dung trong ngày";
                     }
-                    string DinhMucHN = "NULL";
-                    if (dt.Rows[0]["DinhMucHN"].ToString() != "")
-                        DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
-                    string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate,HopDong)values"
-                        + "("
-                        + ID + ",'" + dt.Rows[0]["MLT"] + "','" + DanhBo + "',N'" + dt.Rows[0]["HoTen"] + "',N'" + dt.Rows[0]["DiaChi"] + "'"
-                        + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + DinhMucHN + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
-                        + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
-                        + ")";
-                    result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                    CHoaDon hd = new CHoaDon();
-                    hd.TieuThu = int.Parse(ID);
-                    result.message = jss.Serialize(hd);
                 }
                 else
                     result.success = false;
@@ -3706,7 +3719,7 @@ namespace WSSmartPhone
                     responseMess = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
-                    _cDAL_DocSo.ExecuteNonQuery("insert into Temp(Name,Value,MaHD,Result)values(N'" + Title + "|" + Content + "|" + Action + "|" + NameUpdate + "',N'" + ValueUpdate + "|" + UID + "',N'" + ID + "',N'" + responseMess + "')");
+                    _cDAL_DocSo.ExecuteNonQuery("insert into Temp(Name,Value,MaHD,Result)values(N'" + Title + "|" + Content + "|" + Action + "|" + NameUpdate + "|" + ValueUpdate + "',N'" + UID + "',N'" + ID + "',N'" + responseMess + "')");
                 }
                 else
                 {
