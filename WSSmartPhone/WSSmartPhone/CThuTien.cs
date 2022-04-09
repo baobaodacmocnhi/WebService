@@ -3150,7 +3150,7 @@ namespace WSSmartPhone
 
         public string getDS_HoaDonTon_DHN(string Nam, string Ky, string Dot, string May)
         {
-            string sql = "select MaHD=hd.ID_HOADON,DanhBo=hd.DANHBA,KyHD=(right('0' + ltrim(rtrim(convert(varchar(2),hd.KY))), 2)+'/'+convert(varchar(4),hd.NAM))"
+            string sql = "select MaHD=hd.ID_HOADON,DanhBo=hd.DANHBA,KyHD=(RIGHT('0' + CAST(hd.Ky AS VARCHAR(2)), 2)+'/'+convert(varchar(4),hd.NAM))"
                     + " 	,hd.GiaBan,ThueGTGT=hd.THUE,PhiBVMT=hd.PHI,PhiBVMT_Thue=case when hd.ThueGTGT_TDVTN is null then 0 else hd.ThueGTGT_TDVTN end,hd.TongCong"
                     + " 	from HOADON hd,server8.DocSoTH.dbo.DocSo ds"
                     + " 	where ds.Nam=" + Nam + " and ds.Ky='" + Ky + "' and ds.Dot='" + Dot + "' and ds.PhanMay='" + May + "'"
@@ -3600,7 +3600,6 @@ namespace WSSmartPhone
             }
         }
 
-
         //đọc số
         public DataTable getDocSo(string DanhBo, string Nam, string Ky)
         {
@@ -3734,6 +3733,75 @@ namespace WSSmartPhone
             }
             return responseMess;
         }
+
+        //quản lý
+        public string getDS_TheoDoi_DHN(string MaTo, string Nam, string Ky, string Dot)
+        {
+            string sql = "select May,Tong=COUNT(DocSoID)"
+                    + " ,DaDoc=COUNT(CASE WHEN CodeMoi not like '' THEN 1 END)"
+                    + " ,ChuaDoc=COUNT(CASE WHEN CodeMoi like '' THEN 1 END)"
+                    + " ,CodeF=COUNT(CASE WHEN CodeMoi like 'F%' THEN 1 END)"
+                    + " from DocSo where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and (select TuMay from [To] where MaTo=" + MaTo + ")<=May and May<=(select DenMay from [To] where MaTo=" + MaTo + ")"
+                    + " group by May";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_BatThuong_DHN(string MaTo, string Nam, string Ky, string Dot)
+        {
+            string sql = "DECLARE @LastNamKy INT;"
+                        + " declare @Nam int"
+                        + " declare @Ky char(2)"
+                        + " declare @Dot char(2)"
+                        + " declare @TuMay char(2)"
+                        + " declare @DenMay char(2)"
+                        + " set @Nam=" + Nam
+                        + " set @Ky='" + Ky + "'"
+                        + " set @Dot='" + Dot + "'"
+                        + " set @TuMay=RIGHT('0' + CAST((select TuMay from [To] where MaTo=" + MaTo + ") AS VARCHAR(2)), 2)"
+                        + " set @DenMay=RIGHT('0' + CAST((select DenMay from [To] where MaTo=" + MaTo + ") AS VARCHAR(2)), 2)"
+                        + " SET @LastNamKy = @Nam * 12  + @Ky;"
+                        + " IF (OBJECT_ID('tempdb.dbo.#ChiSo', 'U') IS NOT NULL) DROP TABLE #ChiSo;"
+                        + " SELECT DanhBa, MAX([ChiSo0]) AS [ChiSo0], MAX([ChiSo1]) AS [ChiSo1], MAX([ChiSo2]) AS [ChiSo2], MAX([Code0]) AS [Code0],"
+                        + "     MAX([Code1]) AS [Code1], MAX([Code2]) AS [Code2], MAX([TieuThu0]) AS [TieuThu0], MAX([TieuThu1]) AS [TieuThu1],"
+                        + "     MAX([TieuThu2]) AS [TieuThu2]"
+                        + "     INTO #ChiSo"
+                        + "     FROM ("
+                        + "         SELECT DanhBa, 'ChiSo'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS ChiSoKy, 'Code'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS CodeKy,"
+                        + "             'TieuThu'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS TieuThuKy, [CSCu], [CodeCu], [TieuThuCu]"
+                        + "             FROM [DocSoTH].[dbo].[DocSo]"
+                        + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and ((PhanMay>=@TuMay and PhanMay<=@DenMay) or (May>=@TuMay and May<=@DenMay))) src"
+                        + "     PIVOT (MAX([CSCu]) FOR ChiSoKy IN ([ChiSo0],[ChiSo1],[ChiSo2])) piv_cs"
+                        + "     PIVOT (MAX([CodeCu]) FOR CodeKy IN ([Code0],[Code1],[Code2])) piv_code"
+                        + "     PIVOT (MAX([TieuThuCu]) FOR TieuThuKy IN ([TieuThu0],[TieuThu1],[TieuThu2])) piv_tt"
+                        + "     GROUP BY DanhBa;"
+                        + "     with sdt as("
+                        + "        select g1.DanhBo"
+                        + "        , stuff(("
+                        + "            select ' | ' + g.DienThoai+' '+g.HoTen"
+                        + "            from CAPNUOCTANHOA.dbo.SDT_DHN g"
+                        + "            where g.DanhBo = g1.DanhBo and SoChinh=1"
+                        + "            order by CreateDate desc"
+                        + "            for xml path('')"
+                        + "        ),1,2,'') as DienThoai"
+                        + "        from CAPNUOCTANHOA.dbo.SDT_DHN g1"
+                        + "        group by g1.DanhBo)"
+                        + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot,ds.PhanMay"
+                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
+                        + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
+                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
+                        + "                          ,kh.Gieng,kh.GhiChu,ds.ChuBao"
+                        + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
+                        + "                          ,DienThoai=sdt.DienThoai"
+                        + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
+                        + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
+                        + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
+                        + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
+                        + "                          left join sdt on sdt.DanhBo=ds.DanhBa"
+                        + "                          where ds.Nam=@Nam and ds.Ky=@Ky and ds.Dot=@Dot and ds.PhanMay>=@TuMay and ds.PhanMay<=@DenMay"
+                        + "                          and (ds.TieuThuMoi=0 or ds.TieuThuMoi>=TBTT*1.4 or ds.TieuThuMoi<=TBTT-TBTT*0.4) order by ds.MLT1 asc";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
 
         //đồng hồ nước
         public string getPhuongQuan(string DanhBo)

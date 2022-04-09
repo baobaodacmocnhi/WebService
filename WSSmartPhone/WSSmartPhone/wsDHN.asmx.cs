@@ -135,7 +135,6 @@ namespace WSSmartPhone
             return _cThuTien.getDS_HoaDonTon_DHN(Nam, Ky, Dot, May);
         }
 
-
         //ghi chú
         [WebMethod]
         public string get_GhiChu(string DanhBo)
@@ -296,9 +295,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string ghi_DonTu(string DanhBo, string NoiDung, string GhiChu,string Hinh, string MaNV)
+        public string ghi_DonTu(string DanhBo, string NoiDung, string GhiChu, string Hinh, string MaNV)
         {
-            return _cThuTien.ghi_DonTu_DHN(DanhBo, NoiDung, GhiChu,Hinh, MaNV);
+            return _cThuTien.ghi_DonTu_DHN(DanhBo, NoiDung, GhiChu, Hinh, MaNV);
         }
 
         [WebMethod]
@@ -311,6 +310,19 @@ namespace WSSmartPhone
         public string getDS_DonTu(string DanhBo)
         {
             return _cThuTien.getDS_DonTu_DHN(DanhBo);
+        }
+
+        //quản lý
+        [WebMethod]
+        public string getDS_TheoDoi(string MaTo, string Nam, string Ky, string Dot)
+        {
+            return _cThuTien.getDS_TheoDoi_DHN(MaTo, Nam, Ky, Dot);
+        }
+
+        [WebMethod]
+        public string getDS_BatThuong(string MaTo, string Nam, string Ky, string Dot)
+        {
+            return _cThuTien.getDS_BatThuong_DHN(MaTo, Nam, Ky, Dot);
         }
 
     }
