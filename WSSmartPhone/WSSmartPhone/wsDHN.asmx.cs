@@ -256,6 +256,12 @@ namespace WSSmartPhone
             return _cThuTien.tinhCodeTieuThu(DocSoID, Code, CSM, out TieuThu, out GiaBan, out ThueGTGT, out PhiBVMT, out TongCong);
         }
 
+        [WebMethod]
+        public string get_ThongTin(string DanhBo, string Nam, string Ky)
+        {
+            return _cThuTien.get_ThongTin_DHN(DanhBo, Nam, Ky);
+        }
+
         //send notification
         [WebMethod]
         public string SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)

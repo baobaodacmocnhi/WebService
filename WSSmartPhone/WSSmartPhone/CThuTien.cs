@@ -3076,6 +3076,7 @@ namespace WSSmartPhone
         //    ),1,2,'') as DienThoai
         //from SDT_DHN g1
         //group by g1.DanhBo
+
         public string getDS_DocSo_DHN(string Nam, string Ky, string Dot, string May)
         {
             string sql = "DECLARE @LastNamKy INT;"
@@ -3410,6 +3411,32 @@ namespace WSSmartPhone
             {
                 throw ex;
             }
+        }
+
+        public string get_ThongTin_DHN(string DanhBo, string Nam, string Ky)
+        {
+            CResult result = new CResult();
+            try
+            {
+                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),CodeMoi,CSMoi,TieuThuMoi from DocSo where DanhBa='" + DanhBo + "' and Nam=" + Nam + " and Ky=" + Ky);
+                CHoaDon hd = new CHoaDon();
+                hd.TuNgay = dt.Rows[0]["TuNgay"].ToString();
+                hd.DenNgay = dt.Rows[0]["DenNgay"].ToString();
+                hd.CodeMoi = dt.Rows[0]["CodeMoi"].ToString();
+                hd.ChiSoMoi = dt.Rows[0]["CSMoi"].ToString();
+                hd.TieuThuMoi = dt.Rows[0]["TieuThuMoi"].ToString();
+                result.message = jss.Serialize(hd);
+                byte[] hinh = get_Hinh_DHN(Nam + Ky + DanhBo);
+                if (hinh != null)
+                    result.alert = Convert.ToBase64String(hinh);
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return jss.Serialize(result);
         }
 
         //ghi chú
