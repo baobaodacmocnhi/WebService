@@ -26,6 +26,7 @@ namespace WSTanHoa.Providers
         public static string KinhDoanhWFH = "Data Source=113.161.88.180,1133;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string TrungTamKhachHang = "Data Source=serverg8-01;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string TrungTamKhachHangWFH = "Data Source=113.161.88.180,1133;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
+        public static string BauCu = "Data Source=113.161.88.180,1933;Initial Catalog=DH_CODONG;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string pathHinhDHN = @"\\192.168.90.241\HinhDHN";
         public static JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
         public static log4net.ILog log = log4net.LogManager.GetLogger("File");

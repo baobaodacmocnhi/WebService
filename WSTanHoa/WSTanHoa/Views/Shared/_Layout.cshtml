@@ -84,6 +84,16 @@
                             <li><a class="nav-link active" href="http://113.161.88.180:81/app/thutien.apk" target="_blank">Tải app</a></li>
                         </ul>
                     </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active dropdown-toggle" href="#" id="menuThuongVu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Bầu Cử
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuThuongVu">
+                            <li>@Html.ActionLink("Ban Chấp Hành", "BCH", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Bí Thư", "BiThu", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Đại Biểu", "DaiBieu", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </header>

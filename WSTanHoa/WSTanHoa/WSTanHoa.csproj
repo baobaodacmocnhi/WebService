@@ -194,6 +194,7 @@
     <Compile Include="Controllers\apiThuTienController.cs" />
     <Compile Include="Controllers\apiTrungTamKhachHangController.cs" />
     <Compile Include="Controllers\apiZaloController.cs" />
+    <Compile Include="Controllers\BauCuController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\KhieuNaiController.cs" />
@@ -484,6 +485,9 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </Content>
     <Content Include="Views\ThuongVu\DangKyDinhMuc.cshtml" />
+    <Content Include="Views\BauCu\BCH.cshtml" />
+    <Content Include="Views\BauCu\BiThu.cshtml" />
+    <Content Include="Views\BauCu\DaiBieu.cshtml" />
     <None Include="Web References\wrThuTien\wsthutien.disco" />
     <Content Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
