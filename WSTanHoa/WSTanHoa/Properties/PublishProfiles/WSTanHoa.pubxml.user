@@ -172,10 +172,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>04/07/2022 14:38:26</publishTime>
+      <publishTime>04/12/2022 10:31:13</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>04/07/2022 14:38:27</publishTime>
+      <publishTime>04/12/2022 10:31:14</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -858,6 +858,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Scripts/_references.js">
       <publishTime>11/15/2021 14:01:36</publishTime>
     </File>
+    <File Include="Views/BauCu/BCH.cshtml">
+      <publishTime>04/12/2022 08:11:49</publishTime>
+    </File>
+    <File Include="Views/BauCu/BiThu.cshtml">
+      <publishTime>04/12/2022 08:11:49</publishTime>
+    </File>
+    <File Include="Views/BauCu/DaiBieu.cshtml">
+      <publishTime>04/12/2022 08:11:49</publishTime>
+    </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
@@ -889,7 +898,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>04/07/2022 14:11:58</publishTime>
+      <publishTime>04/12/2022 08:11:49</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -939,11 +948,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Web References/wrDHN/Reference.map">
       <publishTime>04/04/2022 11:02:08</publishTime>
     </File>
+    <File Include="Web References/wrThuongVu/Reference.map">
+      <publishTime>04/12/2022 10:19:33</publishTime>
+    </File>
     <File Include="Web References/wrThuTien/Reference.map">
       <publishTime>04/05/2022 08:01:23</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>04/05/2022 12:39:50</publishTime>
+      <publishTime>04/12/2022 10:30:43</publishTime>
     </File>
   </ItemGroup>
 </Project>

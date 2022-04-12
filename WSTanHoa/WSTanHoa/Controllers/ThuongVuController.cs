@@ -15,15 +15,23 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private wrThuongVu.wsThuongVu wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: ThuongVu
         public ActionResult viewFile(string TableName, string IDFileName, string IDFileContent)
         {
             if (TableName != null && IDFileName != null && IDFileContent != null && TableName != "" && IDFileName != "" && IDFileContent != "")
             {
-                byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-                if (FileContent != null)
-                    return new FileStreamResult(new MemoryStream(FileContent), "image/jpeg");
+                //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    byte[] FileContent = wsThuongVu.get_Hinh(TableName, IDFileContent, dt.Rows[0]["filename"].ToString());
+                    if (FileContent != null)
+                        return new FileStreamResult(new MemoryStream(FileContent), "image/jpeg");
+                    else
+                        return View();
+                }
                 else
                     return View();
             }

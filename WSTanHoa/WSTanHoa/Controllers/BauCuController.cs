@@ -43,6 +43,7 @@ namespace WSTanHoa.Controllers
             }
             ViewBag.BCH_BoPhieu = model;
             if (function != null)
+            {
                 if (function == "Gui")
                 {
                     if (form.AllKeys.Contains("0"))
@@ -58,6 +59,7 @@ namespace WSTanHoa.Controllers
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
                     else
+                    if (form.AllKeys.Count() > 1)
                     {
                         string sql = "declare @tbID table (id int);"
                                   + " insert into BCH_BoPhieu(KhongHopLe,BCH,CreateBy)"
@@ -80,6 +82,33 @@ namespace WSTanHoa.Controllers
                         + " delete BCH_BoPhieu where ID=" + BoPhieu;
                     cDAL_BauCu.ExecuteNonQuery(sql);
                 }
+                return RedirectToAction("BCH", "BauCu");
+            }
+            return View();
+        }
+
+        public ActionResult BCH_View()
+        {
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select Tong=COUNT(*),HopLe=COUNT(NULLIF(1, KhongHopLe)),KhongHopLe=COUNT(NULLIF(0, KhongHopLe)) from BCH_BoPhieu where BCH=1");
+            ViewBag.Tong = dt.Rows[0]["Tong"].ToString();
+            ViewBag.HopLe = dt.Rows[0]["HopLe"].ToString();
+            ViewBag.KhongHopLe = dt.Rows[0]["KhongHopLe"].ToString();
+            dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
+                + " where bp.ID=bpct.IDBoPhieu and uc.ID=bpct.IDUngVien and bp.BCH=1"
+                + " group by uc.ID,uc.HoTen)t1");
+            List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
+            foreach (DataRow item in dt.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.MLT = item["STT"].ToString();
+                en.HoTen = item["HoTen"].ToString();
+                en.DiaChi = item["Chon"].ToString();
+                en.DienThoai = ((double)(double.Parse(item["Chon"].ToString()) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
+                en.DinhMuc = ((int)(int.Parse(ViewBag.Tong) - int.Parse(item["Chon"].ToString()))).ToString();
+                en.DinhMucHN = ((double)((double.Parse(ViewBag.Tong) - double.Parse(item["Chon"].ToString())) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
+                model.Add(en);
+            }
+            ViewBag.BCH_BoPhieu = model;
             return View();
         }
 
@@ -88,7 +117,17 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
+        public ActionResult BiThu_View()
+        {
+            return View();
+        }
+
         public ActionResult DaiBieu()
+        {
+            return View();
+        }
+
+        public ActionResult DaiBieu_View()
         {
             return View();
         }

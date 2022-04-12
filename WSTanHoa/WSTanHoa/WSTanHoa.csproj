@@ -233,6 +233,11 @@
     <Compile Include="Providers\CConnection.cs" />
     <Compile Include="Providers\CGlobalVariable.cs" />
     <Compile Include="Providers\ErrorResult.cs" />
+    <Compile Include="Web References\wrThuongVu\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\wrThuTien\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -480,6 +485,14 @@
     <Content Include="hdsd_files\image051.jpg" />
     <Content Include="hdsd_files\item0041.xml" />
     <Content Include="hdsd_files\props042.xml" />
+    <Content Include="Web References\wrThuongVu\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <Content Include="Views\BauCu\BCH_View.cshtml" />
+    <Content Include="Views\BauCu\BiThu_View.cshtml" />
+    <Content Include="Views\BauCu\DaiBieu_View.cshtml" />
+    <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
     <Content Include="Web References\wrThuTien\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -488,6 +501,7 @@
     <Content Include="Views\BauCu\BCH.cshtml" />
     <Content Include="Views\BauCu\BiThu.cshtml" />
     <Content Include="Views\BauCu\DaiBieu.cshtml" />
+    <None Include="Web References\wrThuongVu\wsthuongvu.wsdl" />
     <None Include="Web References\wrThuTien\wsthutien.disco" />
     <Content Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
@@ -561,6 +575,20 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>WSTanHoa_wrDHN_wsDHN</CachedSettingsPropName>
     </WebReferenceUrl>
+    <WebReferenceUrl Include="http://serverg8-01:81/wsthuongvu.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\wrThuongVu\</RelPath>
+      <UpdateFromURL>http://serverg8-01:81/wsthuongvu.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WSTanHoa_wrThuongVu_wsThuongVu</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

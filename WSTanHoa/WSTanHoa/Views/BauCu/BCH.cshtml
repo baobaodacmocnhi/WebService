@@ -45,35 +45,37 @@
                 {
                     <div class="row">
                         <div class="col">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" name="0">
-                                            <label name="0">Không Hợp Lệ</label>
-                                        </div>
+                            <div class="overflow-auto" style="height:60vh">
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="0">
+                                                <label name="0">Không Hợp Lệ</label>
+                                            </div>
 
-                                    </td>
-                                </tr>
-                                @if (ViewBag.BCH_UngCu != null)
-                                {
-                                    foreach (var item in ViewBag.BCH_UngCu)
+                                        </td>
+                                    </tr>
+                                    @if (ViewBag.BCH_UngCu != null)
                                     {
-                                        <tr>
-                                            <td>
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" name="@item.DanhBo" onchange="check(@item.DanhBo);">
-                                                    <label name="@item.DanhBo">@item.HoTen</label>
-                                                </div>
+                                        foreach (var item in ViewBag.BCH_UngCu)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="@item.DanhBo" onchange="check(@item.DanhBo);">
+                                                        <label name="@item.DanhBo">@item.HoTen</label>
+                                                    </div>
 
-                                            </td>
-                                        </tr>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
-                                }
-                            </table>
+                                </table>
+                            </div>
                         </div>
                         <div class="col">
-                            <div class="overflow-auto">
+                            <div class="overflow-auto" style="height:60vh">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -99,7 +101,7 @@
                                                         <label>@item.HoTen</label>
                                                     </td>
                                                     <td>
-                                                      @Html.ActionLink("Xóa", "BCH", new { function = "Xoa", BoPhieu = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
+                                                        @Html.ActionLink("Xóa", "BCH", new { function = "Xoa", BoPhieu = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
                                                     </td>
                                                 </tr>
                                             }
@@ -113,7 +115,6 @@
                     <div class="mt-5">
                         <button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button>
                     </div>
-
                 }
             </div>
         </div>

@@ -26,7 +26,7 @@ namespace WSTanHoa.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://113.161.88.180:81/wsthutien.asmx")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://serverg8-01:81/wsthutien.asmx")]
         public string WSTanHoa_wrThuTien_wsThuTien {
             get {
                 return ((string)(this["WSTanHoa_wrThuTien_wsThuTien"]));
@@ -36,10 +36,20 @@ namespace WSTanHoa.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://113.161.88.180:81/wsdhn.asmx")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://serverg8-01:81/wsdhn.asmx")]
         public string WSTanHoa_wrDHN_wsDHN {
             get {
                 return ((string)(this["WSTanHoa_wrDHN_wsDHN"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://serverg8-01:81/wsthuongvu.asmx")]
+        public string WSTanHoa_wrThuongVu_wsThuongVu {
+            get {
+                return ((string)(this["WSTanHoa_wrThuongVu_wsThuongVu"]));
             }
         }
     }
