@@ -14,14 +14,6 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
-    <script>
-        function check(checkName) {
-            if ($("input[name=" + checkName + "]").is(":checked"))
-                $("label[name=" + checkName + "]").addClass("text-decoration-line-through");
-            else
-                $("label[name=" + checkName + "]").removeClass("text-decoration-line-through");
-        }
-    </script>
 </head>
 <body style="background-color:#85d8f3;margin-top:-30px">
     <div class="row justify-content-center">
@@ -41,11 +33,11 @@
                 <h4 class="text-primary">@ViewBag.Title</h4>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("BCH", "BauCu", FormMethod.Post))
+                @using (Html.BeginForm("BiThu", "BauCu", FormMethod.Post))
                 {
                     <div class="row">
                         <div class="col">
-                            <div class="overflow-auto" style="height:60vh">
+                            <div class="overflow-auto" style="height:40vh">
                                 <table>
                                     <tr>
                                         <td>
@@ -53,29 +45,46 @@
                                                 <input class="form-check-input" type="checkbox" name="0">
                                                 <label name="0">Không Hợp Lệ</label>
                                             </div>
-
                                         </td>
+                                    </tr>
+                                    <tr class="text-center fw-bold">
+                                        <td><div class="mt-4">Ứng Viên</div></td>
+                                        <td><div class="mt-4">Đồng Ý</div></td>
+                                        <td><div class="mt-4">Không Đồng Ý</div></td>
                                     </tr>
                                     @if (ViewBag.BCH_UngCu != null)
                                     {
                                         foreach (var item in ViewBag.BCH_UngCu)
                                         {
-                                            <tr>
+                                            <tr class="text-center">
                                                 <td>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" name="@item.DanhBo" onchange="check(@item.DanhBo);">
-                                                        <label name="@item.DanhBo">@item.HoTen</label>
+                                                    <label name="@item.DanhBo">@item.HoTen</label>
+                                                </td>
+                                                <td>
+                                                    <div class="form-check text-center">
+                                                        <input class="form-check-input" type="radio" name="@item.DanhBo" value="Yes">
                                                     </div>
-
+                                                </td>
+                                                <td>
+                                                    <div class="form-check text-center">
+                                                        <input class="form-check-input" type="radio" name="@item.DanhBo" value="No">
+                                                    </div>
                                                 </td>
                                             </tr>
                                         }
                                     }
+                                    <tr>
+                                        <td>
+                                            <div class="mt-5">
+                                                <button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button>
+                                            </div>
+                                        </td>
+                                    </tr>
                                 </table>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="overflow-auto" style="height:60vh">
+                            <div class="overflow-auto" style="height:40vh">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -110,11 +119,7 @@
                                 </table>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="mt-5">
-                        <button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button>
-                    </div>
+                    </div> 
                 }
             </div>
         </div>
