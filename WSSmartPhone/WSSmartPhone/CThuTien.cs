@@ -3190,12 +3190,12 @@ namespace WSSmartPhone
                         bool success = tinhCodeTieuThu(ID, Code, int.Parse(ChiSo), out hd.TieuThu, out hd.TienNuoc, out hd.ThueGTGT, out hd.PhiBVMT, out hd.PhiBVMT_Thue);
                         if (success == true)
                         {
-                            if (hd.TieuThu < 0)
-                            {
-                                result.success = false;
-                                result.error = "Tiêu Thụ âm = " + hd.TieuThu;
-                            }
-                            else
+                            //if (hd.TieuThu < 0)
+                            //{
+                            //    result.success = false;
+                            //    result.error = "Tiêu Thụ âm = " + hd.TieuThu;
+                            //}
+                            //else
                             {
                                 DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
                                 if (dt != null && dt.Rows.Count > 0)
@@ -3224,15 +3224,20 @@ namespace WSSmartPhone
                                 if (HinhDHN != "")
                                     success = ghi_Hinh_DHN(ID, HinhDHN);
                                 result.success = success;
-                                if (hd.TieuThu == 0)
+                                if (hd.TieuThu < 0)
                                 {
-                                    result.alert = "Tiêu Thụ = " + hd.TieuThu;
+                                    result.error = "Tiêu Thụ âm = " + hd.TieuThu;
                                 }
                                 else
-                                    if (hd.TieuThu > 0 && (hd.TieuThu < int.Parse(TBTT) - int.Parse(TBTT) * 1.4 || hd.TieuThu >= int.Parse(TBTT) * 1.4))
+                                    if (hd.TieuThu == 0)
                                     {
-                                        result.alert = "Tiêu Thụ bất thường = " + hd.TieuThu;
+                                        result.alert = "Tiêu Thụ = " + hd.TieuThu;
                                     }
+                                    else
+                                        if (hd.TieuThu > 0 && (hd.TieuThu < int.Parse(TBTT) - int.Parse(TBTT) * 1.4 || hd.TieuThu >= int.Parse(TBTT) * 1.4))
+                                        {
+                                            result.alert = "Tiêu Thụ bất thường = " + hd.TieuThu;
+                                        }
                             }
                             hd.CodeMoi = Code;
                             hd.ChiSoMoi = ChiSo;
@@ -3544,7 +3549,8 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
-                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 MLT=MALOTRINH,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN,Dot,Ky,Nam,Phuong,Quan,HopDong from HOADON where DanhBa='" + DanhBo + "' order by ID_HOADON desc");
+                //DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 MLT=MALOTRINH,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN,Dot,Ky,Nam,Phuong,Quan,HopDong from HOADON where DanhBa='" + DanhBo + "' order by ID_HOADON desc");
+                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select top 1 MLT=MLT1,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN=DMHN,Dot,Ky,Nam,Phuong,Quan,HopDong from BienDong where DanhBa='" + DanhBo + "' order by BienDongID desc");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where DanhBo='" + DanhBo + "' and NoiDung=N'" + NoiDung + "' and cast(getdate() as date)=cast(createdate as date)");
