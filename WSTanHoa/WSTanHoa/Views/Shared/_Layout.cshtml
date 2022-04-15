@@ -13,16 +13,19 @@
                 margin-top: 50px;
             }
         }
-         @@media screen and (max-width: 767px) {
+
+        @@media screen and (max-width: 767px) {
             body {
                 margin-top: 5px;
             }
         }
+
         @@media screen and (max-width: 421px) {
             body {
                 margin-top: 40px;
             }
         }
+
         @@media screen and (max-width: 365px) {
             body {
                 margin-top: 80px;
@@ -91,10 +94,12 @@
                         <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuThuongVu">
                             <li>@Html.ActionLink("Ban Chấp Hành", "BCH", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                             <li>@Html.ActionLink("Bí Thư", "BiThu", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
-                            <li>@Html.ActionLink("Đại Biểu", "DaiBieu", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Đại Biểu Chính Chức", "DaiBieuChinhThuc", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Đại Biểu Dự Khuyết", "DaiBieuDuKhuyet", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                             <li>@Html.ActionLink("KQ Ban Chấp Hành", "BCH_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
-                            <li>@Html.ActionLink("KQ Bí Thư", "BiThu", "BauCu_View", new { area = "" }, new { @class = "nav-link active" })</li>
-                            <li>@Html.ActionLink("KQ Đại Biểu", "DaiBieu", "BauCu_View", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("KQ Bí Thư", "BiThu_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("KQ Đại Biểu Chính Thức", "DaiBieuChinhThuc_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("KQ Đại Biểu Dự Khuyết", "DaiBieuDuKhuyet_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                         </ul>
                     </li>
                 </ul>

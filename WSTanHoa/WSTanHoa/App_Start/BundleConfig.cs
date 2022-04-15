@@ -25,6 +25,11 @@ namespace WSTanHoa
                       "~/Lib/lightbox2.2.11.3/css/lightbox.css",
                       "~/Lib/bootstrap-datepicker-1.9.0/css/bootstrap-datepicker.css"));
 
+            bundles.Add(new StyleBundle("~/Content/cssDoanTCT2022").Include(
+                     "~/Content/bootstrap.css",
+                     "~/Lib/lightbox2.2.11.3/css/lightbox.css",
+                     "~/Lib/bootstrap-datepicker-1.9.0/css/bootstrap-datepicker.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/zalo").Include(
                       "~/Scripts/zalo.js",
                       "~/Scripts/zalochat.js"));

@@ -26,6 +26,7 @@ namespace WSTanHoa.Controllers
             foreach (DataRow item in dtUngVien.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
+                en.MLT = item["STT"].ToString();
                 en.DanhBo = item["ID"].ToString();
                 en.HoTen = item["HoTen"].ToString();
                 model.Add(en);
@@ -87,16 +88,16 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
-        public ActionResult BCH_View()
+        public ActionResult BCH_View(string function)
         {
+            List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
             DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select Tong=COUNT(*),HopLe=COUNT(NULLIF(1, KhongHopLe)),KhongHopLe=COUNT(NULLIF(0, KhongHopLe)) from BCH_BoPhieu where BCH=1");
             ViewBag.Tong = dt.Rows[0]["Tong"].ToString();
             ViewBag.HopLe = dt.Rows[0]["HopLe"].ToString();
             ViewBag.KhongHopLe = dt.Rows[0]["KhongHopLe"].ToString();
             dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
-                + " where bp.ID=bpct.IDBoPhieu and uc.ID=bpct.IDUngVien and bp.BCH=1"
-                + " group by uc.ID,uc.HoTen)t1");
-            List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
+              + " where bp.ID=bpct.IDBoPhieu and uc.ID=bpct.IDUngVien and bp.BCH=1"
+              + " group by uc.ID,uc.HoTen)t1");
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
@@ -108,7 +109,23 @@ namespace WSTanHoa.Controllers
                 en.DinhMucHN = ((double)((double.Parse(ViewBag.Tong) - double.Parse(item["Chon"].ToString())) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
                 model.Add(en);
             }
-            ViewBag.BCH_BoPhieu = model;
+            if (function != null)
+            {
+                if (function == "Sort")
+                {
+                    List<ThongTinKhachHang> SortedList = model.OrderByDescending(o => o.DiaChi).ThenBy(o=>o.MLT).ToList();
+                    for (int i = 0; i < SortedList.Count; i++)
+                    {
+                        SortedList[i].MLT = (i + 1).ToString();
+                    }
+                    ViewBag.BCH_BoPhieu = SortedList;
+                }
+            }
+            else
+            {
+                ViewBag.BCH_BoPhieu = model;
+            }
+           
             return View();
         }
 
@@ -119,6 +136,7 @@ namespace WSTanHoa.Controllers
             foreach (DataRow item in dtUngVien.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
+                en.MLT = item["STT"].ToString();
                 en.DanhBo = item["ID"].ToString();
                 en.HoTen = item["HoTen"].ToString();
                 model.Add(en);
@@ -211,13 +229,201 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
-        public ActionResult DaiBieu()
+        public ActionResult DaiBieuChinhThuc(string function, string BoPhieu, FormCollection form)
         {
+            List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
+            DataTable dtUngVien = cDAL_BauCu.ExecuteQuery_DataTable("select * from BCH_UngCu where DaiBieuChinhThuc=1");
+            foreach (DataRow item in dtUngVien.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.DanhBo = item["ID"].ToString();
+                en.HoTen = item["HoTen"].ToString();
+                model.Add(en);
+            }
+            ViewBag.BCH_UngCu = model;
+            model = new List<ThongTinKhachHang>();
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where DaiBieuChinhThuc=1 and CreateBy=0 order by ID desc");
+            foreach (DataRow item in dt.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.MLT = item["STT"].ToString();
+                en.DanhBo = item["ID"].ToString();
+                en.HoTen = item["CreateDate"].ToString();
+                model.Add(en);
+            }
+            ViewBag.BCH_BoPhieu = model;
+            if (function != null)
+            {
+                if (function == "Gui")
+                {
+                    if (form.AllKeys.Contains("0"))
+                    {
+                        string sql = "declare @tbID table (id int);"
+                                  + " insert into BCH_BoPhieu(KhongHopLe,DaiBieuChinhThuc,CreateBy)"
+                                  + " output inserted.ID into @tbID"
+                                  + " values(1,1,0);"
+                                  + " declare @ID int"
+                                  + " select @ID=id from @tbID;";
+                        foreach (DataRow item in dtUngVien.Rows)
+                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                        cDAL_BauCu.ExecuteNonQuery(sql);
+                    }
+                    else
+                    if (form.AllKeys.Count() > 1)
+                    {
+                        string sql = "declare @tbID table (id int);"
+                                  + " insert into BCH_BoPhieu(KhongHopLe,DaiBieuChinhThuc,CreateBy)"
+                                  + " output inserted.ID into @tbID"
+                                  + " values(0,1,0);"
+                                  + " declare @ID int"
+                                  + " select @ID=id from @tbID;";
+                        var YourRadioButton = Request.Form["1"];
+                        foreach (DataRow item in dtUngVien.Rows)
+                            if (form.AllKeys.Contains(item["ID"].ToString()))
+                            {
+                                string value = Request.Form[item["ID"].ToString()];
+                                if (value.Equals("Yes"))
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1,0)";
+                                else
+                                    if (value.Equals("No"))
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                            }
+                        cDAL_BauCu.ExecuteNonQuery(sql);
+                    }
+                }
+                else
+            if (function == "Xoa")
+                {
+                    string sql = "delete BCH_BoPhieu_ChiTiet where IDBoPhieu=" + BoPhieu
+                        + " delete BCH_BoPhieu where ID=" + BoPhieu;
+                    cDAL_BauCu.ExecuteNonQuery(sql);
+                }
+                return RedirectToAction("DaiBieuChinhThuc", "BauCu");
+            }
             return View();
         }
 
-        public ActionResult DaiBieu_View()
+        public ActionResult DaiBieuChinhThuc_View()
         {
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select Tong=COUNT(*),HopLe=COUNT(NULLIF(1, KhongHopLe)),KhongHopLe=COUNT(NULLIF(0, KhongHopLe)) from BCH_BoPhieu where DaiBieuChinhThuc=1");
+            ViewBag.Tong = dt.Rows[0]["Tong"].ToString();
+            ViewBag.HopLe = dt.Rows[0]["HopLe"].ToString();
+            ViewBag.KhongHopLe = dt.Rows[0]["KhongHopLe"].ToString();
+            dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
+                + " where bp.ID=bpct.IDBoPhieu and uc.ID=bpct.IDUngVien and bp.DaiBieuChinhThuc=1"
+                + " group by uc.ID,uc.HoTen)t1");
+            List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
+            foreach (DataRow item in dt.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.MLT = item["STT"].ToString();
+                en.HoTen = item["HoTen"].ToString();
+                en.DiaChi = item["Chon"].ToString();
+                en.DienThoai = ((double)(double.Parse(item["Chon"].ToString()) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
+                en.DinhMuc = ((int)(int.Parse(ViewBag.Tong) - int.Parse(item["Chon"].ToString()))).ToString();
+                en.DinhMucHN = ((double)((double.Parse(ViewBag.Tong) - double.Parse(item["Chon"].ToString())) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
+                model.Add(en);
+            }
+            ViewBag.BCH_BoPhieu = model;
+            return View();
+        }
+
+        public ActionResult DaiBieuDuKhuyet(string function, string BoPhieu, FormCollection form)
+        {
+            List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
+            DataTable dtUngVien = cDAL_BauCu.ExecuteQuery_DataTable("select * from BCH_UngCu where DaiBieuDuKhuyet=1");
+            foreach (DataRow item in dtUngVien.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.DanhBo = item["ID"].ToString();
+                en.HoTen = item["HoTen"].ToString();
+                model.Add(en);
+            }
+            ViewBag.BCH_UngCu = model;
+            model = new List<ThongTinKhachHang>();
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where DaiBieuDuKhuyet=1 and CreateBy=0 order by ID desc");
+            foreach (DataRow item in dt.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.MLT = item["STT"].ToString();
+                en.DanhBo = item["ID"].ToString();
+                en.HoTen = item["CreateDate"].ToString();
+                model.Add(en);
+            }
+            ViewBag.BCH_BoPhieu = model;
+            if (function != null)
+            {
+                if (function == "Gui")
+                {
+                    if (form.AllKeys.Contains("0"))
+                    {
+                        string sql = "declare @tbID table (id int);"
+                                  + " insert into BCH_BoPhieu(KhongHopLe,DaiBieuDuKhuyet,CreateBy)"
+                                  + " output inserted.ID into @tbID"
+                                  + " values(1,1,0);"
+                                  + " declare @ID int"
+                                  + " select @ID=id from @tbID;";
+                        foreach (DataRow item in dtUngVien.Rows)
+                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                        cDAL_BauCu.ExecuteNonQuery(sql);
+                    }
+                    else
+                    if (form.AllKeys.Count() > 1)
+                    {
+                        string sql = "declare @tbID table (id int);"
+                                  + " insert into BCH_BoPhieu(KhongHopLe,DaiBieuDuKhuyet,CreateBy)"
+                                  + " output inserted.ID into @tbID"
+                                  + " values(0,1,0);"
+                                  + " declare @ID int"
+                                  + " select @ID=id from @tbID;";
+                        var YourRadioButton = Request.Form["1"];
+                        foreach (DataRow item in dtUngVien.Rows)
+                            if (form.AllKeys.Contains(item["ID"].ToString()))
+                            {
+                                string value = Request.Form[item["ID"].ToString()];
+                                if (value.Equals("Yes"))
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1,0)";
+                                else
+                                    if (value.Equals("No"))
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                            }
+                        cDAL_BauCu.ExecuteNonQuery(sql);
+                    }
+                }
+                else
+            if (function == "Xoa")
+                {
+                    string sql = "delete BCH_BoPhieu_ChiTiet where IDBoPhieu=" + BoPhieu
+                        + " delete BCH_BoPhieu where ID=" + BoPhieu;
+                    cDAL_BauCu.ExecuteNonQuery(sql);
+                }
+                return RedirectToAction("DaiBieuDuKhuyet", "BauCu");
+            }
+            return View();
+        }
+
+        public ActionResult DaiBieuDuKhuyet_View()
+        {
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select Tong=COUNT(*),HopLe=COUNT(NULLIF(1, KhongHopLe)),KhongHopLe=COUNT(NULLIF(0, KhongHopLe)) from BCH_BoPhieu where DaiBieuDuKhuyet=1");
+            ViewBag.Tong = dt.Rows[0]["Tong"].ToString();
+            ViewBag.HopLe = dt.Rows[0]["HopLe"].ToString();
+            ViewBag.KhongHopLe = dt.Rows[0]["KhongHopLe"].ToString();
+            dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
+                + " where bp.ID=bpct.IDBoPhieu and uc.ID=bpct.IDUngVien and bp.DaiBieuDuKhuyet=1"
+                + " group by uc.ID,uc.HoTen)t1");
+            List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
+            foreach (DataRow item in dt.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.MLT = item["STT"].ToString();
+                en.HoTen = item["HoTen"].ToString();
+                en.DiaChi = item["Chon"].ToString();
+                en.DienThoai = ((double)(double.Parse(item["Chon"].ToString()) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
+                en.DinhMuc = ((int)(int.Parse(ViewBag.Tong) - int.Parse(item["Chon"].ToString()))).ToString();
+                en.DinhMucHN = ((double)((double.Parse(ViewBag.Tong) - double.Parse(item["Chon"].ToString())) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
+                model.Add(en);
+            }
+            ViewBag.BCH_BoPhieu = model;
             return View();
         }
 

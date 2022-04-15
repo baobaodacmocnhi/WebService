@@ -1,7 +1,7 @@
 ﻿
 @{
     Layout = null;
-    ViewBag.Title = "Bầu Ban Chấp Hành";
+    ViewBag.Title = "Bầu Đại Biểu Chính Thức";
 }
 
 <!DOCTYPE html>
@@ -17,29 +17,11 @@
         body {
             background-image: url('../../Images/daihoidoantct2022.png');
             background-repeat: no-repeat;
-            background-attachment: fixed;
+           background-attachment: fixed;
             background-size: 100% 100%;
         }
     </style>
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
-    <script>
-        function check(checkName) {
-            if ($("input[name=" + checkName + "]").is(":checked")) {
-                $("label[name=" + checkName + "]").addClass("text-decoration-line-through");
-            }
-            else {
-                $("label[name=" + checkName + "]").removeAttr("class");
-            }
-        };
-        function check2(checkName) {
-            //if ($("input[name=" + checkName + "]").is(":checked")) {
-            //    $("label[name=" + checkName + "]").removeAttr("class");
-            //}
-            //else {
-            //    $("label[name=" + checkName + "]").addClass("text-decoration-line-through");
-            //}
-        };
-    </script>
 </head>
 <body>
     <div class="container" style="margin-top:70px">
@@ -48,11 +30,11 @@
                 <h4 class="text-primary">@ViewBag.Title</h4>
             </div>
             <div class="card-body">
-                @using (Html.BeginForm("BCH", "BauCu", FormMethod.Post))
+                @using (Html.BeginForm("DaiBieuChinhThuc", "BauCu", FormMethod.Post))
                 {
                     <div class="row">
                         <div class="col">
-                            <div class="overflow-auto" style="height:60vh">
+                            <div class="overflow-auto" style="height:40vh">
                                 <table>
                                     <tr>
                                         <td>
@@ -60,28 +42,46 @@
                                                 <input class="form-check-input" type="checkbox" name="0">
                                                 <label name="0">Không Hợp Lệ</label>
                                             </div>
-
                                         </td>
+                                    </tr>
+                                    <tr class="text-center fw-bold">
+                                        <td><div class="mt-4">Ứng Viên</div></td>
+                                        <td><div class="mt-4">Đồng Ý</div></td>
+                                        <td><div class="mt-4">Không Đồng Ý</div></td>
                                     </tr>
                                     @if (ViewBag.BCH_UngCu != null)
                                     {
                                         foreach (var item in ViewBag.BCH_UngCu)
                                         {
+                                            <tr class="text-center">
+                                                <td>
+                                                    <label name="@item.DanhBo">@item.HoTen</label>
+                                                </td>
+                                                <td>
+                                                    <div class="form-check text-center">
+                                                        <input class="form-check-input" type="radio" name="@item.DanhBo" value="Yes">
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="form-check text-center">
+                                                        <input class="form-check-input" type="radio" name="@item.DanhBo" value="No">
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
                                     <tr>
                                         <td>
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" name="@item.DanhBo" onchange="check(@item.DanhBo);">
-                                                <label name="@item.DanhBo" onclick="check2(@item.DanhBo);">@item.MLT. @item.HoTen</label>
+                                            <div class="mt-5">
+                                                <button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button>
                                             </div>
                                         </td>
                                     </tr>
-                                        }
-                                    }
                                 </table>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="overflow-auto" style="height:60vh">
+                            <div class="overflow-auto" style="height:40vh">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
@@ -96,20 +96,20 @@
                                         {
                                             foreach (var item in ViewBag.BCH_BoPhieu)
                                             {
-                                        <tr>
-                                            <td>
-                                                <label>@item.MLT</label>
-                                            </td>
-                                            <td>
-                                                <label>@item.DanhBo</label>
-                                            </td>
-                                            <td>
-                                                <label>@item.HoTen</label>
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink("Xóa", "BCH", new { function = "Xoa", BoPhieu = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
-                                            </td>
-                                        </tr>
+                                                <tr>
+                                                    <td>
+                                                        <label>@item.MLT</label>
+                                                    </td>
+                                                    <td>
+                                                        <label>@item.DanhBo</label>
+                                                    </td>
+                                                    <td>
+                                                        <label>@item.HoTen</label>
+                                                    </td>
+                                                    <td>
+                                                        @Html.ActionLink("Xóa", "DaiBieuChinhThuc", new { function = "Xoa", BoPhieu = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
+                                                    </td>
+                                                </tr>
                                             }
                                         }
                                     </tbody>
@@ -117,18 +117,14 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button>
-                    </div>
                 }
             </div>
         </div>
 
         @*<hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
-            </footer>*@
+        <footer>
+            <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
+        </footer>*@
     </div>
 </body>
 </html>

@@ -12,24 +12,21 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/cssDoanTCT2022")
+    <style>
+        body {
+            background-image: url('../../Images/daihoidoantct2022.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+    </style>
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
 </head>
-<body style="background-color:#85d8f3;margin-top:-30px">
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <img src="~/Images/logoctycp.png" width="100" />
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-auto text-center">
-            <h4 class="text-primary fw-bold">CÔNG TY CỔ PHẦN<br>CẤP NƯỚC TÂN HÒA</h4>
-        </div>
-    </div>
-
-    <div class="container mt-3">
-        <div class="card mt-3 rounded-3 shadow-sm">
-            <div class="card-header">
+<body>
+    <div class="container" style="margin-top:70px">
+        <div class="card rounded-3 shadow-sm">
+            <div class="card-header text-center">
                 <h4 class="text-primary">@ViewBag.Title</h4>
             </div>
             <div class="card-body">
@@ -110,7 +107,7 @@
                                                         <label>@item.HoTen</label>
                                                     </td>
                                                     <td>
-                                                        @Html.ActionLink("Xóa", "BCH", new { function = "Xoa", BoPhieu = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
+                                                        @Html.ActionLink("Xóa", "BiThu", new { function = "Xoa", BoPhieu = item.DanhBo }, new { onclick = "return confirm('Bạn có chắc chắn xóa?');" })
                                                     </td>
                                                 </tr>
                                             }
@@ -119,15 +116,15 @@
                                 </table>
                             </div>
                         </div>
-                    </div> 
+                    </div>
                 }
             </div>
         </div>
 
-        <hr />
+        @*<hr />
         <footer>
             <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
-        </footer>
+        </footer>*@
     </div>
 </body>
 </html>

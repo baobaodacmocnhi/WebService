@@ -12,89 +12,89 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/cssDoanTCT2022")
+    <style>
+        body {
+            background-image: url('../../Images/daihoidoantct2022.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+        }
+    </style>
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
 </head>
-<body style="background-color:#85d8f3;margin-top:-30px">
-    <div class="row justify-content-center">
-        <div class="col-auto">
-            <img src="~/Images/logoctycp.png" width="100" />
-        </div>
-    </div>
-    <div class="row justify-content-center">
-        <div class="col-auto text-center">
-            <h4 class="text-primary fw-bold">CÔNG TY CỔ PHẦN<br>CẤP NƯỚC TÂN HÒA</h4>
-        </div>
-    </div>
-
-    <div class="container mt-3">
-        <div class="card mt-3 rounded-3 shadow-sm">
-            <div class="card-header">
+<body>
+    <div class="container" style="margin-top:70px">
+        <div class="card rounded-3 shadow-sm">
+            <div class="card-header text-center">
                 <h4 class="text-primary">@ViewBag.Title</h4>
             </div>
             <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-2 fw-bold text-danger">Tổng: @ViewBag.Tong</div>
-                    <div class="col-2 fw-bold text-danger">Hợp Lệ: @ViewBag.HopLe</div>
-                    <div class="col-2 fw-bold text-danger">Không Hợp Lệ: @ViewBag.KhongHopLe</div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="overflow-auto" style="height:60vh">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr class="fw-bold">
-                                        <td>STT</td>
-                                        <td>Họ Tên</td>
-                                        <td>Đồng Ý</td>
-                                        <td>% Đồng Ý</td>
-                                        <td>Không Đồng Ý</td>
-                                        <td>% Không Đồng Ý</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if (ViewBag.BCH_BoPhieu != null)
-                                    {
-                                        foreach (var item in ViewBag.BCH_BoPhieu)
+                @using (Html.BeginForm("BCH_View", "BauCu", FormMethod.Post))
+                {
+                    <div class="row mb-3">
+                        <div class="col-2 fw-bold text-danger">Tổng: @ViewBag.Tong</div>
+                        <div class="col-2 fw-bold text-danger">Hợp Lệ: @ViewBag.HopLe</div>
+                        <div class="col-2 fw-bold text-danger">Không Hợp Lệ: @ViewBag.KhongHopLe</div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <div class="overflow-auto" style="height:60vh">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr class="fw-bold">
+                                            <td>STT</td>
+                                            <td>Họ Tên</td>
+                                            <td>Đồng Ý</td>
+                                            <td>% Đồng Ý</td>
+                                            <td>Không Đồng Ý</td>
+                                            <td>% Không Đồng Ý</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @if (ViewBag.BCH_BoPhieu != null)
                                         {
-                                            <tr>
-                                                <td>
-                                                    <label>@item.MLT</label>
-                                                </td>
-                                                <td>
-                                                    <label>@item.HoTen</label>
-                                                </td>
-                                                <td>
-                                                    <label>@item.DiaChi</label>
-                                                </td>
-                                                <td>
-                                                    <label>@item.DienThoai</label>
-                                                </td>
-                                                <td>
-                                                    <label>@item.DinhMuc</label>
-                                                </td>
-                                                <td>
-                                                    <label>@item.DinhMucHN</label>
-                                                </td>
-                                            </tr>
+                                            foreach (var item in ViewBag.BCH_BoPhieu)
+                                            {
+                                                <tr>
+                                                    <td>
+                                                        <label>@item.MLT</label>
+                                                    </td>
+                                                    <td>
+                                                        <label>@item.HoTen</label>
+                                                    </td>
+                                                    <td>
+                                                        <label>@item.DiaChi</label>
+                                                    </td>
+                                                    <td>
+                                                        <label>@item.DienThoai</label>
+                                                    </td>
+                                                    <td>
+                                                        <label>@item.DinhMuc</label>
+                                                    </td>
+                                                    <td>
+                                                        <label>@item.DinhMucHN</label>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
-                                    }
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="mt-5">
-                    <button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button>
-                </div>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary" name="function" value="Sort">Sort</button>
+                    </div>
+                }
             </div>
+
         </div>
 
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
-        </footer>
+        @*<hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
+            </footer>*@
     </div>
 </body>
 </html>
