@@ -116,13 +116,18 @@ namespace WSTanHoa.Controllers
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                         en.ThongTin = "Có Đơn trong 14 ngày gần nhất";
-                    if (en.ThongTin != "")
-                        en.ThongTin += " - ";
                     if ((int)cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
+                    {
+                        if (en.ThongTin != "")
+                            en.ThongTin += " - ";
                         en.ThongTin = "Có sử dụng Giếng";
+                    }
                     if (en.ThongTin != "")
                         en.ThongTin += " - ";
                     en.ThongTin += "<a target='_blank' href='http://113.161.88.180:1802/api/thuongvu/hosogoc/" + en.DanhBo + "'>Hồ sơ gốc</a>";
+                    if (en.ThongTin != "")
+                        en.ThongTin += " - ";
+                    en.ThongTin += "<a target='_blank' href=''>Hồ sơ gốc</a>";
                     return en;
                 }
                 else

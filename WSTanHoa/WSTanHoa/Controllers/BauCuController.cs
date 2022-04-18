@@ -21,6 +21,11 @@ namespace WSTanHoa.Controllers
 
         public ActionResult BCH(string function, string BoPhieu, FormCollection form)
         {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("Login", "Home");
+            }
             List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
             DataTable dtUngVien = cDAL_BauCu.ExecuteQuery_DataTable("select * from BCH_UngCu where BCH=1");
             foreach (DataRow item in dtUngVien.Rows)
@@ -33,7 +38,7 @@ namespace WSTanHoa.Controllers
             }
             ViewBag.BCH_UngCu = model;
             model = new List<ThongTinKhachHang>();
-            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where BCH=1 and CreateBy=0 order by ID desc");
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where BCH=1 and CreateBy="+ Session["ID"] + " order by ID desc");
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
@@ -56,7 +61,7 @@ namespace WSTanHoa.Controllers
                                   + " declare @ID int"
                                   + " select @ID=id from @tbID;";
                         foreach (DataRow item in dtUngVien.Rows)
-                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,"+ Session["ID"] + ")";
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
                     else
@@ -70,9 +75,9 @@ namespace WSTanHoa.Controllers
                                   + " select @ID=id from @tbID;";
                         foreach (DataRow item in dtUngVien.Rows)
                             if (form.AllKeys.Contains(item["ID"].ToString()))
-                                sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                                sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0," + Session["ID"] + ")";
                             else
-                                sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1,0)";
+                                sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1," + Session["ID"] + ")";
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
                 }
@@ -131,6 +136,11 @@ namespace WSTanHoa.Controllers
 
         public ActionResult BiThu(string function, string BoPhieu, FormCollection form)
         {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("Login", "Home");
+            }
             List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
             DataTable dtUngVien = cDAL_BauCu.ExecuteQuery_DataTable("select * from BCH_UngCu where BiThu=1");
             foreach (DataRow item in dtUngVien.Rows)
@@ -143,7 +153,7 @@ namespace WSTanHoa.Controllers
             }
             ViewBag.BCH_UngCu = model;
             model = new List<ThongTinKhachHang>();
-            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where BiThu=1 and CreateBy=0 order by ID desc");
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where BiThu=1 and CreateBy="+ Session["ID"] + " order by ID desc");
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
@@ -166,7 +176,7 @@ namespace WSTanHoa.Controllers
                                   + " declare @ID int"
                                   + " select @ID=id from @tbID;";
                         foreach (DataRow item in dtUngVien.Rows)
-                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0," + Session["ID"] + ")";
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
                     else
@@ -184,10 +194,10 @@ namespace WSTanHoa.Controllers
                             {
                                 string value = Request.Form[item["ID"].ToString()];
                                 if (value.Equals("Yes"))
-                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1,0)";
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1," + Session["ID"] + ")";
                                 else
                                     if (value.Equals("No"))
-                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0," + Session["ID"] + ")";
                             }
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
@@ -231,6 +241,11 @@ namespace WSTanHoa.Controllers
 
         public ActionResult DaiBieuChinhThuc(string function, string BoPhieu, FormCollection form)
         {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("Login", "Home");
+            }
             List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
             DataTable dtUngVien = cDAL_BauCu.ExecuteQuery_DataTable("select * from BCH_UngCu where DaiBieuChinhThuc=1");
             foreach (DataRow item in dtUngVien.Rows)
@@ -242,7 +257,7 @@ namespace WSTanHoa.Controllers
             }
             ViewBag.BCH_UngCu = model;
             model = new List<ThongTinKhachHang>();
-            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where DaiBieuChinhThuc=1 and CreateBy=0 order by ID desc");
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where DaiBieuChinhThuc=1 and CreateBy="+ Session["ID"] + " order by ID desc");
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
@@ -265,7 +280,7 @@ namespace WSTanHoa.Controllers
                                   + " declare @ID int"
                                   + " select @ID=id from @tbID;";
                         foreach (DataRow item in dtUngVien.Rows)
-                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0," + Session["ID"] + ")";
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
                     else
@@ -283,10 +298,10 @@ namespace WSTanHoa.Controllers
                             {
                                 string value = Request.Form[item["ID"].ToString()];
                                 if (value.Equals("Yes"))
-                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1,0)";
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1," + Session["ID"] + ")";
                                 else
                                     if (value.Equals("No"))
-                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0," + Session["ID"] + ")";
                             }
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
@@ -330,6 +345,11 @@ namespace WSTanHoa.Controllers
 
         public ActionResult DaiBieuDuKhuyet(string function, string BoPhieu, FormCollection form)
         {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("Login", "Home");
+            }
             List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
             DataTable dtUngVien = cDAL_BauCu.ExecuteQuery_DataTable("select * from BCH_UngCu where DaiBieuDuKhuyet=1");
             foreach (DataRow item in dtUngVien.Rows)
@@ -341,7 +361,7 @@ namespace WSTanHoa.Controllers
             }
             ViewBag.BCH_UngCu = model;
             model = new List<ThongTinKhachHang>();
-            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where DaiBieuDuKhuyet=1 and CreateBy=0 order by ID desc");
+            DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY ID asc),ID,CreateDate=convert(varchar(10),CreateDate,103)+' '+convert(varchar(10),CreateDate,108) from BCH_BoPhieu where DaiBieuDuKhuyet=1 and CreateBy="+ Session["ID"] + " order by ID desc");
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
@@ -364,7 +384,7 @@ namespace WSTanHoa.Controllers
                                   + " declare @ID int"
                                   + " select @ID=id from @tbID;";
                         foreach (DataRow item in dtUngVien.Rows)
-                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                            sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0," + Session["ID"] + ")";
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
                     else
@@ -382,10 +402,10 @@ namespace WSTanHoa.Controllers
                             {
                                 string value = Request.Form[item["ID"].ToString()];
                                 if (value.Equals("Yes"))
-                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1,0)";
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",1," + Session["ID"] + ")";
                                 else
                                     if (value.Equals("No"))
-                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0,0)";
+                                    sql += " insert into BCH_BoPhieu_ChiTiet(IDBoPhieu,IDUngVien,Chon,CreateBy)values(@ID," + item["ID"].ToString() + ",0," + Session["ID"] + ")";
                             }
                         cDAL_BauCu.ExecuteNonQuery(sql);
                     }
