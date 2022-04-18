@@ -3444,6 +3444,50 @@ namespace WSSmartPhone
             return jss.Serialize(result);
         }
 
+        public void getTonFromDienThoai_DHN()
+        {
+            string sql = "select Nam,Ky=RIGHT('0' + CAST(Ky AS VARCHAR(2)), 2),Dot=RIGHT('0' + CAST(IDDot AS VARCHAR(2)), 2) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct,Lich_Dot dot"
+                         + " where ds.ID=dsct.IDDocSo and dot.ID=dsct.IDDot and CAST(dsct.NgayDoc as date)=CAST(GETDATE() as date)";
+            DataTable dtKy = _cDAL_TTKH.ExecuteQuery_DataTable(sql);
+            DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select DocSoID,CodeMoi,Dot from DocSo where Nam=" + dtKy.Rows[0]["Nam"].ToString() + " and Ky='" + dtKy.Rows[0]["Ky"].ToString() + "' and Dot='" + dtKy.Rows[0]["Dot"].ToString() + "'");
+            foreach (DataRow item in dtDocSo.Rows)
+                if (item["CodeMoi"] == null || item["CodeMoi"].ToString() == "")
+                {
+                    _cDAL_DocSo.ExecuteNonQuery("exec [dbo].[spSendNotificationToClient] N'CodeTon',N'" + item["Dot"].ToString() + "',N'" + item["DocSoID"].ToString() + "'");
+                }
+                else
+                    if (checkExists_Hinh_DHN(item["DocSoID"].ToString()) == false)
+                    {
+                        _cDAL_DocSo.ExecuteNonQuery("exec [dbo].[spSendNotificationToClient] N'HinhTon',N'" + item["Dot"].ToString() + "',N'" + item["DocSoID"].ToString() + "'");
+                    }
+            int count = 5;
+            int Nam = int.Parse(dtKy.Rows[0]["Nam"].ToString());
+            int Ky = int.Parse(dtKy.Rows[0]["Ky"].ToString());
+            int Dot = int.Parse(dtKy.Rows[0]["Dot"].ToString());
+            while (count > 0)
+            {
+                Dot--;
+                if (Dot == 0)
+                {
+                    Dot = 20;
+                    Ky--;
+                    if (Ky == 0)
+                    {
+                        Ky = 12;
+                        Nam--;
+                    }
+                }
+                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select DocSoID,CodeMoi,Dot from DocSo where Nam=" + Nam.ToString() + " and Ky='" + Ky.ToString("00") + "' and Dot='" + Dot.ToString("00") + "'");
+                foreach (DataRow item in dt.Rows)
+                    if (item["CodeMoi"].ToString() != "" && checkExists_Hinh_DHN(item["DocSoID"].ToString()) == false)
+                    {
+                        sql = "exec [dbo].[spSendNotificationToClient] N'HinhTon',N'" + item["Dot"].ToString() + "',N'" + item["DocSoID"].ToString() + "'";
+                        _cDAL_DocSo.ExecuteNonQuery(sql);
+                    }
+                count--;
+            }
+        }
+
         //ghi chú
         public string get_GhiChu_DHN(string DanhBo)
         {

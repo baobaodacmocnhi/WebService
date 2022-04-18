@@ -166,6 +166,7 @@ namespace WSSmartPhone
             return _cThuTien.delete_DienThoai_DHN(DanhBo, DienThoai);
         }
 
+        //hình đhn
         [WebMethod]
         public byte[] get_Hinh(string ID)
         {
@@ -260,6 +261,12 @@ namespace WSSmartPhone
         public string get_ThongTin(string DanhBo, string Nam, string Ky)
         {
             return _cThuTien.get_ThongTin_DHN(DanhBo, Nam, Ky);
+        }
+
+        [WebMethod]
+        public void getTonFromDienThoai()
+        {
+            _cThuTien.getTonFromDienThoai_DHN();
         }
 
         //send notification
