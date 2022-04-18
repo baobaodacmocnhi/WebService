@@ -36,11 +36,11 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
-                {
-                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                }
+                //if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                //{
+                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                //}
                 DataTable dt = new DataTable();
 
                 //lấy thông tin khách hàng
@@ -120,14 +120,21 @@ namespace WSTanHoa.Controllers
                     {
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
-                        en.ThongTin = "Có sử dụng Giếng";
+                        en.ThongTin += "Có sử dụng Giếng";
                     }
                     if (en.ThongTin != "")
                         en.ThongTin += " - ";
-                    en.ThongTin += "<a target='_blank' href='http://113.161.88.180:1802/api/thuongvu/hosogoc/" + en.DanhBo + "'>Hồ sơ gốc</a>";
-                    if (en.ThongTin != "")
-                        en.ThongTin += " - ";
-                    en.ThongTin += "<a target='_blank' href=''>Hồ sơ gốc</a>";
+                    en.ThongTin += "<a style='color: blue;' target='_blank' href='http://113.161.88.180:1802/api/thuongvu/hosogoc/" + en.DanhBo + "'>Hồ sơ gốc</a>";
+                    DataTable dtNiemChi = getDS_NiemChi(dt.Rows[0]["DanhBo"].ToString());
+                    if (dtNiemChi != null && dtNiemChi.Rows.Count > 0)
+                    {
+                        if (en.ThongTin != "")
+                            en.ThongTin += " - ";
+                        if (bool.Parse(dtNiemChi.Rows[0]["KhoaTu"].ToString()))
+                            en.ThongTin += "<a style='color: red;' target='_blank' href=''>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Từ</a>";
+                        else
+                            en.ThongTin += "<a style='color: red;' target='_blank' href=''>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[0]["NiemChi"].ToString() + " " + dtNiemChi.Rows[0]["MauSac"].ToString() + "</a>";
+                    }
                     return en;
                 }
                 else
@@ -1214,6 +1221,21 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        private DataTable getDS_NiemChi(string DanhBo)
+        {
+            string sql = "select NoiDung=N'Thu Tiền đóng nước: '+CONVERT(varchar(10),NgayDN,103)+' '+CONVERT(varchar(10),NgayDN,108)"
+                        + " , NiemChi,MauSac,KhoaTu=case when KhoaTu=1 then 'true' else 'false' end,KhoaKhac=case when KhoaKhac=1 then 'true' else 'false' end"
+                        + " ,NgayLap=NgayDN from TT_KQDongNuoc where DanhBo = '" + DanhBo + "' and DongNuoc = 1"
+                        + " union all"
+                        + " select NoiDung = N'Thu Tiền mở nước: ' + CONVERT(varchar(10), NgayMN, 103) + ' ' + CONVERT(varchar(10), NgayMN, 108)"
+                        + " , NiemChiMN,MauSacMN,KhoaTu=case when KhoaTu=1 then 'true' else 'false' end,KhoaKhac=case when KhoaKhac=1 then 'true' else 'false' end"
+                        + " ,NgayLap=NgayMN from TT_KQDongNuoc where DanhBo = '" + DanhBo + "' and MoNuoc = 1"
+                        + " union all"
+                        + " select NoiDung=N'Thương Vụ bấm chì: '+CONVERT(varchar(10),NgayBC,103)+' '+CONVERT(varchar(10),NgayBC,108)"
+                        + " ,NiemChi,MauSac,KhoaTu='false',KhoaKhac='false',NgayLap=NgayBC from server11.KTKS_DonKH.dbo.BamChi_ChiTiet where DanhBo = '" + DanhBo + "'"
+                        + " order by NgayLap desc";
+            return cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+        }
 
     }
 
