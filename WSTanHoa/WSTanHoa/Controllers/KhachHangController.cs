@@ -131,5 +131,26 @@ namespace WSTanHoa.Controllers
 
             return View(en);
         }
+
+        public ActionResult LichSuBamChi(string DanhBo)
+        {
+            List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
+            if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "").Length == 11)
+            {
+                DataTable dtNiemChi = apiTTKH.getDS_NiemChi(DanhBo.Replace(" ", "").Replace("-", ""));
+                for (int i = 0; i < dtNiemChi.Rows.Count; i++)
+                {
+                    ThongTinKhachHang en = new ThongTinKhachHang();
+                    en.MLT = (i + 1).ToString();
+                    if (bool.Parse(dtNiemChi.Rows[i]["KhoaTu"].ToString()))
+                        en.DanhBo = dtNiemChi.Rows[i]["NoiDung"].ToString() + ", Khóa Từ";
+                    else
+                        en.DanhBo = dtNiemChi.Rows[i]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[i]["NiemChi"].ToString() + " " + dtNiemChi.Rows[i]["MauSac"].ToString();
+                    model.Add(en);
+                }
+            }
+            return View(model);
+        }
+
     }
 }

@@ -1,0 +1,58 @@
+﻿@model List<WSTanHoa.Models.ThongTinKhachHang>
+@{
+    Layout = null;
+    ViewBag.Title = "Lịch Sử Bấm Chì";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+</head>
+<body style="background-color:#85d8f3;margin-top:-30px">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <img src="~/Images/logoctycp.png" width="100" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto text-center">
+            <h4 class="text-primary fw-bold">CÔNG TY CỔ PHẦN<br>CẤP NƯỚC TÂN HÒA</h4>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <div class="card mt-3 rounded-3 shadow-sm">
+            <div class="card-header">
+                <h4 class="text-primary">@ViewBag.Title</h4>
+            </div>
+            <div class="card-body">
+                <table>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.MLT.&nbsp;
+                            </td>
+                            <td>
+                                @item.DanhBo
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
+        </footer>
+    </div>
+</body>
+</html>

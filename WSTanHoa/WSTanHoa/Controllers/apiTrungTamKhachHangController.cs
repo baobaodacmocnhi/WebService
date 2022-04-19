@@ -62,6 +62,7 @@ namespace WSTanHoa.Controllers
                              + ",NgayThay"
                              + ",NgayKiemDinh"
                              + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
+                             + ",Gieng"
                              + " from TB_DULIEUKHACHHANG where DanhBo=" + DanhBo;
                 dt.Merge(cDAL_DHN.ExecuteQuery_DataTable(sql));
                 //lấy thông tin khách hàng đã hủy
@@ -85,6 +86,7 @@ namespace WSTanHoa.Controllers
                                  + ",NgayThay"
                                  + ",NgayKiemDinh"
                                  + ",HieuLuc=N'Het '+HieuLucHuy"
+                                 + ",Gieng=0"
                                  + " from TB_DULIEUKHACHHANG_HUYDB where DanhBo=" + DanhBo;
                     dt.Merge(cDAL_DHN.ExecuteQuery_DataTable(sql));
                 }
@@ -116,7 +118,13 @@ namespace WSTanHoa.Controllers
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                         en.ThongTin = "Có Đơn trong 14 ngày gần nhất";
-                    if ((int)cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
+                    //if ((int)cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
+                    //{
+                    //    if (en.ThongTin != "")
+                    //        en.ThongTin += " - ";
+                    //    en.ThongTin += "Có sử dụng Giếng";
+                    //}
+                    if (bool.Parse(dt.Rows[0]["Gieng"].ToString()))
                     {
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
@@ -128,12 +136,18 @@ namespace WSTanHoa.Controllers
                     DataTable dtNiemChi = getDS_NiemChi(dt.Rows[0]["DanhBo"].ToString());
                     if (dtNiemChi != null && dtNiemChi.Rows.Count > 0)
                     {
+                        string NoiDung = "";
+                        foreach (DataRow item in dtNiemChi.Rows)
+                            if (bool.Parse(item["KhoaTu"].ToString()))
+                                NoiDung += item["NoiDung"].ToString() + ", Khóa Từ\n";
+                            else
+                                NoiDung += item["NoiDung"].ToString() + ", Khóa Chì: " + item["NiemChi"].ToString() + " " + item["MauSac"].ToString()+"\n";
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
                         if (bool.Parse(dtNiemChi.Rows[0]["KhoaTu"].ToString()))
-                            en.ThongTin += "<a style='color: red;' target='_blank' href=''>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Từ</a>";
+                            en.ThongTin += "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo="+ dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Từ</a>";
                         else
-                            en.ThongTin += "<a style='color: red;' target='_blank' href=''>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[0]["NiemChi"].ToString() + " " + dtNiemChi.Rows[0]["MauSac"].ToString() + "</a>";
+                            en.ThongTin += "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[0]["NiemChi"].ToString() + " " + dtNiemChi.Rows[0]["MauSac"].ToString() + "</a>";
                     }
                     return en;
                 }
@@ -1221,7 +1235,8 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        private DataTable getDS_NiemChi(string DanhBo)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public DataTable getDS_NiemChi(string DanhBo)
         {
             string sql = "select NoiDung=N'Thu Tiền đóng nước: '+CONVERT(varchar(10),NgayDN,103)+' '+CONVERT(varchar(10),NgayDN,108)"
                         + " , NiemChi,MauSac,KhoaTu=case when KhoaTu=1 then 'true' else 'false' end,KhoaKhac=case when KhoaKhac=1 then 'true' else 'false' end"
