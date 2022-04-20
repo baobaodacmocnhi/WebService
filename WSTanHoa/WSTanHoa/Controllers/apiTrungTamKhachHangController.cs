@@ -62,7 +62,7 @@ namespace WSTanHoa.Controllers
                              + ",NgayThay"
                              + ",NgayKiemDinh"
                              + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
-                             + ",Gieng"
+                             + ",Gieng,DienThoai=(select top 1 DienThoai from SDT_DHN where SDT_DHN.DanhBo=TB_DULIEUKHACHHANG.DanhBo order by CreateDate desc)"
                              + " from TB_DULIEUKHACHHANG where DanhBo=" + DanhBo;
                 dt.Merge(cDAL_DHN.ExecuteQuery_DataTable(sql));
                 //lấy thông tin khách hàng đã hủy
@@ -86,7 +86,7 @@ namespace WSTanHoa.Controllers
                                  + ",NgayThay"
                                  + ",NgayKiemDinh"
                                  + ",HieuLuc=N'Het '+HieuLucHuy"
-                                 + ",Gieng=0"
+                                 + ",Gieng=0,DienThoai=''"
                                  + " from TB_DULIEUKHACHHANG_HUYDB where DanhBo=" + DanhBo;
                     dt.Merge(cDAL_DHN.ExecuteQuery_DataTable(sql));
                 }
@@ -116,8 +116,13 @@ namespace WSTanHoa.Controllers
                     if (dt.Rows[0]["NgayKiemDinh"].ToString() != "")
                         en.NgayKiemDinh = DateTime.Parse(dt.Rows[0]["NgayKiemDinh"].ToString());
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
+                    en.ThongTin= "SĐT: "+dt.Rows[0]["DienThoai"].ToString();
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
+                    {
+                        if (en.ThongTin != "")
+                            en.ThongTin += " - ";
                         en.ThongTin = "Có Đơn trong 14 ngày gần nhất";
+                    }
                     //if ((int)cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
                     //{
                     //    if (en.ThongTin != "")

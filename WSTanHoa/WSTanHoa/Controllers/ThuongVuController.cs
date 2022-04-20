@@ -324,12 +324,23 @@ namespace WSTanHoa.Controllers
             else
                 if (function == "Gui")
             {
+                DanhBo = DanhBo.Trim().Replace(" ", "").Replace("-", "");
+                DienThoai = DienThoai.Trim().Replace(".", "").Replace("-", "");
+                SoNK = SoNK.Trim();
                 if (DanhBo == "")
                     ModelState.AddModelError("", "Thiếu Danh Bộ");
-                if (DienThoai == "" || DienThoai.Replace(".", "").Replace("-", "").Length != 10)
+                if (DienThoai == "" || DienThoai.Length != 10)
                     ModelState.AddModelError("", "Thiếu Điện Thoại hoặc Điện Thoại Không Đủ 10 số");
                 if (SoNK == "")
                     ModelState.AddModelError("", "Thiếu Số Nhân Khẩu");
+                for (int i = 0; i < int.Parse(SoNK); i++)
+                {
+                    if (form["CCCD" + (i + 1) + ""].ToString().Trim() == "")
+                    {
+                        ModelState.AddModelError("", "Thiếu Số CCCD");
+                        return View();
+                    }
+                }
                 string checkExists = _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select case when exists(select ID from DCBD_DKDM_DanhBo where DanhBo='" + DanhBo + "' and cast(createdate as date)=cast(getdate() as date)) then 1 else 0 end").ToString();
                 if (checkExists == "1")
                 {
@@ -339,15 +350,15 @@ namespace WSTanHoa.Controllers
                 if (DanhBo != "" && DienThoai != "" && SoNK != "")
                 {
                     string sql = "declare @tbID table (id int);"
-                              + " insert into DCBD_DKDM_DanhBo(DanhBo)"
+                              + " insert into DCBD_DKDM_DanhBo(DanhBo,SDT)"
                               + " output inserted.ID into @tbID"
-                              + " values('" + DanhBo + "');"
+                              + " values('" + DanhBo + "','" + DienThoai + "');"
                               + " declare @ID int"
                               + " select @ID=id from @tbID;";
                     for (int i = 0; i < int.Parse(SoNK); i++)
                     {
                         sql += " insert into DCBD_DKDM_CCCD(IDDanhBo,CCCD,HoTen,NgaySinh,DCThuongTru,DCTamTru)values(@ID"
-                            + ",N'" + form["CCCD" + (i + 1) + ""].ToString() + "',N'" + form["HoTen" + (i + 1) + ""].ToString() + "','" + form["NgaySinh" + (i + 1) + ""].ToString() + "',N'" + form["DCThuongTru" + (i + 1) + ""].ToString() + "',N'" + form["DCTamTru" + (i + 1) + ""].ToString() + "')";
+                            + ",N'" + form["CCCD" + (i + 1) + ""].ToString().Trim() + "',N'" + form["HoTen" + (i + 1) + ""].ToString().Trim() + "','" + form["NgaySinh" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCThuongTru" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCTamTru" + (i + 1) + ""].ToString().Trim() + "')";
                     }
                     _cDAL_KinhDoanh.ExecuteNonQuery(sql);
                 }
