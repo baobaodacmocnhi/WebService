@@ -3118,7 +3118,7 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.GhiChu,ds.ChuBao"
+                        + "                          ,kh.Gieng,kh.KhoaTu,kh.GhiChu,ds.ChuBao"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                 //+ "                          ,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
                         + "                          ,DienThoai=sdt.DienThoai"
@@ -3495,14 +3495,15 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable(sql));
         }
 
-        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string GhiChu, string MaNV)
+        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string KhoaTu, string GhiChu, string MaNV)
         {
             CResult result = new CResult();
             try
             {
                 string flagGieng = bool.Parse(Gieng) == true ? "1" : "0";
+                string flagKhoaTu = bool.Parse(KhoaTu) == true ? "1" : "0";
                 string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri1 + "',ViTriDHN2=N'" + ViTri2
-                    + "',Gieng=" + flagGieng + ",GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
+                    + "',Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu + ",GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -3866,7 +3867,7 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.GhiChu,ds.ChuBao"
+                        + "                          ,kh.Gieng,kh.KhoaTu,kh.GhiChu,ds.ChuBao"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         + "                          ,DienThoai=sdt.DienThoai"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
