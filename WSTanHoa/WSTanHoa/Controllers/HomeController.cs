@@ -25,20 +25,20 @@ namespace WSTanHoa.Controllers
         {
             if (action == "login")
             {
-                //DataTable dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select MaU,HoTen from users where an=0 and taikhoan='" + username + "' and matkhau='" + password + "'");
-                //if (dt != null && dt.Rows.Count > 0)
-                //{
-                //    Session["ID"] = dt.Rows[0]["MaU"].ToString();
-                //    Session["HoTen"] = dt.Rows[0]["HoTen"].ToString();
-                //    return Redirect(Session["Url"].ToString());
-                //}
-                DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select ID,[Name] from Users where [Name]='" + username + "' and Password='" + password + "'");
+                DataTable dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select MaU,HoTen from users where an=0 and taikhoan='" + username + "' and matkhau='" + password + "'");
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    Session["ID"] = dt.Rows[0]["ID"].ToString();
-                    Session["HoTen"] = dt.Rows[0]["Name"].ToString();
+                    Session["ID"] = dt.Rows[0]["MaU"].ToString();
+                    Session["HoTen"] = dt.Rows[0]["HoTen"].ToString();
                     return Redirect(Session["Url"].ToString());
                 }
+                //DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select ID,[Name] from Users where [Name]='" + username + "' and Password='" + password + "'");
+                //if (dt != null && dt.Rows.Count > 0)
+                //{
+                //    Session["ID"] = dt.Rows[0]["ID"].ToString();
+                //    Session["HoTen"] = dt.Rows[0]["Name"].ToString();
+                //    return Redirect(Session["Url"].ToString());
+                //}
             }
             return View();
         }

@@ -14,7 +14,7 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private wrThuongVu.wsThuongVu wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: ThuongVu
@@ -310,7 +310,7 @@ namespace WSTanHoa.Controllers
             {
                 if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
                 {
-                    DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
+                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         ViewBag.DanhBo = dt.Rows[0]["DanhBo"];
@@ -347,7 +347,7 @@ namespace WSTanHoa.Controllers
                     ModelState.AddModelError("", "Danh Bộ đã nhập trong ngày");
                 }
                 else
-                if (DanhBo != "" && DienThoai != "" && SoNK != "")
+                if (DanhBo != "" && DienThoai.Length == 10 && SoNK != "")
                 {
                     string sql = "declare @tbID table (id int);"
                               + " insert into DCBD_DKDM_DanhBo(DanhBo,SDT)"
@@ -360,8 +360,109 @@ namespace WSTanHoa.Controllers
                         sql += " insert into DCBD_DKDM_CCCD(IDDanhBo,CCCD,HoTen,NgaySinh,DCThuongTru,DCTamTru)values(@ID"
                             + ",N'" + form["CCCD" + (i + 1) + ""].ToString().Trim() + "',N'" + form["HoTen" + (i + 1) + ""].ToString().Trim() + "','" + form["NgaySinh" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCThuongTru" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCTamTru" + (i + 1) + ""].ToString().Trim() + "')";
                     }
-                    _cDAL_KinhDoanh.ExecuteNonQuery(sql);
+                    if (_cDAL_KinhDoanh.ExecuteNonQuery(sql))
+                        ModelState.AddModelError("", "Đăng Ký Thành Công");
+                    else
+                        ModelState.AddModelError("", "Đăng Ký Không Thành Công");
                 }
+            }
+            return View();
+        }
+
+        public ActionResult DangKyDinhMuc_Chuan(string function, string DanhBo, string DienThoai, string SoNK, FormCollection form)
+        {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("DangKyDinhMuc_Login", "ThuongVu");
+            }
+            if (function == "KiemTra")
+            {
+                if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
+                {
+                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        ViewBag.DanhBo = dt.Rows[0]["DanhBo"];
+                        ViewBag.HoTen = dt.Rows[0]["HoTen"];
+                        ViewBag.DiaChi = dt.Rows[0]["DiaChi"];
+                    }
+                    else
+                        ModelState.AddModelError("", "Danh Bộ không tồn tại");
+                }
+            }
+            else
+                if (function == "Gui")
+            {
+                DanhBo = DanhBo.Trim().Replace(" ", "").Replace("-", "");
+                DienThoai = DienThoai.Trim().Replace(".", "").Replace("-", "");
+                SoNK = SoNK.Trim();
+                if (DanhBo == "")
+                    ModelState.AddModelError("", "Thiếu Danh Bộ");
+                if (DienThoai == "" || DienThoai.Length != 10)
+                    ModelState.AddModelError("", "Thiếu Điện Thoại hoặc Điện Thoại Không Đủ 10 số");
+                if (SoNK == "")
+                    ModelState.AddModelError("", "Thiếu Số Nhân Khẩu");
+                for (int i = 0; i < int.Parse(SoNK); i++)
+                {
+                    if (form["CCCD" + (i + 1) + ""].ToString().Trim() == "")
+                    {
+                        ModelState.AddModelError("", "Thiếu Số CCCD");
+                        return View();
+                    }
+                }
+                string checkExists = _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select case when exists(select ID from DCBD_DKDM_DanhBo where DanhBo='" + DanhBo + "' and cast(createdate as date)=cast(getdate() as date)) then 1 else 0 end").ToString();
+                if (checkExists == "1")
+                {
+                    ModelState.AddModelError("", "Danh Bộ đã nhập trong ngày");
+                }
+                else
+                if (DanhBo != "" && DienThoai.Length == 10 && SoNK != "")
+                {
+
+                    string sql = "declare @tbID table (id int);"
+                              + " insert into DCBD_DKDM_DanhBo(DanhBo,SDT,CreateBy)"
+                              + " output inserted.ID into @tbID"
+                              + " values('" + DanhBo + "','" + DienThoai + "'," + Session["ID"] + ");"
+                              + " declare @ID int"
+                              + " select @ID=id from @tbID;";
+                    for (int i = 0; i < int.Parse(SoNK); i++)
+                    {
+                        sql += " insert into DCBD_DKDM_CCCD(IDDanhBo,CCCD,HoTen,NgaySinh,DCThuongTru,DCTamTru,CreateBy)values(@ID"
+                            + ",N'" + form["CCCD" + (i + 1) + ""].ToString().Trim() + "',N'" + form["HoTen" + (i + 1) + ""].ToString().Trim() + "','" + form["NgaySinh" + (i + 1) + ""].ToString().Trim()
+                            + "',N'" + form["DCThuongTru" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCTamTru" + (i + 1) + ""].ToString().Trim() + "'," + Session["ID"] + ")";
+                    }
+                    if (_cDAL_KinhDoanh.ExecuteNonQuery(sql))
+                    {
+                        DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from DCBD_DKDM_DanhBo where DanhBo='" + DanhBo + "' and Cast(createdate as date)=Cast(getdate() as date) CreateBy=" + Session["ID"]);
+                        ModelState.AddModelError("", "Đăng Ký Thành Công");
+
+                    }
+                    else
+                        ModelState.AddModelError("", "Đăng Ký Không Thành Công");
+                }
+            }
+            return View();
+        }
+
+        public ActionResult DangKyDinhMuc_Login(string action, string username, string password)
+        {
+            if (action == "login")
+            {
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select ID,Username from DCBD_DKDM_User where Username='" + username + "' and Password='" + password + "'");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    Session["ID"] = dt.Rows[0]["ID"].ToString();
+                    Session["HoTen"] = dt.Rows[0]["Username"].ToString();
+                    return Redirect(Session["Url"].ToString());
+                }
+                //DataTable dt = cDAL_BauCu.ExecuteQuery_DataTable("select ID,[Name] from Users where [Name]='" + username + "' and Password='" + password + "'");
+                //if (dt != null && dt.Rows.Count > 0)
+                //{
+                //    Session["ID"] = dt.Rows[0]["ID"].ToString();
+                //    Session["HoTen"] = dt.Rows[0]["Name"].ToString();
+                //    return Redirect(Session["Url"].ToString());
+                //}
             }
             return View();
         }

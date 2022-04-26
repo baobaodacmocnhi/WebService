@@ -1,0 +1,133 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Đăng Ký Định Mức Nước";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script>
+        function fillrows() {
+            var rows = $("input[name=SoNK]").val();
+            if (rows == "")
+                rows = 0;
+            var str = "";
+            $("#tblCCCD tbody tr").remove();
+            for (var i = 0; i < rows ; i++) {
+                str += "<tr>"
+                     + "            <td><input type='text' class='form-control' name='STT" + (i + 1) + "' value='" + (i + 1) + "'></td>"
+                     + "            <td><input type='text' class='form-control' name='HoTen" + (i + 1) + "' value=''></td>"
+                     + "            <td><input type='date' class='form-control' name='NgaySinh" + (i + 1) + "' value=''></td>"
+                     + "            <td><input type='text' class='form-control' name='DCThuongTru" + (i + 1) + "' value=''></td>"
+                     + "            <td><input type='text' class='form-control' name='DCTamTru" + (i + 1) + "' value=''></td>"
+                     + "            <td><input type='number' class='form-control' name='CCCD" + (i + 1) + "' value=''></td>"
+                     + "        </tr>";
+            }
+            $("#tblCCCD tbody").append(str);
+        }
+    </script>
+</head>
+<body style="background-color:#85d8f3;margin-top:-30px">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <img src="~/Images/logoctycp.png" width="100" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto text-center">
+            <h4 class="text-primary fw-bold">CÔNG TY CỔ PHẦN<br>CẤP NƯỚC TÂN HÒA</h4>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <div class="card mt-3 rounded-3 shadow-sm">
+            <div class="card-header">
+                <h4 class="text-primary">@ViewBag.Title</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("DangKyDinhMuc_Chuan", "ThuongVu", FormMethod.Get))
+                {
+                    <table>
+                        <tr>
+                            <td><label class="form-label small">Danh Bộ:</label></td>
+                            <td><input type="number" class="form-control fw-bold" name="DanhBo" value="@ViewBag.DanhBo"></td>
+                            <td><button type="submit" class="btn btn-primary" name="function" value="KiemTra">Kiểm Tra</button></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label small">Khách Hàng:</label></td>
+                            <td><input type="text" class="form-control fw-bold" value="@ViewBag.HoTen"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label small">Địa Chỉ:</label></td>
+                            <td><input type="text" class="form-control fw-bold" value="@ViewBag.DiaChi"></td>
+                        </tr>
+                    </table>
+                }
+                @using (Html.BeginForm("DangKyDinhMuc_Chuan", "ThuongVu", FormMethod.Post))
+                {
+                    <table>
+                        <tr style="visibility:collapse">
+                            <td><label class="form-label small">Danh Bộ:</label></td>
+                            <td><input type="number" class="form-control fw-bold" name="DanhBo" value="@ViewBag.DanhBo"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label small">Điện Thoại:</label></td>
+                            <td><input type="number" class="form-control fw-bold" name="DienThoai" value=""></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label small">Số Nhân Khẩu:</label></td>
+                            <td><input type="number" class="form-control fw-bold" name="SoNK" value="" onkeyup="fillrows();"></td>
+                        </tr>
+                    </table>
+                    <table id="tblCCCD">
+                        <thead>
+                            <tr class="text-center fw-bold">
+                                <td style="width:50px">STT</td>
+                                <td style="width:200px">Họ tên</td>
+                                <td style="width:100px">Ngày sinh</td>
+                                <td style="width:300px">Địa chỉ thường trú</td>
+                                <td style="width:300px">Địa chỉ tạm trú</td>
+                                <td style="width:160px">CCCD/Số định danh</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control" name="STT1" value=""></td>
+                                <td><input type="text" class="form-control" name="HoTen1" value=""></td>
+                                <td><input type="date" class="form-control" name="NgaySinh" value=""></td>
+                                <td><input type="text" class="form-control" name="DCThuongTru1" value=""></td>
+                                <td><input type="text" class="form-control" name="DCTamTru1" value=""></td>
+                                <td><input type="number" class="form-control" name="CCCD1" value=""></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6" class="pt-2">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    @Html.AntiForgeryToken()
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="6" class="text-center pt-2"><button type="submit" class="btn btn-primary" name="function" value="Gui" onclick="return confirm('Bạn có chắc chắn?');">Gửi</button></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                }
+            </div>
+        </div>
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
+        </footer>
+    </div>
+</body>
+</html>
