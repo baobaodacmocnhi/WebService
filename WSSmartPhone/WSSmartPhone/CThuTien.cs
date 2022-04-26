@@ -1012,9 +1012,9 @@ namespace WSSmartPhone
                     //string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,HinhDN,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,KhoaKhac,KhoaKhac_GhiChu,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,ViTri,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
                     //         + "" + MaKQDN + "," + MaDN + ",'" + DanhBo.Replace(" ", "") + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,@HinhDN"
                     //         + ",'" + NgayDN.ToString("yyyyMMdd HH:mm:ss") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + "," + flagKhoaKhac + ",N'" + KhoaKhac_GhiChu + "','" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + ViTri + "',N'" + LyDo + "',(select PhiMoNuoc from TT_CacLoaiPhi where CoDHN like '%" + Co + "%')," + CreateBy + ",getDate())";
-                    string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,KhoaKhac,KhoaKhac_GhiChu,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,ViTri,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
+                    string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,MauSac,KhoaKhac,KhoaKhac_GhiChu,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,ViTri,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
                              + "" + MaKQDN + "," + MaDN + ",'" + DanhBo.Replace(" ", "") + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,'" + NgayDN.ToString("yyyyMMdd HH:mm:ss") + "',getDate()"
-                             + "," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + ",MauSac=N'" + MauSac + "'," + flagKhoaKhac + ",N'" + KhoaKhac_GhiChu + "','"
+                             + "," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + ",N'" + MauSac + "'," + flagKhoaKhac + ",N'" + KhoaKhac_GhiChu + "','"
                              + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + ViTri + "',N'" + LyDo + "',(select PhiMoNuoc from TT_CacLoaiPhi where CoDHN like '%" + Co + "%')," + CreateBy + ",getDate())";
 
                     SqlCommand command = new SqlCommand(sql);
@@ -1224,6 +1224,11 @@ namespace WSSmartPhone
                     if (int.Parse(_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID) from TT_NiemChi where ID=" + NiemChi + " and SuDung=1").ToString()) == 1)
                         return false;
                 }
+                else
+                {
+                    NiemChi = "NULL";
+                    MauSac = "NULL";
+                }
                 var transactionOptions = new TransactionOptions();
                 transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
@@ -1231,7 +1236,7 @@ namespace WSSmartPhone
                     //string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
                     //string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd HH:mm:ss") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
                     string sql = "update TT_KQDongNuoc set MoNuoc=1,NgayMN='" + NgayMN.ToString("yyyyMMdd HH:mm:ss") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN
-                        + ",NiemChi=" + NiemChi + ",MauSac=N'" + MauSac + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
+                        + ",NiemChiMN=" + NiemChi + ",MauSacMN=N'" + MauSac + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
                     SqlCommand command = new SqlCommand(sql);
                     //if (HinhMN == "NULL")
                     //    command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
@@ -3132,7 +3137,7 @@ namespace WSSmartPhone
                         + "        from CAPNUOCTANHOA.dbo.SDT_DHN g1"
                         + "        group by g1.DanhBo)"
                         + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot,ds.PhanMay"
-                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
+                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,kh.KhoaTu,kh.GhiChu,ds.ChuBao"
@@ -3508,19 +3513,21 @@ namespace WSSmartPhone
         //ghi chú
         public string get_GhiChu_DHN(string DanhBo)
         {
-            string sql = "select SoNha,TenDuong,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,Gieng from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'";
+            string sql = "select SoNha,TenDuong,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,Gieng from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'";
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable(sql));
         }
 
-        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri1, string ViTri2, string Gieng, string KhoaTu, string GhiChu, string MaNV)
+        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string GhiChu, string MaNV)
         {
             CResult result = new CResult();
             try
             {
                 string flagGieng = bool.Parse(Gieng) == true ? "1" : "0";
                 string flagKhoaTu = bool.Parse(KhoaTu) == true ? "1" : "0";
-                string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri1 + "',ViTriDHN2=N'" + ViTri2
-                    + "',Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu + ",GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
+                string flagViTriNgoai = bool.Parse(ViTriNgoai) == true ? "1" : "0";
+                string flagViTriHop = bool.Parse(ViTriHop) == true ? "1" : "0";
+                string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop 
+                    + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu + ",GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -3881,7 +3888,7 @@ namespace WSSmartPhone
                         + "        from CAPNUOCTANHOA.dbo.SDT_DHN g1"
                         + "        group by g1.DanhBo)"
                         + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot,ds.PhanMay"
-                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri1=VITRIDHN,ViTri2=ViTriDHN2,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
+                        + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,kh.KhoaTu,kh.GhiChu,ds.ChuBao"
