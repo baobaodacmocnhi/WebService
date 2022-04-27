@@ -3526,7 +3526,7 @@ namespace WSSmartPhone
                 string flagKhoaTu = bool.Parse(KhoaTu) == true ? "1" : "0";
                 string flagViTriNgoai = bool.Parse(ViTriNgoai) == true ? "1" : "0";
                 string flagViTriHop = bool.Parse(ViTriHop) == true ? "1" : "0";
-                string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop 
+                string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
                     + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu + ",GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
             }
@@ -3990,7 +3990,10 @@ namespace WSSmartPhone
                 int result = odbcCommand.ExecuteNonQuery();
                 this.CloseConnectionTCT();
                 if (result > 0)
+                {
+                    _cDAL_DocSo.ExecuteNonQuery("update DocSo set NgayChuyenListing=getdate() where DocSoID='" + DocSoID + "'");
                     return true;
+                }
                 else
                     return false;
             }
