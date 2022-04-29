@@ -847,14 +847,15 @@ namespace WSTanHoa.Controllers
 
         private string getTTKH(string DanhBo)
         {
-            string sql = "select DanhBo"
-                             + ",HoTen"
-                             + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
-                             + ",DinhMuc"
-                             + ",DinhMucHN"
-                             + ",GiaBieu"
-                             + " from TB_DULIEUKHACHHANG where DanhBo=" + DanhBo;
-            DataTable dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
+            //string sql = "select DanhBo"
+            //                 + ",HoTen"
+            //                 + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+            //                 + ",DinhMuc"
+            //                 + ",DinhMucHN"
+            //                 + ",GiaBieu"
+            //                 + " from TB_DULIEUKHACHHANG where DanhBo=" + DanhBo;
+            //DataTable dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
+            DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
             if (dt != null && dt.Rows.Count > 0)
             {
                 return "Hệ thống trả lời tự động\n\n"
@@ -920,9 +921,10 @@ namespace WSTanHoa.Controllers
                         //            + "\n\n***Cú pháp báo chỉ số nước: CSN_danhbo_chisonuoc"
                         //            + "\n***Chỉ số nước là dãy số màu đen trên đồng hồ nước"
                         //            + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
+                        DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"] + "' order by ID_HOADON desc");
                         message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
-                                    + "\nĐịa chỉ: " + item["DiaChi"]
-                                    + "\nDanh bộ: " + item["DanhBo"]
+                                    + "\nĐịa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
+                                    + "\nDanh bộ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
                                     + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
                                     //+ " .Nhưng do giãn cách xã hội nhân viên Công ty không thể đến ghi chỉ số nước. Kính mong"
                                     //+ " Quý khách hàng cung cấp chỉ số nước để Công ty tính đúng lượng nước tiêu thụ thực tế"
