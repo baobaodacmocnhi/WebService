@@ -20,7 +20,7 @@ namespace WSSmartPhone
 {
     class CThuTien
     {
-        CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTienWFH);
         dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
         CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
