@@ -1700,7 +1700,6 @@ namespace WSSmartPhone
 
         }
 
-
         //lệnh hủy
         public string GetDSHoaDon_LenhHuy(string LoaiCat, string ID)
         {
