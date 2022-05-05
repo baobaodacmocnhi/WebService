@@ -3067,6 +3067,11 @@ namespace WSSmartPhone
             return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select DocSoID from DocSo where DocSoID='" + ID + "' and StaCapNhat='1') then 'true' else 'false' end").ToString());
         }
 
+        public bool checkChuBao_DHN(string ID)
+        {
+            return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select DocSoID from DocSo where DocSoID='" + ID + "' and ChuBao=1) then 'true' else 'false' end").ToString());
+        }
+
         public bool checkNgayDoc_DHN(string Nam, string Ky, string Dot, string May)
         {
             if (bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select Nam from DocSoTruoc where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and May='" + May + "') then 'true' else 'false' end").ToString()) == true)
@@ -3194,88 +3199,94 @@ namespace WSSmartPhone
             {
                 if (ChiSo == "")
                     ChiSo = "0";
-                if (checkChot_BillState_DHN(ID.Substring(0, 4), ID.Substring(3, 2), Dot) == true)
+                if (checkChot_BillState_DHN(ID.Substring(0, 4), ID.Substring(4, 2), Dot) == true)
                 {
                     result.success = false;
                     result.error = "Đã chốt dữ liệu";
                 }
                 else
-                    if (checkXuLy_DHN(ID) == true)
+                    if (checkChuBao_DHN(ID) == true)
                     {
                         result.success = false;
-                        result.error = "Tổ đã xử lý";
+                        result.error = "Chủ Báo";
                     }
                     else
-                    {
-                        CHoaDon hd = new CHoaDon();
-                        bool success = tinhCodeTieuThu(ID, Code, int.Parse(ChiSo), out hd.TieuThu, out hd.TienNuoc, out hd.ThueGTGT, out hd.PhiBVMT, out hd.PhiBVMT_Thue);
-                        if (success == true)
+                        if (checkXuLy_DHN(ID) == true)
                         {
-                            //if (hd.TieuThu < 0)
-                            //{
-                            //    result.success = false;
-                            //    result.error = "Tiêu Thụ âm = " + hd.TieuThu;
-                            //}
-                            //else
+                            result.success = false;
+                            result.error = "Tổ đã xử lý";
+                        }
+                        else
+                        {
+                            CHoaDon hd = new CHoaDon();
+                            bool success = tinhCodeTieuThu(ID, Code, int.Parse(ChiSo), out hd.TieuThu, out hd.TienNuoc, out hd.ThueGTGT, out hd.PhiBVMT, out hd.PhiBVMT_Thue);
+                            if (success == true)
                             {
-                                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
-                                if (dt != null && dt.Rows.Count > 0)
+                                //if (hd.TieuThu < 0)
+                                //{
+                                //    result.success = false;
+                                //    result.error = "Tiêu Thụ âm = " + hd.TieuThu;
+                                //}
+                                //else
                                 {
-                                    if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
+                                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
+                                    if (dt != null && dt.Rows.Count > 0)
                                     {
-                                        Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
-                                    }
-                                    if (Code.Substring(0, 1) == "F" || Code == "61")
-                                        ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
-                                    else
-                                        if (Code.Substring(0, 1) == "K")
-                                            ChiSo = dt.Rows[0]["CSCu"].ToString();
+                                        if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
+                                        {
+                                            Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
+                                        }
+                                        if (Code.Substring(0, 1) == "F" || Code == "61")
+                                            ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
                                         else
-                                            if (Code.Substring(0, 1) == "N")
-                                                ChiSo = "0";
+                                            if (Code.Substring(0, 1) == "K")
+                                                ChiSo = dt.Rows[0]["CSCu"].ToString();
                                             else
-                                                if (Code == "5N")
-                                                    hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
+                                                if (Code.Substring(0, 1) == "N")
+                                                    ChiSo = "0";
+                                                else
+                                                    if (Code == "5N")
+                                                        hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
+                                    }
+                                    hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
+                                    string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
+                                        + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong
+                                        + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi=getdate() where DocSoID='" + ID + "'";
+                                    success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                                    if (HinhDHN != "")
+                                        success = ghi_Hinh_DHN(ID, HinhDHN);
+                                    result.success = success;
+                                    if (hd.TieuThu < 0)
+                                    {
+                                        result.error = "Tiêu Thụ âm = " + hd.TieuThu;
+                                    }
+                                    else
+                                        if (hd.TieuThu == 0)
+                                        {
+                                            result.alert = "Tiêu Thụ = " + hd.TieuThu;
+                                        }
+                                        else
+                                            if (hd.TieuThu > 0 && (hd.TieuThu < int.Parse(TBTT) - int.Parse(TBTT) * 1.4 || hd.TieuThu >= int.Parse(TBTT) * 1.4))
+                                            {
+                                                result.alert = "Tiêu Thụ bất thường = " + hd.TieuThu;
+                                            }
                                 }
-                                hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
-                                string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
-                                    + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong
-                                    + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi=getdate() where DocSoID='" + ID + "'";
-                                success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                                if (HinhDHN != "")
-                                    success = ghi_Hinh_DHN(ID, HinhDHN);
-                                result.success = success;
+                                hd.CodeMoi = Code;
+                                hd.ChiSoMoi = ChiSo;
+                                result.message = jss.Serialize(hd);
+                                //DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select KyHD,TongCong from fnGetHoaDonTon(" + ID.Substring(6, 11) + ")");
+                                //if (dt.Rows.Count > 0)
+                                //    result.hoadonton = DataTableToJSON(dt);
+                            }
+                            else
+                            {
+                                result.success = false;
                                 if (hd.TieuThu < 0)
                                 {
                                     result.error = "Tiêu Thụ âm = " + hd.TieuThu;
                                 }
-                                else
-                                    if (hd.TieuThu == 0)
-                                    {
-                                        result.alert = "Tiêu Thụ = " + hd.TieuThu;
-                                    }
-                                    else
-                                        if (hd.TieuThu > 0 && (hd.TieuThu < int.Parse(TBTT) - int.Parse(TBTT) * 1.4 || hd.TieuThu >= int.Parse(TBTT) * 1.4))
-                                        {
-                                            result.alert = "Tiêu Thụ bất thường = " + hd.TieuThu;
-                                        }
-                            }
-                            hd.CodeMoi = Code;
-                            hd.ChiSoMoi = ChiSo;
-                            result.message = jss.Serialize(hd);
-                            //DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select KyHD,TongCong from fnGetHoaDonTon(" + ID.Substring(6, 11) + ")");
-                            //if (dt.Rows.Count > 0)
-                            //    result.hoadonton = DataTableToJSON(dt);
-                        }
-                        else
-                        {
-                            result.success = false;
-                            if (hd.TieuThu < 0)
-                            {
-                                result.error = "Tiêu Thụ âm = " + hd.TieuThu;
                             }
                         }
-                    }
             }
             catch (Exception ex)
             {
@@ -3292,28 +3303,34 @@ namespace WSSmartPhone
             {
                 if (ChiSo == "")
                     ChiSo = "0";
-                if (checkChot_BillState_DHN(ID.Substring(0, 4), ID.Substring(3, 2), Dot) == true)
+                if (checkChot_BillState_DHN(ID.Substring(0, 4), ID.Substring(4, 2), Dot) == true)
                 {
                     result.success = false;
                     result.error = "Đã chốt dữ liệu";
                 }
                 else
-                    if (checkXuLy_DHN(ID) == true)
+                    if (checkChuBao_DHN(ID) == true)
                     {
                         result.success = false;
-                        result.error = "Tổ đã xử lý";
+                        result.error = "Chủ Báo";
                     }
                     else
-                    {
-                        IFormatProvider culture = new CultureInfo("en-US", true);
-                        DateTime date = DateTime.ParseExact(NgayDS, "dd/MM/yyyy HH:mm:ss", culture);
-                        string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
-                            + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong
-                            + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi='" + date.ToString("yyyyMMdd HH:mm:ss") + "' where DocSoID='" + ID + "'";
-                        result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                        if (HinhDHN != "")
-                            result.success = ghi_Hinh_DHN(ID, HinhDHN);
-                    }
+                        if (checkXuLy_DHN(ID) == true)
+                        {
+                            result.success = false;
+                            result.error = "Tổ đã xử lý";
+                        }
+                        else
+                        {
+                            IFormatProvider culture = new CultureInfo("en-US", true);
+                            DateTime date = DateTime.ParseExact(NgayDS, "dd/MM/yyyy HH:mm:ss", culture);
+                            string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
+                                + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong
+                                + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi='" + date.ToString("yyyyMMdd HH:mm:ss") + "' where DocSoID='" + ID + "'";
+                            result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                            if (HinhDHN != "")
+                                result.success = ghi_Hinh_DHN(ID, HinhDHN);
+                        }
             }
             catch (Exception ex)
             {
