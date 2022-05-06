@@ -3750,7 +3750,7 @@ namespace WSSmartPhone
                 else
                     TieuThu = -1;
                 if (TieuThu < 0)
-                    return false;
+                    return true;
                 DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
                 DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
