@@ -20,7 +20,7 @@ namespace WSSmartPhone
 {
     class CThuTien
     {
-        CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTienWFH);
+        CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien;
         dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
         CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
@@ -1967,9 +1967,19 @@ namespace WSSmartPhone
                     //};
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));
-                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
-                    en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                    if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
+                    {
+                        en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7));
+                        en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7);
+                        en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(7);
+                    }
+                    else
+                        if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("CT"))
+                        {
+                            en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));
+                            en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
+                            en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                        }
                     en.NgayThanhToan = NgayThanhToan;
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
                     en.LoaiThuTien = LoaiThuTien;
@@ -2084,9 +2094,19 @@ namespace WSSmartPhone
                     //};
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6)); ;
-                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
-                    en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                    if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
+                    {
+                        en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7));
+                        en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7);
+                        en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(7);
+                    }
+                    else
+                        if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("CT"))
+                        {
+                            en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));
+                            en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
+                            en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                        }
                     en.NgayThanhToan = NgayThanhToan;
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
                     en.LoaiThuTien = LoaiThuTien;
@@ -2205,9 +2225,19 @@ namespace WSSmartPhone
                     //};
                     HoaDonThanhToan en = new HoaDonThanhToan();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6)); ;
-                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
-                    en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                    if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
+                    {
+                        en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7));
+                        en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7);
+                        en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(7);
+                    }
+                    else
+                        if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("CT"))
+                        {
+                            en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));
+                            en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
+                            en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                        }
                     en.NgayThanhToan = NgayThanhToan;
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
                     en.LoaiThuTien = LoaiThuTien;
@@ -2314,9 +2344,19 @@ namespace WSSmartPhone
                     //};
                     HoaDonNopTien en = new HoaDonNopTien();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6)); ;
-                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
-                    en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                    if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
+                    {
+                        en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7));
+                        en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7);
+                        en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(7);
+                    }
+                    else
+                        if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("CT"))
+                        {
+                            en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));
+                            en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
+                            en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                        }
                     en.NgayNopTien = NgayNopTien;
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
                     en.HinhThucThanhToan = HinhThucThanhToan;
@@ -2410,9 +2450,19 @@ namespace WSSmartPhone
                     //};
                     HoaDonNopTien en = new HoaDonNopTien();
                     en.branchcode = branchcode;
-                    en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6)); ;
-                    en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
-                    en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                    if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
+                    {
+                        en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7));
+                        en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 7);
+                        en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(7);
+                    }
+                    else
+                        if (dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 2).Contains("CT"))
+                        {
+                            en.pattern = getBieuMau(dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6));
+                            en.serial = dt.Rows[0]["SoHoaDon"].ToString().Substring(0, 6);
+                            en.SoHD = dt.Rows[0]["SoHoaDon"].ToString().Substring(6);
+                        }
                     en.NgayNopTien = NgayNopTien;
                     en.TongSoTien = dt.Rows[0]["TongCong"].ToString();
                     en.HinhThucThanhToan = HinhThucThanhToan;
@@ -2515,7 +2565,7 @@ namespace WSSmartPhone
                                 else
                                     HinhThucThanhToan = "1";
                                 HoaDonNopTienLo en = new HoaDonNopTienLo();
-                                en.SoHD = item["SoHoaDon"].ToString().Substring(6);
+                                en.SoHD = item["SoHoaDon"].ToString().Substring(7);
                                 en.NgayNopTien = NgayNopTien;
                                 en.TongSoTien = item["TongCong"].ToString();
                                 en.HinhThucThanhToan = HinhThucThanhToan;
@@ -2624,7 +2674,7 @@ namespace WSSmartPhone
                                 else
                                     HinhThucThanhToan = "1";
                                 HoaDonNopTienLo en = new HoaDonNopTienLo();
-                                en.SoHD = item["SoHoaDon"].ToString().Substring(6);
+                                en.SoHD = item["SoHoaDon"].ToString().Substring(7);
                                 en.NgayNopTien = NgayNopTien;
                                 en.TongSoTien = item["TongCong"].ToString();
                                 en.HinhThucThanhToan = HinhThucThanhToan;
@@ -2734,7 +2784,7 @@ namespace WSSmartPhone
                                 else
                                     HinhThucThanhToan = "1";
                                 HoaDonNopTienLo en = new HoaDonNopTienLo();
-                                en.SoHD = item["SoHoaDon"].ToString().Substring(6);
+                                en.SoHD = item["SoHoaDon"].ToString().Substring(7);
                                 en.NgayNopTien = NgayNopTien;
                                 en.TongSoTien = item["TongCong"].ToString();
                                 en.HinhThucThanhToan = HinhThucThanhToan;
