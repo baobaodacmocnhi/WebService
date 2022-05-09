@@ -496,8 +496,6 @@
     <Content Include="Views\BauCu\DaiBieuDuKhuyet.cshtml" />
     <Content Include="Views\BauCu\DaiBieuDuKhuyet_View.cshtml" />
     <Content Include="Views\KhachHang\LichSuBamChi.cshtml" />
-    <Content Include="Views\ThuongVu\DangKyDinhMuc_Chuan.cshtml" />
-    <Content Include="Views\ThuongVu\DangKyDinhMuc_Login.cshtml" />
     <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
     <Content Include="Web References\wrThuTien\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
