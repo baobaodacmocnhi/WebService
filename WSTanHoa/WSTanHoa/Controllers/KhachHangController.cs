@@ -53,7 +53,7 @@ namespace WSTanHoa.Controllers
                 en.DinhMuc = dt.Rows[0]["DinhMuc"].ToString();
                 en.DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
                 //
-                en.NVDocSo = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select N''+NhanVienID+' : '+DienThoai from MayDS where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                en.NVDocSo = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select N''+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
                 en.NVDocSo += " ; " + apiTTKH.getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
                 //
                 int TongNo = 0;
