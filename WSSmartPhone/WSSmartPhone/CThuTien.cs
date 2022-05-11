@@ -23,7 +23,7 @@ namespace WSSmartPhone
         CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
         CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
-        CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
         CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
         CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
@@ -3477,10 +3477,13 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.KhoaTu,kh.GhiChu,ds.ChuBao"
+                        + "                          ,kh.Gieng,kh.KhoaTu,ds.ChuBao,DienThoai=sdt.DienThoai"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
-                //+ "                          ,DienThoai=(select top 1 DienThoai+' - '+HoTen from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo=ds.DanhBa and SoChinh=1 order by CreateDate desc)"
-                        + "                          ,DienThoai=sdt.DienThoai"
+                        + "                          ,GhiChu=(select"
+                        + "                             case when exists (select top 1 MaKQDN from server9.HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
+                        + "                             then (select top 1 N'Thu Tiền đóng nước: '+CONVERT(varchar(10),NgayDN,103)+' '+CONVERT(varchar(10),NgayDN,108) from server9.HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
+                        + "                             else ''"
+                        + "                             end)+'; '+kh.GhiChu"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
                         + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
@@ -4240,9 +4243,13 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.KhoaTu,kh.GhiChu,ds.ChuBao"
+                        + "                          ,kh.Gieng,kh.KhoaTu,ds.ChuBao,DienThoai=sdt.DienThoai"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
-                        + "                          ,DienThoai=sdt.DienThoai"
+                        + "                          ,GhiChu=(select"
+                        + "                             case when exists (select top 1 MaKQDN from server9.HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
+                        + "                             then (select top 1 N'Thu Tiền đóng nước: '+CONVERT(varchar(10),NgayDN,103)+' '+CONVERT(varchar(10),NgayDN,108) from server9.HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
+                        + "                             else ''"
+                        + "                             end)+'; '+kh.GhiChu"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
                         + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
@@ -4252,7 +4259,6 @@ namespace WSSmartPhone
                         + "                          and (ds.TieuThuMoi=0 or ds.TieuThuMoi>=TBTT*1.4 or ds.TieuThuMoi<=TBTT-TBTT*0.4) order by ds.MLT1 asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
-
 
         //đồng hồ nước
         public string getPhuongQuan(string DanhBo)
