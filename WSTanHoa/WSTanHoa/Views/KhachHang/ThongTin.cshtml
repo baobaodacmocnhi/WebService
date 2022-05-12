@@ -10,6 +10,13 @@
     <title>@ViewBag.Title</title>
 
     @Styles.Render("~/Content/css")
+    <!-- Custom fonts for this template-->
+    <link href="~/Template/SBAdmin2/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
+    @*<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">*@
+
+    <!-- Custom styles for this template-->
+    @*<link href="~/Template/SBAdmin2/css/sb-admin-2.css" rel="stylesheet">*@
+    <link href="~/Template/SBAdmin2/css/bootstrap-glyphicons.min.css" rel="stylesheet" />
     <link href="~/Lib/kendo/css/kendo.common.min.css" rel="stylesheet" />
     <link href="~/Lib/kendo/css/kendo.default.min.css" rel="stylesheet" />
     <link href="~/Lib/kendo/css/kendo.default.mobile.min.css" rel="stylesheet" />
@@ -88,18 +95,32 @@
         });
     </script>
 </head>
-<body style="background-color:#85d8f3;margin-top:-30px">
+<body style="background-color:#85d8f3;margin-top:-45px">
     <div class="row justify-content-center">
         <div class="col-auto">
-            <img src="~/Images/logoctycp.png" width="100" />
+            @*<img src="~/Images/logoctycp.png" width="100" />*@
         </div>
     </div>
     <div class="row justify-content-center">
         <div class="col-auto text-center">
             <h4 class="text-primary fw-bold">CÔNG TY CỔ PHẦN<br>CẤP NƯỚC TÂN HÒA</h4>
+            <h4 class="text-danger fw-bold">Hotline: 1900.6489</h4>
         </div>
     </div>
-
+    <div class="row mt-2">
+        <div class="col text-center">
+            <a href="https://service.cskhtanhoa.com.vn/khachhang/thongtin?danhbo=@Model.DanhBo"><i class="fas fa-user fa-2x text-primary"></i></a>
+            <div class="small fw-bold">Thông Tin</div>
+        </div>
+        <div class="col text-center">
+            <a href="https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc?DanhBo=@Model.DanhBo&function=KiemTra" target="_blank"><i class="glyphicon glyphicon-dashboard fa-2x text-primary"></i></a>
+            <div class="small fw-bold">Báo Chỉ Số Nước</div>
+        </div>
+        <div class="col text-center">
+            <a href="https://service.cskhtanhoa.com.vn/ThuongVu/DangKyDinhMuc?DanhBo=@Model.DanhBo&function=KiemTra" target="_blank"><i class="fas fa-id-card fa-2x text-primary"></i></a>
+            <div class="small fw-bold">Đăng Ký Định Mức</div>
+        </div>
+    </div>
     <div class="container mt-3">
         <div class="card mt-3 rounded-3 shadow-sm">
             <div class="card-header">
@@ -193,7 +214,15 @@
 
         <div class="card mt-3 rounded-3 shadow-sm">
             <div class="card-header">
-                <h4 class="text-primary">Thông Tin Hóa Đơn</h4>
+                <div class="row">
+                    <div class="col">
+                        <h4 class="text-primary">Thông Tin Hóa Đơn</h4>
+                    </div>
+                    <div class="col text-danger">
+                        <h6>(chọn dịch vụ để thanh toán)</h6>
+                    </div>
+                </div>
+                <a href="https://shopee.vn/digital-product/m/water/check-bill?carrierId=32"> <img src="~/Images/Banks/shopeepay.png" width="50" /></a>
             </div>
             <div class="card-body">
                 <div class="text-danger fw-bold"><h5>@Model.ThongTin</h5></div>
