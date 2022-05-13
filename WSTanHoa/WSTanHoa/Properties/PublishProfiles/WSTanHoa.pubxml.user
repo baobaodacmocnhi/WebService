@@ -6046,7 +6046,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/19/2022 08:58:05</publishTime>
     </File>
     <File Include="Views/KhachHang/ThongTin.cshtml">
-      <publishTime>05/13/2022 10:45:39</publishTime>
+      <publishTime>05/13/2022 14:49:18</publishTime>
     </File>
     <File Include="Views/KhieuNai/Create.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
