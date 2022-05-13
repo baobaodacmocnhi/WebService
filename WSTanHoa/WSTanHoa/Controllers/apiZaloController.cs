@@ -241,7 +241,7 @@ namespace WSTanHoa.Controllers
                                     if (messagesCSN[0].Trim().ToUpper() == "CSN")
                                     {
                                         //baochisonuoc(IDZalo, messagesCSN, ref strResponse);
-                                        strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nVui lòng truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc");
+                                        strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nTHẤT BẠI\nCú pháp: CSN_danhbo_chisonuoc đã dừng hoạt động\nVui lòng truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc");
                                     }
                                 }
                                 else
