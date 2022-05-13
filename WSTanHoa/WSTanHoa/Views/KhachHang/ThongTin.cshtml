@@ -103,7 +103,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-auto text-center">
-            <h4 class="text-primary fw-bold">CÔNG TY CỔ PHẦN<br>CẤP NƯỚC TÂN HÒA</h4>
+            <span class="text-primary fw-bold">CÔNG TY CỔ PHẦN CẤP NƯỚC TÂN HÒA</span>
             <h4 class="text-danger fw-bold">Hotline: 1900.6489</h4>
         </div>
     </div>
@@ -129,7 +129,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-auto">
-                        <label class="form-label small fw-bold">Click để quan tâm Zalo OA Tân Hòa</label>
+                        <label class="form-label small fw-bold text-danger">Click để quan tâm Zalo OA Tân Hòa</label>
                     </div>
                     <div class="col-auto">
                         <div class="zalo-follow-only-button" data-oaid="513683145569486355"></div>
@@ -214,18 +214,17 @@
 
         <div class="card mt-3 rounded-3 shadow-sm">
             <div class="card-header">
-                <div class="row">
-                    <div class="col">
-                        <h4 class="text-primary">Thông Tin Hóa Đơn</h4>
-                    </div>
-                    <div class="col text-danger">
-                        <h6>(chọn dịch vụ để thanh toán)</h6>
-                    </div>
-                </div>
-                <a href="https://shopee.vn/digital-product/m/water/check-bill?carrierId=32"> <img src="~/Images/Banks/shopeepay.png" width="50" /></a>
+                <h4 class="text-primary">Thông Tin Hóa Đơn</h4>
             </div>
             <div class="card-body">
                 <div class="text-danger fw-bold"><h5>@Model.ThongTin</h5></div>
+                @if (Model.ThongTin != "Đã thanh toán hết")
+                { <div>
+                    <div class="col text-primary">
+                        <h6>(Quý khách có thể chọn dịch vụ để thanh toán)</h6>
+                    </div>
+                    <a href="https://shopee.vn/digital-product/m/water/check-bill?carrierId=32"> <img src="~/Images/Banks/shopeepay.png" width="50" /></a>
+                </div>}
                 <div class="bd-example border rounded-3 shadow-sm">
                     <div class="overflow-auto">
                         <table class="table table-striped text-center">
