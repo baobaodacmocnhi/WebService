@@ -56,6 +56,7 @@ namespace WSTanHoa.Controllers
                 en.NVDocSo = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select N''+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
                 en.NVDocSo += " ; " + apiTTKH.getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
                 //
+                string KyNo = "";
                 int TongNo = 0;
                 sql = "select top 12 * from fnTimKiem('" + DanhBo + "','') order by MaHD desc";
                 DataTable dt2 = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
@@ -96,6 +97,7 @@ namespace WSTanHoa.Controllers
                             }
                         else
                         {
+                            KyNo += enCT.Ky + ", ";
                             if (dt3 != null && dt3.Rows.Count > 0)
                             {
                                 if (dt3.Rows[0]["Kys"].ToString().Contains(enCT.Ky) == false)
@@ -127,6 +129,11 @@ namespace WSTanHoa.Controllers
                 {
                     en.ThongTin += "; Đã thu hộ " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", int.Parse(dt3.Rows[0]["TongCong"].ToString())) + " - Kỳ " + dt3.Rows[0]["Kys"].ToString() + " - ngày " + dt3.Rows[0]["CreateDate"].ToString() + " - qua " + dt3.Rows[0]["TenDichVu"].ToString();
                 }
+                //lấy thông tin đóng nước
+                sql = "select top 1 CONVERT(varchar(10),NgayDN,103)+' '+CONVERT(varchar(10),NgayDN,108) from TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo='" + DanhBo + "' order by NgayDN desc";
+                dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                if (dt != null && dt.Rows.Count > 0)
+                    en.ThongTinDongNuoc = "Địa chỉ đang tạm ngưng cung cấp nước từ " + dt.Rows[0][0].ToString() + " do chưa thanh toán tiền nước kỳ " + KyNo;
             }
 
             return View(en);

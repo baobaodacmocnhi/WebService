@@ -99,6 +99,8 @@ namespace WSTanHoa.Models
         /// </summary>
         public string ThongTin { get; set; }
 
+        public string ThongTinDongNuoc { get; set; }
+
         public string NVDocSo { get; set; }
 
         public string NVThuTien { get; set; }
@@ -127,6 +129,7 @@ namespace WSTanHoa.Models
             NgayKiemDinh = null;
             HieuLuc = "";
             ThongTin = "";
+            ThongTinDongNuoc = "";
             NVDocSo = "";
             NVThuTien = "";
             lstHoaDon = new List<HoaDonThuTien>();

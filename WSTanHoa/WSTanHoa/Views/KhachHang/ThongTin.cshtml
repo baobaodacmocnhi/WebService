@@ -122,6 +122,14 @@
         </div>
     </div>
     <div class="container mt-3">
+        @if (Model.ThongTinDongNuoc != "")
+        {
+            <div class="card mt-3 rounded-3 shadow-sm">
+                <div class="card-header">
+                    <h4 class="text-danger">@Model.ThongTinDongNuoc</h4>
+                </div>
+            </div>
+        }
         <div class="card mt-3 rounded-3 shadow-sm">
             <div class="card-header">
                 <h4 class="text-primary">Thông Tin Khách Hàng</h4>
@@ -218,11 +226,12 @@
             </div>
             <div class="card-body">
                 <div class="text-danger fw-bold"><h5>@Model.ThongTin</h5></div>
-                @if (Model.ThongTin != "Đã thanh toán hết")
+                @if (Model.ThongTin != "" && Model.ThongTin != "Đã thanh toán hết")
                 { <div>
-                      <h6>(Quý khách có thể chọn dịch vụ để thanh toán)</h6>
+                    <h6>(Quý khách có thể chọn dịch vụ để thanh toán)</h6>
                     <div class="col text-primary">
-                        <a href="https://shopee.vn/digital-product/m/water/check-bill?carrierId=32"> <img src="~/Images/Banks/shopeepay.png" width="50" /></a>
+                        <span><a href="https://shopee.vn/digital-product/m/water/check-bill?carrierId=32"> <img src="~/Images/Banks/shopeepay.png" width="50" /></a></span>
+                        <span class="m-4"><a href="https://bill.payoo.vn/tra-tien-thanh-toan-hoa-don-tien-nuoc-cap-nuoc-tan-hoa"> <img src="~/Images/Banks/payoo.png" width="50" /></a></span>
                     </div>
                 </div>}
                 <div class="bd-example border rounded-3 shadow-sm">
@@ -314,5 +323,3 @@
         </footer>
     </div>
 </body>
-
-
