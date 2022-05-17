@@ -15,6 +15,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
         private apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
 
         // GET: KhachHang
@@ -38,7 +39,7 @@ namespace WSTanHoa.Controllers
                          + ",SoThanDH"
                          + ",ViTriDHN"
                          + ",NgayThay"
-                         + ",NgayKiemDinh"
+                         + ",NgayKiemDinh,DMA=MADMA"
                          + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
                          + " from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'";
             DataTable dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
@@ -52,6 +53,7 @@ namespace WSTanHoa.Controllers
                 en.GiaBieu = dt.Rows[0]["GiaBieu"].ToString();
                 en.DinhMuc = dt.Rows[0]["DinhMuc"].ToString();
                 en.DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
+                en.DMA = dt.Rows[0]["DMA"].ToString().Replace("TH-", "");
                 //
                 en.NVDocSo = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select N''+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
                 en.NVDocSo += " ; " + apiTTKH.getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
@@ -134,6 +136,13 @@ namespace WSTanHoa.Controllers
                 dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                 if (dt != null && dt.Rows.Count > 0)
                     en.ThongTinDongNuoc = "Địa chỉ đang tạm ngưng cung cấp nước từ " + dt.Rows[0][0].ToString() + " do chưa thanh toán tiền nước kỳ " + KyNo;
+                if (en.ThongTinDongNuoc == "")
+                {
+                    sql = "select top 1 * from TamNgungCungCapNuoc where CAST(GETDATE() as date)>=CAST(DATEADD(DAY,-1,DateStart) as date) and CAST(GETDATE() as date)<=CAST(DateEnd as date) and DMAs like ('%" + en.DMA + "%') or DanhBos like ('%" + DanhBo + "%')";
+                    dt = cDAL_TTKH.ExecuteQuery_DataTable(sql);
+                    if (dt != null && dt.Rows.Count > 0)
+                        en.ThongTinDongNuoc = dt.Rows[0]["NoiDung"].ToString();
+                }
             }
 
             return View(en);

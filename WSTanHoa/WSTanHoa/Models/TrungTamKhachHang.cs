@@ -101,6 +101,8 @@ namespace WSTanHoa.Models
 
         public string ThongTinDongNuoc { get; set; }
 
+        public string DMA { get; set; }
+
         public string NVDocSo { get; set; }
 
         public string NVThuTien { get; set; }
@@ -130,6 +132,7 @@ namespace WSTanHoa.Models
             HieuLuc = "";
             ThongTin = "";
             ThongTinDongNuoc = "";
+            DMA = "";
             NVDocSo = "";
             NVThuTien = "";
             lstHoaDon = new List<HoaDonThuTien>();
