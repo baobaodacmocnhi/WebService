@@ -335,9 +335,19 @@ namespace WSTanHoa.Controllers
                     ModelState.AddModelError("", "Thiếu Số Nhân Khẩu");
                 for (int i = 0; i < int.Parse(SoNK); i++)
                 {
+                    if (form["HoTen" + (i + 1) + ""].ToString().Trim() == "")
+                    {
+                        ModelState.AddModelError("", "Thiếu Họ Tên");
+                        return View();
+                    }
+                    if (form["DCThuongTru" + (i + 1) + ""].ToString().Trim() == ""&& form["DCTamTru" + (i + 1) + ""].ToString().Trim() == "")
+                    {
+                        ModelState.AddModelError("", "Thiếu Địa chỉ thường trụ hoặc tạm trú");
+                        return View();
+                    }
                     if (form["CCCD" + (i + 1) + ""].ToString().Trim() == "")
                     {
-                        ModelState.AddModelError("", "Thiếu Số CCCD");
+                        ModelState.AddModelError("", "Thiếu số CCCD");
                         return View();
                     }
                 }
