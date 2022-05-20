@@ -63,7 +63,7 @@ namespace WSTanHoa.Controllers
                              + ",NgayKiemDinh"
                              + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
                              + ",Gieng,DienThoai=(select top 1 DienThoai from SDT_DHN where SDT_DHN.DanhBo=TB_DULIEUKHACHHANG.DanhBo order by CreateDate desc)"
-                             + " from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "' or SoThanDH like N'%" + DanhBo + "%'";
+                             + " from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'";
                 dt.Merge(cDAL_DHN.ExecuteQuery_DataTable(sql));
                 //lấy thông tin khách hàng đã hủy
                 if (dt == null || dt.Rows.Count == 0)
@@ -1059,6 +1059,20 @@ namespace WSTanHoa.Controllers
                             en.DiaChi = item["DiaChi"].ToString();
                         else
                             en.DiaChi = item["DiaChi"].ToString() + " =>HD: " + item["DiaChiHoaDon"].ToString();
+
+                        lst.Add(en);
+                    }
+                }
+                //kiếm số thân ĐHN
+                dt = cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG where SoThanDH like N'%" + checkSoNha + "%'");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        ThongTinKhachHang en = new ThongTinKhachHang();
+                        en.DanhBo = item["DanhBo"].ToString();
+                        en.HoTen = item["HoTen"].ToString();
+                        en.DiaChi = item["DiaChi"].ToString();
 
                         lst.Add(en);
                     }

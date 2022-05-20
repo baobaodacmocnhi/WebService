@@ -12,10 +12,10 @@ namespace WSTanHoa.Controllers
 {
     public class KhachHangController : Controller
     {
-        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
-        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
-        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTienWFH);
-        private CConnection cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHangWFH);
+        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
         private apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
 
         // GET: KhachHang
