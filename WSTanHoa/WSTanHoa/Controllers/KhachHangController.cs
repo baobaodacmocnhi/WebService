@@ -138,7 +138,7 @@ namespace WSTanHoa.Controllers
                     en.ThongTinDongNuoc = "Địa chỉ đang tạm ngưng cung cấp nước từ " + dt.Rows[0][0].ToString() + " do chưa thanh toán tiền nước kỳ " + KyNo;
                 if (en.ThongTinDongNuoc == "")
                 {
-                    sql = "select top 1 * from TamNgungCungCapNuoc where CAST(GETDATE() as date)>=CAST(DATEADD(DAY,-1,DateStart) as date) and CAST(GETDATE() as date)<=CAST(DateEnd as date) and DMAs like ('%" + en.DMA + "%') or DanhBos like ('%" + DanhBo + "%')";
+                    sql = "select top 1 * from TamNgungCungCapNuoc where CAST(GETDATE() as date)>=CAST(DATEADD(DAY,-1,DateStart) as date) and CAST(GETDATE() as date)<=CAST(DateEnd as date) and (DMAs like ('%" + en.DMA + "%') or DanhBos like ('%" + DanhBo + "%'))";
                     dt = cDAL_TTKH.ExecuteQuery_DataTable(sql);
                     if (dt != null && dt.Rows.Count > 0)
                         en.ThongTinDongNuoc = dt.Rows[0]["NoiDung"].ToString();
