@@ -259,6 +259,7 @@
     <Content Include="Global.asax" />
     <Content Include="Images\Banks\shopeepay.png" />
     <Content Include="Images\daihoidoantct2022.png" />
+    <Content Include="Images\gianuoc2022.jpg" />
     <Content Include="Images\info.announcement.png" />
     <Content Include="Images\Banks\acb.png" />
     <Content Include="Images\Banks\agr.png" />
