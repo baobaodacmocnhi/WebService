@@ -1064,17 +1064,20 @@ namespace WSTanHoa.Controllers
                     }
                 }
                 //kiếm số thân ĐHN
-                dt = cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG where SoThanDH like N'%" + checkSoNha + "%'");
-                if (dt != null && dt.Rows.Count > 0)
+                if (checkHoTen == "" && checkTenDuong == "" && checkSoNha != "")
                 {
-                    foreach (DataRow item in dt.Rows)
+                    dt = cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG where SoThanDH like N'%" + checkSoNha + "%'");
+                    if (dt != null && dt.Rows.Count > 0)
                     {
-                        ThongTinKhachHang en = new ThongTinKhachHang();
-                        en.DanhBo = item["DanhBo"].ToString();
-                        en.HoTen = item["HoTen"].ToString();
-                        en.DiaChi = item["DiaChi"].ToString();
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            ThongTinKhachHang en = new ThongTinKhachHang();
+                            en.DanhBo = item["DanhBo"].ToString();
+                            en.HoTen = item["HoTen"].ToString();
+                            en.DiaChi = item["DiaChi"].ToString();
 
-                        lst.Add(en);
+                            lst.Add(en);
+                        }
                     }
                 }
                 //kiếm danh bộ hủy
