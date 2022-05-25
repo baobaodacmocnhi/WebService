@@ -23,7 +23,7 @@ namespace WSSmartPhone
         CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         dbThuTienDataContext _dbThuTien = new dbThuTienDataContext();
         CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
-        CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
+        CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
         CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
@@ -3860,6 +3860,22 @@ namespace WSSmartPhone
                     }
                 count--;
             }
+        }
+
+        public string getDS_LichSu_DocSo_DHN(string DanhBo)
+        {
+            CResult result = new CResult();
+            try
+            {
+                result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select top 12 Ky=Ky+'/'+CONVERT(char(4),Nam),CodeMoi,CSMoi,TieuThuMoi from DocSo where DanhBa='" + DanhBo.Replace(" ", "") + "' order by DocSoID desc"));
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return jss.Serialize(result);
         }
 
         //ghi chú

@@ -135,6 +135,12 @@ namespace WSSmartPhone
             return _cThuTien.getDS_HoaDonTon_DHN(Nam, Ky, Dot, May);
         }
 
+        [WebMethod]
+        public string getDS_LichSu_DocSo(string DanhBo)
+        {
+            return _cThuTien.getDS_LichSu_DocSo_DHN(DanhBo);
+        }
+
         //ghi chú
         [WebMethod]
         public string get_GhiChu(string DanhBo)
