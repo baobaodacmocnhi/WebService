@@ -200,7 +200,7 @@ namespace WSTanHoa.Controllers
                 dt = cDAL_DocSo.ExecuteQuery_DataTable(sql);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    en.NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select N'Nhân viên ghi chỉ số: '+NhanVienID+' : '+DienThoai from MayDS where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                    en.NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
                     en.NhanVien += " ; " + getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
 
                     foreach (DataRow item in dt.Rows)
@@ -269,7 +269,7 @@ namespace WSTanHoa.Controllers
 
                     string result_Lich = getLichDocSo_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
-                    string result_NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                    string result_NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
 
                     en.ThongTin = result_NhanVien + " ; " + result_Lich;
                     return en;

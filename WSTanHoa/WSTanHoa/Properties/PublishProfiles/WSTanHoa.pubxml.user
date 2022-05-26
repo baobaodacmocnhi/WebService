@@ -172,10 +172,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>05/23/2022 13:40:13</publishTime>
+      <publishTime>05/26/2022 13:41:58</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>05/23/2022 13:40:14</publishTime>
+      <publishTime>05/26/2022 13:41:59</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>

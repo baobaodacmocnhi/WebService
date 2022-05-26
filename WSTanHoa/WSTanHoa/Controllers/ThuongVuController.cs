@@ -340,7 +340,7 @@ namespace WSTanHoa.Controllers
                         ModelState.AddModelError("", "Thiếu Họ Tên");
                         return View();
                     }
-                    if (form["DCThuongTru" + (i + 1) + ""].ToString().Trim() == ""&& form["DCTamTru" + (i + 1) + ""].ToString().Trim() == "")
+                    if (form["DCThuongTru" + (i + 1) + ""].ToString().Trim() == "" && form["DCTamTru" + (i + 1) + ""].ToString().Trim() == "")
                     {
                         ModelState.AddModelError("", "Thiếu Địa chỉ thường trụ hoặc tạm trú");
                         return View();
@@ -359,10 +359,11 @@ namespace WSTanHoa.Controllers
                 else
                 if (DanhBo != "" && DienThoai.Length == 10 && SoNK != "")
                 {
+                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 GB,DM from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
                     string sql = "declare @tbID table (id int);"
-                              + " insert into DCBD_DKDM_DanhBo(DanhBo,SDT)"
+                              + " insert into DCBD_DKDM_DanhBo(DanhBo,GiaBieu,DinhMuc,SDT)"
                               + " output inserted.ID into @tbID"
-                              + " values('" + DanhBo + "','" + DienThoai + "');"
+                              + " values('" + DanhBo + "'," + dt.Rows[0]["GB"] + "," + dt.Rows[0]["DM"] + ",'" + DienThoai + "');"
                               + " declare @ID int"
                               + " select @ID=id from @tbID;";
                     for (int i = 0; i < int.Parse(SoNK); i++)
