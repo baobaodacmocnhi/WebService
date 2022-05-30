@@ -257,6 +257,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\Banks\momo.jpg" />
     <Content Include="Images\Banks\shopeepay.png" />
     <Content Include="Images\daihoidoantct2022.png" />
     <Content Include="Images\gianuoc2022.jpg" />
@@ -267,7 +268,7 @@
     <Content Include="Images\Banks\da.png" />
     <Content Include="Images\Banks\kb.png" />
     <Content Include="Images\Banks\mb.png" />
-    <Content Include="Images\Banks\momo.png" />
+    <Content Include="Images\Banks\momo2.png" />
     <Content Include="Images\Banks\payoo.png" />
     <Content Include="Images\Banks\vcb.png" />
     <Content Include="Images\Banks\vnpay.svg" />
