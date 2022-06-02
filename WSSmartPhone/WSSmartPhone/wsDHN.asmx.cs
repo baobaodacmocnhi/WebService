@@ -149,9 +149,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string update_GhiChu(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string GhiChu, string MaNV)
+        public string update_GhiChu(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string AmSau, string XayDung, string GhiChu, string MaNV)
         {
-            return _cThuTien.update_GhiChu_DHN(DanhBo, SoNha, TenDuong, ViTri, ViTriNgoai, ViTriHop, Gieng, KhoaTu, GhiChu, MaNV);
+            return _cThuTien.update_GhiChu_DHN(DanhBo, SoNha, TenDuong, ViTri, ViTriNgoai, ViTriHop, Gieng, KhoaTu, AmSau, XayDung, GhiChu, MaNV);
         }
 
         [WebMethod]
