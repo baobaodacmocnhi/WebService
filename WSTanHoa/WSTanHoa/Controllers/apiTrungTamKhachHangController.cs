@@ -177,11 +177,11 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
-                {
-                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                }
+                //if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                //{
+                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                //}
                 DocSo en = new DocSo();
                 DataTable dt = new DataTable();
 
@@ -200,9 +200,12 @@ namespace WSTanHoa.Controllers
                 dt = cDAL_DocSo.ExecuteQuery_DataTable(sql);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    en.NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
-                    en.NhanVien += " ; " + getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
-
+                    object result = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2));
+                    if (result != null)
+                    {
+                        en.NhanVien = result.ToString();
+                        en.NhanVien += " ; " + getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
+                    }
                     foreach (DataRow item in dt.Rows)
                     {
                         GhiChiSo enCT = new GhiChiSo();
