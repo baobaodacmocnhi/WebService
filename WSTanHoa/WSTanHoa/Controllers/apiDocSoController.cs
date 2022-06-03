@@ -49,12 +49,17 @@ namespace WSTanHoa.Controllers
                         string result = read.ReadToEnd();
                         read.Close();
                         respuesta.Close();
-
+                        _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=1");
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                         foreach (var item in obj)
                         {
-                            if (checkExists(item) == false)
-                                _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid)values('" + item + "',1,1)");
+                            if (checkExists(item["MaDanhbo"]) == false)
+                                if (string.IsNullOrEmpty(item["SeriModule"]))
+                                    _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid)values('" + item["MaDanhbo"] + "',1,1)");
+                                else
+                                    _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid)values('" + item["MaDanhbo"] + "',1," + item["SeriModule"] + ",1)");
+                            else
+                                _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=1");
                         }
                         return true;
                     }

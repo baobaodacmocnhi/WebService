@@ -924,7 +924,7 @@ namespace WSTanHoa.Controllers
                         DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"] + "' order by ID_HOADON desc");
                         message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
                                     + "\nĐịa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
-                                    + "\nDanh bộ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
+                                    + "\nDanh bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString()
                                     + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
                                     //+ " .Nhưng do giãn cách xã hội nhân viên Công ty không thể đến ghi chỉ số nước. Kính mong"
                                     //+ " Quý khách hàng cung cấp chỉ số nước để Công ty tính đúng lượng nước tiêu thụ thực tế"
