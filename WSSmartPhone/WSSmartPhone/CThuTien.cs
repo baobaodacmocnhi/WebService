@@ -3867,7 +3867,10 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
-                result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select top 12 Ky=Ky+'/'+CONVERT(char(4),Nam),CodeMoi,CSMoi,TieuThuMoi from DocSo where DanhBa='" + DanhBo.Replace(" ", "") + "' order by DocSoID desc"));
+                string sql = "select top 12 Ky=ds.Ky+'/'+CONVERT(char(4),ds.Nam),CodeMoi,CSMoi,TieuThuMoi,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN"
+                    + ",TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
+                    + " from DocSo ds,BienDong bd where ds.DanhBa='" + DanhBo.Replace(" ", "") + "' and ds.DocSoID=bd.BienDongID order by ds.DocSoID desc";
+                result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
                 result.success = true;
             }
             catch (Exception ex)
