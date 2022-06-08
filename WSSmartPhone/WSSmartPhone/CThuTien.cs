@@ -3477,7 +3477,7 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
+                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         + "                          ,TinhTrang=(select"
                         + "                             case when exists (select top 1 MaKQDN from server9.HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
@@ -3868,7 +3868,8 @@ namespace WSSmartPhone
             try
             {
                 string sql = "select top 12 Ky=ds.Ky+'/'+CONVERT(char(4),ds.Nam),CodeMoi,CSMoi,TieuThuMoi,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN"
-                    + ",TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
+                    + ",TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT"
+                    + ",PhiBVMT_Thue=case when ds.BVMT_Thue is null then 0 else ds.BVMT_Thue end,TongCong=ds.TongTien"
                     + " from DocSo ds,BienDong bd where ds.DanhBa='" + DanhBo.Replace(" ", "") + "' and ds.DocSoID=bd.BienDongID order by ds.DocSoID desc";
                 result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
                 result.success = true;
@@ -3888,7 +3889,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable(sql));
         }
 
-        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string AmSau, string XayDung, string GhiChu, string MaNV)
+        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string AmSau, string XayDung, string DutChiGoc, string DutChiThan, string MauSacChiGoc, string GhiChu, string MaNV)
         {
             CResult result = new CResult();
             try
@@ -3897,10 +3898,13 @@ namespace WSSmartPhone
                 string flagKhoaTu = bool.Parse(KhoaTu) == true ? "1" : "0";
                 string flagAmSau = bool.Parse(AmSau) == true ? "1" : "0";
                 string flagXayDung = bool.Parse(XayDung) == true ? "1" : "0";
+                string flagDutChiGoc = bool.Parse(XayDung) == true ? "1" : "0";
+                string flagDutChiThan = bool.Parse(XayDung) == true ? "1" : "0";
                 string flagViTriNgoai = bool.Parse(ViTriNgoai) == true ? "1" : "0";
                 string flagViTriHop = bool.Parse(ViTriHop) == true ? "1" : "0";
                 string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
-                    + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu + ",AmSau=" + flagAmSau + ",XayDung=" + flagXayDung + ",GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
+                    + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu + ",AmSau=" + flagAmSau + ",XayDung=" + flagXayDung + ",DutChi_Goc=" + flagDutChiGoc + ",DutChi_Than=" + flagDutChiThan
+                    + ",MauSacChiGoc=N'" + MauSacChiGoc + "',GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -3994,7 +3998,21 @@ namespace WSSmartPhone
                 DataTable dtPC = _cDAL_DocSo.ExecuteQuery_DataTable("select Folder from MaHoa_PhieuChuyen where App=1 and KhongLapDon=1 and Name=N'" + NoiDung + "'");
                 if (dtPC != null && dtPC.Rows.Count > 0)
                 {
-                    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                    switch (NoiDung)
+                    {
+                        case "Đứt Chì Góc":
+                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                            break;
+                        case "Đứt Chì Thân":
+                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                            break;
+                        case "Đứt Chì Góc + Thân":
+                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate(),DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                            break;
+                        default:
+                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                            break;
+                    }
                     if (Hinh != "")
                         result.success = ghi_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, dtPC.Rows[0]["Folder"].ToString(), "", DanhBo + ".jpg", Hinh);
                 }
@@ -4273,7 +4291,7 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
+                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo ds,server11.TRUNGTAMKHACHHANG.dbo.Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         + "                          ,TinhTrang=(select"
                         + "                             case when exists (select top 1 MaKQDN from server9.HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
