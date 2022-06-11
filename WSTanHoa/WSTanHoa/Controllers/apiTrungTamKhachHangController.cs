@@ -23,7 +23,6 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
-        private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
 
         /// <summary>
         /// Lấy thông tin khách hàng
@@ -177,11 +176,11 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                //if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
-                //{
-                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                //}
+                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
                 DocSo en = new DocSo();
                 DataTable dt = new DataTable();
 
@@ -291,16 +290,16 @@ namespace WSTanHoa.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public DataTable getLichDocSo_Func_SQL(string DanhBo, string MLT)
         {
-            string sql_Lich = "WITH docso AS(select top 2 KY, NAM from [SERVER8].[DocSoTH].[dbo].[DocSo] where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
+            string sql_Lich = "WITH temp AS(select top 2 KY, NAM from DocSo where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
                                    + " select distinct NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103)"
                                    + " ,NgayDoc,NgayChuyenListing,NgayThuTien,a.Ky,a.Nam,Dot=b.IDDot"
-                                   + " from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c,docso where a.ID=b.IDDocSo and c.ID=b.IDDot and ((a.Nam>docso.Nam) or (a.Nam=docso.Nam and a.Ky>=docso.Ky))"
+                                   + " from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c,temp where a.ID=b.IDDocSo and c.ID=b.IDDot and ((a.Nam>temp.Nam) or (a.Nam=temp.Nam and a.Ky>=temp.Ky))"
                                    + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
                                    + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
                                    + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))"
                                    + " order by NgayDoc desc";
-            return cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
+            return cDAL_DocSo.ExecuteQuery_DataTable(sql_Lich);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -482,16 +481,16 @@ namespace WSTanHoa.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public DataTable getLichThuTien_Func_SQL(string DanhBo, string MLT)
         {
-            string sql_Lich = "WITH hoadon AS (select top 2 KY,NAM from [SERVER9].[HOADON_TA].[dbo].[HOADON] where DANHBA='" + DanhBo + "' order by ID_HOADON desc)"
+            string sql_Lich = "WITH temp AS (select top 2 KY,NAM from [SERVER9].[HOADON_TA].[dbo].[HOADON] where DANHBA='" + DanhBo + "' order by ID_HOADON desc)"
                                    + " select distinct NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103)"
                                    + " ,NgayThuTien_From,NgayThuTien_To"
-                                   + " from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c,hoadon where a.ID=b.IDThuTien and c.ID=b.IDDot and ((a.Nam>hoadon.Nam) or (a.Nam=hoadon.Nam and a.Ky>=hoadon.Ky))"
+                                   + " from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c,temp where a.ID=b.IDThuTien and c.ID=b.IDDot and ((a.Nam>temp.Nam) or (a.Nam=temp.Nam and a.Ky>=temp.Ky))"
                                    + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
                                    + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
                                    + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))";
             //+ " order by a.CreateDate desc";
-            return cDAL_TrungTam.ExecuteQuery_DataTable(sql_Lich);
+            return cDAL_DocSo.ExecuteQuery_DataTable(sql_Lich);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]

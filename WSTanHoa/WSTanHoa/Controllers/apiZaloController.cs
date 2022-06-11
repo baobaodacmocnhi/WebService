@@ -905,7 +905,7 @@ namespace WSTanHoa.Controllers
                                 + " and CAST(DATEADD(DAY, -1, NgayDoc) as date)=CAST(GETDATE() as date)"
                                 + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
                                 + " and z.IDZalo=zq.IDZalo and zq.Follow= 1";
-                    DataTable dt = cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    DataTable dt = cDAL_DocSo.ExecuteQuery_DataTable(sql);
                     string message;
                     foreach (DataRow item in dt.Rows)
                     {
