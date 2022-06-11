@@ -26,7 +26,7 @@ namespace WSSmartPhone
         CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
-        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
+        //CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
         JavaScriptSerializer jss = new JavaScriptSerializer();
 
         public string DataTableToJSON(DataTable table)
@@ -3410,7 +3410,7 @@ namespace WSSmartPhone
             if (bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select Nam from DocSoTruoc where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and May='" + May + "') then 'true' else 'false' end").ToString()) == true)
                 return true;
             else
-                return bool.Parse(_cDAL_TTKH.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and ((dsct.NgayDoc=CAST(DATEADD(day,1,GETDATE()) as date) and CONVERT(varchar(10),GETDATE(),108)>='17:00:00') or dsct.NgayDoc<=CAST(GETDATE() as date)) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
+                return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and ((dsct.NgayDoc=CAST(DATEADD(day,1,GETDATE()) as date) and CONVERT(varchar(10),GETDATE(),108)>='17:00:00') or dsct.NgayDoc<=CAST(GETDATE() as date)) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
         }
 
         //ghi chỉ số
@@ -3822,7 +3822,7 @@ namespace WSSmartPhone
         {
             string sql = "select Nam,Ky=RIGHT('0' + CAST(Ky AS VARCHAR(2)), 2),Dot=RIGHT('0' + CAST(IDDot AS VARCHAR(2)), 2) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct,Lich_Dot dot"
                          + " where ds.ID=dsct.IDDocSo and dot.ID=dsct.IDDot and CAST(dsct.NgayDoc as date)=CAST(GETDATE() as date)";
-            DataTable dtKy = _cDAL_TTKH.ExecuteQuery_DataTable(sql);
+            DataTable dtKy = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
             DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select DocSoID,CodeMoi,Dot from DocSo where Nam=" + dtKy.Rows[0]["Nam"].ToString() + " and Ky='" + dtKy.Rows[0]["Ky"].ToString() + "' and Dot='" + dtKy.Rows[0]["Dot"].ToString() + "'");
             foreach (DataRow item in dtDocSo.Rows)
                 if (item["CodeMoi"] == null || item["CodeMoi"].ToString() == "")
