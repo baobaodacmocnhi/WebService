@@ -35,11 +35,11 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                //if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
-                //{
-                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                //}
+                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
                 DataTable dt = new DataTable();
 
                 //lấy thông tin khách hàng
@@ -116,6 +116,11 @@ namespace WSTanHoa.Controllers
                         en.NgayKiemDinh = DateTime.Parse(dt.Rows[0]["NgayKiemDinh"].ToString());
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
                     en.ThongTin = "SĐT: " + dt.Rows[0]["DienThoai"].ToString();
+                    //lấy tọa độ
+                    if (en.ThongTin != "")
+                        en.ThongTin += " - ";
+                    en.ThongTin += "<a style='color: blue;' target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewViTri?DanhBo=" + en.DanhBo + "'>Vị trí</a>";
+
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                     {
                         if (en.ThongTin != "")

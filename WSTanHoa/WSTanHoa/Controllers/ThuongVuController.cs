@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WSTanHoa.Providers;
@@ -18,22 +19,44 @@ namespace WSTanHoa.Controllers
         private wrThuongVu.wsThuongVu wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: ThuongVu
-        public ActionResult viewFile(string TableName, string IDFileName, string IDFileContent)
+        //public ActionResult viewFile(string TableName, string IDFileName, string IDFileContent)
+        //{
+        //    if (TableName != null && IDFileName != null && IDFileContent != null && TableName != "" && IDFileName != "" && IDFileContent != "")
+        //    {
+        //        //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
+        //        DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent);
+        //        if (dt != null && dt.Rows.Count > 0)
+        //        {
+        //            byte[] FileContent = wsThuongVu.get_Hinh(TableName, IDFileContent, dt.Rows[0]["filename"].ToString());
+        //            if (FileContent != null)
+        //                return new FileStreamResult(new MemoryStream(FileContent), "image/jpeg");
+        //            else
+        //                return View();
+        //        }
+        //        else
+        //            return View();
+        //    }
+        //    else
+        //        return null;
+        //}
+
+        public ContentResult viewFile(string TableName, string IDFileName, string IDFileContent)
         {
             if (TableName != null && IDFileName != null && IDFileContent != null && TableName != "" && IDFileName != "" && IDFileContent != "")
             {
+                string NoiDung = "";
                 //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
                 DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent);
                 if (dt != null && dt.Rows.Count > 0)
-                {
-                    byte[] FileContent = wsThuongVu.get_Hinh(TableName, IDFileContent, dt.Rows[0]["filename"].ToString());
-                    if (FileContent != null)
-                        return new FileStreamResult(new MemoryStream(FileContent), "image/jpeg");
-                    else
-                        return View();
-                }
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        byte[] FileContent = wsThuongVu.get_Hinh(TableName, IDFileContent, item["filename"].ToString());
+                        if (FileContent != null)
+                            NoiDung += "<img height='100%' src='data:image/jpeg;base64," + Convert.ToBase64String(FileContent) + "'/></br></br>";
+                    }
                 else
-                    return View();
+                    NoiDung = "<head><meta charset='UTF-8'></head><body><h3>Không có hình ảnh!</h3></body>";
+                return Content(NoiDung, "text/html");
             }
             else
                 return null;
@@ -46,6 +69,33 @@ namespace WSTanHoa.Controllers
                 return (byte[])_cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select Hinh from " + TableName + " where " + IDFileName + "=" + IDFileContent);
             else
                 return null;
+        }
+
+        public ContentResult viewViTri(string DanhBo)
+        {
+            try
+            {
+                System.Net.HttpWebRequest request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create("https://old.cskhtanhoa.com.vn:1803/api/docso/location/" + DanhBo);
+                request.Method = "GET";
+                request.ContentType = "application/json; charset=utf-8";
+
+                System.Net.HttpWebResponse respuesta = (System.Net.HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == System.Net.HttpStatusCode.Accepted || respuesta.StatusCode == System.Net.HttpStatusCode.OK || respuesta.StatusCode == System.Net.HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                    return Content("<head><meta charset='UTF-8'></head><body><h3>Copy tọa độ này vào Google Map: " + ((double)obj["latitude"]).ToString().Replace(",", ".") + "," + ((double)obj["longitude"]).ToString().Replace(",", ".") + "</h3></body>", "text/html");
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public ActionResult ThongTinKhachHang(string DanhBo)
