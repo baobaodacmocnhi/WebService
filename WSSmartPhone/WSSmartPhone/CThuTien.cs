@@ -3416,7 +3416,7 @@ namespace WSSmartPhone
         //ghi chỉ số
         public string getDS_GiaNuoc_DHN()
         {
-            return DataTableToJSON(_cDAL_KinhDoanh.ExecuteQuery_DataTable("SELECT ID,Name,SHN,SHTM,SHVM1,SHVM2,SX,HCSN,KDDV,NgayTangGia=CONVERT(char(10),NgayTangGia,103),PhiBVMT FROM GiaNuoc2"));
+            return DataTableToJSON(_cDAL_KinhDoanh.ExecuteQuery_DataTable("SELECT ID,Name,SHN,SHTM,SHVM1,SHVM2,SX,HCSN,KDDV,NgayTangGia=CONVERT(char(10),NgayTangGia,103),PhiBVMT,VAT,VAT2_Ky,VAT2 FROM GiaNuoc2"));
         }
 
         public string getDS_KhongTinhPBVMT_DHN()
@@ -6564,6 +6564,11 @@ namespace WSSmartPhone
                 ThueGTGT = (int)Math.Round((double)(TienNuocNamCu + TienNuocNamMoi) * 5 / 100, 0, MidpointRounding.AwayFromZero);
                 TDVTN = PhiBVMTNamCu + PhiBVMTNamMoi;
                 //Từ 2022 Phí BVMT -> Tiền Dịch Vụ Thoát Nước
+                double ThueTDVTN_VAT = 0.0;
+                if (dtGiaNuoc.Rows[index]["VAT2_Ky"].ToString().Contains(Ky.ToString("00") + "/" + Nam))
+                    ThueTDVTN_VAT = double.Parse(dtGiaNuoc.Rows[index]["VAT2"].ToString()) / 100;
+                else
+                    ThueTDVTN_VAT = double.Parse(dtGiaNuoc.Rows[index]["VAT"].ToString()) / 100;
                 if ((TuNgay.Year < 2021) || (TuNgay.Year == 2021 && DenNgay.Year == 2021))
                 {
                     ThueTDVTN = 0;
@@ -6571,12 +6576,12 @@ namespace WSSmartPhone
                 else
                     if (TuNgay.Year == 2021 && DenNgay.Year == 2022)
                     {
-                        ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamMoi) * 10 / 100, 0, MidpointRounding.AwayFromZero);
+                        ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamMoi) * ThueTDVTN_VAT, 0, MidpointRounding.AwayFromZero);
                     }
                     else
                         if (TuNgay.Year >= 2022)
                         {
-                            ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamCu + PhiBVMTNamMoi) * 10 / 100, 0, MidpointRounding.AwayFromZero);
+                            ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamCu + PhiBVMTNamMoi) * ThueTDVTN_VAT, 0, MidpointRounding.AwayFromZero);
                         }
             }
         }
