@@ -172,10 +172,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>06/17/2022 14:44:47</publishTime>
+      <publishTime>06/22/2022 09:28:40</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>06/17/2022 14:44:48</publishTime>
+      <publishTime>06/22/2022 09:28:41</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -6055,7 +6055,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/19/2022 08:58:05</publishTime>
     </File>
     <File Include="Views/KhachHang/ThongTin.cshtml">
-      <publishTime>05/30/2022 15:23:32</publishTime>
+      <publishTime>06/22/2022 09:28:12</publishTime>
     </File>
     <File Include="Views/KhieuNai/Create.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
