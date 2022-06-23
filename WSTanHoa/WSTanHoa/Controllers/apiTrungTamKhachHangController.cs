@@ -225,7 +225,7 @@ namespace WSTanHoa.Controllers
                     }
                 }
                 //lấy ghi chú
-                sql = "select NoiDung,CreateDate from TB_GHICHU where DanhBo=" + DanhBo + " order by CreateDate desc";
+                sql = "select NoiDung,CreateDate from TB_GHICHU where DanhBo='" + DanhBo + "' order by CreateDate desc";
                 dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
                 //
                 if (dt != null && dt.Rows.Count > 0)
