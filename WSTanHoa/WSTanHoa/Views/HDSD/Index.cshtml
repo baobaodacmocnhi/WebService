@@ -1,0 +1,50 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Hướng Dẫn Sử Dụng";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body style="background-color:#85d8f3;margin-top:-30px">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <img src="~/Images/logoctycp.png" width="100" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto text-center">
+            <h4 class="text-primary fw-bold">CÔNG TY CỔ PHẦN<br>CẤP NƯỚC TÂN HÒA</h4>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <div class="card mt-3 rounded-3 shadow-sm">
+            <div class="card-header">
+                <h4 class="text-primary">@ViewBag.Title</h4>
+            </div>
+            <div class="card-body">
+                <a href="https://service.cskhtanhoa.com.vn/hdsdcrm.htm" target="_blank">
+                        <div class="row">
+                            <div class="col-1">1.</div>
+                            <div class="col-auto"> Hướng dẫn tra cứu thông tin khách hàng CRM</div>
+                        </div>
+                </a>
+            </div>
+        </div>
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
+        </footer>
+    </div>
+</body>
+</html>

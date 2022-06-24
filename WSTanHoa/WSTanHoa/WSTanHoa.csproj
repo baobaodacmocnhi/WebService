@@ -195,6 +195,7 @@
     <Compile Include="Controllers\apiTrungTamKhachHangController.cs" />
     <Compile Include="Controllers\apiZaloController.cs" />
     <Compile Include="Controllers\BauCuController.cs" />
+    <Compile Include="Controllers\HDSDController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\KhieuNaiController.cs" />
@@ -2214,6 +2215,7 @@
     <Content Include="Template\SBAdmin2\fonts\glyphicons\glyphicons-halflings-regular.ttf" />
     <Content Include="Template\SBAdmin2\fonts\glyphicons\glyphicons-halflings-regular.woff" />
     <Content Include="Template\SBAdmin2\fonts\glyphicons\glyphicons-halflings-regular.woff2" />
+    <Content Include="Views\HDSD\Index.cshtml" />
     <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
     <Content Include="Web References\wrThuTien\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
