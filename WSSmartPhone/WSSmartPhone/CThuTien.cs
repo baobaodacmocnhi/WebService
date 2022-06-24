@@ -6564,11 +6564,11 @@ namespace WSSmartPhone
                 ThueGTGT = (int)Math.Round((double)(TienNuocNamCu + TienNuocNamMoi) * 5 / 100, 0, MidpointRounding.AwayFromZero);
                 TDVTN = PhiBVMTNamCu + PhiBVMTNamMoi;
                 //Từ 2022 Phí BVMT -> Tiền Dịch Vụ Thoát Nước
-                double ThueTDVTN_VAT = 0.0;
+                int ThueTDVTN_VAT = 0;
                 if (dtGiaNuoc.Rows[index]["VAT2_Ky"].ToString().Contains(Ky.ToString("00") + "/" + Nam))
-                    ThueTDVTN_VAT = double.Parse(dtGiaNuoc.Rows[index]["VAT2"].ToString()) / 100;
+                    ThueTDVTN_VAT = int.Parse(dtGiaNuoc.Rows[index]["VAT2"].ToString());
                 else
-                    ThueTDVTN_VAT = double.Parse(dtGiaNuoc.Rows[index]["VAT"].ToString()) / 100;
+                    ThueTDVTN_VAT = int.Parse(dtGiaNuoc.Rows[index]["VAT"].ToString());
                 if ((TuNgay.Year < 2021) || (TuNgay.Year == 2021 && DenNgay.Year == 2021))
                 {
                     ThueTDVTN = 0;
@@ -6576,12 +6576,12 @@ namespace WSSmartPhone
                 else
                     if (TuNgay.Year == 2021 && DenNgay.Year == 2022)
                     {
-                        ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamMoi) * ThueTDVTN_VAT, 0, MidpointRounding.AwayFromZero);
+                        ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamMoi) * ThueTDVTN_VAT / 100, 0, MidpointRounding.AwayFromZero);
                     }
                     else
                         if (TuNgay.Year >= 2022)
                         {
-                            ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamCu + PhiBVMTNamMoi) * ThueTDVTN_VAT, 0, MidpointRounding.AwayFromZero);
+                            ThueTDVTN = (int)Math.Round((double)(PhiBVMTNamCu + PhiBVMTNamMoi) * ThueTDVTN_VAT / 100, 0, MidpointRounding.AwayFromZero);
                         }
             }
         }
