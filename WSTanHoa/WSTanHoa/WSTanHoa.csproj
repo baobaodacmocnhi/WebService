@@ -2216,6 +2216,7 @@
     <Content Include="Template\SBAdmin2\fonts\glyphicons\glyphicons-halflings-regular.woff" />
     <Content Include="Template\SBAdmin2\fonts\glyphicons\glyphicons-halflings-regular.woff2" />
     <Content Include="Views\HDSD\Index.cshtml" />
+    <Content Include="Views\HDSD\HDSDOnlineOffice_CongViec.pdf" />
     <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
     <Content Include="Web References\wrThuTien\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
