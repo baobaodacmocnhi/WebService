@@ -13,5 +13,11 @@ namespace WSTanHoa.Controllers
         {
             return View();
         }
+
+        public ActionResult getPDF(string fileName)
+        {
+            string filePath = "~/Views/HDSD/" + fileName;
+            return File(filePath, "application/pdf");
+        }
     }
 }
