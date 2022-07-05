@@ -1025,6 +1025,9 @@ namespace WSSmartPhone
 
                     if (_cDAL_ThuTien.ExecuteNonQuery(command) == true)
                     {
+                        string NoiDung = "Đóng Nước, ngày " + NgayDN.ToString("dd/MM/yyyy") + ", CS: " + ChiSoDN + ", " + LyDo;
+                        sql = "insert into TB_GHICHU(DANHBO,DONVI,NOIDUNG,CREATEDATE,CREATEBY)values('" + DanhBo.Replace(" ", "") + "',N'DTT',N'" + NoiDung + "','" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture) + "',N'" + _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select HoTen from TT_NguoiDung where MaND=" + CreateBy).ToString() + "')";
+                        _cDAL_DHN.ExecuteNonQuery(sql);
                         //insert table hình
                         if (HinhDN == "")
                         {
@@ -1175,7 +1178,9 @@ namespace WSSmartPhone
                                 _cDAL_ThuTien.ExecuteNonQuery(command);
                             }
                         }
-
+                        string NoiDung = "Đóng Nước, ngày " + NgayDN.ToString("dd/MM/yyyy") + ", CS: " + ChiSoDN;
+                        sql = "insert into TB_GHICHU(DANHBO,DONVI,NOIDUNG,CREATEDATE,CREATEBY)values('" + _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select DanhBo from TT_KQDongNuoc where MaDN=" + MaDN).ToString() + "',N'DTT',N'" + NoiDung + "','" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture) + "',N'" + _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select HoTen from TT_NguoiDung where MaND=" + CreateBy).ToString() + "')";
+                        _cDAL_DHN.ExecuteNonQuery(sql);
                         //insert niêm chì
                         if (NiemChi != "NULL")
                         {
@@ -1245,6 +1250,9 @@ namespace WSSmartPhone
 
                     if (_cDAL_ThuTien.ExecuteNonQuery(command) == true)
                     {
+                        string NoiDung = "Mở Nước, ngày " + NgayMN.ToString("dd/MM/yyyy") + ", CS: " + ChiSoMN;
+                        sql = "insert into TB_GHICHU(DANHBO,DONVI,NOIDUNG,CREATEDATE,CREATEBY)values('" + _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select DanhBo from TT_KQDongNuoc where MaDN=" + MaDN).ToString() + "',N'DTT',N'" + NoiDung + "','" + DateTime.Now.ToString("MM/dd/yyyy HH:mm:ss.fff", System.Globalization.CultureInfo.InvariantCulture) + "',N'" + _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select HoTen from TT_NguoiDung where MaND=" + CreateBy).ToString() + "')";
+                        _cDAL_DHN.ExecuteNonQuery(sql);
                         //insert table hình
                         //string sql_Hinh = "declare @MaKQDN int;"
                         //                    + " set @MaKQDN=(select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN + ")"
@@ -1271,9 +1279,22 @@ namespace WSSmartPhone
                                 _cDAL_ThuTien.ExecuteNonQuery(command);
                             }
                         }
+                        //insert niêm chì
+                        if (NiemChi != "NULL")
+                        {
+                            string sqlNiemChi = "update TT_NiemChi set SuDung=1,ModifyBy=" + CreateBy + ",ModifyDate=getDate() where ID=" + NiemChi + " and SuDung=0";
 
-                        scope.Complete();
-                        return true;
+                            if (_cDAL_ThuTien.ExecuteNonQuery(sqlNiemChi) == true)
+                            {
+                                scope.Complete();
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            scope.Complete();
+                            return true;
+                        }
                     }
                 }
                 return false;
