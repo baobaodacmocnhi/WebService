@@ -1,0 +1,23 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>BaoCao</title>
+    <script src="~/Scripts/jquery-3.6.0.js"></script>
+    <script>
+        $(document).ready(function () {
+            window.location.href = '@Url.Action("getPDF", "HDSD", new { fileName = "BaocaochinhtrichiboKhoiKyThuat2020_2022.pdf" })';
+        });
+    </script>
+</head>
+<body>
+    <div> 
+    </div>
+</body>
+</html>

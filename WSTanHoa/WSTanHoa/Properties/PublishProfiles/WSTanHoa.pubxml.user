@@ -172,10 +172,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>06/29/2022 14:41:22</publishTime>
+      <publishTime>07/05/2022 14:17:51</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>06/29/2022 14:41:23</publishTime>
+      <publishTime>07/05/2022 14:17:52</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -373,7 +373,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/30/2022 15:09:17</publishTime>
     </File>
     <File Include="Images/Banks/momo.png">
-      <publishTime>10/27/2021 08:10:10</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Images/Banks/momo2.png">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -6031,7 +6031,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/18/2022 14:52:14</publishTime>
     </File>
     <File Include="Views/BauCu/DaiBieu.cshtml">
-      <publishTime>12/04/2022 08:11:49</publishTime>
+      <publishTime>04/12/2022 08:11:49</publishTime>
     </File>
     <File Include="Views/BauCu/DaiBieuChinhThuc.cshtml">
       <publishTime>04/18/2022 14:52:14</publishTime>
@@ -6045,11 +6045,20 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/BauCu/DaiBieuDuKhuyet_View.cshtml">
       <publishTime>04/18/2022 14:52:14</publishTime>
     </File>
+    <File Include="Views/HDSD/Bao cao chinh tri chi bo Khoi Ky Thuat 2020-2022_5.7.2022_final.pdf">
+      <publishTime>05/07/2022 13:41:22</publishTime>
+    </File>
+    <File Include="Views/HDSD/BaoCao.cshtml">
+      <publishTime>07/05/2022 14:17:19</publishTime>
+    </File>
+    <File Include="Views/HDSD/BaocaochinhtrichiboKhoiKyThuat2020_2022.pdf">
+      <publishTime>07/05/2022 13:41:22</publishTime>
+    </File>
     <File Include="Views/HDSD/HDSDOnlineOffice_CongViec.pdf">
       <publishTime>06/28/2022 16:24:12</publishTime>
     </File>
     <File Include="Views/HDSD/Index.cshtml">
-      <publishTime>06/29/2022 14:39:40</publishTime>
+      <publishTime>07/05/2022 14:17:56</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -6136,7 +6145,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:13</publishTime>
     </File>
     <File Include="Web References/WebReference/Reference.map">
-      <publishTime>07/12/2021 16:27:12</publishTime>
+      <publishTime>12/07/2021 16:27:12</publishTime>
     </File>
     <File Include="Web References/wrDHN/Reference.map">
       <publishTime>04/04/2022 11:02:08</publishTime>

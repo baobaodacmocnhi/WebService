@@ -19,5 +19,11 @@ namespace WSTanHoa.Controllers
             string filePath = "~/Views/HDSD/" + fileName;
             return File(filePath, "application/pdf");
         }
+
+        public ActionResult BaoCao()
+        {
+            return View();
+        }
+
     }
 }
