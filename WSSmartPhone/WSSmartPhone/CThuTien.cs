@@ -421,7 +421,8 @@ namespace WSSmartPhone
                 //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                            //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
                             + " )t1"
                 //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                             + " order by MLT asc,MaHD desc";
@@ -456,7 +457,8 @@ namespace WSSmartPhone
                 //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                            //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
                             + " )t1"
                 //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                             + " order by MLT asc,MaHD desc";
@@ -1360,7 +1362,8 @@ namespace WSSmartPhone
                 //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                  + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                 + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                 //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                 + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
                 //+ " and hd.DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                  + "";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
@@ -1947,7 +1950,7 @@ namespace WSSmartPhone
                             + " ,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan)"
                             + " from HOADON hd,DIEUCHINH_HD dc where hd.ID_HOADON=dc.FK_HOADON and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and hd.ID_HOADON=" + MaHD;
                 DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
-                if (dt != null && dt.Rows.Count > 0)
+                if (dt != null && dt.Rows.Count == 0)
                     dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where DCHD=0 and BaoCaoThue=0 and ID_HOADON=" + MaHD);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -2216,7 +2219,7 @@ namespace WSSmartPhone
                             + " ,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu"
                             + " from TT_DichVuThu dvt,HOADON hd,DIEUCHINH_HD dc where dvt.MaHD=hd.ID_HOADON and hd.ID_HOADON=dc.FK_HOADON and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and hd.ID_HOADON=" + MaHD;
                     dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
-                    if (dt != null && dt.Rows.Count > 0)
+                    if (dt != null && dt.Rows.Count == 0)
                         dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select hd.SoHoaDon,NGAYGIAITRACH=(select convert(varchar, dvt.CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu dvt,HOADON hd where dvt.MaHD=hd.ID_HOADON and DCHD=0 and BaoCaoThue=0 and MaHD=" + MaHD);
                 }
                 else
@@ -2229,7 +2232,7 @@ namespace WSSmartPhone
                             + " ,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu"
                             + " from TT_DichVuThu_Huy dvt,HOADON hd,DIEUCHINH_HD dc where dvt.MaHD=hd.ID_HOADON and hd.ID_HOADON=dc.FK_HOADON and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and hd.ID_HOADON=" + MaHD;
                     dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
-                    if (dt != null && dt.Rows.Count > 0)
+                    if (dt != null && dt.Rows.Count == 0)
                         dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select hd.SoHoaDon,NGAYGIAITRACH=(select convert(varchar, dvt.CreateDate, 112)),TONGCONG=SoTien,DangNgan_Ton='false',DangNgan_ChuyenKhoan='true',DangNgan_Quay='false',DangNgan=TenDichVu from TT_DichVuThu_Huy dvt,HOADON hd where dvt.MaHD=hd.ID_HOADON and DCHD=0 and BaoCaoThue=0 and MaHD=" + MaHD);
                 }
                 if (dt != null && dt.Rows.Count > 0)
@@ -2377,7 +2380,7 @@ namespace WSSmartPhone
                             + " ,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan)"
                             + " from HOADON hd,DIEUCHINH_HD dc where hd.ID_HOADON=dc.FK_HOADON and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and hd.ID_HOADON=" + MaHD;
                 DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
-                if (dt != null && dt.Rows.Count > 0)
+                if (dt != null && dt.Rows.Count == 0)
                     dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where DCHD=0 and BaoCaoThue=0 and ID_HOADON=" + MaHD);
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -2700,7 +2703,7 @@ namespace WSSmartPhone
                             + " select SoHoaDon=SoHoaDonMoi,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TongCong=TONGCONG_DC,ChuyenNoKhoDoi"
                             + " from HOADON hd,DIEUCHINH_HD dc where hd.SoHoaDonCu is not null and hd.ID_HOADON=dc.FK_HOADON and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and SUBSTRING(hd.SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'"
                             + " union all"
-                            + " select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where SoHoaDonCu is null and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'";
+                            + " select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where (SoHoaDonCu is null or exists(select hd.ID_HOADON from HOADON hd,DIEUCHINH_HD dc where hd.SoHoaDonCu is not null and hd.ID_HOADON=dc.FK_HOADON and CAST(dc.Ngay_DC as date)<'20220701' and hd.ID_HOADON=HOADON.ID_HOADON)) and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'";
                     DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     if (dt != null && dt.Rows.Count > 0)
                     {
@@ -2901,7 +2904,14 @@ namespace WSSmartPhone
                         _cDAL_ThuTien.ExecuteNonQuery("update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and SoHoaDon='" + item["SoHoaDon"].ToString() + "'"
                                         + " delete Temp_SyncHoaDon where SoHoaDon='" + item["SoHoaDon"].ToString() + "' and [Action]='NopTien'");
                     }
-                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM<" + NgayGiaiTrach.Year + " or (NAM=" + NgayGiaiTrach.Year + " and KY<12)) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                    string sql = "select hd.SoHoaDon,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TongCong=TONGCONG_BD,ChuyenNoKhoDoi"
+                            + " from HOADON hd,DIEUCHINH_HD dc where hd.SoHoaDonCu is not null and hd.ID_HOADON=dc.FK_HOADON and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM<" + NgayGiaiTrach.Year + " or (NAM=" + NgayGiaiTrach.Year + " and KY<12)) and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and SUBSTRING(hd.SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'"
+                            + " union all"
+                            + " select SoHoaDon=SoHoaDonMoi,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TongCong=TONGCONG_DC,ChuyenNoKhoDoi"
+                            + " from HOADON hd,DIEUCHINH_HD dc where hd.SoHoaDonCu is not null and hd.ID_HOADON=dc.FK_HOADON and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM<" + NgayGiaiTrach.Year + " or (NAM=" + NgayGiaiTrach.Year + " and KY<12)) and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and SUBSTRING(hd.SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'"
+                            + " union all"
+                            + " select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where (SoHoaDonCu is null or exists(select hd.ID_HOADON from HOADON hd,DIEUCHINH_HD dc where hd.SoHoaDonCu is not null and hd.ID_HOADON=dc.FK_HOADON and CAST(dc.Ngay_DC as date)<'20220701' and hd.ID_HOADON=HOADON.ID_HOADON)) and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM<" + NgayGiaiTrach.Year + " or (NAM=" + NgayGiaiTrach.Year + " and KY<12)) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'";
+                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
@@ -2915,7 +2925,7 @@ namespace WSSmartPhone
                             request.ContentType = "application/json; charset=utf-8";
 
                             var lstHD = new List<HoaDonNopTienLo>();
-                            dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM<" + NgayGiaiTrach.Year + " or (NAM=" + NgayGiaiTrach.Year + " and KY<12)) and DCHD=0 and SUBSTRING(SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                            dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 * from (" + sql + ")t1 order by NgayGiaiTrach asc");
                             foreach (DataRow item in dt.Rows)
                             {
                                 string NgayNopTien = "", HinhThucThanhToan = "";
@@ -3101,7 +3111,14 @@ namespace WSSmartPhone
                         _cDAL_ThuTien.ExecuteNonQuery("update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and SoHoaDon='" + item["SoHoaDon"].ToString() + "'"
                                         + " delete Temp_SyncHoaDon where SoHoaDon='" + item["SoHoaDon"].ToString() + "' and [Action]='NopTien'");
                     }
-                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM=" + NgayGiaiTrach.Year + " and KY=12) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                    string sql = "select hd.SoHoaDon,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TongCong=TONGCONG_BD,ChuyenNoKhoDoi"
+                            + " from HOADON hd,DIEUCHINH_HD dc where hd.SoHoaDonCu is not null and hd.ID_HOADON=dc.FK_HOADON and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM=" + NgayGiaiTrach.Year + " and KY=12) and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and SUBSTRING(hd.SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'"
+                            + " union all"
+                            + " select SoHoaDon=SoHoaDonMoi,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TongCong=TONGCONG_DC,ChuyenNoKhoDoi"
+                            + " from HOADON hd,DIEUCHINH_HD dc where hd.SoHoaDonCu is not null and hd.ID_HOADON=dc.FK_HOADON and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM=" + NgayGiaiTrach.Year + " and KY=12) and hd.DCHD=0 and hd.BaoCaoThue=0 and CAST(dc.Ngay_DC as date)>='20220701' and SUBSTRING(hd.SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'"
+                            + " union all"
+                            + " select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where (SoHoaDonCu is null or exists(select hd.ID_HOADON from HOADON hd,DIEUCHINH_HD dc where hd.SoHoaDonCu is not null and hd.ID_HOADON=dc.FK_HOADON and CAST(dc.Ngay_DC as date)<'20220701' and hd.ID_HOADON=HOADON.ID_HOADON)) and Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM=" + NgayGiaiTrach.Year + " and KY=12) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "'";
+                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         int SL = (int)Math.Ceiling((double)dt.Rows.Count / 1000);
@@ -3115,7 +3132,7 @@ namespace WSSmartPhone
                             request.ContentType = "application/json; charset=utf-8";
 
                             var lstHD = new List<HoaDonNopTienLo>();
-                            dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM=" + NgayGiaiTrach.Year + " and KY=12) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,8)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
+                            dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 * from (" + sql + ")t1 order by NgayGiaiTrach asc");
                             foreach (DataRow item in dt.Rows)
                             {
                                 string NgayNopTien = "", HinhThucThanhToan = "";
@@ -3583,7 +3600,8 @@ namespace WSSmartPhone
                     + " 	and ID_HOADON not in (select MaHD from TT_TraGop)"
                     + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                     + " 	and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)--chặn thu hộ"
-                    + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
+                    //+ " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
+                    + "     and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
                     + " 	order by ds.MLT1,ds.DanhBa,hd.ID_HOADON";
             //string sql = "EXEC [dbo].[spGetDSHoaDonTon_DocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
