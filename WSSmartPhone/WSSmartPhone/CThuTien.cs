@@ -4080,13 +4080,13 @@ namespace WSSmartPhone
                     switch (NoiDung)
                     {
                         case "Đứt Chì Góc":
-                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate() where DanhBo='" + DanhBo + "' and DutChi_Goc=0");
                             break;
                         case "Đứt Chì Thân":
-                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "' and DutChi_Than=0");
                             break;
                         case "Đứt Chì Góc + Thân":
-                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate(),DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate(),DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "' and DutChi_Than=0");
                             break;
                         default:
                             result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
