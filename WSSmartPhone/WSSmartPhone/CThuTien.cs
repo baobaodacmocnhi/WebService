@@ -421,7 +421,7 @@ namespace WSSmartPhone
                 //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                            //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
                             + " )t1"
                 //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
@@ -457,7 +457,7 @@ namespace WSSmartPhone
                 //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                            //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
                             + " )t1"
                 //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
@@ -1362,7 +1362,7 @@ namespace WSSmartPhone
                 //+ " and (GB=10 and (NAM>2021 or (NAM=2021 and Ky<6)))"
                  + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
-                 //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
+                //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
                 //+ " and hd.DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                  + "";
@@ -3600,7 +3600,7 @@ namespace WSSmartPhone
                     + " 	and ID_HOADON not in (select MaHD from TT_TraGop)"
                     + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                     + " 	and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)--chặn thu hộ"
-                    //+ " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
+                //+ " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
                     + "     and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
                     + " 	order by ds.MLT1,ds.DanhBa,hd.ID_HOADON";
             //string sql = "EXEC [dbo].[spGetDSHoaDonTon_DocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
@@ -3660,7 +3660,7 @@ namespace WSSmartPhone
                                                 if (Code.Substring(0, 1) == "N")
                                                     ChiSo = "0";
                                                 else
-                                                    if (Code == "5N")
+                                                    if (Code == "5N" || Code == "5F" || Code == "5K")
                                                         hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
                                     }
                                     hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
