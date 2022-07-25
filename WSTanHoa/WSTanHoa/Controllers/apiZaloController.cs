@@ -23,7 +23,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
-        string access_token = "hqmC5iHrvJ6kG0KMmNxjCwzA3nRCQQzCprOIQCChi1N1GLDBsnxFRC9wAowiJiy5pYPHHwLFzs6fDKazfctoJRyLQnMCQuam-WiRM-PMYIxGD1rLub6XTkqU5YxXUxDsoI1I5lbrja_M8YCsw1gwJDP49HszBO91dmqsFRvYW7MM2nilha6ESR0MQ2oIOOnRhrne69KIysM5R4ysgmp1KA1bFIsF9vWIuWSTOyfXYqdX63GFo2pGJV9POmdy3jH_drPQ79KGqr-7VqPwXIF7AlDnPLth3V06zK9WTU4CxbOqMmtH4iTlxZq";
+        string access_token = "EBao156FRI4vjJi4L8Hb8pY_CGHPaoTHOyKwANlpDLj1cNzpRDDF27Y1U24Jzd1B4vjbC0RKTN8xj4KL5jLFQWsWH3ytrr9MBuS2FpZA36q5f00u3v88R2RXC4GCeNec9TbhSWYZP0eBranl4EDoEHojPcWDvsi088XqTYlIOmSUeLr20OvH4HNFVsOacpKGJiyDPcMP3W5owWiyHAC6PIxb2pHQaWTrMkCYCsUc8t5a_YCIPOymBtZwE7iLeXP6U-8b3tg9Rsj5-5y3Tg1fOcNlN1qAhrflQ-9l66AgC7q8pH8ECBmVRmFn71DZoqnk2Q9xDsJeU6LMqr15MG9d45MLPYq";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
         string _url = "https://service.cskhtanhoa.com.vn";
         string _urlImage = "https://service.cskhtanhoa.com.vn/Images";
@@ -320,7 +320,7 @@ namespace WSTanHoa.Controllers
                     }
                 }
                 //insert lịch sử truy vấn
-                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'get12kyhoadon',getdate())";
+                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'get12kyhoadon',getdate(),N'" + strResponse + "')";
                 cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -361,7 +361,7 @@ namespace WSTanHoa.Controllers
                     }
                 }
                 //insert lịch sử truy vấn
-                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'get12kyhoadon',getdate())";
+                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'get12kyhoadon',getdate(),N'" + strResponse + "')";
                 cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -409,7 +409,7 @@ namespace WSTanHoa.Controllers
 
                 }
                 //insert lịch sử truy vấn
-                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'gethoadonton',getdate())";
+                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'gethoadonton',getdate(),N'" + strResponse + "')";
                 cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -441,7 +441,7 @@ namespace WSTanHoa.Controllers
                     strResponse = sendMessage(IDZalo, content);
                 }
                 //insert lịch sử truy vấn
-                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichdocso',getdate())";
+                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'getlichdocso',getdate(),N'" + strResponse + "')";
                 cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -473,7 +473,7 @@ namespace WSTanHoa.Controllers
                     strResponse = sendMessage(IDZalo, content);
                 }
                 //insert lịch sử truy vấn
-                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate)values(" + IDZalo + ",'getlichthutien',getdate())";
+                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'getlichthutien',getdate(),N'"+ strResponse + "')";
                 cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -637,6 +637,11 @@ namespace WSTanHoa.Controllers
             try
             {
                 string url = "https://openapi.zalo.me/v2.0/oa/message";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Tls11
+                       | SecurityProtocolType.Tls12
+                       | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
@@ -658,10 +663,10 @@ namespace WSTanHoa.Controllers
 
                 //string data = "{"
                 //            + "\"recipient\":{"
-                //            + "\"user_id\":\"4276209776391262580\""
+                //            + "\"user_id\":\""+ IDZalo + "\""
                 //            + "},"
                 //            + "\"message\":{"
-                //            + "\"text\":\"hello, world!\""
+                //            + "\"text\":\""+ message + "\""
                 //            + "}"
                 //            + "}";
                 //using (var streamWriter = new StreamWriter(request.GetRequestStream()))
@@ -701,6 +706,11 @@ namespace WSTanHoa.Controllers
             try
             {
                 string url = "https://openapi.zalo.me/v2.0/oa/message";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Tls11
+                       | SecurityProtocolType.Tls12
+                       | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
