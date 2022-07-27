@@ -23,12 +23,17 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
-        string access_token = "EBao156FRI4vjJi4L8Hb8pY_CGHPaoTHOyKwANlpDLj1cNzpRDDF27Y1U24Jzd1B4vjbC0RKTN8xj4KL5jLFQWsWH3ytrr9MBuS2FpZA36q5f00u3v88R2RXC4GCeNec9TbhSWYZP0eBranl4EDoEHojPcWDvsi088XqTYlIOmSUeLr20OvH4HNFVsOacpKGJiyDPcMP3W5owWiyHAC6PIxb2pHQaWTrMkCYCsUc8t5a_YCIPOymBtZwE7iLeXP6U-8b3tg9Rsj5-5y3Tg1fOcNlN1qAhrflQ-9l66AgC7q8pH8ECBmVRmFn71DZoqnk2Q9xDsJeU6LMqr15MG9d45MLPYq";
+        string access_token1 = "2MnY1nhdCN48O6i77-mvSmbgOGSI-sKfK0fW3Yp0JZav4XDAJFKoVmu94mH7-JyIF1apDIwB8HHlM2CaVgm4C3LB901XiNah4aCg3dAj3nq1U19lOQWOT0LD5Mv1kKmVK3Ht5XZ6Bp9qF74d4xDUN05TGKLNcanfF593I4cZONirBZXRUQSQNIn2HYPSY1eV6b8LQr2d71qMUmziHOSdGH8126zpZZPe0q5kU6-qHde8ULi8Plv-EG8qL4DpqtDP6bvnGrwFAqu-SGTBBgzVVLLHPsT3fsbW6LfhKWlHGdDFEKn-7yXYJ5P3C6W2a6z_UNyzPW2s4791GHLVRZWZlsj37lqwVG";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
         string _url = "https://service.cskhtanhoa.com.vn";
         string _urlImage = "https://service.cskhtanhoa.com.vn/Images";
         //string _url = "http://service.capnuoctanhoa.com.vn:1010";
         //string _urlImage = "http://service.capnuoctanhoa.com.vn:1010/Image";
+
+        private string getAccess_token()
+        {
+            return cDAL_TrungTam.ExecuteQuery_ReturnOneValue("select access_token from Zalo_Configure").ToString();
+        }
 
         /// <summary>
         /// webhook receive zalo, 2020 webhook từ view gọi sang api
@@ -473,7 +478,7 @@ namespace WSTanHoa.Controllers
                     strResponse = sendMessage(IDZalo, content);
                 }
                 //insert lịch sử truy vấn
-                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'getlichthutien',getdate(),N'"+ strResponse + "')";
+                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'getlichthutien',getdate(),N'" + strResponse + "')";
                 cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
@@ -645,7 +650,7 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                request.Headers["access_token"] = access_token;
+                request.Headers["access_token"] = getAccess_token();
 
                 var data = new
                 {
@@ -714,7 +719,7 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                request.Headers["access_token"] = access_token;
+                request.Headers["access_token"] = getAccess_token();
 
                 string data = "{"
                             + "\"recipient\":{"
@@ -788,7 +793,7 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                request.Headers["access_token"] = access_token;
+                request.Headers["access_token"] = getAccess_token();
 
                 string data = "{"
                             + "\"recipient\": {"
@@ -1186,7 +1191,7 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                request.Headers["access_token"] = access_token;
+                request.Headers["access_token"] = getAccess_token();
 
                 string data = "{"
                             + "\"recipient\":{"
@@ -1302,7 +1307,7 @@ namespace WSTanHoa.Controllers
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                     request.Method = "GET";
                     request.ContentType = "application/json";
-                    request.Headers["access_token"] = access_token;
+                    request.Headers["access_token"] = getAccess_token();
 
                     HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                     if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
@@ -1321,7 +1326,7 @@ namespace WSTanHoa.Controllers
                         request = (HttpWebRequest)WebRequest.Create(url);
                         request.Method = "GET";
                         request.ContentType = "application/json";
-                        request.Headers["access_token"] = access_token;
+                        request.Headers["access_token"] = getAccess_token();
 
                         respuesta = (HttpWebResponse)request.GetResponse();
                         if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
@@ -1379,7 +1384,7 @@ namespace WSTanHoa.Controllers
                         HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                         request.Method = "GET";
                         request.ContentType = "application/json";
-                        request.Headers["access_token"] = access_token;
+                        request.Headers["access_token"] = getAccess_token();
 
                         HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                         if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
