@@ -23,7 +23,6 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
-        string access_token1 = "2MnY1nhdCN48O6i77-mvSmbgOGSI-sKfK0fW3Yp0JZav4XDAJFKoVmu94mH7-JyIF1apDIwB8HHlM2CaVgm4C3LB901XiNah4aCg3dAj3nq1U19lOQWOT0LD5Mv1kKmVK3Ht5XZ6Bp9qF74d4xDUN05TGKLNcanfF593I4cZONirBZXRUQSQNIn2HYPSY1eV6b8LQr2d71qMUmziHOSdGH8126zpZZPe0q5kU6-qHde8ULi8Plv-EG8qL4DpqtDP6bvnGrwFAqu-SGTBBgzVVLLHPsT3fsbW6LfhKWlHGdDFEKn-7yXYJ5P3C6W2a6z_UNyzPW2s4791GHLVRZWZlsj37lqwVG";
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
         string _url = "https://service.cskhtanhoa.com.vn";
         string _urlImage = "https://service.cskhtanhoa.com.vn/Images";
@@ -33,6 +32,46 @@ namespace WSTanHoa.Controllers
         private string getAccess_token()
         {
             return cDAL_TrungTam.ExecuteQuery_ReturnOneValue("select access_token from Zalo_Configure").ToString();
+        }
+
+        private string getRefresh_token()
+        {
+            return cDAL_TrungTam.ExecuteQuery_ReturnOneValue("select refresh_token from Zalo_Configure").ToString();
+        }
+
+        [Route("getAccess_tokenFromZalo")]
+        [HttpGet]
+        public string getAccess_tokenFromZalo(string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    string data = "app_id=3904851815439759378&grant_type=refresh_token&refresh_token=" + getRefresh_token();
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                           | SecurityProtocolType.Tls11
+                           | SecurityProtocolType.Tls12
+                           | SecurityProtocolType.Ssl3;
+                    using (WebClient client = new WebClient())
+                    {
+                        client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
+                        client.Headers["secret_key"] = "cCBBIsEx7UDj42KA1N5Y";
+                        string result = client.UploadString("https://oauth.zaloapp.com/v4/oa/access_token", data);
+                        JavaScriptSerializer jss = new JavaScriptSerializer();
+                        var obj = jss.Deserialize<dynamic>(result);
+                        strResponse = cDAL_TrungTam.ExecuteNonQuery("update Zalo_Configure set access_token='" + obj["access_token"] + "',refresh_token='" + obj["refresh_token"] + "',expires_in=" + obj["expires_in"] + ",CreateDate=getdate()");
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
         }
 
         /// <summary>
