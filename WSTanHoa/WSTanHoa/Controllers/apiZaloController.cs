@@ -61,7 +61,8 @@ namespace WSTanHoa.Controllers
                         string result = client.UploadString("https://oauth.zaloapp.com/v4/oa/access_token", data);
                         JavaScriptSerializer jss = new JavaScriptSerializer();
                         var obj = jss.Deserialize<dynamic>(result);
-                        strResponse = cDAL_TrungTam.ExecuteNonQuery("update Zalo_Configure set access_token='" + obj["access_token"] + "',refresh_token='" + obj["refresh_token"] + "',expires_in=" + obj["expires_in"] + ",CreateDate=getdate()");
+                        bool a = cDAL_TrungTam.ExecuteNonQuery("update Zalo_Configure set access_token='" + obj["access_token"] + "',refresh_token='" + obj["refresh_token"] + "',expires_in=" + obj["expires_in"] + ",CreateDate=getdate()");
+                        strResponse = a.ToString();
                     }
                 }
                 else
