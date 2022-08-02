@@ -3807,7 +3807,10 @@ namespace WSSmartPhone
                     //    hinh = ms.ToArray();
                     //}
                 }
-                return hinh;
+                if (hinh.Length == 0)
+                    return null;
+                else
+                    return hinh;
             }
             catch
             {
@@ -4538,8 +4541,10 @@ namespace WSSmartPhone
                 byte[] hinh = null;
                 if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
                     hinh = File.ReadAllBytes(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName);
-
-                return hinh;
+                if (hinh.Length == 0)
+                    return null;
+                else
+                    return hinh;
             }
             catch
             {
@@ -6713,6 +6718,94 @@ namespace WSSmartPhone
                 return "";
             else
                 return result.ToString();
+        }
+
+        //cccd tổng công ty
+        public string getAccess_token_CCCD()
+        {
+            string strResponse = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/Login/LoginCSKH";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+
+                var data = new
+                {
+                    grant_type = "password",
+                    userName = "cskh.cnth",
+                    Password = "123456@ABcd"
+                };
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(data);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                request.ContentLength = byteArray.Length;
+                //gắn data post
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result);
+                    bool flag = _cDAL_KinhDoanh.ExecuteNonQuery("update CCCD_Configure set access_token='" + obj["duLieu"]["token"] + "',expires_in=" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + ",CreateDate=getdate()");
+                    strResponse = flag.ToString();
+                }
+                else
+                {
+                    strResponse = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        public bool checkExists_CCCD()
+        {
+            bool strResponse = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=05035400063&sdd=031073001369&cmndcu=023123789";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "GET";
+                request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result);
+                    bool flag = _cDAL_KinhDoanh.ExecuteNonQuery("update CCCD_Configure set access_token='" + obj["duLieu"]["token"] + "',expires_in=" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + ",CreateDate=getdate()");
+                    strResponse = flag.ToString();
+                }
+                else
+                {
+                    strResponse = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
         }
 
         #endregion

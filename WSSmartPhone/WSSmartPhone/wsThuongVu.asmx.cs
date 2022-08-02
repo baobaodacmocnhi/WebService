@@ -42,5 +42,11 @@ namespace WSSmartPhone
             return _cThuTien.xoa_Folder_241(CGlobalVariable.pathHinhTV, FolderLoai, FolderIDCT);
         }
 
+        [WebMethod]
+        public string getAccess_token_CCCD()
+        {
+            return _cThuTien.getAccess_token_CCCD();
+        }
+
     }
 }
