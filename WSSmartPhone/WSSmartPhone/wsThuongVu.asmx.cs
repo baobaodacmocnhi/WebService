@@ -48,5 +48,11 @@ namespace WSSmartPhone
             return _cThuTien.getAccess_token_CCCD();
         }
 
+        [WebMethod]
+        public int checkExists_CCCD(string DanhBo, string CCCD, string CMND)
+        {
+            return _cThuTien.checkExists_CCCD(DanhBo, CCCD, CMND);
+        }
+
     }
 }

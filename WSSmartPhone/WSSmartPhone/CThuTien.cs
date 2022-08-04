@@ -6772,12 +6772,13 @@ namespace WSSmartPhone
             return strResponse;
         }
 
-        public bool checkExists_CCCD()
+        public int checkExists_CCCD(string DanhBo, string CCCD, string CMND)
         {
-            bool strResponse = "";
+            string result = "";
             try
             {
-                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=05035400063&sdd=031073001369&cmndcu=023123789";
+                //string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=" + DanhBo + "&sdd=" + CCCD + "&cmndcu=" + CMND;
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=050354000634&sdd=031073001369&cmndcu=023123789";
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
@@ -6789,23 +6790,34 @@ namespace WSSmartPhone
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
                     StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    string result = read.ReadToEnd();
+                    string result1 = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
-                    var obj = jss.Deserialize<dynamic>(result);
-                    bool flag = _cDAL_KinhDoanh.ExecuteNonQuery("update CCCD_Configure set access_token='" + obj["duLieu"]["token"] + "',expires_in=" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + ",CreateDate=getdate()");
-                    strResponse = flag.ToString();
+                    var obj = jss.Deserialize<dynamic>(result1);
+                    object[] dulieu = obj["duLieu"];
+                    if (dulieu != null && dulieu.Count() > 0)
+                    {
+                        result = "Đã tồn tại";
+                        return 1;
+                    }
+                    else
+                    {
+                        result = "Không tồn tại";
+                        return 0;
+                    }
                 }
                 else
                 {
-                    strResponse = "Error: " + respuesta.StatusCode;
+                    result = "Lỗi kết nối";
+                    return -1;
                 }
             }
             catch (Exception ex)
             {
-                strResponse = ex.Message;
+                result = ex.Message;
+                return -1;
             }
-            return strResponse;
+            return -1;
         }
 
         #endregion
