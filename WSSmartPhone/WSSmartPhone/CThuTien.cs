@@ -422,7 +422,8 @@ namespace WSSmartPhone
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                 //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
-                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
+                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and SoPhieu is null)"
+                //+ " and hd.ID_HOADON not in (select distinct FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and (SoPhieu is null or CAST(Ngay_DC as date)<'20220701' or (NAM<2022 or (NAM=2022 and KY<5))))"
                             + " )t1"
                 //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                             + " order by MLT asc,MaHD desc";
@@ -458,7 +459,8 @@ namespace WSSmartPhone
                             + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                             + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                 //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
-                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
+                            + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and SoPhieu is null)"
+                //+ " and hd.ID_HOADON not in (select distinct FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and (SoPhieu is null or CAST(Ngay_DC as date)<'20220701' or (NAM<2022 or (NAM=2022 and KY<5))))"
                             + " )t1"
                 //+ "  where DanhBo not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                             + " order by MLT asc,MaHD desc";
@@ -1363,7 +1365,8 @@ namespace WSSmartPhone
                  + " and hd.ID_HOADON not in (select MaHD from TT_TraGop)"
                  + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                 //+ " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and UpdatedHDDT=0 and ID_HOADON=FK_HOADON)"
-                 + " and hd.ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
+                + " and hd.ID_HOADON not in (select distinct FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and SoPhieu is null)"
+                //+ " and hd.ID_HOADON not in (select distinct FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and (SoPhieu is null or CAST(Ngay_DC as date)<'20220701' or (NAM<2022 or (NAM=2022 and KY<5))))"
                 //+ " and hd.DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
                  + "";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
@@ -1937,6 +1940,136 @@ namespace WSSmartPhone
             return _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select BieuMau from TT_BieuMauHoaDon where KyHieu='" + KyHieu + "'").ToString();
         }
 
+        public string syncThanhToan_01072022(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
+        {
+            string result = "";
+            try
+            {
+                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where DCHD=0 and BaoCaoThue=0 and ID_HOADON=" + MaHD);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/thanhtoan");
+                        request.Method = "POST";
+                        request.Headers.Add("taxcode", taxCode);
+                        request.Headers.Add("username", userName);
+                        request.Headers.Add("password", passWord);
+                        request.ContentType = "application/json; charset=utf-8";
+
+                        string NgayThanhToan = "", LoaiThuTien = "0", ThanhToan = "-1", TenThuTien = "";
+                        if (item["NgayGiaiTrach"].ToString() != "")
+                            NgayThanhToan = item["NgayGiaiTrach"].ToString();
+                        else
+                            NgayThanhToan = DateTime.Now.ToString("yyyyMMdd");
+
+                        if (bool.Parse(item["DangNgan_Ton"].ToString()) == true)
+                            LoaiThuTien = "0";
+                        else
+                            if (bool.Parse(item["DangNgan_ChuyenKhoan"].ToString()) == true)
+                                LoaiThuTien = "2";
+                            else
+                                if (bool.Parse(item["DangNgan_Quay"].ToString()) == true)
+                                    LoaiThuTien = "1";
+
+                        if (GiaiTrach == true)
+                            ThanhToan = "1";
+                        else
+                            ThanhToan = "0";
+
+                        if (item["DangNgan"].ToString() != "")
+                            TenThuTien = item["DangNgan"].ToString();
+                        else
+                            TenThuTien = "NULL";
+
+                        //var data = new
+                        //{
+                        //    branchcode = branchcode,
+                        //    pattern = pattern,
+                        //    serial = serial,
+                        //    SoHD = item["SoHoaDon"].ToString().Substring(6),
+                        //    NgayThanhToan = NgayThanhToan,
+                        //    TongSoTien = item["TongCong"].ToString(),
+                        //    LoaiThuTien = LoaiThuTien,
+                        //    TenThuTien = TenThuTien,
+                        //    ThanhToan = ThanhToan,
+                        //};
+                        HoaDonThanhToan en = new HoaDonThanhToan();
+                        en.branchcode = branchcode;
+                        if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
+                        {
+                            en.pattern = getBieuMau(item["SoHoaDon"].ToString().Substring(0, 7));
+                            en.serial = item["SoHoaDon"].ToString().Substring(0, 7);
+                            en.SoHD = item["SoHoaDon"].ToString().Substring(7);
+                        }
+                        else
+                            if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("CT"))
+                            {
+                                en.pattern = getBieuMau(item["SoHoaDon"].ToString().Substring(0, 6));
+                                en.serial = item["SoHoaDon"].ToString().Substring(0, 6);
+                                en.SoHD = item["SoHoaDon"].ToString().Substring(6);
+                            }
+                        en.NgayThanhToan = NgayThanhToan;
+                        en.TongSoTien = item["TongCong"].ToString();
+                        en.LoaiThuTien = LoaiThuTien;
+                        en.TenThuTien = TenThuTien;
+                        en.ThanhToan = ThanhToan;
+
+                        var json = jss.Serialize(en);
+                        Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                        request.ContentLength = byteArray.Length;
+                        //gắn data post
+                        Stream dataStream = request.GetRequestStream();
+                        dataStream.Write(byteArray, 0, byteArray.Length);
+                        dataStream.Close();
+
+                        HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                        if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                        {
+                            StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                            result = read.ReadToEnd();
+                            read.Close();
+                            respuesta.Close();
+
+                            var obj = jss.Deserialize<dynamic>(result);
+                            if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
+                            {
+                                _cDAL_ThuTien.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and ID_HOADON=" + MaHD);
+                                _cDAL_ThuTien.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
+                            }
+                            else
+                            {
+                                _cDAL_ThuTien.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+                            }
+                            result = "true;" + obj["status"] + " = " + obj["message"];
+                        }
+                        else
+                            result = "false;" + respuesta.StatusCode;
+                    }
+                }
+                else
+                {
+                    result = "false;TH: Hóa Đơn không có";
+                    DataTable dtBCT = _cDAL_ThuTien.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,DangNgan_Ton,DangNgan_ChuyenKhoan,DangNgan_Quay,DangNgan=(select HoTen from TT_NguoiDung where MaND=MaNV_DangNgan) from HOADON where DCHD=0 and BaoCaoThue=1 and ID_HOADON=" + MaHD);
+                    if (dtBCT != null && dtBCT.Rows.Count > 0)
+                    {
+                        string ThanhToan = "-1";
+                        if (GiaiTrach == true)
+                            ThanhToan = "1";
+                        else
+                            ThanhToan = "0";
+                        _cDAL_ThuTien.ExecuteNonQuery("update HOADON set SyncThanhToan=" + ThanhToan + ",SyncThanhToan_Ngay=getdate() where SyncThanhToan=0 and ID_HOADON=" + MaHD);
+                        _cDAL_ThuTien.ExecuteNonQuery("delete Temp_SyncHoaDon where ID=" + IDTemp_SyncHoaDon);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "false;" + ex.Message;
+            }
+            return result;
+        }
+
         public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
             string result = "";
@@ -2363,6 +2496,113 @@ namespace WSSmartPhone
             {
                 result = "false; " + ex.Message;
                 _cDAL_ThuTien.ExecuteNonQuery("update Temp_SyncHoaDon set Result=N'" + result + "',ModifyDate=getdate() where ID=" + IDTemp_SyncHoaDon);
+            }
+            return result;
+        }
+
+        public string syncNopTien_01072022(int MaHD)
+        {
+            string result = "";
+            try
+            {
+                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where DCHD=0 and BaoCaoThue=0 and ID_HOADON=" + MaHD);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlTong + "/api/sawacobusiness/noptien");
+                        request.Method = "POST";
+                        request.Headers.Add("taxcode", taxCode);
+                        request.Headers.Add("username", userName);
+                        request.Headers.Add("password", passWord);
+                        request.ContentType = "application/json; charset=utf-8";
+
+                        string NgayNopTien = "", HinhThucThanhToan = "";
+                        if (item["NgayGiaiTrach"].ToString() != "")
+                            NgayNopTien = item["NgayGiaiTrach"].ToString();
+                        else
+                            NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
+
+                        if (bool.Parse(item["ChuyenNoKhoDoi"].ToString()) == true)
+                            HinhThucThanhToan = "2";
+                        else
+                            HinhThucThanhToan = "1";
+
+                        //var data = new
+                        //{
+                        //    branchcode = branchcode,
+                        //    pattern = pattern,
+                        //    serial = serial,
+                        //    SoHD = item["SoHoaDon"].ToString().Substring(6),
+                        //    NgayNopTien = NgayNopTien,
+                        //    TongSoTien = item["TongCong"].ToString(),
+                        //    HinhThucThanhToan = HinhThucThanhToan,
+                        //};
+                        HoaDonNopTien en = new HoaDonNopTien();
+                        en.branchcode = branchcode;
+                        if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
+                        {
+                            en.pattern = getBieuMau(item["SoHoaDon"].ToString().Substring(0, 7));
+                            en.serial = item["SoHoaDon"].ToString().Substring(0, 7);
+                            en.SoHD = item["SoHoaDon"].ToString().Substring(7);
+                        }
+                        else
+                            if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("CT"))
+                            {
+                                en.pattern = getBieuMau(item["SoHoaDon"].ToString().Substring(0, 6));
+                                en.serial = item["SoHoaDon"].ToString().Substring(0, 6);
+                                en.SoHD = item["SoHoaDon"].ToString().Substring(6);
+                            }
+                        en.NgayNopTien = NgayNopTien;
+                        en.TongSoTien = item["TongCong"].ToString();
+                        en.HinhThucThanhToan = HinhThucThanhToan;
+
+                        var json = jss.Serialize(en);
+                        Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                        request.ContentLength = byteArray.Length;
+                        //gắn data post
+                        Stream dataStream = request.GetRequestStream();
+                        dataStream.Write(byteArray, 0, byteArray.Length);
+                        dataStream.Close();
+
+                        HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                        if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                        {
+                            StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                            result = read.ReadToEnd();
+                            read.Close();
+                            respuesta.Close();
+
+                            var obj = jss.Deserialize<dynamic>(result);
+                            if (obj["status"] == "OK" || obj["status"] == "ERR:7" || obj["status"] == "ERR:8")
+                            {
+                                _cDAL_ThuTien.ExecuteNonQuery("update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and ID_HOADON=" + MaHD
+                                                    + " delete Temp_SyncHoaDon where SoHoaDon='" + item["SoHoaDon"].ToString() + "' and [Action]='NopTien'");
+                            }
+                            else
+                            {
+                                _cDAL_ThuTien.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + item["SoHoaDon"].ToString() + "')"
+                                               + " insert into Temp_SyncHoaDon([Action],MaHD,SoHoaDon,Result)values('NopTien',(select ID_HOADON from HOADON where SoHoaDon='" + item["SoHoaDon"].ToString() + "'),'" + item["SoHoaDon"].ToString() + "',N'" + obj["status"] + " = " + obj["message"] + "')"
+                                               + " else update Temp_SyncHoaDon set Result=N'" + obj["status"] + " = " + obj["message"] + "',ModifyDate=getdate() where SoHoaDon='" + item["SoHoaDon"].ToString() + "'");
+                            }
+                            result = "true;" + obj["status"] + " = " + obj["message"];
+                        }
+                    }
+                }
+                else
+                {
+                    //nộp tiền báo cáo thuế trước
+                    DataTable dtBCT = _cDAL_ThuTien.ExecuteQuery_DataTable("select SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where DCHD=0 and BaoCaoThue=1 and ID_HOADON=" + MaHD);
+                    if (dtBCT != null && dtBCT.Rows.Count > 0)
+                    {
+                        _cDAL_ThuTien.ExecuteNonQuery("update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and ID_HOADON=" + MaHD
+                                        + " delete Temp_SyncHoaDon where SoHoaDon='" + dtBCT.Rows[0]["SoHoaDon"].ToString() + "' and [Action]='NopTien'");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result = "false;" + ex.Message;
             }
             return result;
         }
@@ -3601,7 +3841,8 @@ namespace WSSmartPhone
                     + " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where CodeF2=1 and NGAYGIAITRACH is null and ID_HOADON=FK_HOADON)"
                     + " 	and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)--chặn thu hộ"
                 //+ " 	and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and UpdatedHDDT=0)"
-                    + "     and ID_HOADON not in (select FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoPhieu is null and CAST(Ngay_DC as date)<'20220701' and (NAM<2022 or (NAM=2022 and KY<5)))"
+                 + "     and ID_HOADON not in (select distinct FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and SoPhieu is null)"
+                //+ "     and ID_HOADON not in (select distinct FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and (SoPhieu is null or CAST(Ngay_DC as date)<'20220701' or (NAM<2022 or (NAM=2022 and KY<5))))"
                     + " 	order by ds.MLT1,ds.DanhBa,hd.ID_HOADON";
             //string sql = "EXEC [dbo].[spGetDSHoaDonTon_DocSo]	@Nam = " + Nam + ",@Ky = N'" + Ky + "',@Dot = N'" + Dot + "',@May = N'" + May + "'";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
@@ -4103,41 +4344,50 @@ namespace WSSmartPhone
                     DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select top 1 MLT=MLT1,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN=DMHN,Dot,Ky,Nam,Phuong,Quan,HopDong from BienDong where DanhBa='" + DanhBo + "' order by BienDongID desc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
-                        object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where DanhBo='" + DanhBo + "' and NoiDung=N'" + NoiDung + "' and cast(getdate() as date)=cast(createdate as date)");
-                        if (checkExists == null)
+                        object checkExists_DanhBoBoQua = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select DanhBo from MaHoa_DanhBo_Except where DanhBo='" + DanhBo + "'");
+                        if (NoiDung == "Giá Biểu" && checkExists_DanhBoBoQua != null)
                         {
-                            string ID = "";
-                            checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                            if (checkExists != null)
-                            {
-                                object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                if (stt != null)
-                                    ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
-                            }
-                            else
-                            {
-                                ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
-                            }
-                            string DinhMucHN = "NULL";
-                            if (dt.Rows[0]["DinhMucHN"].ToString() != "")
-                                DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
-                            string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate,HopDong)values"
-                                + "("
-                                + ID + ",'" + dt.Rows[0]["MLT"] + "','" + DanhBo + "',N'" + dt.Rows[0]["HoTen"] + "',N'" + dt.Rows[0]["DiaChi"] + "'"
-                                + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + DinhMucHN + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
-                                + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
-                                + ")";
-                            result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                            if (Hinh != "")
-                                result.success = ghi_Hinh_DonTu_DHN(ID, Hinh, MaNV);
-                            CHoaDon hd = new CHoaDon();
-                            hd.TieuThu = int.Parse(ID);
-                            result.message = jss.Serialize(hd);
+                            result.success = false;
+                            result.error = "Danh Bộ nằm trong danh sách bỏ qua";
                         }
                         else
                         {
-                            result.success = false;
-                            result.error = "Danh Bộ đã lập Đơn cùng nội dung trong ngày";
+                            object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where DanhBo='" + DanhBo + "' and NoiDung=N'" + NoiDung + "' and cast(getdate() as date)=cast(createdate as date)");
+                            if (checkExists == null)
+                            {
+                                string ID = "";
+                                checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                                if (checkExists != null)
+                                {
+                                    object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                                    if (stt != null)
+                                        ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
+                                }
+                                else
+                                {
+                                    ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
+                                }
+                                string DinhMucHN = "NULL";
+                                if (dt.Rows[0]["DinhMucHN"].ToString() != "")
+                                    DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
+                                string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate,HopDong)values"
+                                    + "("
+                                    + ID + ",'" + dt.Rows[0]["MLT"] + "','" + DanhBo + "',N'" + dt.Rows[0]["HoTen"] + "',N'" + dt.Rows[0]["DiaChi"] + "'"
+                                    + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + DinhMucHN + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
+                                    + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
+                                    + ")";
+                                result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                                if (Hinh != "")
+                                    result.success = ghi_Hinh_DonTu_DHN(ID, Hinh, MaNV);
+                                CHoaDon hd = new CHoaDon();
+                                hd.TieuThu = int.Parse(ID);
+                                result.message = jss.Serialize(hd);
+                            }
+                            else
+                            {
+                                result.success = false;
+                                result.error = "Danh Bộ đã lập Đơn cùng nội dung trong ngày";
+                            }
                         }
                     }
                     else
@@ -6817,7 +7067,6 @@ namespace WSSmartPhone
                 result = ex.Message;
                 return -1;
             }
-            return -1;
         }
 
         #endregion

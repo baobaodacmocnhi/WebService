@@ -357,6 +357,12 @@ namespace WSSmartPhone
 
         //sync tổng
         [WebMethod]
+        public string syncThanhToan_01072022(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
+        {
+            return _cThuTien.syncThanhToan_01072022(MaHD, GiaiTrach, IDTemp_SyncHoaDon);
+        }
+
+        [WebMethod]
         public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
             return _cThuTien.syncThanhToan(MaHD, GiaiTrach, IDTemp_SyncHoaDon);
@@ -366,6 +372,12 @@ namespace WSSmartPhone
         public string syncThanhToan_ThuHo(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon)
         {
             return _cThuTien.syncThanhToan_ThuHo(MaHD, GiaiTrach, IDTemp_SyncHoaDon);
+        }
+
+        [WebMethod]
+        public string syncNopTien_01072022(int MaHD)
+        {
+            return _cThuTien.syncNopTien_01072022(MaHD);
         }
 
         [WebMethod]
