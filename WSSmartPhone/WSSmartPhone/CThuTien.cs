@@ -3795,7 +3795,7 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
+                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.NgapNuoc,kh.KetTuong,kh.LapKhoaGoc,kh.BeHBV,kh.BeNapMatNapHBV,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         + "                          ,TinhTrang=(select"
                         + "                             case when exists (select top 1 MaKQDN from server9.HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
@@ -4208,11 +4208,12 @@ namespace WSSmartPhone
         //ghi chú
         public string get_GhiChu_DHN(string DanhBo)
         {
-            string sql = "select SoNha,TenDuong,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,Gieng,KhoaTu,AmSau,XayDung from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'";
+            string sql = "select SoNha,TenDuong,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,Gieng,KhoaTu,AmSau,XayDung,NgapNuoc,KetTuong,LapKhoaGoc,BeHBV,BeNapMatNapHBV from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'";
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable(sql));
         }
 
-        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string AmSau, string XayDung, string DutChiGoc, string DutChiThan, string MauSacChiGoc, string GhiChu, string MaNV)
+        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string AmSau, string XayDung, string DutChiGoc, string DutChiThan
+            , string NgapNuoc, string KetTuong, string LapKhoaGoc, string BeHBV, string BeNapMatNapHBV, string MauSacChiGoc, string GhiChu, string MaNV)
         {
             CResult result = new CResult();
             try
@@ -4223,10 +4224,25 @@ namespace WSSmartPhone
                 string flagXayDung = bool.Parse(XayDung) == true ? "1" : "0";
                 string flagDutChiGoc = bool.Parse(XayDung) == true ? "1" : "0";
                 string flagDutChiThan = bool.Parse(XayDung) == true ? "1" : "0";
+                string flagNgapNuoc = bool.Parse(NgapNuoc) == true ? "1" : "0";
+                string flagKetTuong = bool.Parse(KetTuong) == true ? "1" : "0";
+                string flagLapKhoaGoc = bool.Parse(LapKhoaGoc) == true ? "1" : "0";
+                string flagBeHBV = bool.Parse(BeHBV) == true ? "1" : "0";
+                string flagBeNapMatNapHBV = bool.Parse(BeNapMatNapHBV) == true ? "1" : "0";
                 string flagViTriNgoai = bool.Parse(ViTriNgoai) == true ? "1" : "0";
                 string flagViTriHop = bool.Parse(ViTriHop) == true ? "1" : "0";
-                string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
-                    + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu + ",AmSau=" + flagAmSau + ",XayDung=" + flagXayDung + ",DutChi_Goc=" + flagDutChiGoc + ",DutChi_Than=" + flagDutChiThan
+                string sql = "";
+                sql += "update TB_DULIEUKHACHHANG set AmSau=" + flagAmSau + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and AmSau=1";
+                sql += "update TB_DULIEUKHACHHANG set XayDung=" + flagXayDung + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and XayDung=1";
+                sql += "update TB_DULIEUKHACHHANG set DutChi_Goc=" + flagDutChiGoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and DutChi_Goc=1";
+                sql += "update TB_DULIEUKHACHHANG set DutChi_Than=" + flagDutChiThan + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and DutChi_Than=1";
+                sql += "update TB_DULIEUKHACHHANG set NgapNuoc=" + flagNgapNuoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and NgapNuoc=1";
+                sql += "update TB_DULIEUKHACHHANG set KetTuong=" + flagKetTuong + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and KetTuong=1";
+                sql += "update TB_DULIEUKHACHHANG set LapKhoaGoc=" + flagLapKhoaGoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and LapKhoaGoc=1";
+                sql += "update TB_DULIEUKHACHHANG set BeHBV=" + flagBeHBV + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and BeHBV=1";
+                sql += "update TB_DULIEUKHACHHANG set BeNapMatNapHBV=" + flagBeNapMatNapHBV + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and BeNapMatNapHBV=1";
+                sql += "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
+                    + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu
                     + ",MauSacChiGoc=N'" + MauSacChiGoc + "',GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
             }
@@ -4638,7 +4654,7 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from server9.HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
+                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.NgapNuoc,kh.KetTuong,kh.LapKhoaGoc,kh.BeHBV,kh.BeNapMatNapHBV,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         + "                          ,TinhTrang=(select"
                         + "                             case when exists (select top 1 MaKQDN from server9.HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
