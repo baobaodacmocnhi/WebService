@@ -2219,6 +2219,7 @@
     <Content Include="Views\HDSD\HDSDOnlineOffice_CongViec.pdf" />
     <Content Include="Views\HDSD\BaocaochinhtrichiboKhoiKyThuat2020_2022.pdf" />
     <Content Include="Views\HDSD\BaoCao.cshtml" />
+    <Content Include="Views\QLDHN\sDHN.cshtml" />
     <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
     <Content Include="Web References\wrThuTien\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>

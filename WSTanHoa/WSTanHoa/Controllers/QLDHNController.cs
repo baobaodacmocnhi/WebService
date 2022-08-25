@@ -111,6 +111,11 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
+        public ActionResult sDHN()
+        {
+            return View();
+        }
+
         public Bitmap resizeImage(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
