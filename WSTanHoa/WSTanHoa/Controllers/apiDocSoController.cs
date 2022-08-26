@@ -86,7 +86,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -121,7 +121,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -159,7 +159,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -197,7 +197,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -210,7 +210,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo,IDNCC from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG where Valid=1 and a.DanhBo=b.DanhBo");
+                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
@@ -225,7 +225,7 @@ namespace WSTanHoa.Controllers
                                 get_All_Deviwas(dt.Rows[i]["DanhBo"].ToString(), Time);
                                 break;
                             case 4:
-                                get_All_PhamLam(dt.Rows[i]["DanhBo"].ToString(), Time);
+                                get_ChiSoNuoc_PhamLam(dt.Rows[i]["DanhBo"].ToString(), Time);
                                 break;
                             default:
                                 break;
@@ -246,68 +246,83 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://swm.sawaco.com.vn:8033/api/all/?id=" + DanhBo + "&date=" + Time);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://swm.sawaco.com.vn:8033/api/Survey/?id=" + DanhBo + "&date=" + Time);
                 request.Method = "GET";
                 request.ContentType = "application/json; charset=utf-8";
-
-                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                //if (request.HaveResponse == true)
                 {
-                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    string result = read.ReadToEnd();
-                    read.Close();
-                    respuesta.Close();
-
-                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                    int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
-                    if (obj["IsLowBatt"] == true)
-                        flagCBPinYeu = 1;
-                    if (obj["IsLeakage"] == true)
-                        flagCBRoRi = 1;
-                    if (obj["IsOverLoad"] == true)
-                        flagCBQuaDong = 1;
-                    if (obj["IsReverse"] == true)
-                        flagCBChayNguoc = 1;
-                    if (obj["IsTampering"] == true)
-                        flagCBNamCham = 1;
-                    if (obj["IsDry"] == true)
-                        flagCBKhoOng = 1;
-                    if (obj["IsOpenBox"] == true)
-                        flagCBMoHop = 1;
-                    string LuuLuong = "NULL";
-                    if (obj["Flow"] != null)
-                        LuuLuong = obj["Flow"];
-                    string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
-                        + ",Longitude,Latitude,Altitude,ChuKyGui"
-                        + ",ThoiGianCapNhat,Loai)"
-                                   + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
-                                   + ",'" + DanhBo + "'"
-                                   + "," + obj["Volume"]
-                                   + "," + obj["Battery"]
-                                   + ",'" + obj["RemainBatt"] + "'"
-                                   + "," + LuuLuong
-                                   + ",'" + obj["Rssi"] + "'"
-                                   + "," + flagCBPinYeu
-                                   + "," + flagCBRoRi
-                                   + "," + flagCBQuaDong
-                                   + "," + flagCBChayNguoc
-                                   + "," + flagCBNamCham
-                                   + "," + flagCBKhoOng
-                                   + "," + flagCBMoHop
-                                   + "," + obj["Longitude"]
-                                   + "," + obj["Latitude"]
-                                   + "," + obj["Altitude"]
-                                   + "," + obj["Interval"]
-                                   + ",'" + obj["Time"] + "',N'All')";
-                    //CGlobalVariable.log.Error("apiDocSo " + sql);
-                    return _cDAL_DocSo.ExecuteNonQuery(sql);
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        if (result != "")
+                        {
+                            var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                            foreach (var item in obj)
+                            {
+                                //int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
+                                //if (obj["IsLowBatt"] == true)
+                                //    flagCBPinYeu = 1;
+                                //if (obj["IsLeakage"] == true)
+                                //    flagCBRoRi = 1;
+                                //if (obj["IsOverLoad"] == true)
+                                //    flagCBQuaDong = 1;
+                                //if (obj["IsReverse"] == true)
+                                //    flagCBChayNguoc = 1;
+                                //if (obj["IsTampering"] == true)
+                                //    flagCBNamCham = 1;
+                                //if (obj["IsDry"] == true)
+                                //    flagCBKhoOng = 1;
+                                //if (obj["IsOpenBox"] == true)
+                                //    flagCBMoHop = 1;
+                                //string LuuLuong = "NULL";
+                                //if (obj["Flow"] != null)
+                                //    LuuLuong = obj["Flow"];
+                                //string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                //    + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                //    + ",ThoiGianCapNhat,Loai)"
+                                //               + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
+                                //               + ",'" + DanhBo + "'"
+                                //               + "," + obj["Volume"]
+                                //               + "," + obj["Battery"]
+                                //               + ",'" + obj["RemainBatt"] + "'"
+                                //               + "," + LuuLuong
+                                //               + ",'" + obj["Rssi"] + "'"
+                                //               + "," + flagCBPinYeu
+                                //               + "," + flagCBRoRi
+                                //               + "," + flagCBQuaDong
+                                //               + "," + flagCBChayNguoc
+                                //               + "," + flagCBNamCham
+                                //               + "," + flagCBKhoOng
+                                //               + "," + flagCBMoHop
+                                //               + "," + obj["Longitude"]
+                                //               + "," + obj["Latitude"]
+                                //               + "," + obj["Altitude"]
+                                //               + "," + obj["Interval"]
+                                //               + ",'" + obj["Time"] + "',N'All')";
+                                string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,ThoiGianCapNhat,Loai)"
+                                           + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
+                                           + ",'" + DanhBo + "'"
+                                           + "," + item["Volume"]
+                                           + ",'" + item["Time"] + "',N'All')";
+                                _cDAL_DocSo.ExecuteNonQuery(sql);
+                            }
+                            return true;
+                        }
+                        return false;
+                    }
+                    else
+                        return false;
                 }
-                else
-                    return false;
+                //else
+                //    return false;
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -318,68 +333,76 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://swm.sawaco.com.vn:7032/api/swm_hour?Id=" + DanhBo + "&Date=" + Time);
                 request.Method = "GET";
                 request.ContentType = "application/json; charset=utf-8";
-
-                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                //if (request.HaveResponse == true)
                 {
-                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    string result = read.ReadToEnd();
-                    read.Close();
-                    respuesta.Close();
-                    if (result != "Not value return.")
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                     {
-                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                        int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
-                        if (obj["IsLowBatt"] == true)
-                            flagCBPinYeu = 1;
-                        if (obj["IsLeakage"] == true)
-                            flagCBRoRi = 1;
-                        if (obj["IsOverLoad"] == true)
-                            flagCBQuaDong = 1;
-                        if (obj["IsReverse"] == true)
-                            flagCBChayNguoc = 1;
-                        if (obj["IsTampering"] == true)
-                            flagCBNamCham = 1;
-                        if (obj["IsDry"] == true)
-                            flagCBKhoOng = 1;
-                        if (obj["IsOpenBox"] == true)
-                            flagCBMoHop = 1;
-                        string LuuLuong = "NULL";
-                        if (obj["Flow"] != null)
-                            LuuLuong = obj["Flow"];
-                        string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
-                            + ",Longitude,Latitude,Altitude,ChuKyGui"
-                            + ",ThoiGianCapNhat,Loai)"
-                                       + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
-                                       + ",'" + DanhBo + "'"
-                                       + "," + obj["Volume"]
-                                       + "," + obj["Battery"]
-                                       + ",'" + obj["RemainBatt"] + "'"
-                                       + "," + LuuLuong
-                                       + ",'" + obj["Rssi"] + "'"
-                                       + "," + flagCBPinYeu
-                                       + "," + flagCBRoRi
-                                       + "," + flagCBQuaDong
-                                       + "," + flagCBChayNguoc
-                                       + "," + flagCBNamCham
-                                       + "," + flagCBKhoOng
-                                       + "," + flagCBMoHop
-                                       + "," + obj["Longitude"]
-                                       + "," + obj["Latitude"]
-                                       + ",NULL"
-                                       + "," + obj["Interval"]
-                                       + ",'" + obj["Time"] + "',N'All')";
-                        return _cDAL_DocSo.ExecuteNonQuery(sql);
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        if (result != "Not value return.")
+                        {
+                            var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                            foreach (var item in obj)
+                            {
+                                int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
+                                if (item["IsLowBatt"] == true)
+                                    flagCBPinYeu = 1;
+                                if (item["IsLeakage"] == true)
+                                    flagCBRoRi = 1;
+                                if (item["IsOverLoad"] == true)
+                                    flagCBQuaDong = 1;
+                                if (item["IsReverse"] == true)
+                                    flagCBChayNguoc = 1;
+                                if (item["IsTampering"] == true)
+                                    flagCBNamCham = 1;
+                                if (item["IsDry"] == true)
+                                    flagCBKhoOng = 1;
+                                if (item["IsOpenBox"] == true)
+                                    flagCBMoHop = 1;
+                                string LuuLuong = "NULL";
+                                if (item["Flow"] != null)
+                                    LuuLuong = ((int)item["Flow"]).ToString();
+                                string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                    + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                    + ",ThoiGianCapNhat,Loai)"
+                                               + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
+                                               + ",'" + DanhBo + "'"
+                                               + "," + item["Volume"]
+                                               + "," + item["Battery"]
+                                               + ",'" + item["RemainBatt"] + "'"
+                                               + "," + LuuLuong
+                                               + ",'" + item["Rssi"] + "'"
+                                               + "," + flagCBPinYeu
+                                               + "," + flagCBRoRi
+                                               + "," + flagCBQuaDong
+                                               + "," + flagCBChayNguoc
+                                               + "," + flagCBNamCham
+                                               + "," + flagCBKhoOng
+                                               + "," + flagCBMoHop
+                                               + ",NULL" //+ item["Longitude"]
+                                               + ",NULL" //+ item["Latitude"]
+                                               + ",NULL"
+                                               + ",NULL" //+ item["Interval"]
+                                               + ",'" + item["Time"] + "',N'All')";
+                                _cDAL_DocSo.ExecuteNonQuery(sql);
+                            }
+                            return true;
+                        }
+                        else
+                            return false;
                     }
                     else
                         return false;
                 }
-                else
-                    return false;
+                //else
+                //    return false;
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -390,64 +413,90 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://swm.sawaco.com.vn:8039/api/all?id=" + DanhBo + "&date=" + Time);
                 request.Method = "GET";
                 request.ContentType = "application/json; charset=utf-8";
-
-                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                //if (request.HaveResponse == true)
                 {
-                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    string result = read.ReadToEnd();
-                    read.Close();
-                    respuesta.Close();
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
 
-                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                    int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
-                    if (obj["IsLowBatt"] == true)
-                        flagCBPinYeu = 1;
-                    if (obj["IsLeakage"] == true)
-                        flagCBRoRi = 1;
-                    if (obj["IsOverLoad"] == true)
-                        flagCBQuaDong = 1;
-                    if (obj["IsReverse"] == true)
-                        flagCBChayNguoc = 1;
-                    if (obj["IsTampering"] == true)
-                        flagCBNamCham = 1;
-                    if (obj["IsDry"] == true)
-                        flagCBKhoOng = 1;
-                    if (obj["IsOpenBox"] == true)
-                        flagCBMoHop = 1;
-                    string LuuLuong = "NULL";
-                    //if (obj["Flow"] != null)
-                    //    LuuLuong = obj["Flow"];
-                    string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
-                        + ",Longitude,Latitude,Altitude,ChuKyGui"
-                        + ",ThoiGianCapNhat,Loai)"
-                                   + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
-                                   + ",'" + DanhBo + "'"
-                                   + "," + obj["Vol"]
-                                   + ",NULL" //+ obj["Battery"]
-                                   + ",'" + obj["bat_duration"] + "'"
-                                   + "," + LuuLuong
-                                   + ",'" //+ obj["Rssi"] + "'"
-                                   + ",0" //+ flagCBPinYeu
-                                   + ",0" //+ flagCBRoRi
-                                   + ",0" //+ flagCBQuaDong
-                                   + ",0" //+ flagCBChayNguoc
-                                   + ",0" //+ flagCBNamCham
-                                   + ",0" //+ flagCBKhoOng
-                                   + ",0" //+ flagCBMoHop
-                                   + ",NULL" //+ obj["Longitude"]
-                                   + ",NULL" //+ obj["Latitude"]
-                                   + ",NULL" //+ obj["Altitude"]
-                                   + ",NULL" //+ obj["Interval"]
-                                   + ",NULL'" + obj["TimeUpdate"] + "',N'All')";
-                    return _cDAL_DocSo.ExecuteNonQuery(sql);
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        foreach (var item in obj)
+                        {
+                            int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
+                            string[] canhbaos;
+                            if (item["Warning"] != null)
+                            {
+                                canhbaos = ((string)item["Warning"]).Split('|');
+                                foreach (var itemW in canhbaos)
+                                {
+                                    switch (itemW)
+                                    {
+                                        case "leakage current":
+                                        case "leakage historic":
+                                            flagCBRoRi = 1;
+                                            break;
+                                        case "no usage":
+                                            flagCBKhoOng = 1;
+                                            break;
+                                        case "back flow":
+                                            flagCBChayNguoc = 1;
+                                            break;
+                                        case "over flow":
+                                            flagCBQuaDong = 1;
+                                            break;
+                                        case "low battery":
+                                            flagCBPinYeu = 1;
+                                            break;
+                                        case "mechanical fraud":
+                                            flagCBMoHop = 1;
+                                            break;
+                                        default:
+                                            break;
+                                    }
+                                }
+                            }
+                            string LuuLuong = "NULL";
+                            //if (item["Flow"] != null)
+                            //    LuuLuong = item["Flow"];
+                            string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                + ",ThoiGianCapNhat,Loai)"
+                                           + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
+                                           + ",'" + DanhBo + "'"
+                                           + "," + item["Vol"]
+                                           + ",NULL" //+ item["Battery"]
+                                           + ",'" + item["bat_duration"] + "'"
+                                           + "," + LuuLuong
+                                           + ",NULL" //+ item["Rssi"] + "'"
+                                           + "," + flagCBPinYeu
+                                           + "," + flagCBRoRi
+                                           + "," + flagCBQuaDong
+                                           + "," + flagCBChayNguoc
+                                           + "," + flagCBNamCham
+                                           + "," + flagCBKhoOng
+                                           + "," + flagCBMoHop
+                                           + ",NULL" //+ item["Longitude"]
+                                           + ",NULL" //+ item["Latitude"]
+                                           + ",NULL" //+ item["Altitude"]
+                                           + ",NULL" //+ item["Interval"]
+                                           + ",'" + item["TimeUpdate"] + "',N'All')";
+                            _cDAL_DocSo.ExecuteNonQuery(sql);
+                        }
+                        return true;
+                    }
+                    else
+                        return false;
                 }
-                else
-                    return false;
+                //else
+                //    return false;
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
             }
         }
 
@@ -458,64 +507,117 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://swm.sawaco.com.vn:8032/apipl/swm_hour/" + DanhBo + "/" + Time);
                 request.Method = "GET";
                 request.ContentType = "application/json; charset=utf-8";
-
-                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                //if (request.HaveResponse == true)
                 {
-                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    string result = read.ReadToEnd();
-                    read.Close();
-                    respuesta.Close();
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
 
-                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                    int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
-                    if (obj["isLowBatt"] == true)
-                        flagCBPinYeu = 1;
-                    if (obj["isLeakage"] == true)
-                        flagCBRoRi = 1;
-                    if (obj["isOverLoad"] == true)
-                        flagCBQuaDong = 1;
-                    if (obj["isReverse"] == true)
-                        flagCBChayNguoc = 1;
-                    if (obj["isTampering"] == true)
-                        flagCBNamCham = 1;
-                    if (obj["isDry"] == true)
-                        flagCBKhoOng = 1;
-                    if (obj["isOpenBox"] == true)
-                        flagCBMoHop = 1;
-                    string LuuLuong = "NULL";
-                    if (obj["Flow"] != null)
-                        LuuLuong = obj["Flow"];
-                    string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
-                        + ",Longitude,Latitude,Altitude,ChuKyGui"
-                        + ",ThoiGianCapNhat,Loai)"
-                                   + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
-                                   + ",'" + DanhBo + "'"
-                                   + "," + obj["flow"]
-                                   + ",NULL" //+ obj["Battery"]
-                                   + ",NULL'" //+ obj["RemainBatt"] + "'"
-                                   + ",NULL" //+ LuuLuong
-                                   + ",'" + obj["rsrp"] + "'"
-                                   + "," + flagCBPinYeu
-                                   + "," + flagCBRoRi
-                                   + "," + flagCBQuaDong
-                                   + "," + flagCBChayNguoc
-                                   + "," + flagCBNamCham
-                                   + "," + flagCBKhoOng
-                                   + "," + flagCBMoHop
-                                   + "," + obj["longitude"]
-                                   + "," + obj["latitude"]
-                                   + "," + obj["altitude"]
-                                   + "," + obj["interval"]
-                                   + ",'" + obj["time"] + "',N'All')";
-                    return _cDAL_DocSo.ExecuteNonQuery(sql);
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        foreach (var item in obj)
+                        {
+                            int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
+                            if (item["isLowBatt"] == true)
+                                flagCBPinYeu = 1;
+                            if (item["isLeakage"] == true)
+                                flagCBRoRi = 1;
+                            if (item["isOverLoad"] == true)
+                                flagCBQuaDong = 1;
+                            if (item["isReverse"] == true)
+                                flagCBChayNguoc = 1;
+                            if (item["isTampering"] == true)
+                                flagCBNamCham = 1;
+                            if (item["isDry"] == true)
+                                flagCBKhoOng = 1;
+                            if (item["isOpenBox"] == true)
+                                flagCBMoHop = 1;
+                            string LuuLuong = "NULL";
+                            //if (item["flow"] != null)
+                            //    LuuLuong = ((int)item["flow"]).ToString();
+                            string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                + ",ThoiGianCapNhat,Loai)"
+                                           + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
+                                           + ",'" + DanhBo + "'"
+                                           + "," + item["flow"]
+                                           + ",NULL" //+ item["Battery"]
+                                           + ",NULL" //+ item["RemainBatt"] + "'"
+                                           + "," + LuuLuong
+                                           + ",'" + item["rsrp"] + "'"
+                                           + "," + flagCBPinYeu
+                                           + "," + flagCBRoRi
+                                           + "," + flagCBQuaDong
+                                           + "," + flagCBChayNguoc
+                                           + "," + flagCBNamCham
+                                           + "," + flagCBKhoOng
+                                           + "," + flagCBMoHop
+                                           + ",NULL" //+ item["longitude"]
+                                           + ",NULL" //+ item["latitude"]
+                                           + ",NULL" //+ item["altitude"]
+                                           + ",NULL" //+ item["interval"]
+                                           + ",'" + item["time"] + "',N'All')";
+                            _cDAL_DocSo.ExecuteNonQuery(sql);
+                        }
+                        return true;
+                    }
+                    else
+                        return false;
                 }
-                else
-                    return false;
+                //else
+                //    return false;
             }
             catch (Exception ex)
             {
-                throw ex;
+                return false;
+            }
+        }
+
+        public bool get_ChiSoNuoc_PhamLam(string DanhBo, string Time)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://swm.sawaco.com.vn:8032/apipl/Volume/" + DanhBo + "/" + Time);
+                request.Method = "GET";
+                request.ContentType = "application/json; charset=utf-8";
+                //if (request.HaveResponse == true)
+                {
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        if (result != "NoneData")
+                        {
+                            var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                            foreach (var item in obj)
+                            {
+                                string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,ThoiGianCapNhat,Loai)"
+                                               + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
+                                               + ",'" + DanhBo + "'"
+                                               + "," + item["vol"]
+                                               + ",'" + item["timeUpdate"] + "',N'All')";
+                                _cDAL_DocSo.ExecuteNonQuery(sql);
+                            }
+                            return true;
+                        }
+                        else
+                            return false;
+                    }
+                    else
+                        return false;
+                }
+                //else
+                //    return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
             }
         }
 
