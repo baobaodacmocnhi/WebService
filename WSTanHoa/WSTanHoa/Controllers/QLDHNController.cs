@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WSTanHoa.Models;
 using WSTanHoa.Providers;
 
 namespace WSTanHoa.Controllers
@@ -72,12 +73,12 @@ namespace WSTanHoa.Controllers
                     //kiểm tra đã gửi chỉ số nước rồi
                     DataTable dtResult = cDAL_DocSo.ExecuteQuery_DataTable("select top 1 * from DocSo where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + "' and (CodeMoi not like '' or ChuBao=1)");
                     if (dtResult != null && dtResult.Rows.Count > 0)
-                        //if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-1)
-                        //    || DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
-                        {
-                            ModelState.AddModelError("", "Danh Bộ này đã gửi/ghi chỉ số nước rồi");
-                            return View();
-                        }
+                    //if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-1)
+                    //    || DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
+                    {
+                        ModelState.AddModelError("", "Danh Bộ này đã gửi/ghi chỉ số nước rồi");
+                        return View();
+                    }
 
                     Image image = Image.FromStream(Hinh.InputStream);
                     Bitmap resizedImage = resizeImage(image, 0.5m);
@@ -113,6 +114,19 @@ namespace WSTanHoa.Controllers
 
         public ActionResult sDHN()
         {
+            DataTable dtThongKe = cDAL_DocSo.ExecuteQuery_DataTable("select Name,SoLuong=COUNT(*) from sDHN_NCC a,sDHN b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
+                                    + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
+                                    + " group by Name"
+                                    + " order by SoLuong");
+            List<ThongTinKhachHang> lstThongKe = new List<ThongTinKhachHang>();
+            foreach (DataRow item in dtThongKe.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.DanhBo = item["Name"].ToString();
+                en.HoTen = item["SoLuong"].ToString();
+                lstThongKe.Add(en);
+            }
+            ViewBag.lstThongKe = lstThongKe;
             return View();
         }
 
