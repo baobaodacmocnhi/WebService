@@ -222,7 +222,7 @@
     <Compile Include="Models\db\Zalo_Chat.cs" />
     <Compile Include="Models\db\Zalo_DangKy.cs" />
     <Compile Include="Models\HoaDon.cs" />
-    <Compile Include="Models\apiThuTien.cs" />
+    <Compile Include="Models\MResult.cs" />
     <Compile Include="Models\ThuHo.cs" />
     <Compile Include="Models\TrungTamKhachHang.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

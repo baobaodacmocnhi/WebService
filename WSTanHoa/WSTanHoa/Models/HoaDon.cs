@@ -14,14 +14,23 @@ namespace WSTanHoa.Models
         public string DanhBo { get; set; }
         public int? Nam { get; set; }
         public int? Ky { get; set; }
+        public int TieuThu { get; set; }
         public int GiaBan { get; set; }
         public int ThueGTGT { get; set; }
         public int PhiBVMT { get; set; }
+        public int PhiBVMT_Thue { get; set; }
         public int TongCong { get; set; }
         public int PhiMoNuoc { get; set; }
         public int TienDu { get; set; }
         //public DateTime? NgayGiaiTrach { get; set; }
         //public string KyHD { get; set; }
+        public int CSC { get; set; }
+        public int TieuThuMoi { get; set; }
+        public string CodeMoi { get; set; }
+        public int ChiSoMoi { get; set; }
+        public DateTime? TuNgay { get; set; }
+        public DateTime? DenNgay { get; set; }
+
 
         public HoaDon()
         {
@@ -35,11 +44,14 @@ namespace WSTanHoa.Models
             GiaBan = 0;
             ThueGTGT = 0;
             PhiBVMT = 0;
+            PhiBVMT_Thue = 0;
             TongCong = 0;
             PhiMoNuoc = 0;
             TienDu = 0;
             //NgayGiaiTrach = null;
             //KyHD = "";
+            TieuThu = CSC = TieuThuMoi = ChiSoMoi = -1;
+            CodeMoi = "";
         }
 
     }

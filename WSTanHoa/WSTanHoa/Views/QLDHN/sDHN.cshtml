@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "ĐHN Thông Minh";
 }
-
+@Scripts.Render("~/bundles/datepicker")
 <!-- Custom fonts for this template-->
 <link href="~/Template/SBAdmin2/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
@@ -13,7 +13,7 @@
 
 <div class="container py-2 rounded-3 shadow-sm">
     <div class="row">
-        <h2>@ViewBag.Title</h2>
+        <h2>@ViewBag.Title : <span class="text-danger">@ViewBag.SoLuong</span> </h2>
     </div>
     <div class="row">
 
@@ -40,4 +40,34 @@
 
     </div>
 
+</div>
+<div class="container mt-3 py-2 rounded-3 shadow-sm">
+    @using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
+    {
+        <div class="row pt-3 px-3">
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radLoai" value="radNgayThu">
+                    <label class="form-check-label" for="radNgayThu">
+                        Ngày Thu
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="radLoai" value="radNgayGiaiTrach" checked>
+                    <label class="form-check-label" for="radNgayGiaiTrach">
+                        Ngày Giải Trách
+                    </label>
+                </div>
+            </div>
+            <div class="col-auto">
+                <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
+            </div>
+            <div class="col-auto">
+                <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3" name="action" value="Xem">Xem</button>
+            </div>
+        </div>
+    }
 </div>

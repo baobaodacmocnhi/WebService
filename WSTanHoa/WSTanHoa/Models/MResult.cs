@@ -5,19 +5,18 @@ using System.Web;
 
 namespace WSTanHoa.Models
 {
-    public class apiThuTien
+    public class MResult
     {
-        public string status { get; set; }
+        public bool success { set; get; }
+        public string error { set; get; }
+        public string alert { set; get; }
+        public string message { set; get; }
+        public string hoadonton { set; get; }
 
-        public string message { get; set; }
-
-        public Logger logger { get; set; }
-
-        public apiThuTien()
+        public MResult()
         {
-            status = "OK";
-            message = "";
-            logger = new Logger();
+            success = false;
+            error = message = alert = hoadonton = "";
         }
 
 

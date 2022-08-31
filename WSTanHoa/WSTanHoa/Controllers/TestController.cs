@@ -186,9 +186,7 @@ namespace WSTanHoa.Controllers
                             zv.lst.Add(en);
                         }
                 }
-
             }
-
             return View(zv);
         }
     }

@@ -51,7 +51,7 @@ namespace WSTanHoa
             try
             {
                 Connect();
-                transaction = connection.BeginTransaction(IsolationLevel.ReadUncommitted);
+                transaction = connection.BeginTransaction(IsolationLevel.Snapshot);
             }
             catch (Exception ex) { throw ex; }
         }

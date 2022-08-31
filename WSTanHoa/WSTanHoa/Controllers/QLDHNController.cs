@@ -112,14 +112,17 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
-        public ActionResult sDHN()
+        public ActionResult sDHN(string action, string TuNgay, string DenNgay)
         {
-            DataTable dtThongKe = cDAL_DocSo.ExecuteQuery_DataTable("select Name,SoLuong=COUNT(*) from sDHN_NCC a,sDHN b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
+            object soluong = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select SoLuong=COUNT(*) from sDHN_NCC a,sDHN b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
+                                    + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1");
+            ViewBag.SoLuong = soluong;
+            DataTable dt = cDAL_DocSo.ExecuteQuery_DataTable("select Name,SoLuong=COUNT(*) from sDHN_NCC a,sDHN b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
                                     + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
                                     + " group by Name"
                                     + " order by SoLuong");
             List<ThongTinKhachHang> lstThongKe = new List<ThongTinKhachHang>();
-            foreach (DataRow item in dtThongKe.Rows)
+            foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
                 en.DanhBo = item["Name"].ToString();
@@ -127,6 +130,10 @@ namespace WSTanHoa.Controllers
                 lstThongKe.Add(en);
             }
             ViewBag.lstThongKe = lstThongKe;
+            if (action == "Xem" && TuNgay != "" && DenNgay != "")
+            {
+                DateTime dateTu = DateTime.Parse(TuNgay), dateDen = DateTime.Parse(DenNgay);
+            }
             return View();
         }
 

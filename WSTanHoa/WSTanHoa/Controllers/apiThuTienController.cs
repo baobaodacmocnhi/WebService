@@ -20,7 +20,7 @@ namespace WSTanHoa.Controllers
     {
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTienWFH);
         private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanhWFH);
-        apiThuTien _result = new apiThuTien();
+        MResult _result = new MResult();
 
         // GET api/<controller>
         //public IEnumerable<string> Get()
@@ -101,7 +101,7 @@ namespace WSTanHoa.Controllers
         }
 
         [Route("getVersion")]
-        private apiThuTien getVersion()
+        private MResult getVersion()
         {
             //try
             //{
@@ -122,7 +122,7 @@ namespace WSTanHoa.Controllers
             return _result;
         }
 
-        private apiThuTien postDangNhap(string Username, string Password, string IDMobile, string UID)
+        private MResult postDangNhap(string Username, string Password, string IDMobile, string UID)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace WSTanHoa.Controllers
 
         [HttpGet]
         [Route("exportExcelHDDCBCT")]
-        public apiThuTien exportExcelHDDCBCT(string NgayGiaiTrach)
+        public MResult exportExcelHDDCBCT(string NgayGiaiTrach)
         {
             HttpResponseMessage response = response = Request.CreateResponse(HttpStatusCode.OK);
             try

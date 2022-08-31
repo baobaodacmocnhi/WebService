@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Net;
 using System.Web.Http;
+using WSTanHoa.Models;
 using WSTanHoa.Providers;
 
 namespace WSTanHoa.Controllers
@@ -12,6 +14,23 @@ namespace WSTanHoa.Controllers
     {
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+
+        public string DataTableToJSON(DataTable table)
+        {
+            CGlobalVariable.jsSerializer.MaxJsonLength = Int32.MaxValue;
+            List<Dictionary<string, object>> parentRow = new List<Dictionary<string, object>>();
+            Dictionary<string, object> childRow;
+            foreach (DataRow row in table.Rows)
+            {
+                childRow = new Dictionary<string, object>();
+                foreach (DataColumn col in table.Columns)
+                {
+                    childRow.Add(col.ColumnName, row[col]);
+                }
+                parentRow.Add(childRow);
+            }
+            return CGlobalVariable.jsSerializer.Serialize(parentRow);
+        }
 
         private bool checkExists(string DanhBo)
         {
@@ -210,7 +229,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
+                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo and IDNCC=4 order by a.DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
@@ -225,7 +244,7 @@ namespace WSTanHoa.Controllers
                                 get_All_Deviwas(dt.Rows[i]["DanhBo"].ToString(), Time);
                                 break;
                             case 4:
-                                get_ChiSoNuoc_PhamLam(dt.Rows[i]["DanhBo"].ToString(), Time);
+                                get_All_PhamLam(dt.Rows[i]["DanhBo"].ToString(), Time);
                                 break;
                             default:
                                 break;
@@ -619,6 +638,130 @@ namespace WSTanHoa.Controllers
             {
                 return false;
             }
+        }
+
+        public IList<ThongTinKhachHang> getDS_ThaysDHN(string TuNgay, string DenNgay, string checksum)
+        {
+            try
+            {
+                if (checksum == "DHC@2022")
+                {
+                    List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
+                    if (TuNgay != "" && DenNgay != "")
+                    {
+                        DateTime dateTu = DateTime.Parse(TuNgay), dateDen = DateTime.Parse(DenNgay);
+                        DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG,SOTHANDH,NGAYTHAY from TB_DULIEUKHACHHANG where CAST(NGAYTHAY as date)>='" + dateTu.ToString("yyyyMMdd") + "' and CAST(NGAYTHAY as date)<='" + dateDen.ToString("yyyyMMdd") + "'");
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            ThongTinKhachHang en = new ThongTinKhachHang();
+                            en.DanhBo = item["DanhBo"].ToString();
+                            en.HoTen = item["HoTen"].ToString();
+                            en.DiaChi = item["DiaChi"].ToString();
+                            en.SoThanDH = item["SoThanDH"].ToString();
+                            en.NgayThay = DateTime.Parse(item["NgayThay"].ToString());
+                            lst.Add(en);
+                        }
+                    }
+                    return lst;
+                }
+                else
+                    return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+
+        }
+
+        [Route("getVersion")]
+        [HttpGet]
+        public MResult getVersion()
+        {
+            MResult result = new MResult();
+            try
+            {
+                result.message = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select Version from DeviceConfig").ToString();
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
+        }
+
+        [Route("updateUID")]
+        [HttpGet]
+        public MResult updateUID(string MaNV, string UID)
+        {
+            MResult result = new MResult();
+            try
+            {
+                result.success = _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
+        }
+
+        [Route("DangNhap")]
+        [HttpGet]
+        public MResult DangNhap(string Username, string Password, string IDMobile, string UID)
+        {
+            MResult result = new MResult();
+            try
+            {
+                object MaNV = null;
+                MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+                if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
+                    MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
+
+                if (MaNV == null || MaNV.ToString() == "")
+                {
+                    result.message = "Sai mật khẩu hoặc IDMobile";
+                    result.success = false;
+                }
+                else
+                {
+                    //xóa máy đăng nhập MaNV khác
+                    object MaNV_UID_Old = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                    if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
+                        _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+
+                    //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
+                    //{
+                    //    DataTable dt = _cDAL.ExecuteQuery_DataTable("select UID from TT_DeviceSigned where MaNV=" + MaNV);
+                    //    foreach (DataRow item in dt.Rows)
+                    //    {
+                    //        SendNotificationToClient("Thông Báo Đăng Xuất", "Hệ thống server gửi đăng xuất đến thiết bị", item["UID"].ToString(), "DangXuat", "DangXuat", "false", "");
+                    //        _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + item["UID"].ToString() + "'");
+                    //    }
+                    //}
+
+                    object MaNV_UID = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                    if (MaNV_UID != null)
+                        if ((int)MaNV_UID == 0)
+                            _cDAL_DocSo.ExecuteNonQuery("insert DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                        else
+                            _cDAL_DocSo.ExecuteNonQuery("update DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+
+                    _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
+
+                    result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,Doi,ToTruong,MaTo,DienThoai from NguoiDung where MaND=" + MaNV));
+                    result.success = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result.message = ex.Message;
+                result.success = false;
+            }
+            return result;
         }
 
     }
