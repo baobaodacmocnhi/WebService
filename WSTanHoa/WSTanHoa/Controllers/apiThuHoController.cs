@@ -24,7 +24,7 @@ namespace WSTanHoa.Controllers
         /// <param name="DanhBo"></param>
         /// <returns></returns>
         [Route("getHoaDonTon")]
-        public IList<HoaDon> getHoaDonTon(string DanhBo)
+        public IList<MHoaDon> getHoaDonTon(string DanhBo)
         {
             DataTable dt = new DataTable();
             int count = 0;
@@ -59,11 +59,11 @@ namespace WSTanHoa.Controllers
             //
             if (dt != null && dt.Rows.Count > 0)
             {
-                List<HoaDon> hoadons = new List<HoaDon>();
+                List<MHoaDon> hoadons = new List<MHoaDon>();
                 foreach (DataRow item in dt.Rows)
                 //if (item["UpdatedHDDT"].ToString() == "" || (item["UpdatedHDDT"].ToString() != "" && bool.Parse(item["UpdatedHDDT"].ToString()) == true))
                 {
-                    HoaDon entity = new HoaDon();
+                    MHoaDon entity = new MHoaDon();
                     entity.HoTen = item["HoTen"].ToString();
                     entity.DiaChi = item["DiaChi"].ToString();
                     entity.MaHD = int.Parse(item["MaHD"].ToString());
@@ -229,7 +229,7 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             //lấy hóa đơn tồn
-            List<HoaDon> lstHD = new List<HoaDon>();
+            List<MHoaDon> lstHD = new List<MHoaDon>();
             try
             {
                 DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
@@ -237,7 +237,7 @@ namespace WSTanHoa.Controllers
                 {
                     foreach (DataRow item in dt.Rows)
                     {
-                        HoaDon entity = new HoaDon();
+                        MHoaDon entity = new MHoaDon();
                         entity.HoTen = item["HoTen"].ToString();
                         entity.DiaChi = item["DiaChi"].ToString();
                         entity.MaHD = int.Parse(item["MaHD"].ToString());

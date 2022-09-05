@@ -22,12 +22,14 @@ namespace WSTanHoa.Providers
         public static string ThuTien = "Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string ThuTienWFH = "Data Source=113.161.88.180,1933;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string ThuTien_test = "Data Source=server11;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
-        public static string KinhDoanh = "Data Source=server11;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
-        public static string KinhDoanhWFH = "Data Source=113.161.88.180,1133;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
+        public static string ThuongVu = "Data Source=server11;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
+        public static string ThuongVuWFH = "Data Source=113.161.88.180,1133;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string TrungTamKhachHang = "Data Source=server11;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string TrungTamKhachHangWFH = "Data Source=113.161.88.180,1133;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string BauCu = "Data Source=113.161.88.180,1933;Initial Catalog=DH_CODONG;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
-        public static string pathHinhDHN = @"\\192.168.90.241\HinhDHN";
+        public static string pathHinhDHN = @"\\rackstation\HinhDHN";
+        public static string pathHinhDHNMaHoa = @"\\rackstation\HinhDHN\MaHoa";
+        public static string pathHinhTV = @"\\rackstation\HinhDHN\ThuongVu";
         public static JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
         public static log4net.ILog log = log4net.LogManager.GetLogger("File");
 

@@ -11,7 +11,7 @@ namespace WSTanHoa.Controllers
 {
     public class HomeController : Controller
     {
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
+        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection cDAL_BauCu = new CConnection(CGlobalVariable.BauCu);
 
         public ActionResult Index()

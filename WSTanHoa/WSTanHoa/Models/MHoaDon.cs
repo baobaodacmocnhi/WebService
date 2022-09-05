@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WSTanHoa.Models
 {
-    public class HoaDon
+    public class MHoaDon
     {
         public string HoTen { get; set; }
         public string DiaChi { get; set; }
@@ -32,7 +32,7 @@ namespace WSTanHoa.Models
         public DateTime? DenNgay { get; set; }
 
 
-        public HoaDon()
+        public MHoaDon()
         {
             HoTen = "";
             DiaChi = "";

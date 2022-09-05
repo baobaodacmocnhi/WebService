@@ -22,7 +22,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         private CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
+        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
 
         /// <summary>
         /// Lấy thông tin khách hàng

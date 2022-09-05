@@ -12,7 +12,7 @@ namespace WSTanHoa.Controllers
 {
     public class ThuongVuController : Controller
     {
-        private CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
+        private CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);

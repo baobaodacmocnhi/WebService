@@ -19,7 +19,7 @@ namespace WSTanHoa.Controllers
     public class apiThuTienController : ApiController
     {
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTienWFH);
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanhWFH);
+        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVuWFH);
         MResult _result = new MResult();
 
         // GET api/<controller>
@@ -54,14 +54,14 @@ namespace WSTanHoa.Controllers
                 {
                     if (headers.GetValues("checksum").First() != CGlobalVariable.cheksum)
                     {
-                        _result.status = "ERR:11";
+                        _result.alert = "ERR:11";
                         _result.message = "Sai Mã Xác Nhận";
                         return false;
                     }
                 }
                 else
                 {
-                    _result.status = "ERR:10";
+                    _result.alert = "ERR:10";
                     _result.message = "Không Mã Xác Nhận";
                     return false;
                 }
@@ -215,7 +215,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
-                _result.status = "ERR:0";
+                _result.alert = "ERR:0";
                 _result.message = ex.Message;
             }
             return _result;
