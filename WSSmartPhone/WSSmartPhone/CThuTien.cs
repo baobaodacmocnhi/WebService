@@ -4231,18 +4231,30 @@ namespace WSSmartPhone
                 string flagBeNapMatNapHBV = bool.Parse(BeNapMatNapHBV) == true ? "1" : "0";
                 string flagViTriNgoai = bool.Parse(ViTriNgoai) == true ? "1" : "0";
                 string flagViTriHop = bool.Parse(ViTriHop) == true ? "1" : "0";
-                string sql = "";
-                sql += "update TB_DULIEUKHACHHANG set AmSau=" + flagAmSau + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and AmSau=1";
-                sql += "update TB_DULIEUKHACHHANG set XayDung=" + flagXayDung + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and XayDung=1";
-                sql += "update TB_DULIEUKHACHHANG set DutChi_Goc=" + flagDutChiGoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and DutChi_Goc=1";
-                sql += "update TB_DULIEUKHACHHANG set DutChi_Than=" + flagDutChiThan + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and DutChi_Than=1";
-                sql += "update TB_DULIEUKHACHHANG set NgapNuoc=" + flagNgapNuoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and NgapNuoc=1";
-                sql += "update TB_DULIEUKHACHHANG set KetTuong=" + flagKetTuong + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and KetTuong=1";
-                sql += "update TB_DULIEUKHACHHANG set LapKhoaGoc=" + flagLapKhoaGoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and LapKhoaGoc=1";
-                sql += "update TB_DULIEUKHACHHANG set BeHBV=" + flagBeHBV + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and BeHBV=1";
-                sql += "update TB_DULIEUKHACHHANG set BeNapMatNapHBV=" + flagBeNapMatNapHBV + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and BeNapMatNapHBV=1";
-                sql += "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
+                //string sql = "";
+                //sql += "update TB_DULIEUKHACHHANG set AmSau=" + flagAmSau + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and AmSau=1";
+                //sql += " update TB_DULIEUKHACHHANG set XayDung=" + flagXayDung + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and XayDung=1";
+                //sql += " update TB_DULIEUKHACHHANG set DutChi_Goc=" + flagDutChiGoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and DutChi_Goc=1";
+                //sql += " update TB_DULIEUKHACHHANG set DutChi_Than=" + flagDutChiThan + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and DutChi_Than=1";
+                //sql += " update TB_DULIEUKHACHHANG set NgapNuoc=" + flagNgapNuoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and NgapNuoc=1";
+                //sql += " update TB_DULIEUKHACHHANG set KetTuong=" + flagKetTuong + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and KetTuong=1";
+                //sql += " update TB_DULIEUKHACHHANG set LapKhoaGoc=" + flagLapKhoaGoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and LapKhoaGoc=1";
+                //sql += " update TB_DULIEUKHACHHANG set BeHBV=" + flagBeHBV + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and BeHBV=1";
+                //sql += " update TB_DULIEUKHACHHANG set BeNapMatNapHBV=" + flagBeNapMatNapHBV + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and BeNapMatNapHBV=1";
+                //sql += " update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
+                //    + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu
+                //    + ",MauSacChiGoc=N'" + MauSacChiGoc + "',GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
+                string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
                     + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu
+                    + ",AmSau=" + flagAmSau
+                    + ",XayDung=" + flagXayDung
+                    + ",DutChi_Goc=" + flagDutChiGoc
+                    + ",DutChi_Than=" + flagDutChiThan
+                    + ",NgapNuoc=" + flagNgapNuoc
+                    + ",KetTuong=" + flagKetTuong
+                    + ",LapKhoaGoc=" + flagLapKhoaGoc
+                    + ",BeHBV=" + flagBeHBV
+                    + ",BeNapMatNapHBV=" + flagBeNapMatNapHBV
                     + ",MauSacChiGoc=N'" + MauSacChiGoc + "',GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
             }
