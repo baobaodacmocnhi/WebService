@@ -121,20 +121,49 @@ namespace WSTanHoa.Controllers
                                     + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
                                     + " group by Name"
                                     + " order by SoLuong");
-            List<ThongTinKhachHang> lstThongKe = new List<ThongTinKhachHang>();
+            List<ThongTinKhachHang> lstTong = new List<ThongTinKhachHang>();
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
                 en.DanhBo = item["Name"].ToString();
                 en.HoTen = item["SoLuong"].ToString();
-                lstThongKe.Add(en);
+                lstTong.Add(en);
             }
-            ViewBag.lstThongKe = lstThongKe;
+            ViewBag.lstTong = lstTong;
+            //Lịch Sử
+            DateTime date = DateTime.Now.AddDays(-1);
+            DataTable dtBinhThuong = getDS_sDHN_BinhThuong(date);
+            DataTable dtBatThuong = getDS_sDHN_BatThuong(date);
+            List<ThongTinKhachHang> lstLichSu = new List<ThongTinKhachHang>();
+            ThongTinKhachHang enLichSu = new ThongTinKhachHang();
+            enLichSu.DanhBo = dtBinhThuong.Rows[0]["Loai"].ToString();
+            enLichSu.HoTen = dtBinhThuong.Rows.Count.ToString();
+            lstLichSu.Add(enLichSu);
+            enLichSu = new ThongTinKhachHang();
+            enLichSu.DanhBo = dtBatThuong.Rows[0]["Loai"].ToString();
+            enLichSu.HoTen = dtBatThuong.Rows.Count.ToString();
+            lstLichSu.Add(enLichSu);
+            ViewBag.lstLichSu = lstLichSu;
             if (action == "Xem" && TuNgay != "" && DenNgay != "")
             {
                 DateTime dateTu = DateTime.Parse(TuNgay), dateDen = DateTime.Parse(DenNgay);
+                
             }
             return View();
+        }
+
+        private DataTable getDS_sDHN_BinhThuong(DateTime date)
+        {
+            return cDAL_DocSo.ExecuteQuery_DataTable("select Loai=N'Bình Thường',DanhBo,SoLuong=COUNT(ID) from sDHN_LichSu where CAST(ThoiGianCapNhat as date)='" + date.ToString("yyyyMMdd") + "'"
+                                                    + " group by DanhBo"
+                                                    + " having COUNT(ID) >= 24");
+        }
+
+        private DataTable getDS_sDHN_BatThuong(DateTime date)
+        {
+            return cDAL_DocSo.ExecuteQuery_DataTable("select Loai=N'Bất Thường',DanhBo,SoLuong=COUNT(ID) from sDHN_LichSu where CAST(ThoiGianCapNhat as date)='" + date.ToString("yyyyMMdd") + "'"
+                                                    + " group by DanhBo"
+                                                    + " having COUNT(ID) < 24");
         }
 
         public Bitmap resizeImage(Image image, int width, int height)
