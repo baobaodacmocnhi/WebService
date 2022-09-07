@@ -278,6 +278,12 @@ namespace WSSmartPhone
             _cThuTien.getTonFromDienThoai_DHN();
         }
 
+        [WebMethod]
+        public string getTonCongTy(string Nam, string Ky, string Dot, string May)
+        {
+            return _cThuTien.getTonCongTy_DHN(Nam, Ky, Dot, May);
+        }
+
         //send notification
         [WebMethod]
         public string SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)

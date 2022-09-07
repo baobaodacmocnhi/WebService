@@ -4185,6 +4185,24 @@ namespace WSSmartPhone
             }
         }
 
+        public string getTonCongTy_DHN(string Nam, string Ky, string Dot, string May)
+        {
+            CResult result = new CResult();
+            try
+            {
+                string sql = "select ChuaDoc=(select COUNT(DocSoID) from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' and CodeMoi like '')"
+                    + ",F=(select COUNT(DocSoID) from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' and CodeMoi like 'F%')";
+                result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return jss.Serialize(result);
+        }
+
         public string getDS_LichSu_DocSo_DHN(string DanhBo)
         {
             CResult result = new CResult();
