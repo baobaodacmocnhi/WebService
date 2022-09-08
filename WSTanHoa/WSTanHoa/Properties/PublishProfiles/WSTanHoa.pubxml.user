@@ -78,6 +78,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>10/27/2021 08:10:27</publishTime>
     </File>
+    <File Include="bin/ClosedXML.dll">
+      <publishTime>06/29/2022 06:47:24</publishTime>
+    </File>
+    <File Include="bin/DocumentFormat.OpenXml.dll">
+      <publishTime>03/15/2022 01:39:04</publishTime>
+    </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>10/27/2021 08:10:44</publishTime>
     </File>
@@ -86,6 +92,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="bin/EPPlus.dll">
       <publishTime>10/27/2021 08:10:33</publishTime>
+    </File>
+    <File Include="bin/ExcelNumberFormat.dll">
+      <publishTime>10/02/2020 08:42:28</publishTime>
     </File>
     <File Include="bin/log4net.dll">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -178,10 +187,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>09/07/2022 16:34:21</publishTime>
+      <publishTime>09/08/2022 15:19:13</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>09/07/2022 16:34:22</publishTime>
+      <publishTime>09/08/2022 15:19:13</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -814,7 +823,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="packages.config">
-      <publishTime>07/28/2022 16:11:44</publishTime>
+      <publishTime>09/08/2022 08:17:33</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -6067,7 +6076,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>07/05/2022 14:17:56</publishTime>
     </File>
     <File Include="Views/Home/Index.cshtml">
-      <publishTime>10/27/2021 08:10:12</publishTime>
+      <publishTime>09/08/2022 11:04:18</publishTime>
     </File>
     <File Include="Views/Home/Login.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -6097,13 +6106,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/07/2022 09:30:12</publishTime>
     </File>
     <File Include="Views/QLDHN/sDHN.cshtml">
-      <publishTime>09/07/2022 16:15:00</publishTime>
+      <publishTime>09/08/2022 15:11:57</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>08/26/2022 16:30:46</publishTime>
+      <publishTime>09/08/2022 11:10:15</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -6166,7 +6175,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/05/2022 08:01:23</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>09/07/2022 15:39:21</publishTime>
+      <publishTime>09/08/2022 08:47:01</publishTime>
     </File>
   </ItemGroup>
 </Project>

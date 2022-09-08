@@ -4,11 +4,11 @@
 }
 @Scripts.Render("~/bundles/datepicker")
 <!-- Custom fonts for this template-->
-<link href="~/Template/SBAdmin2/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
-<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+@*<link href="~/Template/SBAdmin2/fontawesome/css/all.min.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">*@
 
 <!-- Custom styles for this template-->
-<link href="~/Template/SBAdmin2/css/sb-admin-2.css" rel="stylesheet">
+@*<link href="~/Template/SBAdmin2/css/sb-admin-2.css" rel="stylesheet">*@
 <link href="~/Template/SBAdmin2/css/bootstrap-glyphicons.min.css" rel="stylesheet" />
 
 <div class="container py-2 rounded-3 shadow-sm">
@@ -38,63 +38,70 @@
         }
     </div>
 </div>
-@if (ViewBag.lstLichSu != null)
-{
-<div class="container mt-3 py-2 rounded-3 shadow-sm">
-    <div class="row">
-        <h2>Ngày: @DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy")</h2>
-    </div>
-    <div class="row">
-        @foreach (var ThongTinKhachHang in ViewBag.lstLichSu)
-        {
-            <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="font-weight-bold text-info mb-1">
-                                    @ThongTinKhachHang.DanhBo
+@*@if (ViewBag.lstLichSu != null)*@
+    @using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
+    {
+        <div class="container mt-3 py-2 rounded-3 shadow-sm">
+            <div class="row">
+                @*<h2>Ngày: @ViewBag.NgayXem.ToString("dd/MM/yyyy")</h2>*@
+                <div class="col-auto mb-2">
+                    <input class="datepicker form-control" type="text" id="NgayXem" name="NgayXem" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem.ToString("dd/MM/yyyy") onchange="this.form.submit()">
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var ThongTinKhachHang in ViewBag.lstLichSu)
+                {
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="font-weight-bold text-info mb-1">
+                                            @ThongTinKhachHang.DanhBo
+                                        </div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">@ThongTinKhachHang.HoTen</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        @*<i class="glyphicon glyphicon-dashboard fa-2x text-primary"></i>*@
+                                        <a href="@Url.Action("ExportData", "QLDHN",new { function=@ThongTinKhachHang.DiaChi,Ngay=@ViewBag.NgayXem.ToString("dd/MM/yyyy") })" class="elements">
+                                            <span>Excel</span>
+                                        </a>
+                                    </div>
                                 </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">@ThongTinKhachHang.HoTen</div>
-                            </div>
-                            <div class="col-auto">
-                                <i class="glyphicon glyphicon-dashboard fa-2x text-primary"></i>
                             </div>
                         </div>
                     </div>
+                }
+            </div>
+        </div>
+        }
+    @*<div class="container mt-3 py-2 rounded-3 shadow-sm">
+        @using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
+        {
+            <div class="row pt-3 px-3">
+                <div class="col-auto">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radLoai" value="radNgayThu">
+                        <label class="form-check-label" for="radNgayThu">
+                            Ngày Thu
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radLoai" value="radNgayGiaiTrach" checked>
+                        <label class="form-check-label" for="radNgayGiaiTrach">
+                            Ngày Giải Trách
+                        </label>
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
+                </div>
+                <div class="col-auto">
+                    <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
+                </div>
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3" name="action" value="Xem">Xem</button>
                 </div>
             </div>
         }
-    </div>
-</div>
-}
-<div class="container mt-3 py-2 rounded-3 shadow-sm">
-    @using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
-    {
-        <div class="row pt-3 px-3">
-            <div class="col-auto">
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radLoai" value="radNgayThu">
-                    <label class="form-check-label" for="radNgayThu">
-                        Ngày Thu
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio" name="radLoai" value="radNgayGiaiTrach" checked>
-                    <label class="form-check-label" for="radNgayGiaiTrach">
-                        Ngày Giải Trách
-                    </label>
-                </div>
-            </div>
-            <div class="col-auto">
-                <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
-            </div>
-            <div class="col-auto">
-                <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3" name="action" value="Xem">Xem</button>
-            </div>
-        </div>
-    }
-</div>
+    </div>*@

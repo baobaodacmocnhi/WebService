@@ -19,8 +19,8 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private QLDHNController _QLDHNController = new QLDHNController();
 
-        
 
         [Route("updateDS_DHN")]
         [HttpGet]
@@ -195,6 +195,51 @@ namespace WSTanHoa.Controllers
         }
 
 
+        [Route("get_All_Back")]
+        [HttpGet]
+        public bool get_All_Back(string Time, string checksum)
+        {
+            try
+            {
+                if (CGlobalVariable.cheksum == checksum)
+                {
+                    string[] datestr = Time.Split('-');
+                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,IDNCC,COUNT(*) from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b,sDHN_LichSu c"
+                                    + " where Valid = 1 and a.DanhBo = b.DanhBo and c.DanhBo = b.DANHBO and CAST(ThoiGianCapNhat as date) = '" + datestr[2] + datestr[1] + datestr[0] + "'"
+                                    + " group by a.DanhBo, IDNCC"
+                                    + " having COUNT(*) < 24"
+                                    + " order by a.DanhBo");
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
+                        {
+                            case 1:
+                                get_All_HoaSen(dt.Rows[i]["DanhBo"].ToString(), Time);
+                                break;
+                            case 2:
+                                get_All_Rynan(dt.Rows[i]["DanhBo"].ToString(), Time);
+                                break;
+                            case 3:
+                                get_All_Deviwas(dt.Rows[i]["DanhBo"].ToString(), Time);
+                                break;
+                            case 4:
+                                get_All_PhamLam(dt.Rows[i]["DanhBo"].ToString(), Time);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         [Route("get_All")]
         [HttpGet]
         public bool get_All(string Time, string checksum)
@@ -203,7 +248,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo and idncc!=4 order by a.DanhBo");
+                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
@@ -296,7 +341,8 @@ namespace WSTanHoa.Controllers
                                 //               + "," + obj["Altitude"]
                                 //               + "," + obj["Interval"]
                                 //               + ",'" + obj["Time"] + "',N'All')";
-                                string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,ThoiGianCapNhat,Loai)"
+                                string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["Time"] + "'))"
+                                            + " insert into sDHN_LichSu(ID,DanhBo,ChiSo,ThoiGianCapNhat,Loai)"
                                            + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
                                            + ",'" + DanhBo + "'"
                                            + "," + item["Volume"]
@@ -358,7 +404,8 @@ namespace WSTanHoa.Controllers
                                 string LuuLuong = "NULL";
                                 if (item["Flow"] != null)
                                     LuuLuong = ((int)item["Flow"]).ToString();
-                                string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["Time"] + "'))"
+                                    + " insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
                                     + ",Longitude,Latitude,Altitude,ChuKyGui"
                                     + ",ThoiGianCapNhat,Loai)"
                                                + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
@@ -455,7 +502,8 @@ namespace WSTanHoa.Controllers
                             string LuuLuong = "NULL";
                             //if (item["Flow"] != null)
                             //    LuuLuong = item["Flow"];
-                            string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                            string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["TimeUpdate"] + "'))"
+                                + " insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
                                 + ",Longitude,Latitude,Altitude,ChuKyGui"
                                 + ",ThoiGianCapNhat,Loai)"
                                            + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"
@@ -531,7 +579,8 @@ namespace WSTanHoa.Controllers
                             string LuuLuong = "NULL";
                             //if (item["flow"] != null)
                             //    LuuLuong = ((int)item["flow"]).ToString();
-                            string sql = "insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                            string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "'))"
+                                + " insert into sDHN_LichSu(ID,DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
                                 + ",Longitude,Latitude,Altitude,ChuKyGui"
                                 + ",ThoiGianCapNhat,Loai)"
                                            + "values((select case when exists(select ID from sDHN_LichSu) then (select MAX(ID)+1 from sDHN_LichSu) else 1 end)"

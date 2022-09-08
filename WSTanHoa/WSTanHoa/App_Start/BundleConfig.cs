@@ -19,11 +19,17 @@ namespace WSTanHoa
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
 
+            //bundles.Add(new StyleBundle("~/Content/css").Include(
+            //          "~/Content/bootstrap.css",
+            //          "~/Content/Site.css",
+            //          "~/Lib/lightbox2.2.11.3/css/lightbox.css",
+            //          "~/Lib/bootstrap-datepicker-1.9.0/css/bootstrap-datepicker.css"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/Site.css",
-                      "~/Lib/lightbox2.2.11.3/css/lightbox.css",
-                      "~/Lib/bootstrap-datepicker-1.9.0/css/bootstrap-datepicker.css"));
+                     "~/Template/SBAdmin2/css/sb-admin-2.css",
+                     "~/Content/Site.css",
+                     "~/Lib/lightbox2.2.11.3/css/lightbox.css",
+                     "~/Lib/bootstrap-datepicker-1.9.0/css/bootstrap-datepicker.css"));
 
             bundles.Add(new StyleBundle("~/Content/cssDoanTCT2022").Include(
                      "~/Content/bootstrap.css",

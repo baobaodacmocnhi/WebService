@@ -650,6 +650,33 @@ namespace WSTanHoa.Controllers
         {
             try
             {
+                switch (message.ToUpper())
+                {
+                    case "DK CLN":
+                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=1 where IDZalo=" + IDZalo);
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group Chất Lượng Nước");
+                        break;
+                    case "DK DMA":
+                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐMA");
+                        break;
+                    case "DK sDHN":
+                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
+                        break;
+                    case "HUY CLN":
+                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
+                        break;
+                    case "HUY DMA":
+                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐMA");
+                        break;
+                    case "HUY sDHN":
+                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
+                        break;
+                };
                 DateTime date = DateTime.Now;
                 if (date.Date.DayOfWeek == DayOfWeek.Saturday || date.Date.DayOfWeek == DayOfWeek.Sunday)
                 {
@@ -1463,7 +1490,44 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
-
+        [Route("sendCanhBao")]
+        [HttpGet]
+        public string sendCanhBao(string Loai,string NoiDung,string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    DataTable dt = new DataTable();
+                    switch (Loai)
+                    {
+                        case "CLN":
+                            dt = cDAL_ThuTien.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where CLN=1");
+                            break;
+                        case "DMA":
+                            dt = cDAL_ThuTien.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where DMA=1");
+                            break;
+                        case "sDHN":
+                            dt = cDAL_ThuTien.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
+                            break;
+                    }
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);
+                        cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'canhbao',N'" + NoiDung + "',N'" + strResponse + "')");
+                    }
+                    strResponse = "Đã xử lý";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
 
     }
 }
