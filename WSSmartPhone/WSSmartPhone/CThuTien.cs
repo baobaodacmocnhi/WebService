@@ -3892,7 +3892,7 @@ namespace WSSmartPhone
                                         {
                                             Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
                                         }
-                                        if (Code.Substring(0, 1) == "F" || Code == "61")
+                                        if (Code.Substring(0, 1) == "F" || Code == "61" || Code == "66")
                                             ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
                                         else
                                             if (Code.Substring(0, 1) == "K")
