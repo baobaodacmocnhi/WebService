@@ -122,15 +122,15 @@ namespace WSTanHoa.Controllers
                                     + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
                                     + " group by Name"
                                     + " order by SoLuong");
-            List<ThongTinKhachHang> lstTong = new List<ThongTinKhachHang>();
+            List<MView> vTong = new List<MView>();
             foreach (DataRow item in dt.Rows)
             {
-                ThongTinKhachHang en = new ThongTinKhachHang();
-                en.DanhBo = item["Name"].ToString();
-                en.HoTen = item["SoLuong"].ToString();
-                lstTong.Add(en);
+                MView en = new MView();
+                en.TieuDe = item["Name"].ToString();
+                en.SoLuong = item["SoLuong"].ToString();
+                vTong.Add(en);
             }
-            ViewBag.lstTong = lstTong;
+            ViewBag.vTong = vTong;
             //Lịch Sử
             DateTime date = DateTime.Now.AddDays(-1);
             if (NgayXem != null && NgayXem != "")
@@ -138,27 +138,37 @@ namespace WSTanHoa.Controllers
                 string[] datestr = NgayXem.Split('/');
                 date = new DateTime(int.Parse(datestr[2]), int.Parse(datestr[1]), int.Parse(datestr[0]));
             }
-            DataTable dtBinhThuong = getDS_sDHN_BinhThuong(date);
-            DataTable dtBatThuong = getDS_sDHN_BatThuong(date);
-            DataTable dtKhongTinHieu = getDS_sDHN_KhongTinHieu(date);
-            List<ThongTinKhachHang> lstLichSu = new List<ThongTinKhachHang>();
-            ThongTinKhachHang enLichSu = new ThongTinKhachHang();
-            enLichSu.DanhBo = dtBinhThuong.Rows[0]["Loai"].ToString();
-            enLichSu.HoTen = dtBinhThuong.Rows.Count.ToString();
-            enLichSu.DiaChi = dtBinhThuong.Rows[0]["Loai2"].ToString();
-            lstLichSu.Add(enLichSu);
-            enLichSu = new ThongTinKhachHang();
-            enLichSu.DanhBo = dtBatThuong.Rows[0]["Loai"].ToString();
-            enLichSu.HoTen = dtBatThuong.Rows.Count.ToString();
-            enLichSu.DiaChi = dtBatThuong.Rows[0]["Loai2"].ToString();
-            lstLichSu.Add(enLichSu);
-            enLichSu = new ThongTinKhachHang();
-            enLichSu.DanhBo = dtKhongTinHieu.Rows[0]["Loai"].ToString();
-            enLichSu.HoTen = dtKhongTinHieu.Rows.Count.ToString();
-            enLichSu.DiaChi = dtKhongTinHieu.Rows[0]["Loai2"].ToString();
-            lstLichSu.Add(enLichSu);
-            ViewBag.lstLichSu = lstLichSu;
-            ViewBag.NgayXem = date;
+            @ViewBag.NgayXem = date.ToString("dd/MM/yyyy");
+            List<MView> vLichSu = new List<MView>();
+            int count = 7;
+            while (count > 0)
+            {
+                MView enLichSu = new MView();
+                enLichSu.ThoiGian = date.ToString("dd/MM/yyyy");
+                DataTable dtBinhThuong = getDS_sDHN_BinhThuong(date);
+                DataTable dtBatThuong = getDS_sDHN_BatThuong(date);
+                DataTable dtKhongTinHieu = getDS_sDHN_KhongTinHieu(date);
+
+                MView enLichSuChild = new MView();
+                enLichSuChild.TieuDe = dtBinhThuong.Rows[0]["Loai"].ToString();
+                enLichSuChild.SoLuong = dtBinhThuong.Rows.Count.ToString();
+                enLichSuChild.NoiDung = dtBinhThuong.Rows[0]["Loai2"].ToString();
+                enLichSu.lst.Add(enLichSuChild);
+                enLichSuChild = new MView();
+                enLichSuChild.TieuDe = dtBatThuong.Rows[0]["Loai"].ToString();
+                enLichSuChild.SoLuong = dtBatThuong.Rows.Count.ToString();
+                enLichSuChild.NoiDung = dtBatThuong.Rows[0]["Loai2"].ToString();
+                enLichSu.lst.Add(enLichSuChild);
+                enLichSuChild = new MView();
+                enLichSuChild.TieuDe = dtKhongTinHieu.Rows[0]["Loai"].ToString();
+                enLichSuChild.SoLuong = dtKhongTinHieu.Rows.Count.ToString();
+                enLichSuChild.NoiDung = dtKhongTinHieu.Rows[0]["Loai2"].ToString();
+                enLichSu.lst.Add(enLichSuChild);
+                count--;
+                date = date.AddDays(-1);
+                vLichSu.Add(enLichSu);
+            }
+            ViewBag.vLichSu = vLichSu;
             if (action == "Xem" && TuNgay != "" && DenNgay != "")
             {
                 DateTime dateTu = DateTime.Parse(TuNgay), dateDen = DateTime.Parse(DenNgay);
@@ -169,7 +179,7 @@ namespace WSTanHoa.Controllers
 
         public DataTable getDS_sDHN_KhongTinHieu(DateTime date)
         {
-            return cDAL_DocSo.ExecuteQuery_DataTable("select Loai=N'Không Tín Hiệu',Loai2=0,* from"
+            return cDAL_DocSo.ExecuteQuery_DataTable("select Loai=N'Không Tín Hiệu',Loai2=0,ThoiGian='" + date.ToString("dd/MM/yyyy") + "',* from"
                                                     + " (select NCC=ncc.Name,ttkh.DANHBO, SoLuong = (select COUNT(ID) from sDHN_LichSu ls where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and ls.DanhBo = ttkh.DANHBO)"
                                                     + " from sDHN_NCC ncc,sDHN dhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID=dhn.IDNCC and dhn.DanhBo = ttkh.DANHBO and Valid = 1)t1"
@@ -178,7 +188,7 @@ namespace WSTanHoa.Controllers
 
         public DataTable getDS_sDHN_BinhThuong(DateTime date)
         {
-            return cDAL_DocSo.ExecuteQuery_DataTable("select Loai=N'Bình Thường',Loai2=2,* from"
+            return cDAL_DocSo.ExecuteQuery_DataTable("select Loai=N'Bình Thường',Loai2=2,ThoiGian='" + date.ToString("dd/MM/yyyy") + "',* from"
                                                     + " (select NCC=ncc.Name,ttkh.DANHBO, SoLuong = (select COUNT(ID) from sDHN_LichSu ls where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and ls.DanhBo = ttkh.DANHBO)"
                                                     + " from sDHN_NCC ncc,sDHN dhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID=dhn.IDNCC and dhn.DanhBo = ttkh.DANHBO and Valid = 1)t1"
@@ -187,7 +197,7 @@ namespace WSTanHoa.Controllers
 
         public DataTable getDS_sDHN_BatThuong(DateTime date)
         {
-            return cDAL_DocSo.ExecuteQuery_DataTable("select Loai=N'Bất Thường',Loai2=1,* from"
+            return cDAL_DocSo.ExecuteQuery_DataTable("select Loai=N'Bất Thường',Loai2=1,ThoiGian='" + date.ToString("dd/MM/yyyy") + "',* from"
                                                     + " (select NCC=ncc.Name,ttkh.DANHBO, SoLuong = (select COUNT(ID) from sDHN_LichSu ls where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and ls.DanhBo = ttkh.DANHBO)"
                                                     + " from sDHN_NCC ncc,sDHN dhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID=dhn.IDNCC and dhn.DanhBo = ttkh.DANHBO and Valid = 1)t1"

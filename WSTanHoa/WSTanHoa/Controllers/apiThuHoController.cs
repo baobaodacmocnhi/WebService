@@ -24,7 +24,7 @@ namespace WSTanHoa.Controllers
         /// <param name="DanhBo"></param>
         /// <returns></returns>
         [Route("getHoaDonTon")]
-        public IList<MHoaDon> getHoaDonTon(string DanhBo)
+        public IList<ThuHoHoaDon> getHoaDonTon(string DanhBo)
         {
             DataTable dt = new DataTable();
             int count = 0;
@@ -59,11 +59,11 @@ namespace WSTanHoa.Controllers
             //
             if (dt != null && dt.Rows.Count > 0)
             {
-                List<MHoaDon> hoadons = new List<MHoaDon>();
+                List<ThuHoHoaDon> hoadons = new List<ThuHoHoaDon>();
                 foreach (DataRow item in dt.Rows)
                 //if (item["UpdatedHDDT"].ToString() == "" || (item["UpdatedHDDT"].ToString() != "" && bool.Parse(item["UpdatedHDDT"].ToString()) == true))
                 {
-                    MHoaDon entity = new MHoaDon();
+                    ThuHoHoaDon entity = new ThuHoHoaDon();
                     entity.HoTen = item["HoTen"].ToString();
                     entity.DiaChi = item["DiaChi"].ToString();
                     entity.MaHD = int.Parse(item["MaHD"].ToString());
@@ -229,7 +229,7 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
             //lấy hóa đơn tồn
-            List<MHoaDon> lstHD = new List<MHoaDon>();
+            List<ThuHoHoaDon> lstHD = new List<ThuHoHoaDon>();
             try
             {
                 DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
@@ -237,7 +237,7 @@ namespace WSTanHoa.Controllers
                 {
                     foreach (DataRow item in dt.Rows)
                     {
-                        MHoaDon entity = new MHoaDon();
+                        ThuHoHoaDon entity = new ThuHoHoaDon();
                         entity.HoTen = item["HoTen"].ToString();
                         entity.DiaChi = item["DiaChi"].ToString();
                         entity.MaHD = int.Parse(item["MaHD"].ToString());
@@ -323,7 +323,7 @@ namespace WSTanHoa.Controllers
             try
             {
                 var transactionOptions = new TransactionOptions();
-                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     int ID = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from TT_DichVuThuTong");
@@ -464,7 +464,7 @@ namespace WSTanHoa.Controllers
             try
             {
                 var transactionOptions = new TransactionOptions();
-                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     //cDAL_ThuTien.BeginTransaction();

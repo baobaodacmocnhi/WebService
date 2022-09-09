@@ -5,6 +5,20 @@ using System.Web;
 
 namespace WSTanHoa.Models
 {
+    public class MView
+    {
+        public string TieuDe { get; set; }
+        public string NoiDung { get; set; }
+        public string SoLuong { get; set; }
+        public string ThoiGian { get; set; }
+        public List<MView> lst { get; set; }
+        public MView()
+        {
+            TieuDe = NoiDung = SoLuong = ThoiGian = "";
+            lst = new List<MView>();
+        }
+    }
+
     public class MHoaDon
     {
         public string HoTen { get; set; }

@@ -1491,36 +1491,42 @@ namespace WSTanHoa.Controllers
         }
 
         [Route("sendCanhBao")]
-        [HttpGet]
-        public string sendCanhBao(string Loai,string NoiDung,string checksum)
+        [HttpPost]
+        public string sendCanhBao()
         {
             string strResponse = "";
             try
             {
-                if (checksum == CGlobalVariable.cheksum)
+                string jsonResult = Request.Content.ReadAsStringAsync().Result;
+                if (jsonResult != null)
                 {
-                    DataTable dt = new DataTable();
-                    switch (Loai)
+                    var jsonContent = JObject.Parse(jsonResult);
+                    string Loai = jsonContent["Loai"].ToString(), NoiDung = jsonContent["NoiDung"].ToString(), checksum = jsonContent["checksum"].ToString();
+                    if (checksum == CGlobalVariable.cheksum)
                     {
-                        case "CLN":
-                            dt = cDAL_ThuTien.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where CLN=1");
-                            break;
-                        case "DMA":
-                            dt = cDAL_ThuTien.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where DMA=1");
-                            break;
-                        case "sDHN":
-                            dt = cDAL_ThuTien.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
-                            break;
+                        DataTable dt = new DataTable();
+                        switch (Loai.ToUpper())
+                        {
+                            case "CLN":
+                                dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where CLN=1");
+                                break;
+                            case "DMA":
+                                dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where DMA=1");
+                                break;
+                            case "sDHN":
+                                dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
+                                break;
+                        }
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);
+                            cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'canhbao',N'" + NoiDung + "',N'" + strResponse + "')");
+                        }
+                        strResponse = "Đã xử lý";
                     }
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);
-                        cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'canhbao',N'" + NoiDung + "',N'" + strResponse + "')");
-                    }
-                    strResponse = "Đã xử lý";
+                    else
+                        strResponse = "Sai checksum";
                 }
-                else
-                    strResponse = "Sai checksum";
             }
             catch (Exception ex)
             {

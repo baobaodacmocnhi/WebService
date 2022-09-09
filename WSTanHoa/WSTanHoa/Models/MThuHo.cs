@@ -5,6 +5,41 @@ using System.Web;
 
 namespace WSTanHoa.Models
 {
+    public class ThuHoHoaDon
+    {
+        public string HoTen { get; set; }
+        public string DiaChi { get; set; }
+        public int? MaHD { get; set; }
+        public string SoHoaDon { get; set; }
+        public string DanhBo { get; set; }
+        public int? Nam { get; set; }
+        public int? Ky { get; set; }
+        public int GiaBan { get; set; }
+        public int ThueGTGT { get; set; }
+        public int PhiBVMT { get; set; }
+        public int TongCong { get; set; }
+        public int PhiMoNuoc { get; set; }
+        public int TienDu { get; set; }
+
+        public ThuHoHoaDon()
+        {
+            HoTen = "";
+            DiaChi = "";
+            MaHD = null;
+            SoHoaDon = "";
+            DanhBo = "";
+            Nam = null;
+            Ky = null;
+            GiaBan = 0;
+            ThueGTGT = 0;
+            PhiBVMT = 0;
+            TongCong = 0;
+            PhiMoNuoc = 0;
+            TienDu = 0;
+        }
+
+    }
+
     public class ThuHoTong
     {
         public string DanhBo { get; set; }
