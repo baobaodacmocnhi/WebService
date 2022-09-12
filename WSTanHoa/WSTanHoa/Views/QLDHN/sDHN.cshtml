@@ -11,6 +11,61 @@
 @*<link href="~/Template/SBAdmin2/css/sb-admin-2.css" rel="stylesheet">*@
 <link href="~/Template/SBAdmin2/css/bootstrap-glyphicons.min.css" rel="stylesheet" />
 
+<script>
+    $(document).ready(function () {
+        getLichSu();
+    });
+    function getLichSu()
+    {
+        $("#vLichSu div").remove();
+        $.ajax({
+            type: 'POST',
+            url: '/QLDHN/getLichSu_sDHN/',
+            dataType: 'json',
+            data: { Ngay: $("#NgayXem").val() },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<div class='container mt-3 py-2 rounded-3 shadow-sm'>"
+                            + "<div class='row'>"
+                            + "    <div class='col-auto mb-2'>"
+                            + "        <h5>Ngày : <span class='text-danger'>" + item.ThoiGian + "</span> </h5>"
+                            + "    </div>"
+                            + "</div>"
+                            + "<div class='row'>"
+                    $.each(item.lst, function (j, itemC) {
+                        rows += "<div class='col-xl-3 col-md-6 mb-4'>"
+                        rows += "    <div class='card border-left-info shadow h-100'>"
+                        rows += "        <div class='card-body'>"
+                        rows += "            <div class='row no-gutters align-items-center'>"
+                        rows += "                <div class='col mr-2'>"
+                        rows += "                    <div class='font-weight-bold text-info mb-1'>"
+                        rows += itemC.TieuDe
+                        rows += "                    </div>"
+                        rows += "                    <div class='h5 mb-0 font-weight-bold text-gray-800'>" + itemC.SoLuong + "</div>"
+                        rows += "                </div>"
+                        rows += "                <div class='col-auto'>"
+                        rows += "                       <a href='@Url.Action("ExportData", "QLDHN")?function=" + itemC.NoiDung + "&Ngay=" + item.ThoiGian + "' class='elements'>"
+                        rows += "                            <span>Excel</span>"
+                        rows += "                        </a>"
+                        rows += "                </div>"
+                        rows += "            </div>"
+                        rows += "        </div>"
+                        rows += "    </div>"
+                        rows += "</div>"
+                    })
+                    rows += "</div>"
+                    rows += "</div>"
+                    $("#vLichSu").append(rows);
+                });
+            },
+            error: function (ex) {
+                alert("Error: " + ex.statusText);
+            }
+        });
+    }
+</script>
+
 <div class="container py-2 rounded-3 shadow-sm">
     <div class="row py-2">
         <h3>@ViewBag.Title : <span class="text-danger">@ViewBag.SoLuong</span> </h3>
@@ -39,50 +94,52 @@
     </div>
 </div>
 
-@using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
-{
-    <div class="container mt-3 py-2 rounded-3 shadow-sm">
-        <h3>Lịch sử 7 ngày gần nhất</h3>
+@*@using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
+    {*@
+<div class="container mt-3 py-2 rounded-3 shadow-sm">
+    <h3>Lịch sử 7 ngày gần nhất</h3>
 
-        <input class="datepicker form-control" type="text" id="NgayXem" name="NgayXem" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="this.form.submit()">
-        
-         @foreach (var mView in ViewBag.vLichSu)
-        {
-            <div class="container mt-3 py-2 rounded-3 shadow-sm">
-                <div class="row">
-                    <div class="col-auto mb-2">
-                        <h5>Ngày : <span class="text-danger">@mView.ThoiGian</span> </h5>
+    <input class="datepicker form-control" type="text" id="NgayXem" name="NgayXem" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getLichSu()">
+
+    <div id="vLichSu">
+        @*@foreach (var mView in ViewBag.vLichSu)
+            {
+                <div class="container mt-3 py-2 rounded-3 shadow-sm">
+                    <div class="row">
+                        <div class="col-auto mb-2">
+                            <h5>Ngày : <span class="text-danger">@mView.ThoiGian</span> </h5>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    @foreach (var mViewChild in mView.lst)
+                    <div class="row">
+                        @foreach (var mViewChild in mView.lst)
                     {
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="font-weight-bold text-info mb-1">
-                                            @mViewChild.TieuDe
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-info shadow h-100">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="font-weight-bold text-info mb-1">
+                                                    @mViewChild.TieuDe
+                                                </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">@mViewChild.SoLuong</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <a href="@Url.Action("ExportData", "QLDHN", new { function = @mViewChild.NoiDung, Ngay = @mView.ThoiGian })" class="elements">
+                                                    <span>Excel</span>
+                                                </a>
+                                            </div>
                                         </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800">@mViewChild.SoLuong</div>
-                                    </div>
-                                    <div class="col-auto">
-                                        @*<i class="glyphicon glyphicon-dashboard fa-2x text-primary"></i>*@
-                                        <a href="@Url.Action("ExportData", "QLDHN", new { function = @mViewChild.NoiDung, Ngay = @mView.ThoiGian })" class="elements">
-                                            <span>Excel</span>
-                                        </a>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        }
                     </div>
-                    }
                 </div>
-            </div>
-        }
+            }*@
     </div>
-}
+</div>
+@*}*@
+
 @*<div class="container mt-3 py-2 rounded-3 shadow-sm">
         @using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
         {
