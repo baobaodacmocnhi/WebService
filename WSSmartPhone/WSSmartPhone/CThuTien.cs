@@ -3580,7 +3580,18 @@ namespace WSSmartPhone
 
         public string GetVersion_DHN()
         {
-            return _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select Version from DeviceConfig").ToString();
+            CResult result = new CResult();
+            try
+            {
+                result.message = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select Version from DeviceConfig").ToString();
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return jss.Serialize(result);
         }
 
         public bool UpdateUID_DHN(string MaNV, string UID)
