@@ -17,6 +17,7 @@ namespace WSTanHoa.Controllers
     {
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
         private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private QLDHNController _QLDHNController = new QLDHNController();
@@ -60,17 +61,17 @@ namespace WSTanHoa.Controllers
                     string result = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
-                    _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=1");
+                    _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=1");
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
                         if (checkExists(item["MaDanhbo"]) == false)
                             if (string.IsNullOrEmpty(item["SeriModule"]))
-                                _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,1,0)");
+                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,1,0)");
                             else
-                                _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,'" + item["SeriModule"] + "',1,0)");
+                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,'" + item["SeriModule"] + "',1,0)");
                         else
-                            _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=1");
+                            _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=1");
                     }
                     return true;
                 }
@@ -98,14 +99,14 @@ namespace WSTanHoa.Controllers
                     string result = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
-                    _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=2");
+                    _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=2");
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
                         if (checkExists(item) == false)
-                            _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item + "',2,1,0)");
+                            _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item + "',2,1,0)");
                         else
-                            _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item + "' and IDNCC=2");
+                            _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item + "' and IDNCC=2");
                     }
                     return true;
                 }
@@ -133,17 +134,17 @@ namespace WSTanHoa.Controllers
                     string result = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
-                    _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=3");
+                    _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=3");
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
                         if (checkExists(item["MaDanhbo"]) == false)
                             if (string.IsNullOrEmpty(item["SeriModule"]))
-                                _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,1,0)");
+                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,1,0)");
                             else
-                                _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,'" + item["SeriModule"] + "',1,0)");
+                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,'" + item["SeriModule"] + "',1,0)");
                         else
-                            _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["SeriModule"] + "' where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=3");
+                            _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["SeriModule"] + "' where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=3");
                     }
                     return true;
                 }
@@ -171,17 +172,17 @@ namespace WSTanHoa.Controllers
                     string result = read.ReadToEnd();
                     read.Close();
                     respuesta.Close();
-                    _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=4");
+                    _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=4");
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
                         if (checkExists(item["wmid"]) == false)
                             if (string.IsNullOrEmpty(item["idlogger"]))
-                                _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["wmid"] + "',4,1,0)");
+                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["wmid"] + "',4,1,0)");
                             else
-                                _cDAL_DocSo.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["wmid"] + "',4,'" + item["idlogger"] + "',1,0)");
+                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["wmid"] + "',4,'" + item["idlogger"] + "',1,0)");
                         else
-                            _cDAL_DocSo.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["idlogger"] + "' where DanhBo='" + item["wmid"] + "' and IDNCC=4");
+                            _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["idlogger"] + "' where DanhBo='" + item["wmid"] + "' and IDNCC=4");
                     }
                     return true;
                 }
@@ -204,8 +205,8 @@ namespace WSTanHoa.Controllers
                 if (CGlobalVariable.cheksum == checksum)
                 {
                     string[] datestr = Time.Split('-');
-                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select * from"
-                                     + " (select a.DanhBo, IDNCC, SoLuong = (select COUNT(*) from sDHN_LichSu where CAST(ThoiGianCapNhat as date) = '" + datestr[2] + datestr[1] + datestr[0] + "' and a.DanhBo = DanhBo) from sDHN a, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b"
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from"
+                                     + " (select a.DanhBo, IDNCC, SoLuong = (select COUNT(*) from sDHN_LichSu where CAST(ThoiGianCapNhat as date) = '" + datestr[2] + datestr[1] + datestr[0] + "' and a.DanhBo = DanhBo) from sDHN a, server8.server8.CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b"
                                      + " where Valid = 1 and a.DanhBo = b.DanhBo)t1"
                                      + " where t1.SoLuong < 24");
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -247,7 +248,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,server8.CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
@@ -287,7 +288,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,server8.CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
@@ -386,7 +387,7 @@ namespace WSTanHoa.Controllers
                                            + "'" + DanhBo + "'"
                                            + "," + item["Volume"]
                                            + ",'" + item["Time"] + "',N'All')";
-                                _cDAL_DocSo.ExecuteNonQuery(sql);
+                                _cDAL_sDHN.ExecuteNonQuery(sql);
                             }
                             return true;
                         }
@@ -466,7 +467,7 @@ namespace WSTanHoa.Controllers
                                                + ",NULL"
                                                + ",NULL" //+ item["Interval"]
                                                + ",'" + item["Time"] + "',N'All')";
-                                _cDAL_DocSo.ExecuteNonQuery(sql);
+                                _cDAL_sDHN.ExecuteNonQuery(sql);
                             }
                             return true;
                         }
@@ -545,7 +546,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL"
                                            + ",NULL" //+ obj["Interval"]
                                            + ",'" + obj["Time"] + "',N'All')";
-                            _cDAL_DocSo.ExecuteNonQuery(sql);
+                            _cDAL_sDHN.ExecuteNonQuery(sql);
                             return true;
                         }
                         else
@@ -642,7 +643,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["Altitude"]
                                            + ",NULL" //+ item["Interval"]
                                            + ",'" + item["TimeUpdate"] + "',N'All')";
-                            _cDAL_DocSo.ExecuteNonQuery(sql);
+                            _cDAL_sDHN.ExecuteNonQuery(sql);
                         }
                         return true;
                     }
@@ -737,7 +738,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["Altitude"]
                                            + ",NULL" //+ item["Interval"]
                                            + ",'" + item["TimeUpdate"] + "',N'All')";
-                            _cDAL_DocSo.ExecuteNonQuery(sql);
+                            _cDAL_sDHN.ExecuteNonQuery(sql);
                         }
                         return true;
                     }
@@ -814,7 +815,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["altitude"]
                                            + ",NULL" //+ item["interval"]
                                            + ",'" + item["time"] + "',N'All')";
-                            _cDAL_DocSo.ExecuteNonQuery(sql);
+                            _cDAL_sDHN.ExecuteNonQuery(sql);
                         }
                         return true;
                     }
@@ -890,7 +891,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ obj["altitude"]
                                            + ",NULL" //+ obj["interval"]
                                            + ",'" + obj["time"] + "',N'All')";
-                            _cDAL_DocSo.ExecuteNonQuery(sql);
+                            _cDAL_sDHN.ExecuteNonQuery(sql);
                         }
                         return true;
                     }
@@ -932,7 +933,7 @@ namespace WSTanHoa.Controllers
                                                + ",'" + DanhBo + "'"
                                                + "," + item["vol"]
                                                + ",'" + item["timeUpdate"] + "',N'All')";
-                                _cDAL_DocSo.ExecuteNonQuery(sql);
+                                _cDAL_sDHN.ExecuteNonQuery(sql);
                             }
                             return true;
                         }
@@ -1006,7 +1007,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                object result = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select * from sDHN where DanhBo='" + DanhBo + "'");
+                object result = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select * from sDHN where DanhBo='" + DanhBo + "'");
                 if (result != null)
                     return true;
                 else
@@ -1025,7 +1026,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select Version from DeviceConfig").ToString();
+        //        result.message = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select Version from DeviceConfig").ToString();
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1043,7 +1044,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.success = _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
+        //        result.success = _cDAL_sDHN.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
         //    }
         //    catch (Exception ex)
         //    {
@@ -1061,9 +1062,9 @@ namespace WSTanHoa.Controllers
         //    try
         //    {
         //        object MaNV = null;
-        //        MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+        //        MaNV = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
         //        if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
-        //            MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
+        //            MaNV = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
 
         //        if (MaNV == null || MaNV.ToString() == "")
         //        {
@@ -1073,9 +1074,9 @@ namespace WSTanHoa.Controllers
         //        else
         //        {
         //            //xóa máy đăng nhập MaNV khác
-        //            object MaNV_UID_Old = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+        //            object MaNV_UID_Old = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
         //            if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
-        //                _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+        //                _cDAL_sDHN.ExecuteNonQuery("delete DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
 
         //            //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
         //            //{
@@ -1087,16 +1088,16 @@ namespace WSTanHoa.Controllers
         //            //    }
         //            //}
 
-        //            object MaNV_UID = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+        //            object MaNV_UID = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
         //            if (MaNV_UID != null)
         //                if ((int)MaNV_UID == 0)
-        //                    _cDAL_DocSo.ExecuteNonQuery("insert DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+        //                    _cDAL_sDHN.ExecuteNonQuery("insert DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
         //                else
-        //                    _cDAL_DocSo.ExecuteNonQuery("update DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+        //                    _cDAL_sDHN.ExecuteNonQuery("update DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
-        //            _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
+        //            _cDAL_sDHN.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
-        //            result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,Doi,ToTruong,MaTo,DienThoai from NguoiDung where MaND=" + MaNV));
+        //            result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,Doi,ToTruong,MaTo,DienThoai from NguoiDung where MaND=" + MaNV));
         //            result.success = true;
         //        }
         //    }
@@ -1119,7 +1120,7 @@ namespace WSTanHoa.Controllers
 
         //        //_cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
-        //        result.success = _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'");
+        //        result.success = _cDAL_sDHN.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'");
         //    }
         //    catch (Exception ex)
         //    {
@@ -1136,12 +1137,12 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        object MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
+        //        object MaNV = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
 
         //        if (MaNV != null)
-        //            _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+        //            _cDAL_sDHN.ExecuteNonQuery("delete DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
-        //        result.success = _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'");
+        //        result.success = _cDAL_sDHN.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'");
         //    }
         //    catch (Exception ex)
         //    {
@@ -1158,7 +1159,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select MaTo,TenTo,HanhThu from [To] where HanhThu=1"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select MaTo,TenTo,HanhThu from [To] where HanhThu=1"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1176,7 +1177,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select MaND,HoTen,May,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from NguoiDung where MaND!=0 and May is not null and An=0 order by STT asc"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select MaND,HoTen,May,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from NguoiDung where MaND!=0 and May is not null and An=0 order by STT asc"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1194,7 +1195,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and An=0 order by STT asc"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and An=0 order by STT asc"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1212,7 +1213,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1230,7 +1231,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Nam=CAST(SUBSTRING(BillID,0,5)as int)"
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select Nam=CAST(SUBSTRING(BillID,0,5)as int)"
         //                  + " from BillState"
         //                  + " group by SUBSTRING(BillID,0,5)"
         //                  + " order by Nam desc"));
@@ -1269,7 +1270,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN order by stt asc"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select Code,MoTa from TTDHN order by stt asc"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1305,7 +1306,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo from DanhBoKPBVMT"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select DanhBo from DanhBoKPBVMT"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1318,27 +1319,27 @@ namespace WSTanHoa.Controllers
 
         //private bool checkChot_BillState(string Nam, string Ky, string Dot)
         //{
-        //    return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select BillID from BillState where BillID='" + Nam + Ky + Dot + "' and izDS=1) then 'true' else 'false' end").ToString());
+        //    return bool.Parse(_cDAL_sDHN.ExecuteQuery_ReturnOneValue("select case when exists(select BillID from BillState where BillID='" + Nam + Ky + Dot + "' and izDS=1) then 'true' else 'false' end").ToString());
         //}
 
         //private bool checkXuLy(string ID)
         //{
-        //    return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select DocSoID from DocSo where DocSoID='" + ID + "' and StaCapNhat='1') then 'true' else 'false' end").ToString());
+        //    return bool.Parse(_cDAL_sDHN.ExecuteQuery_ReturnOneValue("select case when exists(select DocSoID from DocSo where DocSoID='" + ID + "' and StaCapNhat='1') then 'true' else 'false' end").ToString());
         //}
 
         //private bool checkChuBao(string ID)
         //{
-        //    return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select DocSoID from DocSo where DocSoID='" + ID + "' and ChuBao=1) then 'true' else 'false' end").ToString());
+        //    return bool.Parse(_cDAL_sDHN.ExecuteQuery_ReturnOneValue("select case when exists(select DocSoID from DocSo where DocSoID='" + ID + "' and ChuBao=1) then 'true' else 'false' end").ToString());
         //}
 
         //[Route("checkNgayDoc")]
         //[HttpGet]
         //public bool checkNgayDoc(string Nam, string Ky, string Dot, string May)
         //{
-        //    if (bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select Nam from DocSoTruoc where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and May='" + May + "') then 'true' else 'false' end").ToString()) == true)
+        //    if (bool.Parse(_cDAL_sDHN.ExecuteQuery_ReturnOneValue("select case when exists(select Nam from DocSoTruoc where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and May='" + May + "') then 'true' else 'false' end").ToString()) == true)
         //        return true;
         //    else
-        //        return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and ((dsct.NgayDoc=CAST(DATEADD(day,1,GETDATE()) as date) and CONVERT(varchar(10),GETDATE(),108)>='17:00:00') or dsct.NgayDoc<=CAST(GETDATE() as date)) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
+        //        return bool.Parse(_cDAL_sDHN.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and ((dsct.NgayDoc=CAST(DATEADD(day,1,GETDATE()) as date) and CONVERT(varchar(10),GETDATE(),108)>='17:00:00') or dsct.NgayDoc<=CAST(GETDATE() as date)) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
         //}
 
         ////đọc số
@@ -1396,12 +1397,12 @@ namespace WSTanHoa.Controllers
         //                   + "                             else ''"
         //                   + "                             end)"
         //                   + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
-        //                   + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
+        //                   + "                          from DocSo ds left join server8.CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
         //                   + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
         //                   + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
         //                   + "                          left join sdt on sdt.DanhBo=ds.DanhBa"
         //                   + "                          where ds.Nam=@Nam and ds.Ky=@Ky and ds.Dot=@Dot and ds.PhanMay=@May order by ds.MLT1 asc";
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable(sql));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1420,7 +1421,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select DocSoID,CodeMoi,CSMoi from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' order by MLT1 asc"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select DocSoID,CodeMoi,CSMoi from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' order by MLT1 asc"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1439,7 +1440,7 @@ namespace WSTanHoa.Controllers
         //    try
         //    {
         //        string sql = "select DocSoID,GhiHinh=CAST(0 as bit) from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' order by MLT1 asc";
-        //        DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
+        //        DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable(sql);
         //        for (int i = 0; i < dt.Rows.Count; i++)
         //            if (checkExists_HinhDHN_Func(dt.Rows[0]["DocSoID"].ToString()) == true)
         //            {
@@ -1500,7 +1501,7 @@ namespace WSTanHoa.Controllers
         //            + ",TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT"
         //            + ",PhiBVMT_Thue=case when ds.BVMT_Thue is null then 0 else ds.BVMT_Thue end,TongCong=ds.TongTien"
         //            + " from DocSo ds,BienDong bd where ds.DanhBa='" + DanhBo.Replace(" ", "") + "' and ds.DocSoID=bd.BienDongID order by ds.DocSoID desc";
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable(sql));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -1523,15 +1524,15 @@ namespace WSTanHoa.Controllers
         //           + " @NAM = " + DocSoID.Substring(0, 4) + ","
         //           + " @CODE = N'" + Code + "',"
         //           + " @CSMOI = " + CSM;
-        //        object result = _cDAL_DocSo.ExecuteQuery_ReturnOneValue(sql);
+        //        object result = _cDAL_sDHN.ExecuteQuery_ReturnOneValue(sql);
         //        if (result != null)
         //            TieuThu = (int)result;
         //        else
         //            TieuThu = -1;
         //        if (TieuThu < 0)
         //            return true;
-        //        DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
-        //        DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
+        //        DataTable dtDocSo = _cDAL_sDHN.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
+        //        DataTable dtBienDong = _cDAL_sDHN.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
         //        if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
         //        {
         //            int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
@@ -3510,7 +3511,7 @@ namespace WSTanHoa.Controllers
 
         //private bool checkKhongTinhPBVMT(string DanhBo)
         //{
-        //    if (_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select DanhBo from DanhBoKPBVMT where DanhBo='" + DanhBo + "'") != null)
+        //    if (_cDAL_sDHN.ExecuteQuery_ReturnOneValue("select DanhBo from DanhBoKPBVMT where DanhBo='" + DanhBo + "'") != null)
         //        return true;
         //    else
         //        return false;
@@ -3665,7 +3666,7 @@ namespace WSTanHoa.Controllers
         //                //}
         //                //else
         //                {
-        //                    DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
+        //                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
         //                    if (dt != null && dt.Rows.Count > 0)
         //                    {
         //                        if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
@@ -3688,7 +3689,7 @@ namespace WSTanHoa.Controllers
         //                    string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
         //                        + ",TienNuoc=" + hd.GiaBan + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong
         //                        + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi=getdate() where DocSoID='" + ID + "'";
-        //                    success = _cDAL_DocSo.ExecuteNonQuery(sql);
+        //                    success = _cDAL_sDHN.ExecuteNonQuery(sql);
         //                    if (HinhDHN != "")
         //                        success = ghi_HinhDHN_Func(ID, HinhDHN);
         //                    result.success = success;
@@ -3765,7 +3766,7 @@ namespace WSTanHoa.Controllers
         //            string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
         //                + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong
         //                + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi='" + date.ToString("yyyyMMdd HH:mm:ss") + "' where DocSoID='" + ID + "'";
-        //            result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+        //            result.success = _cDAL_sDHN.ExecuteNonQuery(sql);
         //            if (HinhDHN != "")
         //                result.success = ghi_HinhDHN_Func(ID, HinhDHN);
         //        }
@@ -3785,7 +3786,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),CodeMoi,CSMoi,TieuThuMoi from DocSo where DanhBa='" + DanhBo + "' and Nam=" + Nam + " and Ky=" + Ky);
+        //        DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),CodeMoi,CSMoi,TieuThuMoi from DocSo where DanhBa='" + DanhBo + "' and Nam=" + Nam + " and Ky=" + Ky);
         //        MHoaDon hd = new MHoaDon();
         //        hd.TuNgay = DateTime.Parse(dt.Rows[0]["TuNgay"].ToString());
         //        hd.DenNgay = DateTime.Parse(dt.Rows[0]["DenNgay"].ToString());
@@ -3812,17 +3813,17 @@ namespace WSTanHoa.Controllers
         //{
         //    string sql = "select Nam,Ky=RIGHT('0' + CAST(Ky AS VARCHAR(2)), 2),Dot=RIGHT('0' + CAST(IDDot AS VARCHAR(2)), 2) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct,Lich_Dot dot"
         //                 + " where ds.ID=dsct.IDDocSo and dot.ID=dsct.IDDot and CAST(dsct.NgayDoc as date)=CAST(GETDATE() as date)";
-        //    DataTable dtKy = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
-        //    DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select DocSoID,CodeMoi,Dot from DocSo where Nam=" + dtKy.Rows[0]["Nam"].ToString() + " and Ky='" + dtKy.Rows[0]["Ky"].ToString() + "' and Dot='" + dtKy.Rows[0]["Dot"].ToString() + "'");
+        //    DataTable dtKy = _cDAL_sDHN.ExecuteQuery_DataTable(sql);
+        //    DataTable dtDocSo = _cDAL_sDHN.ExecuteQuery_DataTable("select DocSoID,CodeMoi,Dot from DocSo where Nam=" + dtKy.Rows[0]["Nam"].ToString() + " and Ky='" + dtKy.Rows[0]["Ky"].ToString() + "' and Dot='" + dtKy.Rows[0]["Dot"].ToString() + "'");
         //    foreach (DataRow item in dtDocSo.Rows)
         //        if (item["CodeMoi"] == null || item["CodeMoi"].ToString() == "")
         //        {
-        //            _cDAL_DocSo.ExecuteNonQuery("exec [dbo].[spSendNotificationToClient] N'CodeTon',N'" + item["Dot"].ToString() + "',N'" + item["DocSoID"].ToString() + "'");
+        //            _cDAL_sDHN.ExecuteNonQuery("exec [dbo].[spSendNotificationToClient] N'CodeTon',N'" + item["Dot"].ToString() + "',N'" + item["DocSoID"].ToString() + "'");
         //        }
         //        else
         //            if (checkExists_HinhDHN_Func(item["DocSoID"].ToString()) == false)
         //        {
-        //            _cDAL_DocSo.ExecuteNonQuery("exec [dbo].[spSendNotificationToClient] N'HinhTon',N'" + item["Dot"].ToString() + "',N'" + item["DocSoID"].ToString() + "'");
+        //            _cDAL_sDHN.ExecuteNonQuery("exec [dbo].[spSendNotificationToClient] N'HinhTon',N'" + item["Dot"].ToString() + "',N'" + item["DocSoID"].ToString() + "'");
         //        }
         //    int count = 5;
         //    int Nam = int.Parse(dtKy.Rows[0]["Nam"].ToString());
@@ -3841,12 +3842,12 @@ namespace WSTanHoa.Controllers
         //                Nam--;
         //            }
         //        }
-        //        DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select DocSoID,CodeMoi,Dot from DocSo where Nam=" + Nam.ToString() + " and Ky='" + Ky.ToString("00") + "' and Dot='" + Dot.ToString("00") + "'");
+        //        DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select DocSoID,CodeMoi,Dot from DocSo where Nam=" + Nam.ToString() + " and Ky='" + Ky.ToString("00") + "' and Dot='" + Dot.ToString("00") + "'");
         //        foreach (DataRow item in dt.Rows)
         //            if (item["CodeMoi"].ToString() != "" && checkExists_HinhDHN_Func(item["DocSoID"].ToString()) == false)
         //            {
         //                sql = "exec [dbo].[spSendNotificationToClient] N'HinhTon',N'" + item["Dot"].ToString() + "',N'" + item["DocSoID"].ToString() + "'";
-        //                _cDAL_DocSo.ExecuteNonQuery(sql);
+        //                _cDAL_sDHN.ExecuteNonQuery(sql);
         //            }
         //        count--;
         //    }
@@ -3860,7 +3861,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select SoNha,TenDuong,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,Gieng,KhoaTu,AmSau,XayDung,NgapNuoc,KetTuong,LapKhoaGoc,BeHBV,BeNapMatNapHBV from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select SoNha,TenDuong,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,Gieng,KhoaTu,AmSau,XayDung,NgapNuoc,KetTuong,LapKhoaGoc,BeHBV,BeNapMatNapHBV from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -3998,7 +3999,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select [Name],KhongLapDon from MaHoa_PhieuChuyen where App=1"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select [Name],KhongLapDon from MaHoa_PhieuChuyen where App=1"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -4016,7 +4017,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        DataTable dtPC = _cDAL_DocSo.ExecuteQuery_DataTable("select Folder from MaHoa_PhieuChuyen where App=1 and KhongLapDon=1 and Name=N'" + NoiDung + "'");
+        //        DataTable dtPC = _cDAL_sDHN.ExecuteQuery_DataTable("select Folder from MaHoa_PhieuChuyen where App=1 and KhongLapDon=1 and Name=N'" + NoiDung + "'");
         //        if (dtPC != null && dtPC.Rows.Count > 0)
         //        {
         //            switch (NoiDung)
@@ -4054,10 +4055,10 @@ namespace WSTanHoa.Controllers
         //        }
         //        else
         //        {
-        //            DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select top 1 MLT=MLT1,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN=DMHN,Dot,Ky,Nam,Phuong,Quan,HopDong from BienDong where DanhBa='" + DanhBo + "' order by BienDongID desc");
+        //            DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select top 1 MLT=MLT1,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN=DMHN,Dot,Ky,Nam,Phuong,Quan,HopDong from BienDong where DanhBa='" + DanhBo + "' order by BienDongID desc");
         //            if (dt != null && dt.Rows.Count > 0)
         //            {
-        //                object checkExists_DanhBoBoQua = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select DanhBo from MaHoa_DanhBo_Except where DanhBo='" + DanhBo + "'");
+        //                object checkExists_DanhBoBoQua = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select DanhBo from MaHoa_DanhBo_Except where DanhBo='" + DanhBo + "'");
         //                if (NoiDung == "Giá Biểu" && checkExists_DanhBoBoQua != null)
         //                {
         //                    result.success = false;
@@ -4065,14 +4066,14 @@ namespace WSTanHoa.Controllers
         //                }
         //                else
         //                {
-        //                    object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where DanhBo='" + DanhBo + "' and NoiDung=N'" + NoiDung + "' and cast(getdate() as date)=cast(createdate as date)");
+        //                    object checkExists = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where DanhBo='" + DanhBo + "' and NoiDung=N'" + NoiDung + "' and cast(getdate() as date)=cast(createdate as date)");
         //                    if (checkExists == null)
         //                    {
         //                        string ID = "";
-        //                        checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+        //                        checkExists = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
         //                        if (checkExists != null)
         //                        {
-        //                            object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+        //                            object stt = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
         //                            if (stt != null)
         //                                ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
         //                        }
@@ -4089,7 +4090,7 @@ namespace WSTanHoa.Controllers
         //                            + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + DinhMucHN + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
         //                            + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
         //                            + ")";
-        //                        result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+        //                        result.success = _cDAL_sDHN.ExecuteNonQuery(sql);
         //                        if (Hinh != "")
         //                            result.success = ghi_Hinh_DonTu_Func(ID, Hinh, MaNV);
         //                        MHoaDon hd = new MHoaDon();
@@ -4122,7 +4123,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),CreateDate,103),NoiDung,TinhTrang from MaHoa_DonTu where DanhBo='" + DanhBo + "' order by CreateDate desc"));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),CreateDate,103),NoiDung,TinhTrang from MaHoa_DonTu where DanhBo='" + DanhBo + "' order by CreateDate desc"));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -4160,7 +4161,7 @@ namespace WSTanHoa.Controllers
         //    {
         //        string filename = DateTime.Now.ToString("dd.MM.yyyy HH.mm.ss");
         //        string sql = "insert into MaHoa_DonTu_Hinh(ID,IDParent,Name,Loai,CreateBy,CreateDate)values((select case when exists(select ID from MaHoa_DonTu_Hinh) then (select MAX(ID)+1 from MaHoa_DonTu_Hinh) else 1 end)," + ID + ",N'" + filename + "',N'.jpg'," + MaNV + ",getdate())";
-        //        _cDAL_DocSo.ExecuteNonQuery(sql);
+        //        _cDAL_sDHN.ExecuteNonQuery(sql);
         //        result.success = ghi_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, "DonTu", ID, filename + ".jpg", Hinh);
         //    }
         //    catch (Exception ex)
@@ -4177,7 +4178,7 @@ namespace WSTanHoa.Controllers
         //    {
         //        string filename = DateTime.Now.ToString("dd.MM.yyyy HH.mm.ss");
         //        string sql = "insert into MaHoa_DonTu_Hinh(ID,IDParent,Name,Loai,CreateBy,CreateDate)values((select case when exists(select ID from MaHoa_DonTu_Hinh) then (select MAX(ID)+1 from MaHoa_DonTu_Hinh) else 1 end)," + ID + ",N'" + filename + "',N'.jpg'," + MaNV + ",getdate())";
-        //        _cDAL_DocSo.ExecuteNonQuery(sql);
+        //        _cDAL_sDHN.ExecuteNonQuery(sql);
         //        return ghi_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, "DonTu", ID, filename + ".jpg", Hinh);
         //    }
         //    catch (Exception ex)
@@ -4336,7 +4337,7 @@ namespace WSTanHoa.Controllers
         //    MResult result = new MResult();
         //    try
         //    {
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select May,Tong=COUNT(DocSoID)"
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable("select May,Tong=COUNT(DocSoID)"
         //            + " ,DaDoc=COUNT(CASE WHEN CodeMoi not like '' THEN 1 END)"
         //            + " ,ChuaDoc=COUNT(CASE WHEN CodeMoi like '' THEN 1 END)"
         //            + " ,CodeF=COUNT(CASE WHEN CodeMoi like 'F%' THEN 1 END)"
@@ -4408,13 +4409,13 @@ namespace WSTanHoa.Controllers
         //    + "                             else ''"
         //    + "                             end)"
         //    + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from server9.HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
-        //    + "                          from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
+        //    + "                          from DocSo ds left join server8.CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
         //    + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
         //    + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
         //    + "                          left join sdt on sdt.DanhBo=ds.DanhBa"
         //    + "                          where ds.Nam=@Nam and ds.Ky=@Ky and ds.Dot=@Dot and ds.PhanMay>=@TuMay and ds.PhanMay<=@DenMay"
         //    + "                          and (ds.TieuThuMoi=0 or ds.TieuThuMoi>=TBTT*1.4 or ds.TieuThuMoi<=TBTT-TBTT*0.4) order by ds.MLT1 asc";
-        //        result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        //        result.message = DataTableToJSON(_cDAL_sDHN.ExecuteQuery_DataTable(sql));
         //        result.success = true;
         //    }
         //    catch (Exception ex)
@@ -4472,7 +4473,7 @@ namespace WSTanHoa.Controllers
         //            result.message = read.ReadToEnd();
         //            read.Close();
         //            respuesta.Close();
-        //            _cDAL_DocSo.ExecuteNonQuery("insert into Temp(Name,Value,MaHD,Result)values(N'" + Title + "|" + Content + "|" + Action + "|" + NameUpdate + "|" + ValueUpdate + "',N'" + UID + "',N'" + ID + "',N'" + result.message + "')");
+        //            _cDAL_sDHN.ExecuteNonQuery("insert into Temp(Name,Value,MaHD,Result)values(N'" + Title + "|" + Content + "|" + Action + "|" + NameUpdate + "|" + ValueUpdate + "',N'" + UID + "',N'" + ID + "',N'" + result.message + "')");
         //            result.success = true;
         //        }
         //        else

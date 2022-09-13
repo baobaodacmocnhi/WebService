@@ -17,6 +17,8 @@ namespace WSTanHoa.Providers
         public static string DHNWFH = "Data Source=113.161.88.180,1833;Initial Catalog=CAPNUOCTANHOA;Persist Security Info=True;User ID=sa;Password=db8@tanhoa";
         public static string DocSo = "Data Source=hp_g7\\KD;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db8@tanhoa";
         public static string DocSoWFH = "Data Source=113.161.88.180,1833;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db8@tanhoa";
+        public static string sDHN = "Data Source=server11;Initial Catalog=sDHN;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
+        public static string sDHNWFH = "Data Source=113.161.88.180,1133;Initial Catalog=sDHN;Persist Security Info=True;User ID=sa;Password=db11@tanhoa";
         public static string DocSo12 = "Data Source=server12;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db12@tanhoa";
         public static string GanMoi = "Data Source=hp_g7\\KD;Initial Catalog=TANHOA_WATER;Persist Security Info=True;User ID=sa;Password=db8@tanhoa";
         public static string ThuTien = "Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
