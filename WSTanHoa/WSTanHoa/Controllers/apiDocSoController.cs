@@ -23,18 +23,18 @@ namespace WSTanHoa.Controllers
         private QLDHNController _QLDHNController = new QLDHNController();
 
 
-        [Route("updateDS_DHN")]
+        [Route("updateDS_sDHN")]
         [HttpGet]
-        public bool updateDS_DHN(string checksum)
+        public bool updateDS_sDHN(string checksum)
         {
             try
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    updateDS_DHN_HoaSen();
-                    updateDS_DHN_Rynan();
-                    updateDS_DHN_Deviwas();
-                    updateDS_DHN_PhamLam();
+                    updateDS_sDHN_HoaSen();
+                    updateDS_sDHN_Rynan();
+                    updateDS_sDHN_Deviwas();
+                    updateDS_sDHN_PhamLam();
                     return true;
                 }
                 else
@@ -46,7 +46,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        private bool updateDS_DHN_HoaSen()
+        private bool updateDS_sDHN_HoaSen()
         {
             try
             {
@@ -65,13 +65,14 @@ namespace WSTanHoa.Controllers
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
-                        if (checkExists(item["MaDanhbo"]) == false)
-                            if (string.IsNullOrEmpty(item["SeriModule"]))
-                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,1,0)");
+                        if (checkExists_DHN(item["MaDanhbo"]) == true)
+                            if (checkExists_sDHN(item["MaDanhbo"]) == false)
+                                if (string.IsNullOrEmpty(item["SeriModule"]))
+                                    _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,1,0)");
+                                else
+                                    _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,'" + item["SeriModule"] + "',1,0)");
                             else
-                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,'" + item["SeriModule"] + "',1,0)");
-                        else
-                            _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=1");
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=1");
                     }
                     return true;
                 }
@@ -84,7 +85,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        private bool updateDS_DHN_Rynan()
+        private bool updateDS_sDHN_Rynan()
         {
             try
             {
@@ -103,10 +104,11 @@ namespace WSTanHoa.Controllers
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
-                        if (checkExists(item) == false)
-                            _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item + "',2,1,0)");
-                        else
-                            _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item + "' and IDNCC=2");
+                        if (checkExists_DHN(item) == true)
+                            if (checkExists_sDHN(item) == false)
+                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item + "',2,1,0)");
+                            else
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item + "' and IDNCC=2");
                     }
                     return true;
                 }
@@ -119,7 +121,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        private bool updateDS_DHN_Deviwas()
+        private bool updateDS_sDHN_Deviwas()
         {
             try
             {
@@ -138,13 +140,14 @@ namespace WSTanHoa.Controllers
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
-                        if (checkExists(item["MaDanhbo"]) == false)
-                            if (string.IsNullOrEmpty(item["SeriModule"]))
-                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,1,0)");
+                        if (checkExists_DHN(item["MaDanhbo"]) == true)
+                            if (checkExists_sDHN(item["MaDanhbo"]) == false)
+                                if (string.IsNullOrEmpty(item["SeriModule"]))
+                                    _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,1,0)");
+                                else
+                                    _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,'" + item["SeriModule"] + "',1,0)");
                             else
-                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,'" + item["SeriModule"] + "',1,0)");
-                        else
-                            _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["SeriModule"] + "' where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=3");
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["SeriModule"] + "' where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=3");
                     }
                     return true;
                 }
@@ -157,7 +160,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        private bool updateDS_DHN_PhamLam()
+        private bool updateDS_sDHN_PhamLam()
         {
             try
             {
@@ -176,13 +179,14 @@ namespace WSTanHoa.Controllers
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
-                        if (checkExists(item["wmid"]) == false)
-                            if (string.IsNullOrEmpty(item["idlogger"]))
-                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["wmid"] + "',4,1,0)");
+                        if (checkExists_DHN(item["wmid"]) == true)
+                            if (checkExists_sDHN(item["wmid"]) == false)
+                                if (string.IsNullOrEmpty(item["idlogger"]))
+                                    _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["wmid"] + "',4,1,0)");
+                                else
+                                    _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["wmid"] + "',4,'" + item["idlogger"] + "',1,0)");
                             else
-                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["wmid"] + "',4,'" + item["idlogger"] + "',1,0)");
-                        else
-                            _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["idlogger"] + "' where DanhBo='" + item["wmid"] + "' and IDNCC=4");
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["idlogger"] + "' where DanhBo='" + item["wmid"] + "' and IDNCC=4");
                     }
                     return true;
                 }
@@ -196,9 +200,9 @@ namespace WSTanHoa.Controllers
         }
 
 
-        [Route("getChiSo_Day_Back")]
+        [Route("getChiSo_sDHN_Day_Back")]
         [HttpGet]
-        public bool getChiSo_Day_Back(string Time, string checksum)
+        public bool getChiSo_sDHN_Day_Back(string Time, string checksum)
         {
             try
             {
@@ -206,8 +210,8 @@ namespace WSTanHoa.Controllers
                 {
                     string[] datestr = Time.Split('-');
                     DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from"
-                                     + " (select a.DanhBo, IDNCC, SoLuong = (select COUNT(*) from sDHN_LichSu where CAST(ThoiGianCapNhat as date) = '" + datestr[2] + datestr[1] + datestr[0] + "' and a.DanhBo = DanhBo) from sDHN a, server8.server8.CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b"
-                                     + " where Valid = 1 and a.DanhBo = b.DanhBo)t1"
+                                     + " (select DanhBo, IDNCC, SoLuong = (select COUNT(*) from sDHN_LichSu where CAST(ThoiGianCapNhat as date) = '" + datestr[2] + datestr[1] + datestr[0] + "' and DanhBo = sDHN.DanhBo) from sDHN"
+                                     + " where Valid = 1)t1"
                                      + " where t1.SoLuong < 24");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
@@ -240,15 +244,15 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        [Route("getChiSo_Day")]
+        [Route("getChiSo_sDHN_Day")]
         [HttpGet]
-        public bool getChiSo_Day(string Time, string checksum)
+        public bool getChiSo_sDHN_Day(string Time, string checksum)
         {
             try
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,server8.CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN where Valid=1 order by a.DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
@@ -280,15 +284,15 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        [Route("getChiSo_Hour")]
+        [Route("getChiSo_sDHN_Hour")]
         [HttpGet]
-        public bool getChiSo_Hour(string Time, string Hour, string checksum)
+        public bool getChiSo_sDHN_Hour(string Time, string Hour, string checksum)
         {
             try
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN a,server8.CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where Valid=1 and a.DanhBo=b.DanhBo order by a.DanhBo");
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN where Valid=1 order by a.DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
@@ -1003,11 +1007,27 @@ namespace WSTanHoa.Controllers
             return CGlobalVariable.jsSerializer.Serialize(parentRow);
         }
 
-        private bool checkExists(string DanhBo)
+        private bool checkExists_sDHN(string DanhBo)
         {
             try
             {
                 object result = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select * from sDHN where DanhBo='" + DanhBo + "'");
+                if (result != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private bool checkExists_DHN(string DanhBo)
+        {
+            try
+            {
+                object result = _cDAL_DHN.ExecuteQuery_ReturnOneValue("select * from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'");
                 if (result != null)
                     return true;
                 else

@@ -13,16 +13,54 @@
 
 <script>
     $(document).ready(function () {
+        getKhongTinHieu();
         getLichSu();
     });
-    function getLichSu()
-    {
+    function getKhongTinHieu() {
+        $("#vKhongTinHieu div").remove();
+        $.ajax({
+            type: 'POST',
+            url: '/QLDHN/getKhongTinHieu_sDHN/',
+            dataType: 'json',
+            data: { SoNgay: $("#SoNgayKhongTinHieu").val(), Ngay: $("#NgayXemKhongTinHieu").val() },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<div class='col-xl-3 col-md-6 mb-4'>"
+                + "<div class='card border-left-info shadow h-100'>"
+                + "    <div class='card-body'>"
+                + "        <div class='row no-gutters align-items-center'>"
+                + "            <div class='col mr-2'>"
+                + "                <div class='font-weight-bold text-info mb-1'>"
+                + item.TieuDe
+                + "                </div>"
+                + "                <div class='h5 mb-0 font-weight-bold text-gray-800'>" + item.SoLuong + "</div>"
+                + "            </div>"
+                + "            <div class='col-auto'>"
+                + "                <i class='glyphicon glyphicon-dashboard fa-2x text-primary' style='font-size:40px;'></i>"
+                + "<a href='@Url.Action("ExportData", "QLDHN")?function1=KhongTinHieu&function2=" + item.NoiDung + "&SoNgay=" + $("#SoNgayKhongTinHieu").val() + "&Ngay=" + $("#NgayXemKhongTinHieu").val() + "' class='elements'>"
+                + "                                    <span>Excel</span>"
+                + "                                </a>"
+                + "            </div>"
+                + "        </div>"
+                + "    </div>"
+                + "</div>"
+                + "</div>"
+                    $("#vKhongTinHieu").append(rows);
+                });
+            },
+            error: function (ex) {
+                alert("Error: " + ex.statusText);
+            }
+        });
+    }
+    function getLichSu() {
         $("#vLichSu div").remove();
         $.ajax({
             type: 'POST',
             url: '/QLDHN/getLichSu_sDHN/',
             dataType: 'json',
-            data: { Ngay: $("#NgayXem").val() },
+            data: { Ngay: $("#NgayXemLichSu").val() },
             success: function (data) {
                 var items = '';
                 $.each(data, function (i, item) {
@@ -45,7 +83,7 @@
                         rows += "                    <div class='h5 mb-0 font-weight-bold text-gray-800'>" + itemC.SoLuong + "</div>"
                         rows += "                </div>"
                         rows += "                <div class='col-auto'>"
-                        rows += "                       <a href='@Url.Action("ExportData", "QLDHN")?function=" + itemC.NoiDung + "&Ngay=" + item.ThoiGian + "' class='elements'>"
+                        rows += "                       <a href='@Url.Action("ExportData", "QLDHN")?function1=LichSu&function2=" + itemC.NoiDung + "&Ngay=" + item.ThoiGian + "' class='elements'>"
                         rows += "                            <span>Excel</span>"
                         rows += "                        </a>"
                         rows += "                </div>"
@@ -84,7 +122,7 @@
                                 <div class="h5 mb-0 font-weight-bold text-gray-800">@mView.SoLuong</div>
                             </div>
                             <div class="col-auto">
-                                <i class="glyphicon glyphicon-dashboard fa-2x text-primary"></i>
+                                <i class="glyphicon glyphicon-dashboard fa-2x text-primary" style="font-size:40px;"></i>
                             </div>
                         </div>
                     </div>
@@ -94,14 +132,25 @@
     </div>
 </div>
 
+<div class="container mt-3 py-2 rounded-3 shadow-sm">
+    <h3>Danh sách ĐHN không tín hiệu</h3>
+    <input class="datepicker form-control" type="text" id="NgayXemKhongTinHieu" name="NgayXemKhongTinHieu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem>
+    <input class="form-control" type="text" id="SoNgayKhongTinHieu" name="SoNgayKhongTinHieu" placeholder="Số Ngày" value="3" onchange="getKhongTinHieu()">
+
+    <div id="vKhongTinHieu" class="row mt-2">
+
+    </div>
+</div>
+
 @*@using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
     {*@
 <div class="container mt-3 py-2 rounded-3 shadow-sm">
-    <h3>Lịch sử 7 ngày gần nhất</h3>
+    <div>
+        <h3>Lịch sử 7 ngày gần nhất</h3>
 
-    <input class="datepicker form-control" type="text" id="NgayXem" name="NgayXem" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getLichSu()">
-
-    <div id="vLichSu">
+        <input class="datepicker form-control" type="text" id="NgayXemLichSu" name="NgayXemLichSu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getLichSu()">
+    </div>
+    <div id="vLichSu" class="row">
         @*@foreach (var mView in ViewBag.vLichSu)
             {
                 <div class="container mt-3 py-2 rounded-3 shadow-sm">
@@ -165,7 +214,7 @@
                     <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3" name="action" value="Xem">Xem</button>
+                    <button type="submit" class="btn btn-primary mb-3" name="function" value="Xem">Xem</button>
                 </div>
             </div>
         }
