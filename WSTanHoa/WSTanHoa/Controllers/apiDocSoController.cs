@@ -252,7 +252,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN where Valid=1 order by a.DanhBo");
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select DanhBo,IDNCC from sDHN where Valid=1 order by DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))
@@ -292,7 +292,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.cheksum == checksum)
                 {
-                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select a.DanhBo,IDNCC from sDHN where Valid=1 order by a.DanhBo");
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select DanhBo,IDNCC from sDHN where Valid=1 order by DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
                     {
                         switch (int.Parse(dt.Rows[i]["IDNCC"].ToString()))

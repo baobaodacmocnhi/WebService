@@ -360,58 +360,66 @@ namespace WSTanHoa.Controllers
 
         public ActionResult ExportData(string function1, string function2, string SoNgay, string Ngay)
         {
-            DataTable dt = new DataTable();
-            DateTime date = DateTime.Parse(Ngay);
-            string filename = "";
-            if (function1 == "KhongTinHieu")
+            try
             {
-                dt = getDS_sDHN_KhongTinHieu("export", function2, SoNgay, Ngay);
-                dt.TableName = "Không Tín Hiệu";
-                filename = dt.TableName + "." + Ngay.Replace("/", ".");
-            }
-            else
-                if (function1 == "LichSu")
-            {
-                if (function2 == "0")
+                DataTable dt = new DataTable();
+                string[] datestr = Ngay.Split('/');
+                DateTime date = new DateTime(int.Parse(datestr[2]), int.Parse(datestr[1]), int.Parse(datestr[0]));
+                string filename = "";
+                if (function1 == "KhongTinHieu")
                 {
-                    dt = getDS_sDHN_KhongTinHieu("export", date);
+                    dt = getDS_sDHN_KhongTinHieu("export", function2, SoNgay, Ngay);
+                    dt.TableName = "Không Tín Hiệu";
+                    filename = dt.TableName + "." + Ngay.Replace("/", ".");
                 }
                 else
-                if (function2 == "1")
+                    if (function1 == "LichSu")
                 {
-                    dt = getDS_sDHN_BatThuong("export", date);
+                    if (function2 == "0")
+                    {
+                        dt = getDS_sDHN_KhongTinHieu("export", date);
+                    }
+                    else
+                    if (function2 == "1")
+                    {
+                        dt = getDS_sDHN_BatThuong("export", date);
+                    }
+                    else
+                    if (function2 == "2")
+                    {
+                        dt = getDS_sDHN_BinhThuong("export", date);
+                    }
+                    dt.TableName = dt.Rows[0]["Loai"].ToString();
+                    filename = dt.Rows[0]["Loai"].ToString() + "." + dt.Rows[0]["ThoiGian"].ToString().Replace("/", ".");
                 }
-                else
-                if (function2 == "2")
-                {
-                    dt = getDS_sDHN_BinhThuong("export", date);
-                }
-                dt.TableName = dt.Rows[0]["Loai"].ToString();
-                filename = dt.Rows[0]["Loai"].ToString() + "." + dt.Rows[0]["ThoiGian"].ToString().Replace("/", ".");
-            }
 
-            using (XLWorkbook wb = new XLWorkbook())
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(dt);
+                    wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    wb.Style.Font.Bold = true;
+
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.ContentType = "application/vnd.ms-excel";
+                    Response.AddHeader("content-disposition", "attachment;filename= TanHoa.sDHN." + filename + ".xlsx");
+
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+                }
+                return RedirectToAction("Index", "QLDHN");
+            }
+            catch (Exception ex)
             {
-                wb.Worksheets.Add(dt);
-                wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
-                wb.Style.Font.Bold = true;
-
-                Response.Clear();
-                Response.Buffer = true;
-                Response.Charset = "";
-                Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-                Response.ContentType = "application/vnd.ms-excel";
-                Response.AddHeader("content-disposition", "attachment;filename= TanHoa.sDHN." + filename + ".xlsx");
-
-                using (MemoryStream MyMemoryStream = new MemoryStream())
-                {
-                    wb.SaveAs(MyMemoryStream);
-                    MyMemoryStream.WriteTo(Response.OutputStream);
-                    Response.Flush();
-                    Response.End();
-                }
+                return Content("<script language='javascript' type='text/javascript'>alert('" + ex.Message + "');</script>");
             }
-            return RedirectToAction("Index", "QLDHN");
         }
 
         public Bitmap resizeImage(Image image, int width, int height)
