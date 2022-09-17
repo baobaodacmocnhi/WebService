@@ -1276,7 +1276,7 @@ namespace WSTanHoa.Controllers
                         + " ,NgayLap=NgayMN from TT_KQDongNuoc where DanhBo = '" + DanhBo + "' and MoNuoc = 1"
                         + " union all"
                         + " select NoiDung=N'Thương Vụ bấm chì: '+CONVERT(varchar(10),NgayBC,103)+' '+CONVERT(varchar(10),NgayBC,108)"
-                        + " ,NiemChi,MauSac,KhoaTu='false',KhoaKhac='false',NgayLap=NgayBC from server11.KTKS_DonKH.dbo.BamChi_ChiTiet where DanhBo = '" + DanhBo + "'"
+                        + " ,NiemChi,MauSac,KhoaTu='false',KhoaKhac='false',NgayLap=NgayBC from KTKS_DonKH.dbo.BamChi_ChiTiet where DanhBo = '" + DanhBo + "'"
                         + " order by NgayLap desc";
             return cDAL_ThuTien.ExecuteQuery_DataTable(sql);
         }
