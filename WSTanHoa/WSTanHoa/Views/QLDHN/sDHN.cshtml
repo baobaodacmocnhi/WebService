@@ -106,7 +106,7 @@
 
 <div class="container py-2 rounded-3 shadow-sm">
     <div class="row py-2">
-        <h3>@ViewBag.Title : <span class="text-danger">@ViewBag.SoLuong</span> </h3>
+        <h3 class="text-primary">@ViewBag.Title : <span class="text-danger">@ViewBag.SoLuong</span> </h3>
     </div>
     <div class="row">
         @foreach (var mView in ViewBag.vTong)
@@ -130,11 +130,63 @@
             </div>
         }
     </div>
+@using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
+{
+    <div class="row">
+        <div class="row pt-3 px-3">
+            <div class="col-auto">
+                <div class="row">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radLoai" value="radDMA">
+                            <label class="form-check-label" for="radDMA">
+                                DMA
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="col">
+                            @Html.DropDownList("DMA", new SelectList(ViewBag.DMA, "Value", "Text"))
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row pt-3">
+                    <div class="col">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radLoai" value="radNCC" checked>
+                            <label class="form-check-label" for="radNCC">
+                                NCC
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="col">
+                            @Html.DropDownList("NCC", new SelectList(ViewBag.NCC, "Value", "Text"))
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row pt-3 px-3">
+            <div class="col-auto">
+                <input class="form-control" type="text" id="KyHD" name="KyHD" placeholder="Kỳ HĐ" autocomplete="off">9/2022;10/2022;11/2022
+                <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
+                <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
+                <input class="form-control" type="text" id="Hour" name="Hour" placeholder="Giờ" autocomplete="off">không nhập giờ sẽ là đếm record
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3" name="function" value="Excel">Excel</button>
+            </div>
+        </div>
+    </div>
+}
 </div>
 
 <div class="container mt-3 py-2 rounded-3 shadow-sm">
-    <h3>Danh sách ĐHN không tín hiệu</h3>
-    <input class="datepicker form-control" type="text" id="NgayXemKhongTinHieu" name="NgayXemKhongTinHieu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem>
+    <h3 class="text-primary">Danh sách ĐHN không tín hiệu</h3>
+    <input class="datepicker form-control" type="text" id="NgayXemKhongTinHieu" name="NgayXemKhongTinHieu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getKhongTinHieu()">
     <input class="form-control" type="text" id="SoNgayKhongTinHieu" name="SoNgayKhongTinHieu" placeholder="Số Ngày" value="3" onchange="getKhongTinHieu()">
 
     <div id="vKhongTinHieu" class="row mt-2">
@@ -146,7 +198,7 @@
     {*@
 <div class="container mt-3 py-2 rounded-3 shadow-sm">
     <div>
-        <h3>Lịch sử 7 ngày gần nhất</h3>
+        <h3 class="text-primary">Lịch sử 7 ngày gần nhất</h3>
 
         <input class="datepicker form-control" type="text" id="NgayXemLichSu" name="NgayXemLichSu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getLichSu()">
     </div>

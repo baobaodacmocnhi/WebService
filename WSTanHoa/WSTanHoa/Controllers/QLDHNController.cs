@@ -1,4 +1,5 @@
 ﻿using ClosedXML.Excel;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -84,8 +85,9 @@ namespace WSTanHoa.Controllers
 
                     Image image = Image.FromStream(Hinh.InputStream);
                     Bitmap resizedImage = resizeImage(image, 0.5m);
-                    SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo,Hinh)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ",@Hinh)");
-                    command.Parameters.Add("@Hinh", SqlDbType.Image).Value = ImageToByte(resizedImage);
+                    SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ")");
+                    //SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo,Hinh)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ",@Hinh)");
+                    //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = ImageToByte(resizedImage);
                     bool result = cDAL_DocSo.ExecuteNonQuery(command);
                     wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
                     string jsonresult = wsDHN.ghiChiSo(drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString(), "40", ChiSo, Convert.ToBase64String(ImageToByte(resizedImage)), int.Parse(drLich["Dot"].ToString()).ToString("00"), "Chủ Báo", "0");
@@ -114,15 +116,40 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
-        public ActionResult sDHN(string function, string TuNgay, string DenNgay, string NgayXem)
+        [NonAction]
+        public SelectList ToSelectList(DataTable table, string valueField, string textField)
         {
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                list.Add(new SelectListItem()
+                {
+                    Text = row[textField].ToString(),
+                    Value = row[valueField].ToString()
+                });
+            }
+
+            return new SelectList(list, "Value", "Text");
+        }
+
+        public ActionResult sDHN(FormCollection collection, string function, string TuNgay, string DenNgay, string NgayXem)
+        {
+            DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from sDHN_NCC");
+            ViewBag.NCC = ToSelectList(dtNCC, "ID", "Name");
+            dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select DMA=MADMA from sDHN sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+                 + " where Valid = 1 and sdhn.DanhBo = ttkh.DANHBO"
+                 + " group by MADMA"
+                 + " order by MADMA");
+            ViewBag.DMA = ToSelectList(dtNCC, "DMA", "DMA");
+
             object soluong = cDAL_sDHN.ExecuteQuery_ReturnOneValue("select SoLuong=COUNT(*) from sDHN_NCC a,sDHN b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
                                     + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1");
             ViewBag.SoLuong = soluong;
-            DataTable dt = cDAL_sDHN.ExecuteQuery_DataTable("select Name,SoLuong=COUNT(*) from sDHN_NCC a,sDHN b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
+            DataTable dt = cDAL_sDHN.ExecuteQuery_DataTable("select b.IDNCC,Name,SoLuong=COUNT(*) from sDHN_NCC a,sDHN b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
                                     + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
-                                    + " group by Name"
-                                    + " order by SoLuong");
+                                    + " group by IDNCC,Name"
+                                    + " order by IDNCC");
             List<MView> vTong = new List<MView>();
             foreach (DataRow item in dt.Rows)
             {
@@ -174,10 +201,77 @@ namespace WSTanHoa.Controllers
             //    vLichSu.Add(enLichSu);
             //}
             //ViewBag.vLichSu = vLichSu;
-            if (function == "Xem" && TuNgay != "" && DenNgay != "")
+            if (function == "Excel")
             {
-                DateTime dateTu = DateTime.Parse(TuNgay), dateDen = DateTime.Parse(DenNgay);
+                string sql = "select ttkh.DanhBo,DiaChi=SoNha+' '+TenDuong,HoTen,MaDMA,CoDHN=CoDH,Hieu_DHTM,Loai_DHTM,SoThanDH,KieuPhatSong,IDLogger"
+                    + ",DVLAPDAT,NHA_CCDHN,NHA_TICHHOP,XUATXU,NGAYKIEMDINH = CONVERT(varchar(10), NGAYKIEMDINH, 103),NGAYTHAY = CONVERT(varchar(10), NGAYTHAY, 103)";
+                if (collection["KyHD"].ToString() == "")
+                {
+                    string[] fromdatestr = collection["TuNgay"].ToString().Split('/');
+                    DateTime fromdate = new DateTime(int.Parse(fromdatestr[2]), int.Parse(fromdatestr[1]), int.Parse(fromdatestr[0]));
+                    string[] todatestr = collection["DenNgay"].ToString().Split('/');
+                    DateTime todate = new DateTime(int.Parse(todatestr[2]), int.Parse(todatestr[1]), int.Parse(todatestr[0]));
+                    if (collection["Hour"].ToString() == "")
+                    {
+                        while (fromdate.Date <= todate.Date)
+                        {
+                            sql += ",'" + fromdate.ToString("dd/MM/yyyy") + "'=(select count(DanhBo) from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)='" + fromdate.ToString("yyyyMMdd") + "')";
+                            fromdate = fromdate.AddDays(1);
+                        }
+                    }
+                    else
+                    {
+                        while (fromdate.Date <= todate.Date)
+                        {
+                            sql += ",ChiSo=(select top 1 ChiSo from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)='" + fromdate.ToString("yyyyMMdd") + "' and DATEPART(HOUR, ThoiGianCapNhat)=" + collection["Hour"].ToString() + ")"
+                            + ",ThoiGian=(select top 1 ThoiGianCapNhat from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)='" + fromdate.ToString("yyyyMMdd") + "' and DATEPART(HOUR, ThoiGianCapNhat)=" + collection["Hour"].ToString() + ")";
+                            fromdate = fromdate.AddDays(1);
+                        }
+                    }
+                }
+                else
+                {
+                    string[] KyHDs = collection["KyHD"].ToString().Split('/');
+                    sql += ",CSDocSo=(select CSMoi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + ")"
+                        + ",ThoiGianDocSo=(select GioGhi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + ")"
+                        + ",CSsDHN=(select top 1 ChiSo from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)=(select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + ") and DATEPART(HOUR, ThoiGianCapNhat)=(select DATEPART(HOUR, gioghi) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + "))"
+                        + ",ThoiGiansDHN=(select top 1 ThoiGianCapNhat from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)=(select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + ") and DATEPART(HOUR, ThoiGianCapNhat)=(select DATEPART(HOUR, gioghi) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + "))";
+                }
+                sql += " from sDHN sdhn,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+                    + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo=ttkh.DANHBO";
+                if (collection["radLoai"].ToString() == "radNCC")
+                {
+                    sql += " and sdhn.IDNCC=" + collection["NCC"].ToString();
+                }
+                else
+                    if (collection["radLoai"].ToString() == "radDMA")
+                {
+                    sql += " and madma='" + collection["DMA"].ToString() + "'";
+                }
+                sql += " order by IDNCC";
+                dt = cDAL_sDHN.ExecuteQuery_DataTable(sql);
+                dt.TableName = "Tân Hòa";
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(dt);
+                    wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    wb.Style.Font.Bold = true;
 
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.ContentType = "application/vnd.ms-excel";
+                    Response.AddHeader("content-disposition", "attachment;filename= TanHoa.sDHN.xlsx");
+
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+                }
             }
             return View();
         }
@@ -232,7 +326,7 @@ namespace WSTanHoa.Controllers
                 sql += ")t1,sDHN_NCC ncc"
                         + " where t1.SoLuong = 0 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
                         + " group by IDNCC,ncc.Name,t1.DanhBo"
-                        + " having COUNT(t1.DanhBo) = 3"
+                        + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " )t1,DHTM_THONGTIN ttsdhn,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                         + " where t1.IDNCC=ttsdhn.ID and t1.DanhBo=ttkh.DANHBO";
             }
@@ -251,7 +345,7 @@ namespace WSTanHoa.Controllers
                 sql += ")t1,sDHN_NCC ncc"
                         + " where t1.SoLuong = 0 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
                         + " group by IDNCC,ncc.Name,t1.DanhBo"
-                        + " having COUNT(t1.DanhBo) = 3"
+                        + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " order by IDNCC";
             }
             return cDAL_sDHN.ExecuteQuery_DataTable(sql);

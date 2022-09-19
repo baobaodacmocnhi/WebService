@@ -486,7 +486,7 @@ namespace WSTanHoa.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public DataTable getLichThuTien_Func_SQL(string DanhBo, string MLT)
         {
-            string sql_Lich = "WITH temp AS (select top 2 KY,NAM from [SERVER9].[HOADON_TA].[dbo].[HOADON] where DANHBA='" + DanhBo + "' order by ID_HOADON desc)"
+            string sql_Lich = "WITH temp AS (select top 2 KY,NAM from [HOADON_TA].[dbo].[HOADON] where DANHBA='" + DanhBo + "' order by ID_HOADON desc)"
                                    + " select distinct NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được thu tiền từ ngày '+CONVERT(varchar(10),b.NgayThuTien_From,103)+N' đến ngày '+CONVERT(varchar(10),b.NgayThuTien_To,103)"
                                    + " ,NgayThuTien_From,NgayThuTien_To"
                                    + " from Lich_ThuTien a,Lich_ThuTien_ChiTiet b,Lich_Dot c,temp where a.ID=b.IDThuTien and c.ID=b.IDDot and ((a.Nam>temp.Nam) or (a.Nam=temp.Nam and a.Ky>=temp.Ky))"

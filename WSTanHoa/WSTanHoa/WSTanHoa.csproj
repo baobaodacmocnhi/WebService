@@ -2159,10 +2159,10 @@
     <Content Include="Template\SBAdmin2\js\demo\datatables-demo.js" />
     <Content Include="Template\SBAdmin2\js\sb-admin-2.js" />
     <Content Include="Template\SBAdmin2\js\sb-admin-2.min.js" />
-    <Content Include="Web References\wrThuongVu\Reference.map">
+    <None Include="Web References\wrThuongVu\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Views\BauCu\BCH_View.cshtml" />
     <Content Include="Views\BauCu\BiThu_View.cshtml" />
     <Content Include="Views\BauCu\DaiBieuChinhThuc_View.cshtml" />
@@ -2233,20 +2233,20 @@
     <Content Include="Views\HDSD\BaoCao.cshtml" />
     <Content Include="Views\QLDHN\sDHN.cshtml" />
     <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
-    <Content Include="Web References\wrThuTien\Reference.map">
+    <None Include="Web References\wrThuTien\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="Views\ThuongVu\DangKyDinhMuc.cshtml" />
     <Content Include="Views\BauCu\BCH.cshtml" />
     <Content Include="Views\BauCu\BiThu.cshtml" />
     <Content Include="Views\BauCu\DaiBieuChinhThuc.cshtml" />
     <None Include="Web References\wrThuongVu\wsthuongvu.wsdl" />
     <None Include="Web References\wrThuTien\wsthutien.disco" />
-    <Content Include="Web References\wrDHN\Reference.map">
+    <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Web References\wrDHN\wsdhn.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -2293,10 +2293,10 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://113.161.88.180:81/wsthutien.asmx">
+    <WebReferenceUrl Include="http://server5:81/wsthutien.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\wrThuTien\</RelPath>
-      <UpdateFromURL>http://113.161.88.180:81/wsthutien.asmx</UpdateFromURL>
+      <UpdateFromURL>http://server5:81/wsthutien.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -2304,10 +2304,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>WSTanHoa_wrThuTien_wsThuTien</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://192.168.90.11:81/wsdhn.asmx">
+    <WebReferenceUrl Include="http://server5:81/wsdhn.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\wrDHN\</RelPath>
-      <UpdateFromURL>http://192.168.90.11:81/wsdhn.asmx</UpdateFromURL>
+      <UpdateFromURL>http://server5:81/wsdhn.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -2315,10 +2315,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>WSTanHoa_wrDHN_wsDHN</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://serverg8-01:81/wsthuongvu.asmx">
+    <WebReferenceUrl Include="http://server5:81/wsthuongvu.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\wrThuongVu\</RelPath>
-      <UpdateFromURL>http://serverg8-01:81/wsthuongvu.asmx</UpdateFromURL>
+      <UpdateFromURL>http://server5:81/wsthuongvu.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

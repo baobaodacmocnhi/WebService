@@ -198,7 +198,7 @@ namespace WSTanHoa.Controllers
                                     + " ,'Tiền Nước Cũ' = TienNuoc_Start,'Thuế GTGT Cũ' = ThueGTGT_Start,'Phí BVMT Cũ' = PhiBVMT_Start,'Tổng Cộng Cũ' = TongCong_Start"
                                     + " ,'Giá Biểu Mới' = GiaBieu_BD,'Định Mức Mới' = DinhMuc_BD,'Tiêu Thụ Mới' = TieuThu_BD"
                                     + " ,'Tiền Nước Mới' = TienNuoc_End,'Thuế GTGT Mới' = ThueGTGT_End,'Phí BVMT Mới' = PhiBVMT_End,'Tổng Cộng Mới' = TongCong_End"
-                                    + " from HOADON hd,[SERVER11].[KTKS_DonKH].[dbo].[DCBD_ChiTietHoaDon] ctdchd"
+                                    + " from HOADON hd,[KTKS_DonKH].[dbo].[DCBD_ChiTietHoaDon] ctdchd"
                                     + " where hd.BaoCaoThue=1 and CAST(NGAYGIAITRACH as date)='" + DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null"
                                     + " and hd.DANHBA=ctdchd.DanhBo and hd.NAM= ctdchd.Nam and hd.Ky= ctdchd.Ky";
                         DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);

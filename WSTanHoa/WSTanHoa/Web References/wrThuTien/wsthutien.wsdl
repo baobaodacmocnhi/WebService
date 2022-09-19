@@ -165,6 +165,16 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="getDS_Nam">
+        <s:complexType />
+      </s:element>
+      <s:element name="getDS_NamResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDS_NamResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="SendNotificationToClient">
         <s:complexType>
           <s:sequence>
@@ -380,6 +390,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="ButChi" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="KhoaTu" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="NiemChi" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MauSac" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="KhoaKhac" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="KhoaKhac_GhiChu" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="Hieu" type="s:string" />
@@ -431,6 +442,7 @@
             <s:element minOccurs="0" maxOccurs="1" name="ButChi" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="KhoaTu" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="NiemChi" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MauSac" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="KhoaKhac" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="KhoaKhac_GhiChu" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="CreateBy" type="s:string" />
@@ -465,6 +477,8 @@
             <s:element minOccurs="0" maxOccurs="1" name="HinhMN" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="NgayMN" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="ChiSoMN" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="NiemChi" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MauSac" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="CreateBy" type="s:string" />
           </s:sequence>
         </s:complexType>
@@ -798,6 +812,22 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="syncThanhToan_01072022">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="MaHD" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="GiaiTrach" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="IDTemp_SyncHoaDon" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="syncThanhToan_01072022Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="syncThanhToan_01072022Result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="syncThanhToan">
         <s:complexType>
           <s:sequence>
@@ -827,6 +857,20 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="syncThanhToan_ThuHoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="syncNopTien_01072022">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="MaHD" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="syncNopTien_01072022Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="syncNopTien_01072022Result" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -950,30 +994,38 @@
             <s:element minOccurs="1" maxOccurs="1" name="TongDinhMuc" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="DinhMucHN" type="s:int" />
             <s:element minOccurs="1" maxOccurs="1" name="TieuThu" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="TienNuocCu" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="ChiTietCu" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="TienNuocMoi" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="ChiTietMoi" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TienNuocNamCu" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChiTietNamCu" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TienNuocNamMoi" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChiTietNamMoi" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="TieuThu_DieuChinhGia" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="PhiBVMTCu" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="ChiTietPhiBVMTCu" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="PhiBVMTMoi" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="ChiTietPhiBVMTMoi" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PhiBVMTNamCu" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChiTietPhiBVMTNamCu" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PhiBVMTNamMoi" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChiTietPhiBVMTNamMoi" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TienNuoc" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ThueGTGT" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="TDVTN" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ThueTDVTN" type="s:int" />
           </s:sequence>
         </s:complexType>
       </s:element>
       <s:element name="TinhTienNuocResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" name="TienNuocCu" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="ChiTietCu" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="TienNuocMoi" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="ChiTietMoi" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TienNuocNamCu" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChiTietNamCu" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TienNuocNamMoi" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChiTietNamMoi" type="s:string" />
             <s:element minOccurs="1" maxOccurs="1" name="TieuThu_DieuChinhGia" type="s:int" />
-            <s:element minOccurs="1" maxOccurs="1" name="PhiBVMTCu" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="ChiTietPhiBVMTCu" type="s:string" />
-            <s:element minOccurs="1" maxOccurs="1" name="PhiBVMTMoi" type="s:int" />
-            <s:element minOccurs="0" maxOccurs="1" name="ChiTietPhiBVMTMoi" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PhiBVMTNamCu" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChiTietPhiBVMTNamCu" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="PhiBVMTNamMoi" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ChiTietPhiBVMTNamMoi" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="TienNuoc" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ThueGTGT" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="TDVTN" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ThueTDVTN" type="s:int" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -1050,6 +1102,12 @@
   </wsdl:message>
   <wsdl:message name="getDS_NhanVienSoapOut">
     <wsdl:part name="parameters" element="tns:getDS_NhanVienResponse" />
+  </wsdl:message>
+  <wsdl:message name="getDS_NamSoapIn">
+    <wsdl:part name="parameters" element="tns:getDS_Nam" />
+  </wsdl:message>
+  <wsdl:message name="getDS_NamSoapOut">
+    <wsdl:part name="parameters" element="tns:getDS_NamResponse" />
   </wsdl:message>
   <wsdl:message name="SendNotificationToClientSoapIn">
     <wsdl:part name="parameters" element="tns:SendNotificationToClient" />
@@ -1273,6 +1331,12 @@
   <wsdl:message name="chotDangNganSoapOut">
     <wsdl:part name="parameters" element="tns:chotDangNganResponse" />
   </wsdl:message>
+  <wsdl:message name="syncThanhToan_01072022SoapIn">
+    <wsdl:part name="parameters" element="tns:syncThanhToan_01072022" />
+  </wsdl:message>
+  <wsdl:message name="syncThanhToan_01072022SoapOut">
+    <wsdl:part name="parameters" element="tns:syncThanhToan_01072022Response" />
+  </wsdl:message>
   <wsdl:message name="syncThanhToanSoapIn">
     <wsdl:part name="parameters" element="tns:syncThanhToan" />
   </wsdl:message>
@@ -1284,6 +1348,12 @@
   </wsdl:message>
   <wsdl:message name="syncThanhToan_ThuHoSoapOut">
     <wsdl:part name="parameters" element="tns:syncThanhToan_ThuHoResponse" />
+  </wsdl:message>
+  <wsdl:message name="syncNopTien_01072022SoapIn">
+    <wsdl:part name="parameters" element="tns:syncNopTien_01072022" />
+  </wsdl:message>
+  <wsdl:message name="syncNopTien_01072022SoapOut">
+    <wsdl:part name="parameters" element="tns:syncNopTien_01072022Response" />
   </wsdl:message>
   <wsdl:message name="syncNopTienSoapIn">
     <wsdl:part name="parameters" element="tns:syncNopTien" />
@@ -1381,6 +1451,10 @@
     <wsdl:operation name="getDS_NhanVien">
       <wsdl:input message="tns:getDS_NhanVienSoapIn" />
       <wsdl:output message="tns:getDS_NhanVienSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="getDS_Nam">
+      <wsdl:input message="tns:getDS_NamSoapIn" />
+      <wsdl:output message="tns:getDS_NamSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="SendNotificationToClient">
       <wsdl:input message="tns:SendNotificationToClientSoapIn" />
@@ -1530,6 +1604,10 @@
       <wsdl:input message="tns:chotDangNganSoapIn" />
       <wsdl:output message="tns:chotDangNganSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="syncThanhToan_01072022">
+      <wsdl:input message="tns:syncThanhToan_01072022SoapIn" />
+      <wsdl:output message="tns:syncThanhToan_01072022SoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="syncThanhToan">
       <wsdl:input message="tns:syncThanhToanSoapIn" />
       <wsdl:output message="tns:syncThanhToanSoapOut" />
@@ -1537,6 +1615,10 @@
     <wsdl:operation name="syncThanhToan_ThuHo">
       <wsdl:input message="tns:syncThanhToan_ThuHoSoapIn" />
       <wsdl:output message="tns:syncThanhToan_ThuHoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="syncNopTien_01072022">
+      <wsdl:input message="tns:syncNopTien_01072022SoapIn" />
+      <wsdl:output message="tns:syncNopTien_01072022SoapOut" />
     </wsdl:operation>
     <wsdl:operation name="syncNopTien">
       <wsdl:input message="tns:syncNopTienSoapIn" />
@@ -1674,6 +1756,15 @@
     </wsdl:operation>
     <wsdl:operation name="getDS_NhanVien">
       <soap:operation soapAction="http://tempuri.org/getDS_NhanVien" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDS_Nam">
+      <soap:operation soapAction="http://tempuri.org/getDS_Nam" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -2014,6 +2105,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="syncThanhToan_01072022">
+      <soap:operation soapAction="http://tempuri.org/syncThanhToan_01072022" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="syncThanhToan">
       <soap:operation soapAction="http://tempuri.org/syncThanhToan" style="document" />
       <wsdl:input>
@@ -2025,6 +2125,15 @@
     </wsdl:operation>
     <wsdl:operation name="syncThanhToan_ThuHo">
       <soap:operation soapAction="http://tempuri.org/syncThanhToan_ThuHo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="syncNopTien_01072022">
+      <soap:operation soapAction="http://tempuri.org/syncNopTien_01072022" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -2208,6 +2317,15 @@
     </wsdl:operation>
     <wsdl:operation name="getDS_NhanVien">
       <soap12:operation soapAction="http://tempuri.org/getDS_NhanVien" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="getDS_Nam">
+      <soap12:operation soapAction="http://tempuri.org/getDS_Nam" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -2548,6 +2666,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="syncThanhToan_01072022">
+      <soap12:operation soapAction="http://tempuri.org/syncThanhToan_01072022" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="syncThanhToan">
       <soap12:operation soapAction="http://tempuri.org/syncThanhToan" style="document" />
       <wsdl:input>
@@ -2559,6 +2686,15 @@
     </wsdl:operation>
     <wsdl:operation name="syncThanhToan_ThuHo">
       <soap12:operation soapAction="http://tempuri.org/syncThanhToan_ThuHo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="syncNopTien_01072022">
+      <soap12:operation soapAction="http://tempuri.org/syncNopTien_01072022" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -2641,10 +2777,10 @@
   </wsdl:binding>
   <wsdl:service name="wsThuTien">
     <wsdl:port name="wsThuTienSoap" binding="tns:wsThuTienSoap">
-      <soap:address location="http://113.161.88.180:81/wsthutien.asmx" />
+      <soap:address location="http://server5:81/wsthutien.asmx" />
     </wsdl:port>
     <wsdl:port name="wsThuTienSoap12" binding="tns:wsThuTienSoap12">
-      <soap12:address location="http://113.161.88.180:81/wsthutien.asmx" />
+      <soap12:address location="http://server5:81/wsthutien.asmx" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

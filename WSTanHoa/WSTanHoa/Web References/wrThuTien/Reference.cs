@@ -53,6 +53,8 @@ namespace WSTanHoa.wrThuTien {
         
         private System.Threading.SendOrPostCallback getDS_NhanVienOperationCompleted;
         
+        private System.Threading.SendOrPostCallback getDS_NamOperationCompleted;
+        
         private System.Threading.SendOrPostCallback SendNotificationToClientOperationCompleted;
         
         private System.Threading.SendOrPostCallback getDSHoaDonTon_NhanVienOperationCompleted;
@@ -127,9 +129,13 @@ namespace WSTanHoa.wrThuTien {
         
         private System.Threading.SendOrPostCallback chotDangNganOperationCompleted;
         
+        private System.Threading.SendOrPostCallback syncThanhToan_01072022OperationCompleted;
+        
         private System.Threading.SendOrPostCallback syncThanhToanOperationCompleted;
         
         private System.Threading.SendOrPostCallback syncThanhToan_ThuHoOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback syncNopTien_01072022OperationCompleted;
         
         private System.Threading.SendOrPostCallback syncNopTienOperationCompleted;
         
@@ -220,6 +226,9 @@ namespace WSTanHoa.wrThuTien {
         
         /// <remarks/>
         public event getDS_NhanVienCompletedEventHandler getDS_NhanVienCompleted;
+        
+        /// <remarks/>
+        public event getDS_NamCompletedEventHandler getDS_NamCompleted;
         
         /// <remarks/>
         public event SendNotificationToClientCompletedEventHandler SendNotificationToClientCompleted;
@@ -333,10 +342,16 @@ namespace WSTanHoa.wrThuTien {
         public event chotDangNganCompletedEventHandler chotDangNganCompleted;
         
         /// <remarks/>
+        public event syncThanhToan_01072022CompletedEventHandler syncThanhToan_01072022Completed;
+        
+        /// <remarks/>
         public event syncThanhToanCompletedEventHandler syncThanhToanCompleted;
         
         /// <remarks/>
         public event syncThanhToan_ThuHoCompletedEventHandler syncThanhToan_ThuHoCompleted;
+        
+        /// <remarks/>
+        public event syncNopTien_01072022CompletedEventHandler syncNopTien_01072022Completed;
         
         /// <remarks/>
         public event syncNopTienCompletedEventHandler syncNopTienCompleted;
@@ -721,6 +736,33 @@ namespace WSTanHoa.wrThuTien {
             if ((this.getDS_NhanVienCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.getDS_NhanVienCompleted(this, new getDS_NhanVienCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/getDS_Nam", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string getDS_Nam() {
+            object[] results = this.Invoke("getDS_Nam", new object[0]);
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getDS_NamAsync() {
+            this.getDS_NamAsync(null);
+        }
+        
+        /// <remarks/>
+        public void getDS_NamAsync(object userState) {
+            if ((this.getDS_NamOperationCompleted == null)) {
+                this.getDS_NamOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetDS_NamOperationCompleted);
+            }
+            this.InvokeAsync("getDS_Nam", new object[0], this.getDS_NamOperationCompleted, userState);
+        }
+        
+        private void OngetDS_NamOperationCompleted(object arg) {
+            if ((this.getDS_NamCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getDS_NamCompleted(this, new getDS_NamCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -1152,6 +1194,7 @@ namespace WSTanHoa.wrThuTien {
                     string ButChi, 
                     string KhoaTu, 
                     string NiemChi, 
+                    string MauSac, 
                     string KhoaKhac, 
                     string KhoaKhac_GhiChu, 
                     string Hieu, 
@@ -1174,6 +1217,7 @@ namespace WSTanHoa.wrThuTien {
                         ButChi,
                         KhoaTu,
                         NiemChi,
+                        MauSac,
                         KhoaKhac,
                         KhoaKhac_GhiChu,
                         Hieu,
@@ -1200,6 +1244,7 @@ namespace WSTanHoa.wrThuTien {
                     string ButChi, 
                     string KhoaTu, 
                     string NiemChi, 
+                    string MauSac, 
                     string KhoaKhac, 
                     string KhoaKhac_GhiChu, 
                     string Hieu, 
@@ -1210,7 +1255,7 @@ namespace WSTanHoa.wrThuTien {
                     string ViTri, 
                     string LyDo, 
                     string CreateBy) {
-            this.ThemDongNuocAsync(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, NgayDN, ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac, KhoaKhac_GhiChu, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, ViTri, LyDo, CreateBy, null);
+            this.ThemDongNuocAsync(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, NgayDN, ChiSoDN, ButChi, KhoaTu, NiemChi, MauSac, KhoaKhac, KhoaKhac_GhiChu, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, ViTri, LyDo, CreateBy, null);
         }
         
         /// <remarks/>
@@ -1226,6 +1271,7 @@ namespace WSTanHoa.wrThuTien {
                     string ButChi, 
                     string KhoaTu, 
                     string NiemChi, 
+                    string MauSac, 
                     string KhoaKhac, 
                     string KhoaKhac_GhiChu, 
                     string Hieu, 
@@ -1252,6 +1298,7 @@ namespace WSTanHoa.wrThuTien {
                         ButChi,
                         KhoaTu,
                         NiemChi,
+                        MauSac,
                         KhoaKhac,
                         KhoaKhac_GhiChu,
                         Hieu,
@@ -1316,7 +1363,7 @@ namespace WSTanHoa.wrThuTien {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/ThemDongNuoc2", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public bool ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy) {
+        public bool ThemDongNuoc2(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string MauSac, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy) {
             object[] results = this.Invoke("ThemDongNuoc2", new object[] {
                         MaDN,
                         HinhDN,
@@ -1325,6 +1372,7 @@ namespace WSTanHoa.wrThuTien {
                         ButChi,
                         KhoaTu,
                         NiemChi,
+                        MauSac,
                         KhoaKhac,
                         KhoaKhac_GhiChu,
                         CreateBy});
@@ -1332,12 +1380,12 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public void ThemDongNuoc2Async(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy) {
-            this.ThemDongNuoc2Async(MaDN, HinhDN, NgayDN, ChiSoDN, ButChi, KhoaTu, NiemChi, KhoaKhac, KhoaKhac_GhiChu, CreateBy, null);
+        public void ThemDongNuoc2Async(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string MauSac, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy) {
+            this.ThemDongNuoc2Async(MaDN, HinhDN, NgayDN, ChiSoDN, ButChi, KhoaTu, NiemChi, MauSac, KhoaKhac, KhoaKhac_GhiChu, CreateBy, null);
         }
         
         /// <remarks/>
-        public void ThemDongNuoc2Async(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy, object userState) {
+        public void ThemDongNuoc2Async(string MaDN, string HinhDN, string NgayDN, string ChiSoDN, string ButChi, string KhoaTu, string NiemChi, string MauSac, string KhoaKhac, string KhoaKhac_GhiChu, string CreateBy, object userState) {
             if ((this.ThemDongNuoc2OperationCompleted == null)) {
                 this.ThemDongNuoc2OperationCompleted = new System.Threading.SendOrPostCallback(this.OnThemDongNuoc2OperationCompleted);
             }
@@ -1349,6 +1397,7 @@ namespace WSTanHoa.wrThuTien {
                         ButChi,
                         KhoaTu,
                         NiemChi,
+                        MauSac,
                         KhoaKhac,
                         KhoaKhac_GhiChu,
                         CreateBy}, this.ThemDongNuoc2OperationCompleted, userState);
@@ -1392,23 +1441,25 @@ namespace WSTanHoa.wrThuTien {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/ThemMoNuoc", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public bool ThemMoNuoc(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy) {
+        public bool ThemMoNuoc(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string NiemChi, string MauSac, string CreateBy) {
             object[] results = this.Invoke("ThemMoNuoc", new object[] {
                         MaDN,
                         HinhMN,
                         NgayMN,
                         ChiSoMN,
+                        NiemChi,
+                        MauSac,
                         CreateBy});
             return ((bool)(results[0]));
         }
         
         /// <remarks/>
-        public void ThemMoNuocAsync(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy) {
-            this.ThemMoNuocAsync(MaDN, HinhMN, NgayMN, ChiSoMN, CreateBy, null);
+        public void ThemMoNuocAsync(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string NiemChi, string MauSac, string CreateBy) {
+            this.ThemMoNuocAsync(MaDN, HinhMN, NgayMN, ChiSoMN, NiemChi, MauSac, CreateBy, null);
         }
         
         /// <remarks/>
-        public void ThemMoNuocAsync(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string CreateBy, object userState) {
+        public void ThemMoNuocAsync(string MaDN, string HinhMN, string NgayMN, string ChiSoMN, string NiemChi, string MauSac, string CreateBy, object userState) {
             if ((this.ThemMoNuocOperationCompleted == null)) {
                 this.ThemMoNuocOperationCompleted = new System.Threading.SendOrPostCallback(this.OnThemMoNuocOperationCompleted);
             }
@@ -1417,6 +1468,8 @@ namespace WSTanHoa.wrThuTien {
                         HinhMN,
                         NgayMN,
                         ChiSoMN,
+                        NiemChi,
+                        MauSac,
                         CreateBy}, this.ThemMoNuocOperationCompleted, userState);
         }
         
@@ -2092,6 +2145,39 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/syncThanhToan_01072022", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string syncThanhToan_01072022(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon) {
+            object[] results = this.Invoke("syncThanhToan_01072022", new object[] {
+                        MaHD,
+                        GiaiTrach,
+                        IDTemp_SyncHoaDon});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void syncThanhToan_01072022Async(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon) {
+            this.syncThanhToan_01072022Async(MaHD, GiaiTrach, IDTemp_SyncHoaDon, null);
+        }
+        
+        /// <remarks/>
+        public void syncThanhToan_01072022Async(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon, object userState) {
+            if ((this.syncThanhToan_01072022OperationCompleted == null)) {
+                this.syncThanhToan_01072022OperationCompleted = new System.Threading.SendOrPostCallback(this.OnsyncThanhToan_01072022OperationCompleted);
+            }
+            this.InvokeAsync("syncThanhToan_01072022", new object[] {
+                        MaHD,
+                        GiaiTrach,
+                        IDTemp_SyncHoaDon}, this.syncThanhToan_01072022OperationCompleted, userState);
+        }
+        
+        private void OnsyncThanhToan_01072022OperationCompleted(object arg) {
+            if ((this.syncThanhToan_01072022Completed != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.syncThanhToan_01072022Completed(this, new syncThanhToan_01072022CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/syncThanhToan", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public string syncThanhToan(int MaHD, bool GiaiTrach, int IDTemp_SyncHoaDon) {
             object[] results = this.Invoke("syncThanhToan", new object[] {
@@ -2154,6 +2240,35 @@ namespace WSTanHoa.wrThuTien {
             if ((this.syncThanhToan_ThuHoCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.syncThanhToan_ThuHoCompleted(this, new syncThanhToan_ThuHoCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/syncNopTien_01072022", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string syncNopTien_01072022(int MaHD) {
+            object[] results = this.Invoke("syncNopTien_01072022", new object[] {
+                        MaHD});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void syncNopTien_01072022Async(int MaHD) {
+            this.syncNopTien_01072022Async(MaHD, null);
+        }
+        
+        /// <remarks/>
+        public void syncNopTien_01072022Async(int MaHD, object userState) {
+            if ((this.syncNopTien_01072022OperationCompleted == null)) {
+                this.syncNopTien_01072022OperationCompleted = new System.Threading.SendOrPostCallback(this.OnsyncNopTien_01072022OperationCompleted);
+            }
+            this.InvokeAsync("syncNopTien_01072022", new object[] {
+                        MaHD}, this.syncNopTien_01072022OperationCompleted, userState);
+        }
+        
+        private void OnsyncNopTien_01072022OperationCompleted(object arg) {
+            if ((this.syncNopTien_01072022Completed != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.syncNopTien_01072022Completed(this, new syncNopTien_01072022CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -2384,15 +2499,19 @@ namespace WSTanHoa.wrThuTien {
                     int TongDinhMuc, 
                     int DinhMucHN, 
                     int TieuThu, 
-                    ref int TienNuocCu, 
-                    ref string ChiTietCu, 
-                    ref int TienNuocMoi, 
-                    ref string ChiTietMoi, 
+                    ref int TienNuocNamCu, 
+                    ref string ChiTietNamCu, 
+                    ref int TienNuocNamMoi, 
+                    ref string ChiTietNamMoi, 
                     ref int TieuThu_DieuChinhGia, 
-                    ref int PhiBVMTCu, 
-                    ref string ChiTietPhiBVMTCu, 
-                    ref int PhiBVMTMoi, 
-                    ref string ChiTietPhiBVMTMoi) {
+                    ref int PhiBVMTNamCu, 
+                    ref string ChiTietPhiBVMTNamCu, 
+                    ref int PhiBVMTNamMoi, 
+                    ref string ChiTietPhiBVMTNamMoi, 
+                    ref int TienNuoc, 
+                    ref int ThueGTGT, 
+                    ref int TDVTN, 
+                    ref int ThueTDVTN) {
             object[] results = this.Invoke("TinhTienNuoc", new object[] {
                         KhongApGiaGiam,
                         ApGiaNuocCu,
@@ -2411,24 +2530,32 @@ namespace WSTanHoa.wrThuTien {
                         TongDinhMuc,
                         DinhMucHN,
                         TieuThu,
-                        TienNuocCu,
-                        ChiTietCu,
-                        TienNuocMoi,
-                        ChiTietMoi,
+                        TienNuocNamCu,
+                        ChiTietNamCu,
+                        TienNuocNamMoi,
+                        ChiTietNamMoi,
                         TieuThu_DieuChinhGia,
-                        PhiBVMTCu,
-                        ChiTietPhiBVMTCu,
-                        PhiBVMTMoi,
-                        ChiTietPhiBVMTMoi});
-            TienNuocCu = ((int)(results[0]));
-            ChiTietCu = ((string)(results[1]));
-            TienNuocMoi = ((int)(results[2]));
-            ChiTietMoi = ((string)(results[3]));
+                        PhiBVMTNamCu,
+                        ChiTietPhiBVMTNamCu,
+                        PhiBVMTNamMoi,
+                        ChiTietPhiBVMTNamMoi,
+                        TienNuoc,
+                        ThueGTGT,
+                        TDVTN,
+                        ThueTDVTN});
+            TienNuocNamCu = ((int)(results[0]));
+            ChiTietNamCu = ((string)(results[1]));
+            TienNuocNamMoi = ((int)(results[2]));
+            ChiTietNamMoi = ((string)(results[3]));
             TieuThu_DieuChinhGia = ((int)(results[4]));
-            PhiBVMTCu = ((int)(results[5]));
-            ChiTietPhiBVMTCu = ((string)(results[6]));
-            PhiBVMTMoi = ((int)(results[7]));
-            ChiTietPhiBVMTMoi = ((string)(results[8]));
+            PhiBVMTNamCu = ((int)(results[5]));
+            ChiTietPhiBVMTNamCu = ((string)(results[6]));
+            PhiBVMTNamMoi = ((int)(results[7]));
+            ChiTietPhiBVMTNamMoi = ((string)(results[8]));
+            TienNuoc = ((int)(results[9]));
+            ThueGTGT = ((int)(results[10]));
+            TDVTN = ((int)(results[11]));
+            ThueTDVTN = ((int)(results[12]));
         }
         
         /// <remarks/>
@@ -2450,16 +2577,20 @@ namespace WSTanHoa.wrThuTien {
                     int TongDinhMuc, 
                     int DinhMucHN, 
                     int TieuThu, 
-                    int TienNuocCu, 
-                    string ChiTietCu, 
-                    int TienNuocMoi, 
-                    string ChiTietMoi, 
+                    int TienNuocNamCu, 
+                    string ChiTietNamCu, 
+                    int TienNuocNamMoi, 
+                    string ChiTietNamMoi, 
                     int TieuThu_DieuChinhGia, 
-                    int PhiBVMTCu, 
-                    string ChiTietPhiBVMTCu, 
-                    int PhiBVMTMoi, 
-                    string ChiTietPhiBVMTMoi) {
-            this.TinhTienNuocAsync(KhongApGiaGiam, ApGiaNuocCu, DieuChinhGia, GiaDieuChinh, DanhBo, Ky, Nam, TuNgay, DenNgay, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, TienNuocCu, ChiTietCu, TienNuocMoi, ChiTietMoi, TieuThu_DieuChinhGia, PhiBVMTCu, ChiTietPhiBVMTCu, PhiBVMTMoi, ChiTietPhiBVMTMoi, null);
+                    int PhiBVMTNamCu, 
+                    string ChiTietPhiBVMTNamCu, 
+                    int PhiBVMTNamMoi, 
+                    string ChiTietPhiBVMTNamMoi, 
+                    int TienNuoc, 
+                    int ThueGTGT, 
+                    int TDVTN, 
+                    int ThueTDVTN) {
+            this.TinhTienNuocAsync(KhongApGiaGiam, ApGiaNuocCu, DieuChinhGia, GiaDieuChinh, DanhBo, Ky, Nam, TuNgay, DenNgay, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, TienNuocNamCu, ChiTietNamCu, TienNuocNamMoi, ChiTietNamMoi, TieuThu_DieuChinhGia, PhiBVMTNamCu, ChiTietPhiBVMTNamCu, PhiBVMTNamMoi, ChiTietPhiBVMTNamMoi, TienNuoc, ThueGTGT, TDVTN, ThueTDVTN, null);
         }
         
         /// <remarks/>
@@ -2481,15 +2612,19 @@ namespace WSTanHoa.wrThuTien {
                     int TongDinhMuc, 
                     int DinhMucHN, 
                     int TieuThu, 
-                    int TienNuocCu, 
-                    string ChiTietCu, 
-                    int TienNuocMoi, 
-                    string ChiTietMoi, 
+                    int TienNuocNamCu, 
+                    string ChiTietNamCu, 
+                    int TienNuocNamMoi, 
+                    string ChiTietNamMoi, 
                     int TieuThu_DieuChinhGia, 
-                    int PhiBVMTCu, 
-                    string ChiTietPhiBVMTCu, 
-                    int PhiBVMTMoi, 
-                    string ChiTietPhiBVMTMoi, 
+                    int PhiBVMTNamCu, 
+                    string ChiTietPhiBVMTNamCu, 
+                    int PhiBVMTNamMoi, 
+                    string ChiTietPhiBVMTNamMoi, 
+                    int TienNuoc, 
+                    int ThueGTGT, 
+                    int TDVTN, 
+                    int ThueTDVTN, 
                     object userState) {
             if ((this.TinhTienNuocOperationCompleted == null)) {
                 this.TinhTienNuocOperationCompleted = new System.Threading.SendOrPostCallback(this.OnTinhTienNuocOperationCompleted);
@@ -2512,15 +2647,19 @@ namespace WSTanHoa.wrThuTien {
                         TongDinhMuc,
                         DinhMucHN,
                         TieuThu,
-                        TienNuocCu,
-                        ChiTietCu,
-                        TienNuocMoi,
-                        ChiTietMoi,
+                        TienNuocNamCu,
+                        ChiTietNamCu,
+                        TienNuocNamMoi,
+                        ChiTietNamMoi,
                         TieuThu_DieuChinhGia,
-                        PhiBVMTCu,
-                        ChiTietPhiBVMTCu,
-                        PhiBVMTMoi,
-                        ChiTietPhiBVMTMoi}, this.TinhTienNuocOperationCompleted, userState);
+                        PhiBVMTNamCu,
+                        ChiTietPhiBVMTNamCu,
+                        PhiBVMTNamMoi,
+                        ChiTietPhiBVMTNamMoi,
+                        TienNuoc,
+                        ThueGTGT,
+                        TDVTN,
+                        ThueTDVTN}, this.TinhTienNuocOperationCompleted, userState);
         }
         
         private void OnTinhTienNuocOperationCompleted(object arg) {
@@ -2848,6 +2987,32 @@ namespace WSTanHoa.wrThuTien {
         private object[] results;
         
         internal getDS_NhanVienCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void getDS_NamCompletedEventHandler(object sender, getDS_NamCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class getDS_NamCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal getDS_NamCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -3825,6 +3990,32 @@ namespace WSTanHoa.wrThuTien {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void syncThanhToan_01072022CompletedEventHandler(object sender, syncThanhToan_01072022CompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class syncThanhToan_01072022CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal syncThanhToan_01072022CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void syncThanhToanCompletedEventHandler(object sender, syncThanhToanCompletedEventArgs e);
     
     /// <remarks/>
@@ -3862,6 +4053,32 @@ namespace WSTanHoa.wrThuTien {
         private object[] results;
         
         internal syncThanhToan_ThuHoCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void syncNopTien_01072022CompletedEventHandler(object sender, syncNopTien_01072022CompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class syncNopTien_01072022CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal syncNopTien_01072022CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -4075,7 +4292,7 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public int TienNuocCu {
+        public int TienNuocNamCu {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((int)(this.results[0]));
@@ -4083,7 +4300,7 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public string ChiTietCu {
+        public string ChiTietNamCu {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[1]));
@@ -4091,7 +4308,7 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public int TienNuocMoi {
+        public int TienNuocNamMoi {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((int)(this.results[2]));
@@ -4099,7 +4316,7 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public string ChiTietMoi {
+        public string ChiTietNamMoi {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[3]));
@@ -4115,7 +4332,7 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public int PhiBVMTCu {
+        public int PhiBVMTNamCu {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((int)(this.results[5]));
@@ -4123,7 +4340,7 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public string ChiTietPhiBVMTCu {
+        public string ChiTietPhiBVMTNamCu {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[6]));
@@ -4131,7 +4348,7 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public int PhiBVMTMoi {
+        public int PhiBVMTNamMoi {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((int)(this.results[7]));
@@ -4139,10 +4356,42 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        public string ChiTietPhiBVMTMoi {
+        public string ChiTietPhiBVMTNamMoi {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string)(this.results[8]));
+            }
+        }
+        
+        /// <remarks/>
+        public int TienNuoc {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((int)(this.results[9]));
+            }
+        }
+        
+        /// <remarks/>
+        public int ThueGTGT {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((int)(this.results[10]));
+            }
+        }
+        
+        /// <remarks/>
+        public int TDVTN {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((int)(this.results[11]));
+            }
+        }
+        
+        /// <remarks/>
+        public int ThueTDVTN {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((int)(this.results[12]));
             }
         }
     }
