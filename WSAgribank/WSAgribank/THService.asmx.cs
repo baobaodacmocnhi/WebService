@@ -53,7 +53,7 @@ namespace WSAgribank
             + " and ID_HOADON not in (select distinct FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and SoPhieu is null)"
             //+ " and ID_HOADON not in (select distinct FK_HOADON from DIEUCHINH_HD,HOADON where NGAYGIAITRACH is null and ID_HOADON=FK_HOADON and SoHoaDonMoi is null and (SoPhieu is null or CAST(Ngay_DC as date)<'20220701' or (NAM<2022 or (NAM=2022 and KY<5))))"
             + " )t1"
-            //+ " where DANHBA not in (select DanhBo from server11.KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from server11.KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
+            //+ " where DANHBA not in (select DanhBo from KTKS_DonKH.dbo.DonTu_ChiTiet dtct where ChanHoaDon=1 and not exists(select ID from KTKS_DonKH.dbo.DonTu_LichSu where MaDon=dtct.MaDon and (ID_NoiNhan=20 or (ID_NoiChuyen=6 and IDCT is not null))))"
             + " ORDER BY NamHD DESC, KyHD DESC ";
             DataSet ds = _cDAL.ExecuteQuery_DataSet(sql);
             int PhiMoNuoc = (int)_cDAL.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + db + ")");
