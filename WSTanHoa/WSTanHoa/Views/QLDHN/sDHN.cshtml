@@ -130,58 +130,73 @@
             </div>
         }
     </div>
-@using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
-{
-    <div class="row">
-        <div class="row pt-3 px-3">
-            <div class="col-auto">
-                <div class="row">
-                    <div class="col">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radLoai" value="radDMA">
-                            <label class="form-check-label" for="radDMA">
-                                DMA
-                            </label>
+    @using (Html.BeginForm("sDHN", "QLDHN", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="row pt-3 px-3">
+                <div class="col-auto">
+                    <div class="row">
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radLoai" value="radNCC" checked>
+                                <label class="form-check-label" for="radNCC">
+                                    NCC
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="col">
+                                @Html.DropDownList("NCC", new SelectList(ViewBag.NCC, "Value", "Text"))
+                            </div>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="row pt-3">
                         <div class="col">
-                            @Html.DropDownList("DMA", new SelectList(ViewBag.DMA, "Value", "Text"))
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radLoai" value="radDMA">
+                                <label class="form-check-label" for="radDMA">
+                                    DMA
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="col">
+                                @Html.DropDownList("DMA", new SelectList(ViewBag.DMA, "Value", "Text"))
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="radLoai" value="radNghiemThuTD">
+                                <label class="form-check-label" for="radNghiemThuTD">
+                                    Nghiệm Thu TĐ
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="col">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="chkBoDaNghiemThu" value="false">Bỏ Qua Đã Nghiệm Thu
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="row pt-3">
-                    <div class="col">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radLoai" value="radNCC" checked>
-                            <label class="form-check-label" for="radNCC">
-                                NCC
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="col">
-                            @Html.DropDownList("NCC", new SelectList(ViewBag.NCC, "Value", "Text"))
-                        </div>
-                    </div>
+            </div>
+            <div class="row pt-3 px-3">
+                <div class="col-auto">
+                    <input class="form-control" type="text" id="KyHD" name="KyHD" placeholder="Kỳ HĐ" autocomplete="off">9/2022;10/2022;11/2022
+                    <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
+                    <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
+                    <input class="form-control" type="text" id="Hour" name="Hour" placeholder="Giờ" autocomplete="off">không nhập giờ sẽ là đếm record
                 </div>
-
+                <div class="col-auto">
+                    <button type="submit" class="btn btn-primary mb-3" name="function" value="Excel">Excel</button>
+                </div>
             </div>
         </div>
-        <div class="row pt-3 px-3">
-            <div class="col-auto">
-                <input class="form-control" type="text" id="KyHD" name="KyHD" placeholder="Kỳ HĐ" autocomplete="off">9/2022;10/2022;11/2022
-                <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
-                <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
-                <input class="form-control" type="text" id="Hour" name="Hour" placeholder="Giờ" autocomplete="off">không nhập giờ sẽ là đếm record
-            </div>
-            <div class="col-auto">
-                <button type="submit" class="btn btn-primary mb-3" name="function" value="Excel">Excel</button>
-            </div>
-        </div>
-    </div>
-}
+    }
 </div>
 
 <div class="container mt-3 py-2 rounded-3 shadow-sm">

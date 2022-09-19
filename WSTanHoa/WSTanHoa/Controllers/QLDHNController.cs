@@ -18,9 +18,9 @@ namespace WSTanHoa.Controllers
 {
     public class QLDHNController : Controller
     {
-        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
-        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
+        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
+        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
+        private CConnection cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
         apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
 
         public ActionResult BaoChiSoNuoc(string function, string DanhBo, string ChiSo, HttpPostedFileBase Hinh)
@@ -203,6 +203,7 @@ namespace WSTanHoa.Controllers
             //ViewBag.vLichSu = vLichSu;
             if (function == "Excel")
             {
+                string filename = "";
                 string sql = "select ttkh.DanhBo,DiaChi=SoNha+' '+TenDuong,HoTen,MaDMA,CoDHN=CoDH,Hieu_DHTM,Loai_DHTM,SoThanDH,KieuPhatSong,IDLogger"
                     + ",DVLAPDAT,NHA_CCDHN,NHA_TICHHOP,XUATXU,NGAYKIEMDINH = CONVERT(varchar(10), NGAYKIEMDINH, 103),NGAYTHAY = CONVERT(varchar(10), NGAYTHAY, 103)";
                 if (collection["KyHD"].ToString() == "")
@@ -231,26 +232,43 @@ namespace WSTanHoa.Controllers
                 }
                 else
                 {
-                    string[] KyHDs = collection["KyHD"].ToString().Split('/');
-                    sql += ",CSDocSo=(select CSMoi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + ")"
-                        + ",ThoiGianDocSo=(select GioGhi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + ")"
-                        + ",CSsDHN=(select top 1 ChiSo from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)=(select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + ") and DATEPART(HOUR, ThoiGianCapNhat)=(select DATEPART(HOUR, gioghi) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + "))"
-                        + ",ThoiGiansDHN=(select top 1 ThoiGianCapNhat from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)=(select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + ") and DATEPART(HOUR, ThoiGianCapNhat)=(select DATEPART(HOUR, gioghi) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHDs[1] + " and ky=" + KyHDs[0] + "))";
+                    string[] KyHDs = collection["KyHD"].ToString().Split(';');
+                    foreach (string item in KyHDs)
+                    {
+                        string[] KyHD = item.Split('/');
+                        sql += ",CSDocSo=(select CSMoi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
+                            + ",ThoiGianDocSo=(select GioGhi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
+                            + ",CSsDHN=(select top 1 ChiSo from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)=(select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DATEPART(HOUR, ThoiGianCapNhat)=(select DATEPART(HOUR, gioghi) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "))"
+                            + ",ThoiGiansDHN=(select top 1 ThoiGianCapNhat from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)=(select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DATEPART(HOUR, ThoiGianCapNhat)=(select DATEPART(HOUR, gioghi) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "))";
+                    }
+
                 }
                 sql += " from sDHN sdhn,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                     + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo=ttkh.DANHBO";
+                if (collection.AllKeys.Contains("chkBoDaNghiemThu"))
+                    sql += " and sdhn.DanhBo not in (select DanhBo from DHTM_NGHIEMTHU)";
                 if (collection["radLoai"].ToString() == "radNCC")
                 {
                     sql += " and sdhn.IDNCC=" + collection["NCC"].ToString();
+                    filename = cDAL_sDHN.ExecuteQuery_ReturnOneValue("select Name from sDHN_NCC where ID=" + collection["NCC"].ToString()).ToString() ;
                 }
                 else
                     if (collection["radLoai"].ToString() == "radDMA")
                 {
+                    if (bool.Parse(collection["chkBoDaNghiemThu"].ToString()))
+                        sql += " and sdhn.DanhBo not in (select DanhBo from DHTM_NGHIEMTHU)";
                     sql += " and madma='" + collection["DMA"].ToString() + "'";
+                    filename = collection["DMA"].ToString();
+                }
+                else
+                    if (collection["radLoai"].ToString() == "radNghiemThuTD")
+                {
+                    sql += " and sdhn.DanhBo in (select DanhBo from DHTM_NGHIEMTHU_TD)";
+                    filename = "NghiemThuTD";
                 }
                 sql += " order by IDNCC";
                 dt = cDAL_sDHN.ExecuteQuery_DataTable(sql);
-                dt.TableName = "Tân Hòa";
+                dt.TableName = "Sheet1";
                 using (XLWorkbook wb = new XLWorkbook())
                 {
                     wb.Worksheets.Add(dt);
@@ -262,7 +280,7 @@ namespace WSTanHoa.Controllers
                     Response.Charset = "";
                     Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                     Response.ContentType = "application/vnd.ms-excel";
-                    Response.AddHeader("content-disposition", "attachment;filename= TanHoa.sDHN.xlsx");
+                    Response.AddHeader("content-disposition", "attachment;filename= TanHoa.sDHN." + filename + ".xlsx");
 
                     using (MemoryStream MyMemoryStream = new MemoryStream())
                     {
