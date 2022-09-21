@@ -102,6 +102,34 @@
             }
         });
     }
+    function updateDS_sDHN() {
+        $.ajax({
+            type: 'GET',
+            url: '/QLDHN/updateDS_sDHN/',
+            dataType: 'json',
+            data: {  },
+            success: function (data) {
+                alert(data);
+            },
+            error: function (ex) {
+                alert("Error: " + ex.statusText);
+            }
+        });
+    }
+    function getChiSo_sDHN_Day_Back() {
+        $.ajax({
+            type: 'GET',
+            url: '/QLDHN/getChiSo_sDHN_Day_Back/',
+            dataType: 'json',
+            data: { Ngay: $("#TuNgay").val() },
+            success: function (data) {
+                alert(data);
+            },
+            error: function (ex) {
+                alert("Error: " + ex.statusText);
+            }
+        });
+    }
 </script>
 
 <div class="container py-2 rounded-3 shadow-sm">
@@ -187,12 +215,20 @@
             <div class="row pt-3 px-3">
                 <div class="col-auto">
                     <input class="form-control" type="text" id="KyHD" name="KyHD" placeholder="Kỳ HĐ" autocomplete="off">9/2022;10/2022;11/2022
-                    <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
-                    <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
-                    <input class="form-control" type="text" id="Hour" name="Hour" placeholder="Giờ" autocomplete="off">không nhập giờ sẽ là đếm record
+                    <input class="mt-2 datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
+                    <input class="mt-2 datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
+                    <input class="mt-2 form-control" type="text" id="Hour" name="Hour" placeholder="Giờ" autocomplete="off">không nhập giờ sẽ là đếm record
                 </div>
                 <div class="col-auto">
-                    <button type="submit" class="btn btn-primary mb-3" name="function" value="Excel">Excel</button>
+                    <div class="row">
+                        <button type="submit" class="btn btn-success" onclick="updateDS_sDHN()">Get DS ĐHN</button>
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-success mt-3" onclick="getChiSo_sDHN_Day_Back()">Get Chỉ Số</button>
+                    </div>
+                    <div class="row">
+                        <button type="submit" class="btn btn-primary mt-4" name="function" value="Excel">Excel</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -201,9 +237,10 @@
 
 <div class="container mt-3 py-2 rounded-3 shadow-sm">
     <h3 class="text-primary">Danh sách ĐHN không tín hiệu</h3>
-    <input class="datepicker form-control" type="text" id="NgayXemKhongTinHieu" name="NgayXemKhongTinHieu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getKhongTinHieu()">
-    <input class="form-control" type="text" id="SoNgayKhongTinHieu" name="SoNgayKhongTinHieu" placeholder="Số Ngày" value="3" onchange="getKhongTinHieu()">
-
+    <div class="col-3">
+        <input class="datepicker form-control" type="text" id="NgayXemKhongTinHieu" name="NgayXemKhongTinHieu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getKhongTinHieu()">
+        <input class="mt-2 form-control" type="text" id="SoNgayKhongTinHieu" name="SoNgayKhongTinHieu" placeholder="Số Ngày" value="3" onchange="getKhongTinHieu()">
+    </div>
     <div id="vKhongTinHieu" class="row mt-2">
 
     </div>
@@ -214,8 +251,9 @@
 <div class="container mt-3 py-2 rounded-3 shadow-sm">
     <div>
         <h3 class="text-primary">Lịch sử 7 ngày gần nhất</h3>
-
-        <input class="datepicker form-control" type="text" id="NgayXemLichSu" name="NgayXemLichSu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getLichSu()">
+        <div class="col-3">
+            <input class="datepicker form-control" type="text" id="NgayXemLichSu" name="NgayXemLichSu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getLichSu()">
+        </div>
     </div>
     <div id="vLichSu" class="row">
         @*@foreach (var mView in ViewBag.vLichSu)

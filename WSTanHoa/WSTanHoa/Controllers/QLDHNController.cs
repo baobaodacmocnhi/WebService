@@ -241,7 +241,6 @@ namespace WSTanHoa.Controllers
                             + ",CSsDHN=(select top 1 ChiSo from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)=(select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DATEPART(HOUR, ThoiGianCapNhat)=(select DATEPART(HOUR, gioghi) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "))"
                             + ",ThoiGiansDHN=(select top 1 ThoiGianCapNhat from sDHN_LichSu where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)=(select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DATEPART(HOUR, ThoiGianCapNhat)=(select DATEPART(HOUR, gioghi) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "))";
                     }
-
                 }
                 sql += " from sDHN sdhn,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                     + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo=ttkh.DANHBO";
@@ -250,13 +249,11 @@ namespace WSTanHoa.Controllers
                 if (collection["radLoai"].ToString() == "radNCC")
                 {
                     sql += " and sdhn.IDNCC=" + collection["NCC"].ToString();
-                    filename = cDAL_sDHN.ExecuteQuery_ReturnOneValue("select Name from sDHN_NCC where ID=" + collection["NCC"].ToString()).ToString() ;
+                    filename = cDAL_sDHN.ExecuteQuery_ReturnOneValue("select Name from sDHN_NCC where ID=" + collection["NCC"].ToString()).ToString();
                 }
                 else
                     if (collection["radLoai"].ToString() == "radDMA")
                 {
-                    if (bool.Parse(collection["chkBoDaNghiemThu"].ToString()))
-                        sql += " and sdhn.DanhBo not in (select DanhBo from DHTM_NGHIEMTHU)";
                     sql += " and madma='" + collection["DMA"].ToString() + "'";
                     filename = collection["DMA"].ToString();
                 }
@@ -321,6 +318,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        [NonAction]
         public DataTable getDS_sDHN_KhongTinHieu(string function, string NCC, string SoNgay, string Ngay)
         {
             string[] datestr = Ngay.Split('/');
@@ -422,6 +420,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        [NonAction]
         public DataTable getDS_sDHN_KhongTinHieu(string function, DateTime date)
         {
             if (function == "export")
@@ -438,6 +437,7 @@ namespace WSTanHoa.Controllers
                                                         + " where t1.SoLuong = 0 and t1.IDNCC=ttsdhn.ID order by NCC");
         }
 
+        [NonAction]
         public DataTable getDS_sDHN_BinhThuong(string function, DateTime date)
         {
             if (function == "export")
@@ -454,6 +454,7 @@ namespace WSTanHoa.Controllers
                                               + " where t1.SoLuong >= 24 and t1.IDNCC=ttsdhn.ID order by NCC");
         }
 
+        [NonAction]
         public DataTable getDS_sDHN_BatThuong(string function, DateTime date)
         {
             if (function == "export")
@@ -534,6 +535,40 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        public bool updateDS_sDHN()
+        {
+            try
+            {
+                apiDocSoController apiDocSo = new apiDocSoController();
+                apiDocSo.updateDS_sDHN("tanho@2022");
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool getChiSo_sDHN_Day_Back(string Ngay)
+        {
+            try
+            {
+                if (Ngay != "")
+                {
+                    apiDocSoController apiDocSo = new apiDocSoController();
+                    apiDocSo.getChiSo_sDHN_Day_Back(Ngay.Replace("/", "-"), "tanho@2022");
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        [NonAction]
         public Bitmap resizeImage(Image image, int width, int height)
         {
             var destRect = new Rectangle(0, 0, width, height);
@@ -559,6 +594,7 @@ namespace WSTanHoa.Controllers
             return destImage;
         }
 
+        [NonAction]
         public Bitmap resizeImage(Image image, decimal percentage)
         {
             int width = (int)Math.Round(image.Width * percentage, MidpointRounding.AwayFromZero);
@@ -566,6 +602,7 @@ namespace WSTanHoa.Controllers
             return resizeImage(image, width, height);
         }
 
+        [NonAction]
         public byte[] ImageToByte(Bitmap image)
         {
             ImageConverter converter = new ImageConverter();
