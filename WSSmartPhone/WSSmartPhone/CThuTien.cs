@@ -4713,6 +4713,64 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
+        public string getDS_SoLieu_SanLuong_DHN(string Nam, string Ky, string Dot)
+        {
+            DataTable dtTo = _cDAL_DocSo.ExecuteQuery_DataTable("select MaTo,TenTo from [To] where HanhThu=1");
+            DataTable dt = new DataTable();
+            foreach (DataRow item in dtTo.Rows)
+            {
+                string sql = "DECLARE @LastNamKy INT;"
+                        + " declare @Nam int"
+                        + " declare @Ky char(2)"
+                        + " declare @Dot char(2)"
+                        + " declare @TuMay char(2)"
+                        + " declare @DenMay char(2)"
+                        + " set @Nam=" + Nam
+                        + " set @Ky='" + Ky + "'"
+                        + " set @Dot='" + Dot + "'"
+                        + " set @TuMay=RIGHT('0' + CAST((select TuMay from [To] where MaTo=" + item["MaTo"].ToString() + ") AS VARCHAR(2)), 2)"
+                        + " set @DenMay=RIGHT('0' + CAST((select DenMay from [To] where MaTo=" + item["MaTo"].ToString() + ") AS VARCHAR(2)), 2)"
+                        + " SET @LastNamKy = @Nam * 12  + @Ky;"
+                        + " select"
+                        + " 'To'=(select TenTo from [To] where MaTo=" + item["MaTo"].ToString() + ")"
+                        + " ,DHNTruoc=(select COUNT(DocSoID) from DocSo where Nam*12+Ky=@LastNamKy-1 and Dot=@Dot and May>=@TuMay and May<=@DenMay)"
+                        + " ,SanLuongTruoc=(select SUM(TieuThuMoi) from DocSo where Nam*12+Ky=@LastNamKy-1 and Dot=@Dot and May>=@TuMay and May<=@DenMay)"
+                        + " ,DHN=(select COUNT(DocSoID) from DocSo where Nam*12+Ky=@LastNamKy and Dot=@Dot and May>=@TuMay and May<=@DenMay)"
+                        + " ,SanLuong=(select SUM(TieuThuMoi) from DocSo where Nam*12+Ky=@LastNamKy and Dot=@Dot and May>=@TuMay and May<=@DenMay)";
+                dt.Merge(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+            }
+            return DataTableToJSON(dt);
+        }
+
+        public string getDS_SoLieu_HD0_DHN(string Nam, string Ky, string Dot)
+        {
+            DataTable dtTo = _cDAL_DocSo.ExecuteQuery_DataTable("select MaTo,TenTo from [To] where HanhThu=1");
+            DataTable dt = new DataTable();
+            foreach (DataRow item in dtTo.Rows)
+            {
+                string sql = "DECLARE @LastNamKy INT;"
+                        + " declare @Nam int"
+                        + " declare @Ky char(2)"
+                        + " declare @Dot char(2)"
+                        + " declare @TuMay char(2)"
+                        + " declare @DenMay char(2)"
+                        + " set @Nam=" + Nam
+                        + " set @Ky='" + Ky + "'"
+                        + " set @Dot='" + Dot + "'"
+                        + " set @TuMay=RIGHT('0' + CAST((select TuMay from [To] where MaTo=" + item["MaTo"].ToString() + ") AS VARCHAR(2)), 2)"
+                        + " set @DenMay=RIGHT('0' + CAST((select DenMay from [To] where MaTo=" + item["MaTo"].ToString() + ") AS VARCHAR(2)), 2)"
+                        + " SET @LastNamKy = @Nam * 12  + @Ky;"
+                        + " select"
+                        + " 'To'=(select TenTo from [To] where MaTo=" + item["MaTo"].ToString() + ")"
+                        + " ,HD0Truoc=(select COUNT(DocSoID) from DocSo where Nam*12+Ky=@LastNamKy-1 and Dot=@Dot and TieuThuMoi=0 and May>=@TuMay and May<=@DenMay)"
+                        + " ,HD4Truoc=(select COUNT(DocSoID) from DocSo where Nam*12+Ky=@LastNamKy-1 and Dot=@Dot and TieuThuMoi>=1 and TieuThuMoi<=4 and May>=@TuMay and May<=@DenMay)"
+                        + " ,HD0=(select COUNT(DocSoID) from DocSo where Nam*12+Ky=@LastNamKy and Dot=@Dot and TieuThuMoi=0 and May>=@TuMay and May<=@DenMay)"
+                        + " ,HD4=(select COUNT(DocSoID) from DocSo where Nam*12+Ky=@LastNamKy and Dot=@Dot and TieuThuMoi>=1 and TieuThuMoi<=4 and May>=@TuMay and May<=@DenMay)";
+                dt.Merge(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+            }
+            return DataTableToJSON(dt);
+        }
+
         //đồng hồ nước
         public string getPhuongQuan(string DanhBo)
         {

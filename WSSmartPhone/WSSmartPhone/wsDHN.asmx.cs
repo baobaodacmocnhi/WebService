@@ -353,5 +353,17 @@ namespace WSSmartPhone
             return _cThuTien.getDS_BatThuong_DHN(MaTo, Nam, Ky, Dot);
         }
 
+        [WebMethod]
+        public string getDS_SoLieu_SanLuong(string Nam, string Ky, string Dot)
+        {
+            return _cThuTien.getDS_SoLieu_SanLuong_DHN(Nam, Ky, Dot);
+        }
+
+        [WebMethod]
+        public string getDS_SoLieu_HD0(string Nam, string Ky, string Dot)
+        {
+            return _cThuTien.getDS_SoLieu_HD0_DHN(Nam, Ky, Dot);
+        }
+
     }
 }
