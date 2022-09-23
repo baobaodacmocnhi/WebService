@@ -72,7 +72,10 @@ namespace WSTanHoa.Controllers
                                 else
                                     _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',1,'" + item["SeriModule"] + "',1,0)");
                             else
+                                if (string.IsNullOrEmpty(item["SeriModule"]))
                                 _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=1");
+                            else
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["SeriModule"] + "' where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=1");
                     }
                     return true;
                 }
@@ -147,6 +150,9 @@ namespace WSTanHoa.Controllers
                                 else
                                     _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',3,'" + item["SeriModule"] + "',1,0)");
                             else
+                                if (string.IsNullOrEmpty(item["SeriModule"]))
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=3");
+                            else
                                 _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["SeriModule"] + "' where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=3");
                     }
                     return true;
@@ -185,6 +191,9 @@ namespace WSTanHoa.Controllers
                                     _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["wmid"] + "',4,1,0)");
                                 else
                                     _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["wmid"] + "',4,'" + item["idlogger"] + "',1,0)");
+                            else
+                                 if (string.IsNullOrEmpty(item["idlogger"]))
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["wmid"] + "' and IDNCC=4");
                             else
                                 _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["idlogger"] + "' where DanhBo='" + item["wmid"] + "' and IDNCC=4");
                     }
