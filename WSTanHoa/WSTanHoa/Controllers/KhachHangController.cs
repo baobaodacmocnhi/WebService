@@ -21,6 +21,12 @@ namespace WSTanHoa.Controllers
         // GET: KhachHang
         public ActionResult ThongTin(string DanhBo)
         {
+            if (Session["LoginQRCode"] == null)
+            {
+                Session["Url"] = Request.Url;
+                Session["DanhBo"] = DanhBo;
+                return RedirectToAction("Login", "KhachHang");
+            }
             ThongTinKhachHang en = new ThongTinKhachHang();
             //lấy thông tin khách hàng
             string sql = "select DanhBo"
@@ -148,7 +154,6 @@ namespace WSTanHoa.Controllers
                         en.ThongTinDongNuoc = dt.Rows[0]["NoiDung"].ToString();
                 }
             }
-
             return View(en);
         }
 
@@ -170,6 +175,43 @@ namespace WSTanHoa.Controllers
                 }
             }
             return View(model);
+        }
+
+        public ActionResult Login(string action, string DienThoai)
+        {
+            if (action == "login")
+            {
+                if (DienThoai == "tanhoa123")
+                {
+                    Session["LoginQRCode"] = true;
+                    return Redirect(Session["Url"].ToString());
+                }
+                else
+                {
+                    DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DienThoai from SDT_DHN where DanhBo='" + Session["DanhBo"] + "' and DienThoai='" + DienThoai + "' order by CreateDate desc");
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        Session["LoginQRCode"] = true;
+                        return Redirect(Session["Url"].ToString());
+                    }
+                    else
+                        ModelState.AddModelError("", "Sai số điện thoại xác nhận");
+                }
+            }
+            if (Session["DanhBo"] != null)
+            {
+                List<MView> vDienThoai = new List<MView>();
+                DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DienThoai from SDT_DHN where DanhBo='" + Session["DanhBo"] + "' order by CreateDate desc");
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    MView en = new MView();
+                    en.TieuDe = (i + 1).ToString();
+                    en.NoiDung = dt.Rows[i]["DienThoai"].ToString().Substring(0, 7) + "xxx";
+                    vDienThoai.Add(en);
+                }
+                ViewBag.vDienThoai = vDienThoai;
+            }
+            return View();
         }
 
     }

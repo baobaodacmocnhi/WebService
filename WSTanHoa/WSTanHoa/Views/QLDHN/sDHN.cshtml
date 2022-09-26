@@ -14,6 +14,7 @@
 <script>
     $(document).ready(function () {
         getKhongTinHieu();
+        getCanhBao();
         getLichSu();
     });
     function getKhongTinHieu() {
@@ -47,6 +48,44 @@
                 + "</div>"
                 + "</div>"
                     $("#vKhongTinHieu").append(rows);
+                });
+            },
+            error: function (ex) {
+                alert("Error: " + ex.statusText);
+            }
+        });
+    }
+    function getCanhBao() {
+        $("#vCanhBao div").remove();
+        $.ajax({
+            type: 'POST',
+            url: '/QLDHN/getCanhBao_sDHN/',
+            dataType: 'json',
+            data: { Ngay: $("#NgayXemCanhBao").val() },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<div class='col-xl-3 col-md-6 mb-4'>"
+                + "<div class='card border-left-info shadow h-100'>"
+                + "    <div class='card-body'>"
+                + "        <div class='row no-gutters align-items-center'>"
+                + "            <div class='col mr-2'>"
+                + "                <div class='font-weight-bold text-info mb-1'>"
+                + item.TieuDe
+                + "                </div>"
+                + "                <div class='h5 mb-0 font-weight-bold text-gray-800'>" + item.SoLuong + "</div>"
+                + "            </div>"
+                + "            <div class='col-auto'>"
+                + "                <i class='glyphicon glyphicon-dashboard fa-2x text-primary' style='font-size:40px;'></i>"
+                + "<a href='@Url.Action("ExportData", "QLDHN")?function1=CanhBao&function2=" + item.NoiDung + "&Ngay=" + $("#NgayXemCanhBao").val() + "' class='elements'>"
+                + "                                    <span>Excel</span>"
+                + "                                </a>"
+                + "            </div>"
+                + "        </div>"
+                + "    </div>"
+                + "</div>"
+                + "</div>"
+                    $("#vCanhBao").append(rows);
                 });
             },
             error: function (ex) {
@@ -107,12 +146,12 @@
             type: 'GET',
             url: '/QLDHN/updateDS_sDHN/',
             dataType: 'json',
-            data: {  },
+            data: {},
             success: function (data) {
-                alert(data);
+                //alert(data);
             },
             error: function (ex) {
-                alert("Error: " + ex.statusText);
+                //alert("Error: " + ex.statusText);
             }
         });
     }
@@ -123,10 +162,10 @@
             dataType: 'json',
             data: { Ngay: $("#TuNgay").val() },
             success: function (data) {
-                alert(data);
+                //alert(data);
             },
             error: function (ex) {
-                alert("Error: " + ex.statusText);
+                //alert("Error: " + ex.statusText);
             }
         });
     }
@@ -242,6 +281,16 @@
         <input class="mt-2 form-control" type="text" id="SoNgayKhongTinHieu" name="SoNgayKhongTinHieu" placeholder="Số Ngày" value="3" onchange="getKhongTinHieu()">
     </div>
     <div id="vKhongTinHieu" class="row mt-2">
+
+    </div>
+</div>
+
+<div class="container mt-3 py-2 rounded-3 shadow-sm">
+    <h3 class="text-primary">Cảnh báo</h3>
+    <div class="col-3">
+        <input class="datepicker form-control" type="text" id="NgayXemCanhBao" name="NgayXemCanhBao" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getCanhBao()">
+    </div>
+    <div id="vCanhBao" class="row mt-2">
 
     </div>
 </div>

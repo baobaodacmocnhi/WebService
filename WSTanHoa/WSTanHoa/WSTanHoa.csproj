@@ -2159,6 +2159,7 @@
     <Content Include="Template\SBAdmin2\js\demo\datatables-demo.js" />
     <Content Include="Template\SBAdmin2\js\sb-admin-2.js" />
     <Content Include="Template\SBAdmin2\js\sb-admin-2.min.js" />
+    <Content Include="Views\KhachHang\Login.cshtml" />
     <None Include="Web References\wrThuongVu\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
