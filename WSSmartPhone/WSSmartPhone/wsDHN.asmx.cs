@@ -258,6 +258,8 @@ namespace WSSmartPhone
         public bool tinhCodeTieuThu_TieuThu(string DocSoID, string Code, int TieuThu, out int GiaBan, out int ThueGTGT, out int PhiBVMT, out int TongCong)
         {
             return _cThuTien.tinhCodeTieuThu(DocSoID, Code, TieuThu, out GiaBan, out ThueGTGT, out PhiBVMT, out TongCong);
+            //int GiaBan, ThueGTGT, TongCong, PhiBVMT;
+            //return _cThuTien.tinhCodeTieuThu("20221013132116320", "40", 125, out GiaBan, out ThueGTGT, out PhiBVMT, out TongCong);
         }
 
         [WebMethod]
