@@ -177,39 +177,56 @@ namespace WSTanHoa.Controllers
             return View(model);
         }
 
-        public ActionResult Login(string action, string DienThoai)
+        public ActionResult Login(string function, string DienThoai, string DienThoaiDK)
         {
-            if (action == "login")
+            if (Session["DanhBo"] != null)
             {
-                if (DienThoai == "tanhoa123")
+                if (function == "login")
                 {
-                    Session["LoginQRCode"] = true;
-                    return Redirect(Session["Url"].ToString());
-                }
-                else
-                {
-                    DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DienThoai from SDT_DHN where DanhBo='" + Session["DanhBo"] + "' and DienThoai='" + DienThoai + "' order by CreateDate desc");
-                    if (dt != null && dt.Rows.Count > 0)
+                    if (DienThoai == "tanhoa123")
                     {
                         Session["LoginQRCode"] = true;
                         return Redirect(Session["Url"].ToString());
                     }
                     else
-                        ModelState.AddModelError("", "Sai số điện thoại xác nhận");
+                    {
+                        DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DienThoai,CreateDate from SDT_DHN where DanhBo='" + Session["DanhBo"] + "' and DienThoai='" + DienThoai + "'"
+                            + " union all"
+                            + " select DienThoai,CreateDate from SDT_DHN_QRCode where DanhBo='" + Session["DanhBo"] + "' and DienThoai='" + DienThoai + "'"
+                            + " order by CreateDate desc");
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            Session["LoginQRCode"] = true;
+                            return Redirect(Session["Url"].ToString());
+                        }
+                        else
+                            ModelState.AddModelError("", "Sai số điện thoại xác nhận");
+                    }
                 }
-            }
-            if (Session["DanhBo"] != null)
-            {
+                else
+            if (function == "dangkydienthoai")
+                {
+                    if (DienThoaiDK.Length != 10)
+                        ModelState.AddModelError("", "Số điện thoại di động 10 số");
+                    if (DienThoaiDK.Substring(0, 1) != "0")
+                        ModelState.AddModelError("", "Số điện thoại di động SAI");
+                    if (DienThoaiDK.Length == 10 && DienThoaiDK.Substring(0, 1) == "0")
+                        cDAL_DHN.ExecuteQuery_DataTable("insert into SDT_DHN_QRCode(DanhBo,DienThoai)values('" + Session["DanhBo"] + "','" + DienThoaiDK + "')");
+                }
                 List<MView> vDienThoai = new List<MView>();
-                DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DienThoai from SDT_DHN where DanhBo='" + Session["DanhBo"] + "' order by CreateDate desc");
-                for (int i = 0; i < dt.Rows.Count; i++)
+                DataTable dt2 = cDAL_DHN.ExecuteQuery_DataTable("select DienThoai,CreateDate from SDT_DHN where DanhBo='" + Session["DanhBo"] + "'"
+                    + " union all"
+                    + " select DienThoai,CreateDate from SDT_DHN_QRCode where DanhBo='" + Session["DanhBo"] + "'"
+                    + " order by CreateDate desc");
+                for (int i = 0; i < dt2.Rows.Count; i++)
                 {
                     MView en = new MView();
                     en.TieuDe = (i + 1).ToString();
-                    en.NoiDung = dt.Rows[i]["DienThoai"].ToString().Substring(0, 7) + "xxx";
+                    en.NoiDung = dt2.Rows[i]["DienThoai"].ToString().Substring(0, 7) + "xxx";
                     vDienThoai.Add(en);
                 }
-                ViewBag.vDienThoai = vDienThoai;
+                if (vDienThoai.Count > 0)
+                    ViewBag.vDienThoai = vDienThoai;
             }
             return View();
         }

@@ -15,7 +15,18 @@
     <!-- Custom styles for this template-->
     <link href="~/Template/SBAdmin2/css/bootstrap-glyphicons.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
-
+    <script>
+        function DangKyDienThoai() {
+            $("#DangKyDienThoai button").remove();
+            var rows = "<div class='col-auto'>"
+                       + "     <input type='text' class='form-control' name='DienThoaiDK' placeholder='Số Điện Thoại'>"
+                       + " </div>"
+                       + " <div class='col-auto'>"
+                       + "     <button type='submit' class='btn btn-warning' name='function' value='dangkydienthoai'>Đăng Ký</button>"
+                       + " </div>";
+            $("#DangKyDienThoai").append(rows);
+        }
+    </script>
 </head>
 <body style="background-color:#85d8f3;margin-top:-45px">
     <div class="row justify-content-center">
@@ -43,7 +54,7 @@
                             <input type="text" class="form-control" name="DienThoai" placeholder="Số Điện Thoại">
                         </div>
                         <div class="col-auto">
-                            <button type="submit" class="btn btn-primary" name="action" value="login">Xác nhận</button>
+                            <button type="submit" class="btn btn-primary" name="function" value="login">Xác nhận</button>
                         </div>
                     </div>
                     <div class="row">
@@ -54,15 +65,23 @@
                         <b>Điện Thoại gợi ý:</b>
                     </div>
                     @if (ViewBag.vDienThoai != null)
-                {
-                    foreach (var mView in ViewBag.vDienThoai)
                     {
+                        foreach (var mView in ViewBag.vDienThoai)
+                        {
                             <div class="row">
                                 <div class="col-auto">@mView.TieuDe.</div>
                                 <div class="col-auto">@mView.NoiDung</div>
                             </div>
                         }
                     }
+                    else
+                    {
+                        using (Html.BeginForm("Login", "KhachHang", FormMethod.Post))
+                        {
+                            <div id="DangKyDienThoai" class="row mt-2"><button type="button" class="btn btn-warning col-2" onclick="DangKyDienThoai()">Đăng ký điện thoại</button></div>
+                        }
+                    }
+                    <div class="mt-2"><b>Lưu ý: Nếu sai số điện thoại hoặc muốn đăng ký thêm vui lòng liên hệ tổng đài 1900.6489</b></div>
                 </div>
             </div>
         }
