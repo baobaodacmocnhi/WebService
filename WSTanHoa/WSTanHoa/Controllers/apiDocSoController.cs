@@ -965,7 +965,9 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        private IList<ThongTinKhachHang> getDS_ThaysDHN(string TuNgay, string DenNgay, string checksum)
+        [Route("getDS_ThaysDHN")]
+        [HttpGet]
+        public IList<ThongTinKhachHang> getDS_ThaysDHN(string TuNgay, string DenNgay, string checksum)
         {
             try
             {
@@ -974,8 +976,13 @@ namespace WSTanHoa.Controllers
                     List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
                     if (TuNgay != "" && DenNgay != "")
                     {
-                        DateTime dateTu = DateTime.Parse(TuNgay), dateDen = DateTime.Parse(DenNgay);
-                        DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG,SOTHANDH,NGAYTHAY from TB_DULIEUKHACHHANG where CAST(NGAYTHAY as date)>='" + dateTu.ToString("yyyyMMdd") + "' and CAST(NGAYTHAY as date)<='" + dateDen.ToString("yyyyMMdd") + "'");
+                        string[] dateTustr = TuNgay.Split('/');
+                        DateTime dateTu = new DateTime(int.Parse(dateTustr[2]), int.Parse(dateTustr[1]), int.Parse(dateTustr[0]));
+                        string[] dateDenstr = DenNgay.Split('/');
+                        DateTime dateDen = new DateTime(int.Parse(dateDenstr[2]), int.Parse(dateDenstr[1]), int.Parse(dateDenstr[0]));
+                        DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("SELECT ROW_NUMBER() OVER (ORDER BY HCT_NGAYGAN  ASC) [STT],  DanhBo=DHN_DANHBO,DIACHI,HoTen=TENKH, REPLACE(DHN_TODS,'DHTM-','TH-') AS MADMA,HCT_HIEUDHNGAN,SoThanDH=HCT_SOTHANGAN,HCT_CODHNGAN,NgayThay=HCT_NGAYGAN"
+                                                        + " FROM TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND CAST(HCT_NGAYGAN as date) >= '"+ dateTu.ToString("yyyyMMdd") + "' and CAST(HCT_NGAYGAN as date) <= '" + dateDen.ToString("yyyyMMdd") + "' and HCT_HIEUDHNGAN like 'B-METERS'"
+                                                        + " ORDER BY HCT_NGAYGAN ASC");
                         foreach (DataRow item in dt.Rows)
                         {
                             ThongTinKhachHang en = new ThongTinKhachHang();

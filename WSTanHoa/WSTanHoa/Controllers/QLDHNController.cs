@@ -265,8 +265,33 @@ namespace WSTanHoa.Controllers
                     sql += " and sdhn.DanhBo in (select DanhBo from DHTM_NGHIEMTHU_TD)";
                     filename = "NghiemThuTD";
                 }
+                else
+                    if (collection["radLoai"].ToString() == "radAll")
+                {
+                    filename = "TatCa";
+                }
+                if (collection["radLoai"].ToString() == "radDanhBo")
+                {
+                    sql += " and sdhn.DanhBo=" + collection["DanhBo"].ToString();
+                    filename = "DanhBo." + collection["DanhBo"].ToString();
+                }
                 sql += " order by IDNCC";
-                dt = cDAL_sDHN.ExecuteQuery_DataTable(sql);
+                if (collection["radLoai"].ToString() == "radDanhBo")
+                {
+                    sql = "select DanhBo=ttkh.DANHBO,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG"
+                    + " ,SoThanDH,Hieu_DHTM,ThoiGianCapNhat,ChiSo,TieuThu = 0.0"
+                    + " from sDHN sdhn,sDHN_LichSu ls,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+                    + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo= ttkh.DANHBO and sdhn.DanhBo= ls.DanhBo"
+                    + " and sdhn.DanhBo= '" + collection["DanhBo"].ToString() + "' order by ThoiGianCapNhat";
+                    dt = cDAL_sDHN.ExecuteQuery_DataTable(sql);
+                    for (int i = 1; i < dt.Rows.Count; i++)
+                    {
+                        dt.Rows[i]["TieuThu"] = (double.Parse(dt.Rows[i]["ChiSo"].ToString()) - double.Parse(dt.Rows[i - 1]["ChiSo"].ToString())).ToString();
+                    }
+                    filename = "DanhBo." + collection["DanhBo"].ToString();
+                }
+                else
+                    dt = cDAL_sDHN.ExecuteQuery_DataTable(sql);
                 dt.TableName = "Sheet1";
                 using (XLWorkbook wb = new XLWorkbook())
                 {
