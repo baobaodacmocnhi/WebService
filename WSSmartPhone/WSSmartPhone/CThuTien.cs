@@ -4132,10 +4132,22 @@ namespace WSSmartPhone
             CResult result = new CResult();
             try
             {
-                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),CodeMoi,CSMoi,TieuThuMoi from DocSo where DanhBa='" + DanhBo + "' and Nam=" + Nam + " and Ky=" + Ky);
+                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select MLT=ds.MLT1,DanhBo=ds.DanhBa,ttkh.HoTen,DiaChi=ttkh.SoNha+' '+ttkh.TenDuong,ds.Nam,ds.Ky,GiaBieu=bd.GB,DinhMuc=bd.DM"
+                    + " ,TuNgay=CONVERT(varchar(10),ds.TuNgay,103),DenNgay=CONVERT(varchar(10),ds.DenNgay,103),ds.CSCu,ds.CodeMoi,ds.CSMoi,ds.TieuThuMoi"
+                    + " ,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
+                    + " from DocSo ds,BienDong bd,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh where ds.DocSoID=bd.BienDongID and ds.DanhBa='" + DanhBo + "' and ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and ds.DanhBa=ttkh.DANHBO");
                 CHoaDon hd = new CHoaDon();
+                hd.Ky = dt.Rows[0]["Ky"].ToString();
+                hd.Nam = dt.Rows[0]["Nam"].ToString();
                 hd.TuNgay = dt.Rows[0]["TuNgay"].ToString();
                 hd.DenNgay = dt.Rows[0]["DenNgay"].ToString();
+                hd.MLT = dt.Rows[0]["MLT"].ToString();
+                hd.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                hd.HoTen = dt.Rows[0]["HoTen"].ToString();
+                hd.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                hd.GiaBieu = dt.Rows[0]["GiaBieu"].ToString();
+                hd.DinhMuc = dt.Rows[0]["DinhMuc"].ToString();
+                hd.CSC = dt.Rows[0]["CSCu"].ToString();
                 hd.CodeMoi = dt.Rows[0]["CodeMoi"].ToString();
                 hd.ChiSoMoi = dt.Rows[0]["CSMoi"].ToString();
                 hd.TieuThuMoi = dt.Rows[0]["TieuThuMoi"].ToString();

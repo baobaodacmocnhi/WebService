@@ -38,11 +38,11 @@ namespace WSSmartPhone
     public class CHoaDon
     {
         public int TieuThu, TienNuoc, ThueGTGT, PhiBVMT, PhiBVMT_Thue, TongCong;
-        public string CSC, CodeMoi, ChiSoMoi, TuNgay, DenNgay, TieuThuMoi;
+        public string Ky, Nam, DanhBo, MLT, HoTen, DiaChi, GiaBieu, DinhMuc, CSC, CodeMoi, ChiSoMoi, TuNgay, DenNgay, TieuThuMoi;
         public CHoaDon()
         {
             TieuThu = TienNuoc = ThueGTGT = PhiBVMT = PhiBVMT_Thue = TongCong = 0;
-            CSC = CodeMoi = ChiSoMoi = TuNgay = DenNgay = TieuThuMoi = "";
+            Ky = Nam = DanhBo = MLT = HoTen = DiaChi = GiaBieu = DinhMuc = CSC = CodeMoi = ChiSoMoi = TuNgay = DenNgay = TieuThuMoi = "";
         }
     }
 }
