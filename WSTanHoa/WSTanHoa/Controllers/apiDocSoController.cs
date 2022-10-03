@@ -333,6 +333,16 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        private void updateDiff(string DanhBo, string Time)
+        {
+            string[] datestr = Time.Split('-');
+            DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select ChiSo,DanhBo,ThoiGianCapNhat from sDHN_LichSu where DanhBo='" + DanhBo + "' and cast(ThoiGianCapNhat as date)='" + datestr[2] + datestr[1] + datestr[0] + "' order by ThoiGianCapNhat asc");
+            for (int i = 1; i < dt.Rows.Count; i++)
+            {
+                _cDAL_sDHN.ExecuteNonQuery("update sDHN_LichSu set Diff=" + (double.Parse(dt.Rows[i]["ChiSo"].ToString()) - double.Parse(dt.Rows[i - 1]["ChiSo"].ToString())).ToString() + " where DanhBo='" + dt.Rows[i]["DanhBo"].ToString() + "' and ThoiGianCapNhat=convert(datetime,'" + dt.Rows[i]["ThoiGianCapNhat"].ToString() + "')");
+            }
+        }
+
         private bool get_All_HoaSen(string DanhBo, string Time)
         {
             try
@@ -401,6 +411,7 @@ namespace WSTanHoa.Controllers
                                            + "," + item["Volume"]
                                            + ",'" + item["Time"] + "',N'All')";
                                 _cDAL_sDHN.ExecuteNonQuery(sql);
+                                updateDiff(DanhBo, Time);
                             }
                             return true;
                         }
@@ -481,6 +492,7 @@ namespace WSTanHoa.Controllers
                                                + ",NULL" //+ item["Interval"]
                                                + ",'" + item["Time"] + "',N'All')";
                                 _cDAL_sDHN.ExecuteNonQuery(sql);
+                                updateDiff(DanhBo, Time);
                             }
                             return true;
                         }
@@ -560,6 +572,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ obj["Interval"]
                                            + ",'" + obj["Time"] + "',N'All')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
+                            updateDiff(DanhBo, Time);
                             return true;
                         }
                         else
@@ -657,6 +670,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["Interval"]
                                            + ",'" + item["TimeUpdate"] + "',N'All')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
+                            updateDiff(DanhBo, Time);
                         }
                         return true;
                     }
@@ -752,6 +766,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["Interval"]
                                            + ",'" + item["TimeUpdate"] + "',N'All')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
+                            updateDiff(DanhBo, Time);
                         }
                         return true;
                     }
@@ -829,6 +844,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["interval"]
                                            + ",'" + item["time"] + "',N'All')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
+                            updateDiff(DanhBo, Time);
                         }
                         return true;
                     }
@@ -905,6 +921,7 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ obj["interval"]
                                            + ",'" + obj["time"] + "',N'All')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
+                            updateDiff(DanhBo, Time);
                         }
                         return true;
                     }
@@ -981,7 +998,7 @@ namespace WSTanHoa.Controllers
                         string[] dateDenstr = DenNgay.Split('/');
                         DateTime dateDen = new DateTime(int.Parse(dateDenstr[2]), int.Parse(dateDenstr[1]), int.Parse(dateDenstr[0]));
                         DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("SELECT ROW_NUMBER() OVER (ORDER BY HCT_NGAYGAN  ASC) [STT],  DanhBo=DHN_DANHBO,DIACHI,HoTen=TENKH, REPLACE(DHN_TODS,'DHTM-','TH-') AS MADMA,HCT_HIEUDHNGAN,SoThanDH=HCT_SOTHANGAN,HCT_CODHNGAN,NgayThay=HCT_NGAYGAN"
-                                                        + " FROM TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND CAST(HCT_NGAYGAN as date) >= '"+ dateTu.ToString("yyyyMMdd") + "' and CAST(HCT_NGAYGAN as date) <= '" + dateDen.ToString("yyyyMMdd") + "' and HCT_HIEUDHNGAN like 'B-METERS'"
+                                                        + " FROM TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND CAST(HCT_NGAYGAN as date) >= '" + dateTu.ToString("yyyyMMdd") + "' and CAST(HCT_NGAYGAN as date) <= '" + dateDen.ToString("yyyyMMdd") + "' and HCT_HIEUDHNGAN like 'B-METERS'"
                                                         + " ORDER BY HCT_NGAYGAN ASC");
                         foreach (DataRow item in dt.Rows)
                         {

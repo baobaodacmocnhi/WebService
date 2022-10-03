@@ -1050,7 +1050,7 @@ namespace WSTanHoa.Controllers
                             + " , CSC = CSCU, CSM = CSMOI, TUNGAY = CONVERT(varchar(10), TUNGAY, 103), DENNGAY = CONVERT(varchar(10), DENNGAY, 103), TIEUTHU, TONGCONG, CODE,z.IDZalo"
                             + " from HOADON hd, [TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
                             + " where CAST(hd.CreateDate as date)=CAST(GETDATE() as date) and hd.DANHBA=z.DanhBo"
-                            + " and zq.Follow=1 and z.IDZalo=zq.IDZalo";
+                            + " and zq.Follow=1 and z.IDZalo=zq.IDZalo and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)";
                     DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     string message, hdTon;
                     DataTable dtTon;
