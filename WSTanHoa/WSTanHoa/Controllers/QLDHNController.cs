@@ -511,24 +511,10 @@ namespace WSTanHoa.Controllers
         [NonAction]
         public DataTable getDS_CanhBao_ChayNguoc_sDHN(DateTime date)
         {
-            string result = "";
-            DataTable dt = cDAL_sDHN.ExecuteQuery_DataTable("select b.DanhBo from sDHN_NCC a,sDHN b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
-                                    + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1");
-            foreach (DataRow item in dt.Rows)
-            {
-                DataTable dtLichSu = cDAL_sDHN.ExecuteQuery_DataTable("select ChiSo from sDHN_LichSu where DanhBo='" + item["DanhBo"].ToString() + "' and CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' order by ThoiGianCapNhat asc");
-                for (int i = 1; i < dtLichSu.Rows.Count; i++)
-                    if (double.Parse(dtLichSu.Rows[i]["ChiSo"].ToString()) - double.Parse(dtLichSu.Rows[i - 1]["ChiSo"].ToString()) <= -0.5)
-                    {
-                        if (result == "")
-                            result += "'" + item["DanhBo"].ToString() + "'";
-                        else
-                            result += ",'" + item["DanhBo"].ToString() + "'";
-                    }
-            }
             return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Chạy Ngược',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='ChayNguoc' from"
-                                                    + " sDHN_NCC ncc, sDHN dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
-                                                    + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = ttkh.DANHBO and Valid = 1 and dhn.DanhBo in (" + result + ")"
+                                                    + " (select distinct DanhBo from sDHN_LichSu"
+                                                    + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and Diff<=-0.5)t1, sDHN_NCC ncc, sDHN dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                                                    + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1"
                                                     + " order by NCC");
         }
 

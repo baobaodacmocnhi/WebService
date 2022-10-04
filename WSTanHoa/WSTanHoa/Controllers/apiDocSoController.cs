@@ -295,7 +295,7 @@ namespace WSTanHoa.Controllers
 
         [Route("getChiSo_sDHN_Hour")]
         [HttpGet]
-        public bool getChiSo_sDHN_Hour(string Time, string Hour, string checksum)
+        private bool getChiSo_sDHN_Hour(string Time, string Hour, string checksum)
         {
             try
             {
@@ -333,13 +333,40 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        [Route("updateDiffRUN")]
+        [HttpGet]
+        private bool updateDiffRUN(string Time, string checksum)
+        {
+            try
+            {
+                if (CGlobalVariable.cheksum == checksum)
+                {
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select DanhBo,IDNCC from sDHN where Valid=1 order by DanhBo");
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        updateDiff(dt.Rows[i]["DanhBo"].ToString(), Time);
+                    }
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         private void updateDiff(string DanhBo, string Time)
         {
             string[] datestr = Time.Split('-');
-            DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select ChiSo,DanhBo,ThoiGianCapNhat from sDHN_LichSu where DanhBo='" + DanhBo + "' and cast(ThoiGianCapNhat as date)='" + datestr[2] + datestr[1] + datestr[0] + "' order by ThoiGianCapNhat asc");
+            DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select ChiSo,DanhBo,ThoiGianCapNhat=convert(varchar(30),ThoiGianCapNhat,120) from sDHN_LichSu where DanhBo='" + DanhBo + "' and cast(ThoiGianCapNhat as date)='" + datestr[2] + datestr[1] + datestr[0] + "' order by ThoiGianCapNhat asc");
+            DataTable dtTruoc = _cDAL_sDHN.ExecuteQuery_DataTable("select top 1 ChiSo,DanhBo,ThoiGianCapNhat=convert(varchar(30),ThoiGianCapNhat,120) from sDHN_LichSu where DanhBo='" + DanhBo + "' and cast(ThoiGianCapNhat as date)=DATEADD(DAY, -1, '" + datestr[2] + datestr[1] + datestr[0] + "') order by ThoiGianCapNhat desc");
+            if (dtTruoc != null && dtTruoc.Rows.Count > 0)
+                _cDAL_sDHN.ExecuteNonQuery("update sDHN_LichSu set Diff=" + (double.Parse(dt.Rows[0]["ChiSo"].ToString()) - double.Parse(dtTruoc.Rows[0]["ChiSo"].ToString())).ToString("0.000") + " where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and ThoiGianCapNhat=convert(datetime,'" + dt.Rows[0]["ThoiGianCapNhat"].ToString() + "')");
             for (int i = 1; i < dt.Rows.Count; i++)
             {
-                _cDAL_sDHN.ExecuteNonQuery("update sDHN_LichSu set Diff=" + (double.Parse(dt.Rows[i]["ChiSo"].ToString()) - double.Parse(dt.Rows[i - 1]["ChiSo"].ToString())).ToString() + " where DanhBo='" + dt.Rows[i]["DanhBo"].ToString() + "' and ThoiGianCapNhat=convert(datetime,'" + dt.Rows[i]["ThoiGianCapNhat"].ToString() + "')");
+                _cDAL_sDHN.ExecuteNonQuery("update sDHN_LichSu set Diff=" + (double.Parse(dt.Rows[i]["ChiSo"].ToString()) - double.Parse(dt.Rows[i - 1]["ChiSo"].ToString())).ToString("0.000") + " where DanhBo='" + dt.Rows[i]["DanhBo"].ToString() + "' and ThoiGianCapNhat=convert(datetime,'" + dt.Rows[i]["ThoiGianCapNhat"].ToString() + "')");
             }
         }
 
@@ -411,8 +438,8 @@ namespace WSTanHoa.Controllers
                                            + "," + item["Volume"]
                                            + ",'" + item["Time"] + "',N'All')";
                                 _cDAL_sDHN.ExecuteNonQuery(sql);
-                                updateDiff(DanhBo, Time);
                             }
+                            updateDiff(DanhBo, Time);
                             return true;
                         }
                         return false;
@@ -492,8 +519,8 @@ namespace WSTanHoa.Controllers
                                                + ",NULL" //+ item["Interval"]
                                                + ",'" + item["Time"] + "',N'All')";
                                 _cDAL_sDHN.ExecuteNonQuery(sql);
-                                updateDiff(DanhBo, Time);
                             }
+                            updateDiff(DanhBo, Time);
                             return true;
                         }
                         else
@@ -670,8 +697,8 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["Interval"]
                                            + ",'" + item["TimeUpdate"] + "',N'All')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
-                            updateDiff(DanhBo, Time);
                         }
+                        updateDiff(DanhBo, Time);
                         return true;
                     }
                     else
@@ -766,8 +793,8 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["Interval"]
                                            + ",'" + item["TimeUpdate"] + "',N'All')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
-                            updateDiff(DanhBo, Time);
                         }
+                        updateDiff(DanhBo, Time);
                         return true;
                     }
                     else
@@ -818,15 +845,15 @@ namespace WSTanHoa.Controllers
                             if (item["isOpenBox"] == true)
                                 flagCBMoHop = 1;
                             string LuuLuong = "NULL";
-                            //if (item["flow"] != null)
-                            //    LuuLuong = ((int)item["flow"]).ToString();
+                            if (item["flow"] != null)
+                                LuuLuong = ((int)item["flow"]).ToString();
                             string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "'))"
                                 + " insert into sDHN_LichSu(DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
                                 + ",Longitude,Latitude,Altitude,ChuKyGui"
                                 + ",ThoiGianCapNhat,Loai)"
                                            + "values("
                                            + "'" + DanhBo + "'"
-                                           + "," + item["flow"]
+                                           + "," + item["vol"]
                                            + ",NULL" //+ item["Battery"]
                                            + ",NULL" //+ item["RemainBatt"] + "'"
                                            + "," + LuuLuong
@@ -843,9 +870,10 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ item["altitude"]
                                            + ",NULL" //+ item["interval"]
                                            + ",'" + item["time"] + "',N'All')";
+                            //string sql = "update sDHN_LichSu set LuuLuong=ChiSo,ChiSo=" + item["vol"] + " where danhbo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
-                            updateDiff(DanhBo, Time);
                         }
+                        updateDiff(DanhBo, Time);
                         return true;
                     }
                     else
@@ -895,15 +923,15 @@ namespace WSTanHoa.Controllers
                             if (obj["isOpenBox"] == true)
                                 flagCBMoHop = 1;
                             string LuuLuong = "NULL";
-                            //if (obj["flow"] != null)
-                            //    LuuLuong = ((int)obj["flow"]).ToString();
+                            if (obj["flow"] != null)
+                                LuuLuong = ((int)obj["flow"]).ToString();
                             string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + obj["time"] + "'))"
                                 + " insert into sDHN_LichSu(DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
                                 + ",Longitude,Latitude,Altitude,ChuKyGui"
                                 + ",ThoiGianCapNhat,Loai)"
                                            + "values("
                                            + "'" + DanhBo + "'"
-                                           + "," + obj["flow"]
+                                           + "," + obj["vol"]
                                            + ",NULL" //+ obj["Battery"]
                                            + ",NULL" //+ obj["RemainBatt"] + "'"
                                            + "," + LuuLuong
@@ -921,8 +949,8 @@ namespace WSTanHoa.Controllers
                                            + ",NULL" //+ obj["interval"]
                                            + ",'" + obj["time"] + "',N'All')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
-                            updateDiff(DanhBo, Time);
                         }
+                        updateDiff(DanhBo, Time);
                         return true;
                     }
                     else
