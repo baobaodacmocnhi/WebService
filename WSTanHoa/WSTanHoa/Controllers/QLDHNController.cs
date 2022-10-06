@@ -282,11 +282,15 @@ namespace WSTanHoa.Controllers
                 sql += " order by IDNCC";
                 if (collection["radLoai"].ToString() == "radDanhBo")
                 {
+                    string[] fromdatestr = collection["TuNgay"].ToString().Split('/');
+                    DateTime fromdate = new DateTime(int.Parse(fromdatestr[2]), int.Parse(fromdatestr[1]), int.Parse(fromdatestr[0]));
+                    string[] todatestr = collection["DenNgay"].ToString().Split('/');
+                    DateTime todate = new DateTime(int.Parse(todatestr[2]), int.Parse(todatestr[1]), int.Parse(todatestr[0]));
                     sql = "select DanhBo=ttkh.DANHBO,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG"
-                    + " ,SoThanDH,Hieu_DHTM,ThoiGianCapNhat,ChiSo,TieuThu = 0.0"
-                    + " from sDHN sdhn,sDHN_LichSu ls,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
-                    + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo= ttkh.DANHBO and sdhn.DanhBo= ls.DanhBo"
-                    + " and sdhn.DanhBo= '" + collection["DanhBo"].ToString() + "' order by ThoiGianCapNhat";
+                + " ,SoThanDH,Hieu_DHTM,ThoiGianCapNhat,ChiSo,TieuThu = 0.0"
+                + " from sDHN sdhn,sDHN_LichSu ls,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+                + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo= ttkh.DANHBO and sdhn.DanhBo= ls.DanhBo"
+                + " and sdhn.DanhBo= '" + collection["DanhBo"].ToString() + "' and cast(ThoiGianCapNhat as date)>='" + fromdate.ToString("yyyyMMdd") + "' and cast(ThoiGianCapNhat as date)<='" + todate.ToString("yyyyMMdd") + "' order by ThoiGianCapNhat";
                     dt = cDAL_sDHN.ExecuteQuery_DataTable(sql);
                     for (int i = 1; i < dt.Rows.Count; i++)
                     {
@@ -760,6 +764,7 @@ namespace WSTanHoa.Controllers
 
         //-------------------------
 
+        [HttpGet]
         public bool updateDS_sDHN()
         {
             try
@@ -774,6 +779,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        [HttpGet]
         public bool getChiSo_sDHN_Day_Back(string Ngay)
         {
             try
