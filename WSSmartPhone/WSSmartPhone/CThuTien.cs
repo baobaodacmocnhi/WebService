@@ -4308,29 +4308,29 @@ namespace WSSmartPhone
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
                 if (result.success)
                 {
-                    string sql2 = "";
-                    if (flagAmSau == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Âm Sâu',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagXayDung == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Xây Dựng',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagDutChiGoc == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Đứt Chì Góc',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagDutChiThan == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Đứt Chì Thân',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagNgapNuoc == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Ngập Nước',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagKetTuong == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Kẹt Tường',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagLapKhoaGoc == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Lấp Khóa Góc',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagBeHBV == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Bể HBV',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagBeNapMatNapHBV == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Bể Nấp, Mất Nấp HBV',N'Xóa'," + MaNV + ",getdate())";
-                    if (flagGayTayVan == "0")
-                        sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Gãy Tay Van',N'Xóa'," + MaNV + ",getdate())";
-                    if (sql2 != "")
-                        _cDAL_DocSo.ExecuteNonQuery(sql2);
+                    //string sql2 = "";
+                    //if (flagAmSau == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Âm Sâu',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagXayDung == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Xây Dựng',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagDutChiGoc == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Đứt Chì Góc',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagDutChiThan == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Đứt Chì Thân',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagNgapNuoc == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Ngập Nước',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagKetTuong == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Kẹt Tường',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagLapKhoaGoc == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Lấp Khóa Góc',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagBeHBV == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Bể HBV',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagBeNapMatNapHBV == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Bể Nấp, Mất Nấp HBV',N'Xóa'," + MaNV + ",getdate())";
+                    //if (flagGayTayVan == "0")
+                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Gãy Tay Van',N'Xóa'," + MaNV + ",getdate())";
+                    //if (sql2 != "")
+                    //    _cDAL_DocSo.ExecuteNonQuery(sql2);
                 }
             }
             catch (Exception ex)
@@ -4454,8 +4454,8 @@ namespace WSSmartPhone
                             result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
                             break;
                     }
-                    if (result.success)
-                        _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
+                    //if (result.success)
+                    //    _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
                     if (Hinh != "")
                         result.success = ghi_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, dtPC.Rows[0]["Folder"].ToString(), "", DanhBo + ".jpg", Hinh);
                 }
@@ -4497,8 +4497,8 @@ namespace WSSmartPhone
                                     + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
                                     + ")";
                                 result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                                if (result.success)
-                                    _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
+                                //if (result.success)
+                                //    _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
                                 if (Hinh != "")
                                     result.success = ghi_Hinh_DonTu_DHN(ID, Hinh, MaNV);
                                 CHoaDon hd = new CHoaDon();
