@@ -4475,35 +4475,43 @@ namespace WSSmartPhone
                             object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where DanhBo='" + DanhBo + "' and NoiDung=N'" + NoiDung + "' and cast(getdate() as date)=cast(createdate as date)");
                             if (checkExists == null)
                             {
-                                string ID = "";
-                                checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                if (checkExists != null)
+                                if (NoiDung.Contains("Giá Biểu") && checkExists_DonTu(DanhBo, NoiDung, "30"))
                                 {
-                                    object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                    if (stt != null)
-                                        ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
+                                    result.success = false;
+                                    result.error = "Danh Bộ có đơn Thương Vụ cùng nội dung trong 30 ngày";
                                 }
                                 else
                                 {
-                                    ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
+                                    string ID = "";
+                                    checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                                    if (checkExists != null)
+                                    {
+                                        object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                                        if (stt != null)
+                                            ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
+                                    }
+                                    else
+                                    {
+                                        ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
+                                    }
+                                    string DinhMucHN = "NULL";
+                                    if (dt.Rows[0]["DinhMucHN"].ToString() != "")
+                                        DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
+                                    string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate,HopDong)values"
+                                        + "("
+                                        + ID + ",'" + dt.Rows[0]["MLT"] + "','" + DanhBo + "',N'" + dt.Rows[0]["HoTen"] + "',N'" + dt.Rows[0]["DiaChi"] + "'"
+                                        + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + DinhMucHN + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
+                                        + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
+                                        + ")";
+                                    result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
+                                    //if (result.success)
+                                    //    _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
+                                    if (Hinh != "")
+                                        result.success = ghi_Hinh_DonTu_DHN(ID, Hinh, MaNV);
+                                    CHoaDon hd = new CHoaDon();
+                                    hd.TieuThu = int.Parse(ID);
+                                    result.message = jss.Serialize(hd);
                                 }
-                                string DinhMucHN = "NULL";
-                                if (dt.Rows[0]["DinhMucHN"].ToString() != "")
-                                    DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
-                                string sql = "insert into MaHoa_DonTu(ID,MLT,DanhBo,HoTen,DiaChi,GiaBieu,DinhMuc,DinhMucHN,NoiDung,GhiChu,Dot,Ky,Nam,Phuong,Quan,CreateBy,CreateDate,HopDong)values"
-                                    + "("
-                                    + ID + ",'" + dt.Rows[0]["MLT"] + "','" + DanhBo + "',N'" + dt.Rows[0]["HoTen"] + "',N'" + dt.Rows[0]["DiaChi"] + "'"
-                                    + "," + dt.Rows[0]["GiaBieu"] + "," + dt.Rows[0]["DinhMuc"] + "," + DinhMucHN + ",N'" + NoiDung + "',N'" + GhiChu + "'," + dt.Rows[0]["Dot"]
-                                    + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
-                                    + ")";
-                                result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                                //if (result.success)
-                                //    _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
-                                if (Hinh != "")
-                                    result.success = ghi_Hinh_DonTu_DHN(ID, Hinh, MaNV);
-                                CHoaDon hd = new CHoaDon();
-                                hd.TieuThu = int.Parse(ID);
-                                result.message = jss.Serialize(hd);
                             }
                             else
                             {
@@ -7148,6 +7156,17 @@ namespace WSSmartPhone
                 return "";
             else
                 return result.ToString();
+        }
+
+        //đơn từ
+        public bool checkExists_DonTu(string DanhBo, string NoiDung, string SoNgay)
+        {
+            DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from DonTu where Name_NhomDon_PKH like N'%" + NoiDung + "%' and DATEADD(DAY, " + SoNgay + ", CreateDate)>=GETDATE()");
+
+            if (dt != null && dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
         }
 
         //cccd tổng công ty

@@ -43,6 +43,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public bool checkExists_DonTu(string DanhBo, string NoiDung,string SoNgay)
+        {
+            return _cThuTien.checkExists_DonTu(DanhBo, NoiDung,SoNgay);
+        }
+
+        [WebMethod]
         public string getAccess_token_CCCD()
         {
             return _cThuTien.getAccess_token_CCCD();
