@@ -183,6 +183,8 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
+            //string b = DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL;
+            //string a = CGlobalVariable.getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL);
             if (CGlobalVariable.getSHA256(DanhBo + MaHDs + SoTien + PhiMoNuoc + TienDu + TongCong + TenDichVu + IDGiaoDich + PasswordSQL) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
