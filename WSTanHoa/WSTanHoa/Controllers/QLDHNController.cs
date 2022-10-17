@@ -21,7 +21,8 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
         private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
         private CConnection cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
-        apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
+        private apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
+        private wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
 
         public ActionResult BaoChiSoNuoc(string function, string DanhBo, string ChiSo, HttpPostedFileBase Hinh)
         {
@@ -114,6 +115,42 @@ namespace WSTanHoa.Controllers
             //string Hinh = this.Request.QueryString["Hinh"];
 
             return View();
+        }
+
+        public ContentResult viewFile(string TableName, string ID)
+        {
+            if (TableName != null && ID != null && TableName != "" && ID != "")
+            {
+                string NoiDung = "";
+                //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
+                DataTable dt = cDAL_DocSo.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where IDParent=" + ID);
+                if (dt != null && dt.Rows.Count > 0)
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        byte[] FileContent = null;
+                        switch (TableName)
+                        {
+                            case "MaHoa_DCBD_Hinh":
+                                FileContent = wsDHN.get_Hinh_MaHoa("DCBD", ID, item["filename"].ToString());
+                                break;
+                            case "MaHoa_KTXM_Hinh":
+                                FileContent = wsDHN.get_Hinh_MaHoa("KTXM", ID, item["filename"].ToString());
+                                break;
+                            case "MaHoa_ToTrinh_Hinh":
+                                FileContent = wsDHN.get_Hinh_MaHoa("ToTrinh", ID, item["filename"].ToString());
+                                break;
+                            default:
+                                break;
+                        }
+                        if (FileContent != null)
+                            NoiDung += "<img height='100%' src='data:image/jpeg;base64," + Convert.ToBase64String(FileContent) + "'/></br></br>";
+                    }
+                else
+                    NoiDung = "<head><meta charset='UTF-8'></head><body><h3>Không có hình ảnh!</h3></body>";
+                return Content(NoiDung, "text/html");
+            }
+            else
+                return null;
         }
 
         //-------------------------
