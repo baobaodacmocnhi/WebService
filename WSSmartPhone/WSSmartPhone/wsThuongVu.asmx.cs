@@ -60,5 +60,24 @@ namespace WSSmartPhone
             return _cThuTien.checkExists_CCCD(DanhBo, CCCD, CMND);
         }
 
+        [WebMethod]
+        public int them_CCCD(string DanhBo, string CCCD)
+        {
+            return _cThuTien.them_CCCD(DanhBo, CCCD);
+        }
+
+        [WebMethod]
+        public int sua_CCCD(string DanhBo, string CCCD)
+        {
+            return _cThuTien.sua_CCCD(DanhBo, CCCD);
+        }
+
+        [WebMethod]
+        public int xoa_CCCD(string DanhBo, string CCCD)
+        {
+            return _cThuTien.xoa_CCCD(DanhBo, CCCD);
+        }
+
+
     }
 }

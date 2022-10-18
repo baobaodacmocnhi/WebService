@@ -7187,7 +7187,7 @@ namespace WSSmartPhone
                 {
                     grant_type = "password",
                     userName = "cskh.cnth",
-                    Password = "123456@ABcd"
+                    Password = "cskh2022@tanhoa"
                 };
                 var serializer = new JavaScriptSerializer();
                 var json = serializer.Serialize(data);
@@ -7227,7 +7227,7 @@ namespace WSSmartPhone
             try
             {
                 //string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=" + DanhBo + "&sdd=" + CCCD + "&cmndcu=" + CMND;
-                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=050354000634&sdd=031073001369&cmndcu=023123789";
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=12101905044&sdd=040074001959";
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
@@ -7252,6 +7252,243 @@ namespace WSSmartPhone
                     else
                     {
                         result = "Không tồn tại";
+                        return 0;
+                    }
+                }
+                else
+                {
+                    result = "Lỗi kết nối";
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return -1;
+            }
+        }
+
+        public int them_CCCD(string DanhBo, string CCCD)
+        {
+            string result = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/ThemDinhDanh";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select HoTen"
+                + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var data = new
+                    {
+                        branch_code = "TH",
+                        branch_name = "",
+                        sodinhdanh = CCCD,
+                        tenkh_codau = dt.Rows[0]["HoTen"],
+                        tenkh_khongdau = "",
+                        cmndcu = "",
+                        danhbo = DanhBo,
+                        sohokhau_stt = "",
+                        hongheo = "0",
+                        loaicapdm = "1",
+                        thoihantt = "",
+                        danhbo_tt = "",
+                        diachikhachhang = "",
+                        diachiemail = "",
+                        sodienthoai = "",
+                        ghichu = "",
+                        dinhmuc = "",
+                    };
+                    var serializer = new JavaScriptSerializer();
+                    var json = serializer.Serialize(data);
+                    json = "[" + json + "]";
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                    request.ContentLength = byteArray.Length;
+                    //gắn data post
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+                }
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result1 = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result1);
+                    if (obj["ketQua"] != null && obj["ketQua"] == 1)
+                    {
+                        result = "Thành Công";
+                        return 1;
+                    }
+                    else
+                    {
+                        result = "Thất Bại";
+                        return 0;
+                    }
+                }
+                else
+                {
+                    result = "Lỗi kết nối";
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return -1;
+            }
+        }
+
+        public int sua_CCCD(string DanhBo, string CCCD)
+        {
+            string result = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/CapNhatDinhDanh";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select HoTen"
+                + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var data = new
+                    {
+                        branch_code = "TH",
+                        branch_name = "",
+                        sodinhdanh = CCCD,
+                        tenkh_codau = dt.Rows[0]["HoTen"],
+                        tenkh_khongdau = "",
+                        cmndcu = "",
+                        danhbo = DanhBo,
+                        sohokhau_stt = "",
+                        hongheo = "0",
+                        loaicapdm = "1",
+                        thoihantt = "",
+                        danhbo_tt = "",
+                        diachikhachhang = "",
+                        diachiemail = "",
+                        sodienthoai = "",
+                        ghichu = "",
+                        dinhmuc = "",
+                    };
+                    var serializer = new JavaScriptSerializer();
+                    var json = serializer.Serialize(data);
+                    json = "[" + json + "]";
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                    request.ContentLength = byteArray.Length;
+                    //gắn data post
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+                }
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result1 = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result1);
+                    if (obj["ketQua"] != null && obj["ketQua"] == 1)
+                    {
+                        result = "Thành Công";
+                        return 1;
+                    }
+                    else
+                    {
+                        result = "Thất Bại";
+                        return 0;
+                    }
+                }
+                else
+                {
+                    result = "Lỗi kết nối";
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return -1;
+            }
+        }
+
+        public int xoa_CCCD(string DanhBo, string CCCD)
+        {
+            string result = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/XoaDinhDanh";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select HoTen"
+                + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var data = new
+                    {
+                        branch_code = "TH",
+                        branch_name = "",
+                        sodinhdanh = CCCD,
+                        tenkh_codau = dt.Rows[0]["HoTen"],
+                        tenkh_khongdau = "",
+                        cmndcu = "",
+                        danhbo = DanhBo,
+                        sohokhau_stt = "",
+                        hongheo = "0",
+                        loaicapdm = "1",
+                        thoihantt = "",
+                        danhbo_tt = "",
+                        diachikhachhang = "",
+                        diachiemail = "",
+                        sodienthoai = "",
+                        ghichu = "",
+                        dinhmuc = "",
+                    };
+                    var serializer = new JavaScriptSerializer();
+                    var json = serializer.Serialize(data);
+                    json = "[" + json + "]";
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                    request.ContentLength = byteArray.Length;
+                    //gắn data post
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+                }
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result1 = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result1);
+                    if (obj["ketQua"] != null && obj["ketQua"] == 1)
+                    {
+                        result = "Thành Công";
+                        return 1;
+                    }
+                    else
+                    {
+                        result = "Thất Bại";
                         return 0;
                     }
                 }
