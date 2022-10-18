@@ -35,6 +35,7 @@ namespace WSTanHoa.Controllers
                     updateDS_sDHN_Rynan();
                     updateDS_sDHN_Deviwas();
                     updateDS_sDHN_PhamLam();
+                    updateDS_sDHN_DucHung();
                     return true;
                 }
                 else
@@ -208,6 +209,41 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        private bool updateDS_sDHN_DucHung()
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://swm.sawaco.com.vn:8030/tanhoa/api/list_swm_Id");
+                request.Method = "GET";
+                request.ContentType = "application/json; charset=utf-8";
+
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=0 where IDNCC=5");
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                    foreach (var item in obj)
+                    {
+                        if (checkExists_DHN(item) == true)
+                            if (checkExists_sDHN(item) == false)
+                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item + "',5,1,0)");
+                            else
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item + "' and IDNCC=5");
+                    }
+                    return true;
+                }
+                else
+                    return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
         [Route("getChiSo_sDHN_Day_Back")]
         [HttpGet]
@@ -237,6 +273,9 @@ namespace WSTanHoa.Controllers
                                 break;
                             case 4:
                                 get_All_PhamLam(dt.Rows[i]["DanhBo"].ToString(), Time);
+                                break;
+                            case 5:
+                                get_All_DucHung(dt.Rows[i]["DanhBo"].ToString(), Time);
                                 break;
                             default:
                                 break;
@@ -277,6 +316,9 @@ namespace WSTanHoa.Controllers
                                 break;
                             case 4:
                                 get_All_PhamLam(dt.Rows[i]["DanhBo"].ToString(), Time);
+                                break;
+                            case 5:
+                                get_All_DucHung(dt.Rows[i]["DanhBo"].ToString(), Time);
                                 break;
                             default:
                                 break;
@@ -847,30 +889,30 @@ namespace WSTanHoa.Controllers
                             string LuuLuong = "NULL";
                             if (item["flow"] != null)
                                 LuuLuong = ((int)item["flow"]).ToString();
-                            string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "'))"
-                                + " insert into sDHN_LichSu(DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
-                                + ",Longitude,Latitude,Altitude,ChuKyGui"
-                                + ",ThoiGianCapNhat,Loai)"
-                                           + "values("
-                                           + "'" + DanhBo + "'"
-                                           + "," + item["vol"]
-                                           + ",NULL" //+ item["Battery"]
-                                           + ",NULL" //+ item["RemainBatt"] + "'"
-                                           + "," + LuuLuong
-                                           + ",'" + item["rsrp"] + "'"
-                                           + "," + flagCBPinYeu
-                                           + "," + flagCBRoRi
-                                           + "," + flagCBQuaDong
-                                           + "," + flagCBChayNguoc
-                                           + "," + flagCBNamCham
-                                           + "," + flagCBKhoOng
-                                           + "," + flagCBMoHop
-                                           + ",NULL" //+ item["longitude"]
-                                           + ",NULL" //+ item["latitude"]
-                                           + ",NULL" //+ item["altitude"]
-                                           + ",NULL" //+ item["interval"]
-                                           + ",'" + item["time"] + "',N'All')";
-                            //string sql = "update sDHN_LichSu set LuuLuong=ChiSo,ChiSo=" + item["vol"] + " where danhbo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "')";
+                            //string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "'))"
+                            //    + " insert into sDHN_LichSu(DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                            //    + ",Longitude,Latitude,Altitude,ChuKyGui"
+                            //    + ",ThoiGianCapNhat,Loai)"
+                            //               + "values("
+                            //               + "'" + DanhBo + "'"
+                            //               + "," + item["vol"]
+                            //               + ",NULL" //+ item["Battery"]
+                            //               + ",NULL" //+ item["RemainBatt"] + "'"
+                            //               + "," + LuuLuong
+                            //               + ",'" + item["rsrp"] + "'"
+                            //               + "," + flagCBPinYeu
+                            //               + "," + flagCBRoRi
+                            //               + "," + flagCBQuaDong
+                            //               + "," + flagCBChayNguoc
+                            //               + "," + flagCBNamCham
+                            //               + "," + flagCBKhoOng
+                            //               + "," + flagCBMoHop
+                            //               + ",NULL" //+ item["longitude"]
+                            //               + ",NULL" //+ item["latitude"]
+                            //               + ",NULL" //+ item["altitude"]
+                            //               + ",NULL" //+ item["interval"]
+                            //               + ",'" + item["time"] + "',N'All')";
+                            string sql = "update sDHN_LichSu set LuuLuong=ChiSo,ChiSo=" + item["vol"] + " where danhbo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
                         }
                         updateDiff(DanhBo, Time);
@@ -952,6 +994,88 @@ namespace WSTanHoa.Controllers
                         }
                         updateDiff(DanhBo, Time);
                         return true;
+                    }
+                    else
+                        return false;
+                }
+                //else
+                //    return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private bool get_All_DucHung(string DanhBo, string Time)
+        {
+            try
+            {
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://swm.sawaco.com.vn:8030/tanhoa/api/swm_hour?Id=" + DanhBo + "&Date=" + Time);
+                request.Method = "GET";
+                request.ContentType = "application/json; charset=utf-8";
+                //if (request.HaveResponse == true)
+                {
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        if (result != "Not value return.")
+                        {
+                            var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                            foreach (var item in obj)
+                            {
+                                int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
+                                if (item["IsLowBatt"] == true)
+                                    flagCBPinYeu = 1;
+                                if (item["IsLeakage"] == true)
+                                    flagCBRoRi = 1;
+                                if (item["IsOverLoad"] == true)
+                                    flagCBQuaDong = 1;
+                                if (item["IsReverse"] == true)
+                                    flagCBChayNguoc = 1;
+                                if (item["IsTampering"] == true)
+                                    flagCBNamCham = 1;
+                                if (item["IsDry"] == true)
+                                    flagCBKhoOng = 1;
+                                if (item["IsOpenBox"] == true)
+                                    flagCBMoHop = 1;
+                                string LuuLuong = "NULL";
+                                if (item["Flow"] != null)
+                                    LuuLuong = ((int)item["Flow"]).ToString();
+                                string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["Time"] + "'))"
+                                    + " insert into sDHN_LichSu(DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                    + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                    + ",ThoiGianCapNhat,Loai)"
+                                               + "values("
+                                               + "'" + DanhBo + "'"
+                                               + "," + item["Volume"]
+                                               + ",NULL" //+ item["Battery"]
+                                               + ",'" + item["RemainBatt"] + "'"
+                                               + "," + LuuLuong
+                                               + ",'" + item["Rssi"] + "'"
+                                               + "," + flagCBPinYeu
+                                               + "," + flagCBRoRi
+                                               + "," + flagCBQuaDong
+                                               + "," + flagCBChayNguoc
+                                               + "," + flagCBNamCham
+                                               + "," + flagCBKhoOng
+                                               + "," + flagCBMoHop
+                                               + ",NULL" //+ item["Longitude"]
+                                               + ",NULL" //+ item["Latitude"]
+                                               + ",NULL"
+                                               + ",NULL" //+ item["Interval"]
+                                               + ",'" + item["Time"] + "',N'All')";
+                                _cDAL_sDHN.ExecuteNonQuery(sql);
+                            }
+                            updateDiff(DanhBo, Time);
+                            return true;
+                        }
+                        else
+                            return false;
                     }
                     else
                         return false;

@@ -49,7 +49,7 @@ namespace WSTanHoa.Controllers
                 if (ChiSo == "")
                     ModelState.AddModelError("", "Thiếu Chỉ Số Nước");
                 if (Hinh == null || Hinh.ContentLength <= 0)
-                    ModelState.AddModelError("", "Thiếu Chỉ Hình ĐHN");
+                    ModelState.AddModelError("", "Thiếu Hình ĐHN");
                 if (DanhBo != "" && ChiSo != "" && Hinh != null && Hinh.ContentLength > 0)
                 {
                     DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
@@ -83,7 +83,6 @@ namespace WSTanHoa.Controllers
                         ModelState.AddModelError("", "Danh Bộ này đã gửi/ghi chỉ số nước rồi");
                         return View();
                     }
-
                     Image image = Image.FromStream(Hinh.InputStream);
                     Bitmap resizedImage = resizeImage(image, 0.5m);
                     SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ")");
@@ -104,16 +103,6 @@ namespace WSTanHoa.Controllers
                         ModelState.AddModelError("", "Thất Bại, Vui lòng thử lại");
                 }
             }
-            return View();
-        }
-
-        [HttpPost]
-        public ActionResult BaoChiSoNuoc_Insert(string DanhBo, string ChiSo, HttpPostedFileBase Hinh)
-        {
-            //string DanhBo = this.Request.QueryString["DanhBo"];
-            //string ChiSo = this.Request.QueryString["ChiSo"];
-            //string Hinh = this.Request.QueryString["Hinh"];
-
             return View();
         }
 
@@ -153,25 +142,6 @@ namespace WSTanHoa.Controllers
                 return null;
         }
 
-        //-------------------------
-
-        [NonAction]
-        public SelectList ToSelectList(DataTable table, string valueField, string textField)
-        {
-            List<SelectListItem> list = new List<SelectListItem>();
-
-            foreach (DataRow row in table.Rows)
-            {
-                list.Add(new SelectListItem()
-                {
-                    Text = row[textField].ToString(),
-                    Value = row[valueField].ToString()
-                });
-            }
-
-            return new SelectList(list, "Value", "Text");
-        }
-
         public ActionResult sDHN(FormCollection collection, string function, string TuNgay, string DenNgay, string NgayXem)
         {
             DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from sDHN_NCC");
@@ -206,40 +176,6 @@ namespace WSTanHoa.Controllers
                 date = new DateTime(int.Parse(datestr[2]), int.Parse(datestr[1]), int.Parse(datestr[0]));
             }
             @ViewBag.NgayXem = date.ToString("dd/MM/yyyy");
-            //List<MView> vLichSu = new List<MView>();
-            //int count = 7;
-            //while (count > 0)
-            //{
-            //MView enLichSuChild;
-            //if (dtBinhThuong != null && dtBinhThuong.Rows.Count > 0)
-            //{
-            //    enLichSuChild = new MView();
-            //    enLichSuChild.TieuDe = dtBinhThuong.Rows[0]["Loai"].ToString();
-            //    enLichSuChild.SoLuong = dtBinhThuong.Rows.Count.ToString();
-            //    enLichSuChild.NoiDung = dtBinhThuong.Rows[0]["Loai2"].ToString();
-            //    enLichSu.lst.Add(enLichSuChild);
-            //}
-            //if (dtBatThuong != null && dtBatThuong.Rows.Count > 0)
-            //{
-            //    enLichSuChild = new MView();
-            //    enLichSuChild.TieuDe = dtBatThuong.Rows[0]["Loai"].ToString();
-            //    enLichSuChild.SoLuong = dtBatThuong.Rows.Count.ToString();
-            //    enLichSuChild.NoiDung = dtBatThuong.Rows[0]["Loai2"].ToString();
-            //    enLichSu.lst.Add(enLichSuChild);
-            //}
-            //if (dtKhongTinHieu != null && dtKhongTinHieu.Rows.Count > 0)
-            //{
-            //    enLichSuChild = new MView();
-            //    enLichSuChild.TieuDe = dtKhongTinHieu.Rows[0]["Loai"].ToString();
-            //    enLichSuChild.SoLuong = dtKhongTinHieu.Rows.Count.ToString();
-            //    enLichSuChild.NoiDung = dtKhongTinHieu.Rows[0]["Loai2"].ToString();
-            //    enLichSu.lst.Add(enLichSuChild);
-            //}
-            //    count--;
-            //    date = date.AddDays(-1);
-            //    vLichSu.Add(enLichSu);
-            //}
-            //ViewBag.vLichSu = vLichSu;
             if (function == "Excel")
             {
                 string filename = "";
@@ -361,6 +297,64 @@ namespace WSTanHoa.Controllers
                 }
             }
             return View();
+        }
+
+        public ActionResult sDHN_SuCo(string function, string DanhBo, string NoiDung, string DenNgay, HttpPostedFileBase Hinh)
+        {
+            DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from SuCo_Loai order by STT asc");
+            ViewBag.NCC = ToSelectList(dtNCC, "ID", "Name");
+
+            if (function == "KiemTra")
+            {
+                if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
+                {
+                    DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        ViewBag.DanhBo = dt.Rows[0]["DanhBo"];
+                        ViewBag.HoTen = dt.Rows[0]["HoTen"];
+                        ViewBag.DiaChi = dt.Rows[0]["DiaChi"];
+                    }
+                    else
+                        ModelState.AddModelError("", "Danh Bộ không tồn tại");
+                }
+            }
+            else
+                if (function == "Gui")
+            {
+                if (DanhBo == "")
+                    ModelState.AddModelError("", "Thiếu Danh Bộ");
+                if (NoiDung == "")
+                    ModelState.AddModelError("", "Thiếu Nội Dung");
+                if (Hinh == null || Hinh.ContentLength <= 0)
+                    ModelState.AddModelError("", "Thiếu Hình ĐHN");
+                if (DanhBo != "" && NoiDung != "" && Hinh != null && Hinh.ContentLength > 0)
+                {
+                    Image image = Image.FromStream(Hinh.InputStream);
+                    Bitmap resizedImage = resizeImage(image, 0.5m);
+                    wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
+                }
+            }
+            return View();
+        }
+
+        //-------------------------
+
+        [NonAction]
+        public SelectList ToSelectList(DataTable table, string valueField, string textField)
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                list.Add(new SelectListItem()
+                {
+                    Text = row[textField].ToString(),
+                    Value = row[valueField].ToString()
+                });
+            }
+
+            return new SelectList(list, "Value", "Text");
         }
 
         public string getKhongTinHieu_sDHN(string SoNgay, string Ngay)

@@ -1,0 +1,83 @@
+﻿
+@{
+    Layout = null;
+    ViewBag.Title = "Sự Cố ĐHN thông minh";
+}
+<head>
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+</head>
+
+<body style="background-color:#85d8f3;margin-top:-30px">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            <img src="~/Images/logoctycp.png" width="100" />
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto text-center">
+            <h4 class="text-primary fw-bold">CÔNG TY CỔ PHẦN<br>CẤP NƯỚC TÂN HÒA</h4>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <div class="card mt-3 rounded-3 shadow-sm">
+            <div class="card-header">
+                <h4 class="text-primary">@ViewBag.Title</h4>
+            </div>
+            <div class="card-body">
+                @using (Html.BeginForm("sDHN_SuCo", "QLDHN", FormMethod.Get))
+                {
+                    <table>
+                        <tr>
+                            <td><label class="form-label small">Danh Bộ:</label></td>
+                            <td><input type="number" class="form-control fw-bold" name="DanhBo" value="@ViewBag.DanhBo"></td>
+                            <td><button type="submit" class="btn btn-primary" name="function" value="KiemTra">Kiểm Tra</button></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label small">Khách Hàng:</label></td>
+                            <td><input type="text" class="form-control fw-bold" value="@ViewBag.HoTen"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label small">Địa Chỉ:</label></td>
+                            <td><input type="text" class="form-control fw-bold" value="@ViewBag.DiaChi"></td>
+                        </tr>
+                    </table>
+                }
+                @using (Html.BeginForm("sDHN_SuCo", "QLDHN", FormMethod.Post, new { encType = "multipart/form-data" }))
+                {
+                    <table>
+                        <tr style="visibility:collapse">
+                            <td><label class="form-label small">Danh Bộ:</label></td>
+                            <td><input type="number" class="form-control fw-bold" name="DanhBo" value="@ViewBag.DanhBo"></td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label small">Nội Dung:</label></td>
+                            <td>@Html.DropDownList("NCC", new SelectList(ViewBag.NCC, "Value", "Text"))</td>
+                        </tr>
+                        <tr>
+                            <td><label class="form-label small">Hình ĐHN:</label></td>
+                            <td><input type="file" class="form-control" name="Hinh" accept="image/png, image/jpeg"></td>
+                            <td><button type="submit" class="btn btn-primary" name="function" value="Gui">Gửi</button></td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="mt-1">
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.AntiForgeryToken()
+                            </td>
+                        </tr>
+                    </table>
+                }
+            </div>
+        </div>
+
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year Công ty Cổ phần Cấp nước Tân Hòa</p>
+        </footer>
+    </div>
+</body>
