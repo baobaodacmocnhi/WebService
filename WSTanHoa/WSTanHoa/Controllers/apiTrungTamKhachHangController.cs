@@ -315,7 +315,7 @@ namespace WSTanHoa.Controllers
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
-                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date >= DateTime.Now.Date)
+                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date <= DateTime.Now.Date && DateTime.Parse(item["NgayChuyenListing"].ToString()).Date >= DateTime.Now.Date)
                     {
                         result = item["NoiDung"].ToString();
                         break;
@@ -334,7 +334,7 @@ namespace WSTanHoa.Controllers
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
-                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date >= DateTime.Now.Date)
+                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date <= DateTime.Now.Date && DateTime.Parse(item["NgayChuyenListing"].ToString()).Date >= DateTime.Now.Date)
                     {
                         result = item;
                         break;
@@ -522,7 +522,7 @@ namespace WSTanHoa.Controllers
             if (dt.Rows.Count > 0)
             {
                 foreach (DataRow item in dt.Rows)
-                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date >= DateTime.Now.Date)
+                    if (DateTime.Parse(item["NgayDoc"].ToString()).Date <= DateTime.Now.Date && DateTime.Parse(item["NgayChuyenListing"].ToString()).Date >= DateTime.Now.Date)
                     {
                         DateTime date = DateTime.Parse(item["NgayThuTien"].ToString()).AddDays(1);
                         if (date.DayOfWeek == DayOfWeek.Saturday)

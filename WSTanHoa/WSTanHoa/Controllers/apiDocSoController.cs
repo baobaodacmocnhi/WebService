@@ -228,11 +228,17 @@ namespace WSTanHoa.Controllers
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     foreach (var item in obj)
                     {
-                        if (checkExists_DHN(item) == true)
-                            if (checkExists_sDHN(item) == false)
-                                _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item + "',5,1,0)");
+                        if (checkExists_DHN(item["MaDanhbo"]) == true)
+                            if (checkExists_sDHN(item["MaDanhbo"]) == false)
+                                if (string.IsNullOrEmpty(item["SeriModule"]))
+                                    _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,Valid,CreateBy)values('" + item["MaDanhbo"] + "',5,1,0)");
+                                else
+                                    _cDAL_sDHN.ExecuteNonQuery("insert into sDHN(DanhBo,IDNCC,IDLogger,Valid,CreateBy)values('" + item["MaDanhbo"] + "',5,'" + item["SeriModule"] + "',1,0)");
                             else
-                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item + "' and IDNCC=5");
+                                if (string.IsNullOrEmpty(item["SeriModule"]))
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1 where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=5");
+                            else
+                                _cDAL_sDHN.ExecuteNonQuery("update sDHN set Valid=1,IDLogger='" + item["SeriModule"] + "' where DanhBo='" + item["MaDanhbo"] + "' and IDNCC=5");
                     }
                     return true;
                 }

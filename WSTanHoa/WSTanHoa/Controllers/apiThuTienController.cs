@@ -18,8 +18,8 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuTien")]
     public class apiThuTienController : ApiController
     {
-        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTienWFH);
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVuWFH);
+        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
         MResult _result = new MResult();
 
         // GET api/<controller>

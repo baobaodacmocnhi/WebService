@@ -18,11 +18,12 @@ namespace WSTanHoa.Controllers
 {
     public class QLDHNController : Controller
     {
-        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
-        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
-        private CConnection cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
+        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
         private apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
         private wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
+        private wrThuongVu.wsThuongVu wsThuongVu = new wrThuongVu.wsThuongVu();
 
         public ActionResult BaoChiSoNuoc(string function, string DanhBo, string ChiSo, HttpPostedFileBase Hinh)
         {
@@ -299,11 +300,8 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
-        public ActionResult sDHN_SuCo(string function, string DanhBo, string NoiDung, string DenNgay, HttpPostedFileBase Hinh)
+        public ActionResult sDHN_SuCo(string function, string DanhBo, HttpPostedFileBase Hinh, FormCollection collection)
         {
-            DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from SuCo_Loai order by STT asc");
-            ViewBag.NCC = ToSelectList(dtNCC, "ID", "Name");
-
             if (function == "KiemTra")
             {
                 if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
@@ -324,18 +322,56 @@ namespace WSTanHoa.Controllers
             {
                 if (DanhBo == "")
                     ModelState.AddModelError("", "Thiếu Danh Bộ");
-                if (NoiDung == "")
+                if (collection["SuCo"].ToString() == "")
                     ModelState.AddModelError("", "Thiếu Nội Dung");
-                if (Hinh == null || Hinh.ContentLength <= 0)
-                    ModelState.AddModelError("", "Thiếu Hình ĐHN");
-                if (DanhBo != "" && NoiDung != "" && Hinh != null && Hinh.ContentLength > 0)
+                if (DanhBo != "" && collection["SuCo"].ToString() != "")
                 {
-                    Image image = Image.FromStream(Hinh.InputStream);
-                    Bitmap resizedImage = resizeImage(image, 0.5m);
-                    wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
+                    if (Hinh != null && Hinh.ContentLength > 0)
+                    {
+                        String FileExt = Path.GetExtension(Hinh.FileName).ToUpper();
+                        if (FileExt == ".PDF")
+                        {
+                            Stream str = Hinh.InputStream;
+                            BinaryReader reader = new BinaryReader(Hinh.InputStream);
+                            Byte[] FileDet = reader.ReadBytes((Int32)str.Length);
+                            wrThuongVu.wsThuongVu wsThuongVu = new wrThuongVu.wsThuongVu();
+                            wsThuongVu.ghi_Hinh("sDHN_SuCo", "", DanhBo + ".pdf", FileDet);
+                        }
+                    }
+                    string[] datestr = collection["NgayXuLy"].ToString().Split('/');
+                    DateTime date = new DateTime(int.Parse(datestr[2]), int.Parse(datestr[1]), int.Parse(datestr[0]), DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
+                    cDAL_sDHN.ExecuteNonQuery("insert into SuCo_LichSu(DanhBo,CreateDate,IDSuCo_Loai,NoiDungXuLy,NgayXuLy)values('" + DanhBo + "',getdate()," + collection["SuCo"].ToString() + ",N'" + collection["NoiDungXuLy"].ToString() + "','" + date.ToString("yyyy-MM-dd HH:mm:ss") + "')");
+                    ModelState.AddModelError("", "Thành Công");
                 }
             }
+            DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from SuCo_Loai order by STT asc");
+            ViewBag.NCC = ToSelectList(dtNCC, "ID", "Name");
+            DataTable dtLichSu = cDAL_sDHN.ExecuteQuery_DataTable("select LoaiSuCo=Name,DanhBo,CreateDate,NoiDungXuLy,NgayXuLy"
+                                + " from SuCo_Loai a, SuCo_LichSu b where a.ID = b.IDSuCo_Loai order by b.CreateDate desc");
+            List<ThongTinKhachHang> vLichSu = new List<ThongTinKhachHang>();
+            foreach (DataRow item in dtLichSu.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.DanhBo = item["LoaiSuCo"].ToString();
+                en.HoTen = item["DanhBo"].ToString();
+                en.DiaChi = item["CreateDate"].ToString();
+                en.HopDong = item["NoiDungXuLy"].ToString();
+                en.DienThoai = item["NgayXuLy"].ToString();
+                vLichSu.Add(en);
+            }
+            ViewBag.vLichSu = vLichSu;
             return View();
+        }
+
+        public ActionResult viewFilePDF(string DanhBo)
+        {
+            if (DanhBo != null && DanhBo != "")
+            {
+                byte[] FileContent = wsThuongVu.get_Hinh("sDHN_SuCo", "", DanhBo + ".pdf");
+                return new FileContentResult(FileContent, "application/pdf");
+            }
+            else
+                return null;
         }
 
         //-------------------------
