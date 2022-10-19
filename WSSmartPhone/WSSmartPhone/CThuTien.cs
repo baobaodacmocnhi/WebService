@@ -3806,7 +3806,8 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.NgapNuoc,kh.KetTuong,kh.LapKhoaGoc,kh.BeHBV,kh.BeNapMatNapHBV,kh.GayTayVan,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
+                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.NgapNuoc,kh.KetTuong,kh.LapKhoaGoc,kh.BeHBV,kh.BeNapMatNapHBV,kh.GayTayVan"
+                        + "                             ,kh.TroNgaiThay,kh.DauChungMayBom,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         + "                          ,TinhTrang=(select"
                         + "                             case when exists (select top 1 MaKQDN from HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
@@ -4259,7 +4260,7 @@ namespace WSSmartPhone
         }
 
         public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string AmSau, string XayDung, string DutChiGoc, string DutChiThan
-            , string NgapNuoc, string KetTuong, string LapKhoaGoc, string BeHBV, string BeNapMatNapHBV, string GayTayVan, string MauSacChiGoc, string GhiChu, string MaNV)
+            , string NgapNuoc, string KetTuong, string LapKhoaGoc, string BeHBV, string BeNapMatNapHBV, string GayTayVan, string TroNgaiThay, string DauChungMayBom, string MauSacChiGoc, string GhiChu, string MaNV)
         {
             CResult result = new CResult();
             try
@@ -4276,6 +4277,8 @@ namespace WSSmartPhone
                 string flagBeHBV = bool.Parse(BeHBV) == true ? "1" : "0";
                 string flagBeNapMatNapHBV = bool.Parse(BeNapMatNapHBV) == true ? "1" : "0";
                 string flagGayTayVan = bool.Parse(GayTayVan) == true ? "1" : "0";
+                string flagTroNgaiThay = bool.Parse(TroNgaiThay) == true ? "1" : "0";
+                string flagDauChungMayBom = bool.Parse(DauChungMayBom) == true ? "1" : "0";
                 string flagViTriNgoai = bool.Parse(ViTriNgoai) == true ? "1" : "0";
                 string flagViTriHop = bool.Parse(ViTriHop) == true ? "1" : "0";
                 //string sql = "";
@@ -4304,6 +4307,8 @@ namespace WSSmartPhone
                     + ",BeHBV=" + flagBeHBV
                     + ",BeNapMatNapHBV=" + flagBeNapMatNapHBV
                     + ",GayTayVan=" + flagGayTayVan
+                    + ",TroNgaiThay=" + flagTroNgaiThay
+                    + ",DauChungMayBom=" + flagDauChungMayBom
                     + ",MauSacChiGoc=N'" + MauSacChiGoc + "',GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
                 if (result.success)
@@ -4753,7 +4758,8 @@ namespace WSSmartPhone
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
                         + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
-                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.NgapNuoc,kh.KetTuong,kh.LapKhoaGoc,kh.BeHBV,kh.BeNapMatNapHBV,kh.GayTayVan,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
+                        + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.NgapNuoc,kh.KetTuong,kh.LapKhoaGoc,kh.BeHBV,kh.BeNapMatNapHBV,kh.GayTayVan"
+                        + "                              ,kh.TroNgaiThay,kh.DauChungMayBom,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
                         + "                          ,TinhTrang=(select"
                         + "                             case when exists (select top 1 MaKQDN from HOADON_TA.dbo.TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo=ds.DanhBa order by NgayDN desc)"
