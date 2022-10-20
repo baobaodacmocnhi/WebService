@@ -344,17 +344,36 @@ namespace WSTanHoa.Controllers
                     ModelState.AddModelError("", "Thành Công");
                 }
             }
+            //
+            DataTable dtThongKe = cDAL_sDHN.ExecuteQuery_DataTable("select MADMA,HIEU_DHTM,SuCo=a.Name,SoLuong=COUNT(*)"
+                                        + " from SuCo_Loai a, SuCo_LichSu b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh, DHTM_THONGTIN tt, sDHN dhn"
+                                        + " where a.ID = b.IDSuCo_Loai and b.DanhBo = ttkh.DANHBO and tt.ID = dhn.IDNCC and dhn.DanhBo = ttkh.DANHBO"
+                                        + " group by MADMA, HIEU_DHTM, a.Name order by MADMA");
+            List<ThongTinKhachHang> vThongKe = new List<ThongTinKhachHang>();
+            foreach (DataRow item in dtThongKe.Rows)
+            {
+                ThongTinKhachHang en = new ThongTinKhachHang();
+                en.DinhMuc = item["MADMA"].ToString();
+                en.GiaBieu = item["HIEU_DHTM"].ToString();
+                en.DanhBo = item["SuCo"].ToString();
+                en.DiaChi = item["SoLuong"].ToString();
+                vThongKe.Add(en);
+            }
+            ViewBag.vThongKe = vThongKe;
+            //
             DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from SuCo_Loai order by STT asc");
             ViewBag.NCC = ToSelectList(dtNCC, "ID", "Name");
-            DataTable dtLichSu = cDAL_sDHN.ExecuteQuery_DataTable("select LoaiSuCo=Name,DanhBo,CreateDate,NoiDungXuLy,NgayXuLy"
-                                + " from SuCo_Loai a, SuCo_LichSu b where a.ID = b.IDSuCo_Loai order by b.CreateDate desc");
+            DataTable dtLichSu = cDAL_sDHN.ExecuteQuery_DataTable("select LoaiSuCo=Name,Hieu=HIEU_DHTM,ttkh.DanhBo,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,NoiDungXuLy,NgayXuLy=CONVERT(varchar(10),NgayXuLy,103)"
+                                    + " from SuCo_Loai a, SuCo_LichSu b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh,DHTM_THONGTIN tt,sDHN dhn"
+                                    + " where a.ID = b.IDSuCo_Loai and b.DanhBo = ttkh.DANHBO and tt.ID=dhn.IDNCC and dhn.DanhBo=ttkh.DANHBO order by b.NgayXuLy desc");
             List<ThongTinKhachHang> vLichSu = new List<ThongTinKhachHang>();
             foreach (DataRow item in dtLichSu.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
-                en.DanhBo = item["LoaiSuCo"].ToString();
-                en.HoTen = item["DanhBo"].ToString();
-                en.DiaChi = item["CreateDate"].ToString();
+                en.DinhMuc = item["LoaiSuCo"].ToString();
+                en.GiaBieu = item["Hieu"].ToString();
+                en.DanhBo = item["DanhBo"].ToString();
+                en.DiaChi = item["DiaChi"].ToString();
                 en.HopDong = item["NoiDungXuLy"].ToString();
                 en.DienThoai = item["NgayXuLy"].ToString();
                 vLichSu.Add(en);

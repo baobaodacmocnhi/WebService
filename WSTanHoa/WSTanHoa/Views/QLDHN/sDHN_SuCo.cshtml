@@ -4,9 +4,13 @@
 }
 <head>
     @Scripts.Render("~/bundles/datepicker")
-    <link href="~/Template/SBAdmin2/css/bootstrap-glyphicons.min.css" rel="stylesheet" />
-</head>
 
+</head>
+<script>
+$(document).ready(function(){
+    
+});
+</script>
 @*<div class="row justify-content-center">
         <div class="col-auto">
             <img src="~/Images/logoctycp.png" width="100" />
@@ -83,6 +87,36 @@
 
     <div class="card mt-3 rounded-3 shadow-sm">
         <div class="card-header">
+            <h4 class="text-primary">Thống Kê Sự Cố ĐHN thông minh</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-bordered" id="dataTable">
+                <thead>
+                    <tr>
+                        <th>ĐMA</th>
+                        <th>Hiệu</th>
+                        <th>Sự Cố</th>
+                        <th>Số Lượng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ThongTinKhachHang in ViewBag.vThongKe)
+            {
+                        <tr>
+                            <td>@ThongTinKhachHang.DinhMuc</td>
+                            <td>@ThongTinKhachHang.GiaBieu</td>
+                            <td>@ThongTinKhachHang.DanhBo</td>
+                            <td>@ThongTinKhachHang.DiaChi</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="card mt-3 rounded-3 shadow-sm">
+        <div class="card-header">
             <h4 class="text-primary">Danh Sách Sự Cố ĐHN thông minh</h4>
         </div>
         <div class="card-body">
@@ -90,8 +124,9 @@
                 <thead>
                     <tr>
                         <th>Sự Cố</th>
+                        <th>Hiệu</th>
                         <th>Danh Bộ</th>
-                        <th>Ngày Lập</th>
+                        <th>Địa Chỉ</th>
                         <th>Nội Dung Xử Lý</th>
                         <th>Ngày Xử Lý</th>
                     </tr>
@@ -100,8 +135,9 @@
                     @foreach (var ThongTinKhachHang in ViewBag.vLichSu)
             {
                     <tr>
+                        <td>@ThongTinKhachHang.DinhMuc</td>
+                        <td>@ThongTinKhachHang.GiaBieu</td>
                         <td>@ThongTinKhachHang.DanhBo</td>
-                        <td>@ThongTinKhachHang.HoTen</td>
                         <td>@ThongTinKhachHang.DiaChi</td>
                         <td>@ThongTinKhachHang.HopDong</td>
                         <td>@ThongTinKhachHang.DienThoai</td>
@@ -114,6 +150,9 @@
 
         </div>
     </div>
+
+    
+
 </div>
 
 
