@@ -174,8 +174,8 @@ namespace WSTanHoa
             {
                 Connect();
                 DataTable dt = new DataTable();
-                command.CommandTimeout = 60*5;
                 command = new SqlCommand(sql, connection);
+                command.CommandTimeout = 60*5;
                 adapter = new SqlDataAdapter(command);
                 try
                 {
