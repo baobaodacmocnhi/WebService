@@ -143,7 +143,7 @@
     }
     function updateDS_sDHN() {
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: '/QLDHN/updateDS_sDHN/',
             dataType: 'json',
             data: {},
@@ -157,7 +157,7 @@
     }
     function getChiSo_sDHN_Day_Back() {
         $.ajax({
-            type: 'GET',
+            type: 'POST',
             url: '/QLDHN/getChiSo_sDHN_Day_Back/',
             dataType: 'json',
             data: { Ngay: $("#TuNgay").val() },
@@ -277,15 +277,15 @@
             <div class="row pt-3 px-3">
                 <div class="col-auto">
                     <input class="form-control" type="text" id="KyHD" name="KyHD" placeholder="Kỳ HĐ" autocomplete="off">9/2022;10/2022;11/2022
-                    <input class="mt-2 datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off">
+                    <input class="mt-2 datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off" onchange="getChiSo_sDHN_Day_Back()">
                     <input class="mt-2 datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
                     <input class="mt-2 form-control" type="text" id="Hour" name="Hour" placeholder="Giờ" autocomplete="off">không nhập giờ sẽ là đếm record
                 </div>
                 <div class="col-auto">
-                    <div class="row">
+                    <div class="row invisible">
                         <button type="submit" class="btn btn-success" onclick="updateDS_sDHN()">Get DS ĐHN</button>
                     </div>
-                    <div class="row">
+                    <div class="row invisible">
                         <button type="submit" class="btn btn-success mt-3" onclick="getChiSo_sDHN_Day_Back()">Get Chỉ Số</button>
                     </div>
                     <div class="row">

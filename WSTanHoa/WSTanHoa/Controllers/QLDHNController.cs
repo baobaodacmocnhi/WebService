@@ -850,7 +850,7 @@ namespace WSTanHoa.Controllers
 
         //-------------------------
 
-        [HttpGet]
+        [HttpPost]
         public bool updateDS_sDHN()
         {
             try
@@ -865,7 +865,7 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpPost]
         public bool getChiSo_sDHN_Day_Back(string Ngay)
         {
             try

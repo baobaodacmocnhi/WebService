@@ -895,30 +895,30 @@ namespace WSTanHoa.Controllers
                             string LuuLuong = "NULL";
                             if (item["flow"] != null)
                                 LuuLuong = ((int)item["flow"]).ToString();
-                            //string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "'))"
-                            //    + " insert into sDHN_LichSu(DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
-                            //    + ",Longitude,Latitude,Altitude,ChuKyGui"
-                            //    + ",ThoiGianCapNhat,Loai)"
-                            //               + "values("
-                            //               + "'" + DanhBo + "'"
-                            //               + "," + item["vol"]
-                            //               + ",NULL" //+ item["Battery"]
-                            //               + ",NULL" //+ item["RemainBatt"] + "'"
-                            //               + "," + LuuLuong
-                            //               + ",'" + item["rsrp"] + "'"
-                            //               + "," + flagCBPinYeu
-                            //               + "," + flagCBRoRi
-                            //               + "," + flagCBQuaDong
-                            //               + "," + flagCBChayNguoc
-                            //               + "," + flagCBNamCham
-                            //               + "," + flagCBKhoOng
-                            //               + "," + flagCBMoHop
-                            //               + ",NULL" //+ item["longitude"]
-                            //               + ",NULL" //+ item["latitude"]
-                            //               + ",NULL" //+ item["altitude"]
-                            //               + ",NULL" //+ item["interval"]
-                            //               + ",'" + item["time"] + "',N'All')";
-                            string sql = "update sDHN_LichSu set LuuLuong=ChiSo,ChiSo=" + item["vol"] + " where danhbo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "')";
+                            string sql = "if not exists(select * from sDHN_LichSu where DanhBo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "'))"
+                                + " insert into sDHN_LichSu(DanhBo,ChiSo,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                + ",ThoiGianCapNhat,Loai)"
+                                           + "values("
+                                           + "'" + DanhBo + "'"
+                                           + "," + item["vol"]
+                                           + ",NULL" //+ item["Battery"]
+                                           + ",NULL" //+ item["RemainBatt"] + "'"
+                                           + "," + LuuLuong
+                                           + ",'" + item["rsrp"] + "'"
+                                           + "," + flagCBPinYeu
+                                           + "," + flagCBRoRi
+                                           + "," + flagCBQuaDong
+                                           + "," + flagCBChayNguoc
+                                           + "," + flagCBNamCham
+                                           + "," + flagCBKhoOng
+                                           + "," + flagCBMoHop
+                                           + ",NULL" //+ item["longitude"]
+                                           + ",NULL" //+ item["latitude"]
+                                           + ",NULL" //+ item["altitude"]
+                                           + ",NULL" //+ item["interval"]
+                                           + ",'" + item["time"] + "',N'All')";
+                            //string sql = "update sDHN_LichSu set LuuLuong=ChiSo,ChiSo=" + item["vol"] + " where danhbo='" + DanhBo + "' and ThoiGianCapNhat=convert(datetime,'" + item["time"] + "')";
                             _cDAL_sDHN.ExecuteNonQuery(sql);
                         }
                         updateDiff(DanhBo, Time);

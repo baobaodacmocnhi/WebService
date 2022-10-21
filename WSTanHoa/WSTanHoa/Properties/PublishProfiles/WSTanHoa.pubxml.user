@@ -187,10 +187,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>10/20/2022 11:03:06</publishTime>
+      <publishTime>10/21/2022 14:09:49</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>10/20/2022 11:03:06</publishTime>
+      <publishTime>10/21/2022 14:09:49</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -883,7 +883,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Scripts/_references.js">
-      <publishTime>10/20/2022 10:12:39</publishTime>
+      <publishTime>10/20/2022 16:15:34</publishTime>
     </File>
     <File Include="Template/SBAdmin2/css/bootstrap-glyphicons.min.css">
       <publishTime>05/13/2022 08:07:21</publishTime>
@@ -11506,7 +11506,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/07/2022 09:30:12</publishTime>
     </File>
     <File Include="Views/QLDHN/sDHN.cshtml">
-      <publishTime>10/19/2022 16:22:16</publishTime>
+      <publishTime>10/21/2022 09:36:18</publishTime>
     </File>
     <File Include="Views/QLDHN/sDHN_SuCo.cshtml">
       <publishTime>10/20/2022 10:45:44</publishTime>
