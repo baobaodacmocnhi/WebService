@@ -23,7 +23,7 @@
             type: 'POST',
             url: '/QLDHN/getKhongTinHieu_sDHN/',
             dataType: 'json',
-            data: { SoNgay: $("#SoNgayKhongTinHieu").val(), Ngay: $("#NgayXemKhongTinHieu").val() },
+            data: { SoNgay: $("#SoNgayKhongTinHieu").val(), Ngay: $("#NgayXemKhongTinHieu").val(), KhongDu24records: $("#chkKhongDu24record").is(":checked") },
             success: function (data) {
                 var items = '';
                 $.each(data, function (i, item) {
@@ -302,6 +302,11 @@
     <div class="col-3">
         <input class="datepicker form-control" type="text" id="NgayXemKhongTinHieu" name="NgayXemKhongTinHieu" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="getKhongTinHieu()">
         <input class="mt-2 form-control" type="text" id="SoNgayKhongTinHieu" name="SoNgayKhongTinHieu" placeholder="Số Ngày" value="1" onchange="getKhongTinHieu()">
+    </div>
+    <div class="col mt-2">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="chkKhongDu24record" name="chkKhongDu24record" onchange="getKhongTinHieu()">Không Đủ 24 records
+        </div>
     </div>
     <div id="vKhongTinHieu" class="row mt-2">
 

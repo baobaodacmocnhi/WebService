@@ -412,12 +412,16 @@ namespace WSTanHoa.Controllers
             return new SelectList(list, "Value", "Text");
         }
 
-        public string getKhongTinHieu_sDHN(string SoNgay, string Ngay)
+        public string getKhongTinHieu_sDHN(string SoNgay, string Ngay, string KhongDu24records)
         {
             try
             {
                 List<MView> vKhongTinHieu = new List<MView>();
-                DataTable dt = getDS_KhongTinHieu_sDHN("", "", SoNgay, Ngay);
+                DataTable dt;
+                if (!bool.Parse(KhongDu24records))
+                    dt = getDS_KhongTinHieu_sDHN("", "", SoNgay, Ngay);
+                else
+                    dt = getDS_BatThuong_sDHN("", "", SoNgay, Ngay);
                 DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select * from sDHN_NCC");
                 foreach (DataRow item in dtNCC.Rows)
                 {
@@ -481,6 +485,55 @@ namespace WSTanHoa.Controllers
                 }
                 sql += ")t1,sDHN_NCC ncc"
                         + " where t1.SoLuong = 0 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
+                        + " group by IDNCC,ncc.Name,t1.DanhBo"
+                        + " having COUNT(t1.DanhBo) = " + SoNgay
+                        + " order by IDNCC";
+            }
+            return cDAL_sDHN.ExecuteQuery_DataTable(sql);
+        }
+
+        [NonAction]
+        public DataTable getDS_BatThuong_sDHN(string function, string NCC, string SoNgay, string Ngay)
+        {
+            string[] datestr = Ngay.Split('/');
+            DateTime date = new DateTime(int.Parse(datestr[2]), int.Parse(datestr[1]), int.Parse(datestr[0]));
+            List<MView> vKhongTinHieu = new List<MView>();
+            int count = int.Parse(SoNgay);
+            string sql = "";
+            if (function == "export")
+            {
+                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA from"
+                    + " (select IDNCC,NCC=ncc.Name,t1.DanhBo,SoLuongNgay=COUNT(t1.DanhBo) from (";
+                while (count > 0)
+                {
+                    sql += " select IDNCC,DanhBo,SoLuong=(select COUNT(*) from sDHN_LichSu where DanhBo=sDHN.DanhBo and CAST(ThoiGianCapNhat as date)='" + date.ToString("yyyyMMdd") + "')"
+                        + " from sDHN where Valid = 1";
+                    if (count != 1)
+                        sql += " union all";
+                    count--;
+                    date = date.AddDays(-1);
+                }
+                sql += ")t1,sDHN_NCC ncc"
+                        + " where t1.SoLuong > 0 and t1.SoLuong < 24 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
+                        + " group by IDNCC,ncc.Name,t1.DanhBo"
+                        + " having COUNT(t1.DanhBo) = " + SoNgay
+                        + " )t1,DHTM_THONGTIN ttsdhn,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                        + " where t1.IDNCC=ttsdhn.ID and t1.DanhBo=ttkh.DANHBO";
+            }
+            else
+            {
+                sql = "select IDNCC,NCC=ncc.Name,t1.DanhBo,SoLuongNgay=COUNT(t1.DanhBo) from (";
+                while (count > 0)
+                {
+                    sql += " select IDNCC,DanhBo,SoLuong=(select COUNT(*) from sDHN_LichSu where DanhBo=sDHN.DanhBo and CAST(ThoiGianCapNhat as date)='" + date.ToString("yyyyMMdd") + "')"
+                        + " from sDHN where Valid = 1";
+                    if (count != 1)
+                        sql += " union all";
+                    count--;
+                    date = date.AddDays(-1);
+                }
+                sql += ")t1,sDHN_NCC ncc"
+                        + " where t1.SoLuong > 0 and t1.SoLuong < 24 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
                         + " group by IDNCC,ncc.Name,t1.DanhBo"
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " order by IDNCC";
