@@ -4046,25 +4046,11 @@ namespace WSSmartPhone
             try
             {
                 byte[] hinh = null;
-
-                string sql = "SELECT top 1 Image " +
-                   "FROM DocSoTH_Hinh.dbo.HinhDHN " +
-                   "WHERE HinhDHNID =" + ID;
-                hinh = (byte[])_cDAL_DocSo12.ExecuteQuery_ReturnOneValue(sql);
-                if (hinh == null)
-                {
-                    string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
-                    string filename = ID.Substring(6, 11) + ".jpg";
-                    bool fileExists = File.Exists(folder + @"\" + filename);
-                    if (fileExists == true)
-                        hinh = File.ReadAllBytes(folder + @"\" + filename);
-                    //using (MemoryStream ms = new MemoryStream())
-                    //{
-                    //    Image img = Image.FromFile(folder + @"\" + filename);
-                    //    img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    //    hinh = ms.ToArray();
-                    //}
-                }
+                string folder = CGlobalVariable.pathHinhDHN + @"\" + ID.Substring(0, 6);
+                string filename = ID.Substring(6, 11) + ".jpg";
+                bool fileExists = File.Exists(folder + @"\" + filename);
+                if (fileExists == true)
+                    hinh = File.ReadAllBytes(folder + @"\" + filename);
                 if (hinh.Length == 0)
                     return null;
                 else
