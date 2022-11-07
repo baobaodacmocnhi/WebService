@@ -120,6 +120,9 @@ namespace WSTanHoa.Controllers
                         byte[] FileContent = null;
                         switch (TableName)
                         {
+                            case "MaHoa_DonTu_Hinh":
+                                FileContent = wsDHN.get_Hinh_MaHoa("DonTu", ID, item["filename"].ToString());
+                                break;
                             case "MaHoa_DCBD_Hinh":
                                 FileContent = wsDHN.get_Hinh_MaHoa("DCBD", ID, item["filename"].ToString());
                                 break;
