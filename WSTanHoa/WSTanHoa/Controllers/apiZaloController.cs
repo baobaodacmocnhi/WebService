@@ -158,7 +158,8 @@ namespace WSTanHoa.Controllers
                                 {
                                     if (messagesCSN[0].Trim().ToUpper() == "CSN")
                                     {
-                                        baochisonuoc(IDZalo, messagesCSN, ref strResponse);
+                                        //baochisonuoc(IDZalo, messagesCSN, ref strResponse);
+                                        strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nTHẤT BẠI\nCú pháp: CSN_danhbo_chisonuoc đã dừng hoạt động\nVui lòng truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc");
                                     }
                                 }
                                 else
@@ -290,7 +291,7 @@ namespace WSTanHoa.Controllers
                                     }
                                 }
                                 else
-                                    if (messagesKyHD.Count() > 1)
+                                    if (messagesKyHD != null && messagesKyHD.Count() > 1)
                                 {
                                     getkyhoadon(IDZalo, messagesKyHD[1], messagesKyHD[0], ref strResponse);
                                 }
@@ -650,33 +651,42 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                switch (message.ToUpper())
+                string str = message.ToUpper();
+                if (str == "DK CLN")
                 {
-                    case "DK CLN":
-                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=1 where IDZalo=" + IDZalo);
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group Chất Lượng Nước");
-                        break;
-                    case "DK DMA":
+                    cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=1 where IDZalo=" + IDZalo);
+                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group Chất Lượng Nước");
+                }
+                else
+                   if (str == "DK DMA")
+                    {
                         cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
                         sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐMA");
-                        break;
-                    case "DK sDHN":
-                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
-                        break;
-                    case "HUY CLN":
-                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
-                        break;
-                    case "HUY DMA":
-                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐMA");
-                        break;
-                    case "HUY sDHN":
-                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
-                        break;
-                };
+                    }
+                    else
+                       if (str == "DK SDHN")
+                        {
+                            cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
+                        }
+                        else
+                            if (str == "HUY CLN")
+                            {
+                                cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
+                            }
+                            else
+                               if (str == "HUY DMA")
+                                {
+                                    cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
+                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐMA");
+                                }
+                                else
+                                   if (str == "HUY SDHN")
+                                    {
+                                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
+                                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
+                                    }
                 DateTime date = DateTime.Now;
                 if (date.Date.DayOfWeek == DayOfWeek.Saturday || date.Date.DayOfWeek == DayOfWeek.Sunday)
                 {
@@ -1505,18 +1515,15 @@ namespace WSTanHoa.Controllers
                     if (checksum == CGlobalVariable.cheksum)
                     {
                         DataTable dt = new DataTable();
-                        switch (Loai.ToUpper())
-                        {
-                            case "CLN":
-                                dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where CLN=1");
-                                break;
-                            case "DMA":
+                        string str = Loai.ToUpper();
+                        if (str == "CLN")
+                            dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where CLN=1");
+                        else
+                            if (str == "DMA")
                                 dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where DMA=1");
-                                break;
-                            case "sDHN":
-                                dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
-                                break;
-                        }
+                            else
+                                if (str == "SDHN")
+                                    dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
                         foreach (DataRow item in dt.Rows)
                         {
                             strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);
