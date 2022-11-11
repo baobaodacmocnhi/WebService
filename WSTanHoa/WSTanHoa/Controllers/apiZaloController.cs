@@ -661,7 +661,7 @@ namespace WSTanHoa.Controllers
                    if (str == "DK DMA")
                     {
                         cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐMA");
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group DMA");
                     }
                     else
                        if (str == "DK SDHN")
@@ -679,7 +679,7 @@ namespace WSTanHoa.Controllers
                                if (str == "HUY DMA")
                                 {
                                     cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
-                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐMA");
+                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group DMA");
                                 }
                                 else
                                    if (str == "HUY SDHN")
