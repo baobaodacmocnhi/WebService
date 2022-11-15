@@ -561,6 +561,14 @@ namespace WSTanHoa.Controllers
                     en.TieuDe = dt.Rows[0]["Loai"].ToString();
                     en.SoLuong = dt.Rows.Count.ToString();
                     en.NoiDung = dt.Rows[0]["Loai2"].ToString();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        MView enCT = new MView();
+                        enCT.DanhBo = dt.Rows[i]["DanhBo"].ToString();
+                        enCT.HoTen = dt.Rows[i]["NCC"].ToString();
+                        enCT.DiaChi = dt.Rows[i]["DiaChi"].ToString();
+                        en.lst.Add(enCT);
+                    }
                     vCanhBao.Add(en);
                 }
                 dt = getDS_CanhBao_RoRi_sDHN(date);
@@ -570,6 +578,14 @@ namespace WSTanHoa.Controllers
                     en.TieuDe = dt.Rows[0]["Loai"].ToString();
                     en.SoLuong = dt.Rows.Count.ToString();
                     en.NoiDung = dt.Rows[0]["Loai2"].ToString();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        MView enCT = new MView();
+                        enCT.DanhBo = dt.Rows[i]["DanhBo"].ToString();
+                        enCT.HoTen = dt.Rows[i]["NCC"].ToString();
+                        enCT.DiaChi = dt.Rows[i]["DiaChi"].ToString();
+                        en.lst.Add(enCT);
+                    }
                     vCanhBao.Add(en);
                 }
                 dt = getDS_CanhBao_QuaDong_sDHN(date);
@@ -579,6 +595,14 @@ namespace WSTanHoa.Controllers
                     en.TieuDe = dt.Rows[0]["Loai"].ToString();
                     en.SoLuong = dt.Rows.Count.ToString();
                     en.NoiDung = dt.Rows[0]["Loai2"].ToString();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        MView enCT = new MView();
+                        enCT.DanhBo = dt.Rows[i]["DanhBo"].ToString();
+                        enCT.HoTen = dt.Rows[i]["NCC"].ToString();
+                        enCT.DiaChi = dt.Rows[i]["DiaChi"].ToString();
+                        en.lst.Add(enCT);
+                    }
                     vCanhBao.Add(en);
                 }
                 dt = getDS_CanhBao_ChayNguoc_sDHN(date);
@@ -588,6 +612,14 @@ namespace WSTanHoa.Controllers
                     en.TieuDe = dt.Rows[0]["Loai"].ToString();
                     en.SoLuong = dt.Rows.Count.ToString();
                     en.NoiDung = dt.Rows[0]["Loai2"].ToString();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        MView enCT = new MView();
+                        enCT.DanhBo = dt.Rows[i]["DanhBo"].ToString();
+                        enCT.HoTen = dt.Rows[i]["NCC"].ToString();
+                        enCT.DiaChi = dt.Rows[i]["DiaChi"].ToString();
+                        en.lst.Add(enCT);
+                    }
                     vCanhBao.Add(en);
                 }
                 dt = getDS_CanhBao_NamCham_sDHN(date);
@@ -597,6 +629,14 @@ namespace WSTanHoa.Controllers
                     en.TieuDe = dt.Rows[0]["Loai"].ToString();
                     en.SoLuong = dt.Rows.Count.ToString();
                     en.NoiDung = dt.Rows[0]["Loai2"].ToString();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        MView enCT = new MView();
+                        enCT.DanhBo = dt.Rows[i]["DanhBo"].ToString();
+                        enCT.HoTen = dt.Rows[i]["NCC"].ToString();
+                        enCT.DiaChi = dt.Rows[i]["DiaChi"].ToString();
+                        en.lst.Add(enCT);
+                    }
                     vCanhBao.Add(en);
                 }
                 dt = getDS_CanhBao_KhoOng_sDHN(date);
@@ -606,6 +646,14 @@ namespace WSTanHoa.Controllers
                     en.TieuDe = dt.Rows[0]["Loai"].ToString();
                     en.SoLuong = dt.Rows.Count.ToString();
                     en.NoiDung = dt.Rows[0]["Loai2"].ToString();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        MView enCT = new MView();
+                        enCT.DanhBo = dt.Rows[i]["DanhBo"].ToString();
+                        enCT.HoTen = dt.Rows[i]["NCC"].ToString();
+                        enCT.DiaChi = dt.Rows[i]["DiaChi"].ToString();
+                        en.lst.Add(enCT);
+                    }
                     vCanhBao.Add(en);
                 }
                 dt = getDS_CanhBao_MoHop_sDHN(date);
@@ -615,6 +663,14 @@ namespace WSTanHoa.Controllers
                     en.TieuDe = dt.Rows[0]["Loai"].ToString();
                     en.SoLuong = dt.Rows.Count.ToString();
                     en.NoiDung = dt.Rows[0]["Loai2"].ToString();
+                    for (int i = 0; i < dt.Rows.Count; i++)
+                    {
+                        MView enCT = new MView();
+                        enCT.DanhBo = dt.Rows[i]["DanhBo"].ToString();
+                        enCT.HoTen = dt.Rows[i]["NCC"].ToString();
+                        enCT.DiaChi = dt.Rows[i]["DiaChi"].ToString();
+                        en.lst.Add(enCT);
+                    }
                     vCanhBao.Add(en);
                 }
                 return CGlobalVariable.jsSerializer.Serialize(vCanhBao);
@@ -639,10 +695,11 @@ namespace WSTanHoa.Controllers
         public DataTable getDS_CanhBao_RoRi_sDHN(DateTime date)
         {
             return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Rò Rỉ',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='RoRi' from"
-                                                    + " (select distinct DanhBo from sDHN_LichSu"
-                                                    + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and CBRoRi = 1)t1, sDHN_NCC ncc, sDHN dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
-                                                    + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1"
-                                                    + " order by NCC");
+                                                     + " (select DanhBo, SL = COUNT(*) from sDHN_LichSu"
+                                                     + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and Diff - 0.5 >= 0.5 group by DanhBo)t1, sDHN_NCC ncc, sDHN dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                                                     + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1 and t1.SL = (select COUNT(DanhBo) from sDHN_LichSu"
+                                                     + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and DanhBo = t1.DanhBo)"
+                                                     + " order by NCC");
         }
 
         [NonAction]

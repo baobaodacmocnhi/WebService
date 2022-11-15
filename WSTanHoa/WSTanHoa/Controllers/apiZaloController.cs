@@ -1500,9 +1500,9 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
-        [Route("sendCanhBao")]
+        [Route("sendCanhBaoQuanLy")]
         [HttpPost]
-        public string sendCanhBao()
+        public string sendCanhBaoQuanLy()
         {
             string strResponse = "";
             try
@@ -1541,6 +1541,9 @@ namespace WSTanHoa.Controllers
             }
             return strResponse;
         }
+
+        
+
 
     }
 }
