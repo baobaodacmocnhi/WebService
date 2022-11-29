@@ -4457,11 +4457,14 @@ namespace WSSmartPhone
                     DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select top 1 MLT=MLT1,HoTen=TENKH,DiaChi=SO+' '+DUONG,GiaBieu=GB,DinhMuc=DM,DinhMucHN=DMHN,Dot,Ky,Nam,Phuong,Quan,HopDong from BienDong where DanhBa='" + DanhBo + "' order by BienDongID desc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
-                        object checkExists_DanhBoBoQua = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select DanhBo from MaHoa_DanhBo_Except where DanhBo='" + DanhBo + "'");
-                        if (NoiDung == "Giá Biểu" && checkExists_DanhBoBoQua != null)
+                        DataTable checkExists_DanhBoBoQua = _cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo,NoiDung from MaHoa_DanhBo_Except where DanhBo='" + DanhBo + "'");
+                        if (NoiDung.Contains("Giá Biểu") && checkExists_DanhBoBoQua != null && checkExists_DanhBoBoQua.Rows.Count > 0)
                         {
                             result.success = false;
-                            result.error = "Danh Bộ nằm trong danh sách bỏ qua";
+                            if (string.IsNullOrEmpty(checkExists_DanhBoBoQua.Rows[0]["NoiDung"].ToString()))
+                                result.error = "Danh Bộ VIP";
+                            else
+                                result.error = checkExists_DanhBoBoQua.Rows[0]["NoiDung"].ToString();
                         }
                         else
                         {
