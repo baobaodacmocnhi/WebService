@@ -21,7 +21,11 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private QLDHNController _QLDHNController = new QLDHNController();
-
+        private string url = "https://dhntm.sawaco.com.vn/";
+        private string urlApi = "https://dhntmapi.sawaco.com.vn/";
+        private string urlTest = "http://testdhntm.sawaco.com.vn/";
+        private string urlApiTest = "http://testdhntmapi.sawaco.com.vn/";
+        
 
         [Route("updateDS_sDHN")]
         [HttpGet]
@@ -1230,6 +1234,67 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        //api TCT
+
+        private string getAccess_token()
+        {
+            return _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
+        }
+
+        [Route("getAccess_tokenFromTCT")]
+        [HttpGet]
+        public string getAccess_tokenFromTCT(string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                           | SecurityProtocolType.Ssl3;
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApiTest+ "api/Authenticate/login");
+                    request.Method = "POST";
+                    request.ContentType = "application/json";
+
+                    var data = new
+                    {
+                        Username = "quocbao241@gmail.com",
+                        Password = "123@abcDhtm"
+                    };
+                    var json = CGlobalVariable.jsSerializer.Serialize(data);
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                    request.ContentLength = byteArray.Length;
+                    //gắn data post
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        bool flag = _cDAL_sDHN.ExecuteNonQuery("update Configure set access_token='" + obj["token"] + "',expiration_date='" + obj["expiration"] + "',CreateDate=getdate()");
+                        strResponse = flag.ToString();
+                    }
+                    else
+                    {
+                        strResponse = "Error: " + respuesta.StatusCode;
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
 
         //[Route("getVersion")]
         //[HttpGet]
