@@ -25,7 +25,7 @@ namespace WSTanHoa.Controllers
         private string urlApi = "https://dhntmapi.sawaco.com.vn/";
         private string urlTest = "http://testdhntm.sawaco.com.vn/";
         private string urlApiTest = "http://testdhntmapi.sawaco.com.vn/";
-        
+
 
         [Route("updateDS_sDHN")]
         [HttpGet]
@@ -1253,7 +1253,7 @@ namespace WSTanHoa.Controllers
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                            | SecurityProtocolType.Ssl3;
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApiTest+ "api/Authenticate/login");
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApiTest + "api/Authenticate/login");
                     request.Method = "POST";
                     request.ContentType = "application/json";
 
@@ -1280,6 +1280,147 @@ namespace WSTanHoa.Controllers
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                         bool flag = _cDAL_sDHN.ExecuteNonQuery("update Configure set access_token='" + obj["token"] + "',expiration_date='" + obj["expiration"] + "',CreateDate=getdate()");
                         strResponse = flag.ToString();
+                    }
+                    else
+                    {
+                        strResponse = "Error: " + respuesta.StatusCode;
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        [Route("checkExists_TCT")]
+        [HttpGet]
+        public string checkExists_TCT(string serialnumber, string DanhBo, string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                           | SecurityProtocolType.Ssl3;
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApiTest + "api/DongHoNuoc/TraCuuDongHoNuoc?so_seri=" + serialnumber + "&danhBo=" + DanhBo);
+                    request.Method = "GET";
+                    request.ContentType = "application/json";
+
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        if (int.Parse(obj["token"]) == 1)
+                            return "1";
+                        else
+                            return "-1";
+                    }
+                    else
+                    {
+                        strResponse = "Error: " + respuesta.StatusCode;
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        [Route("getChiSo_TCT")]
+        [HttpGet]
+        public string getChiSo_TCT(string Time, string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                           | SecurityProtocolType.Ssl3;
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApiTest + "api/ChiSoNuoc/LayChiSoNuocTheoNgay?id_donVi=TH&tuNgay=" + Time + "&denNgay=" + Time);
+                    request.Method = "GET";
+                    request.ContentType = "application/json";
+                    request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
+
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        CGlobalVariable.jsSerializer.MaxJsonLength = Int32.MaxValue;
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        if (obj["ketQua"] == 1)
+                        {
+                            var lst1 = obj["duLieu"];
+                            foreach (var itemC1 in lst1)
+                            {
+                                var lst2 = CGlobalVariable.jsSerializer.Deserialize<dynamic>(itemC1["livedata"]);
+                                foreach (var itemC2 in lst2)
+                                {
+                                    int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
+                                    if (itemC2["pin_yeu"] == true)
+                                        flagCBPinYeu = 1;
+                                    if (itemC2["ro_ri"] == true)
+                                        flagCBRoRi = 1;
+                                    if (itemC2["qua_dong"] == true)
+                                        flagCBQuaDong = 1;
+                                    if (itemC2["chay_nguoc"] == true)
+                                        flagCBChayNguoc = 1;
+                                    if (itemC2["co_nam_cham"] == true)
+                                        flagCBNamCham = 1;
+                                    if (itemC2["kho_ong"] == true)
+                                        flagCBKhoOng = 1;
+                                    if (itemC2["mo_hop"] == true)
+                                        flagCBMoHop = 1;
+                                    string LuuLuong = "NULL";
+                                    //if (itemC2["Flow"] != null)
+                                    //    LuuLuong = ((int)itemC2["Flow"]).ToString();
+                                    string sql = "if not exists(select * from sDHN_LichSu_TCT where DanhBo='" + itemC2["danh_bo"] + "' and ThoiGianCapNhat=convert(datetime,'" + itemC2["thoi_gian_nhan"] + "'))"
+                                        + " insert into sDHN_LichSu_TCT(DanhBo,ChiSo,Diff,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                        + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                        + ",ThoiGianCapNhat,Loai)"
+                                                   + "values("
+                                                   + "'" + itemC2["danh_bo"] + "'"
+                                                   + "," + itemC2["chi_so_nuoc"]
+                                                   + "," + itemC2["tieu_thu"]
+                                                   + ",NULL" //+ item["Battery"]
+                                                   + ",N'" + itemC2["thoi_gian_con_lai"] + "'"
+                                                   + "," + LuuLuong
+                                                   + ",N'" + itemC2["chat_luong_song"] + "'"
+                                                   + "," + flagCBPinYeu
+                                                   + "," + flagCBRoRi
+                                                   + "," + flagCBQuaDong
+                                                   + "," + flagCBChayNguoc
+                                                   + "," + flagCBNamCham
+                                                   + "," + flagCBKhoOng
+                                                   + "," + flagCBMoHop
+                                                   + ",NULL" //+ item["Longitude"]
+                                                   + ",NULL" //+ item["Latitude"]
+                                                   + ",NULL"
+                                                   + ",NULL" //+ item["Interval"]
+                                                   + ",'" + itemC2["thoi_gian_nhan"] + "',N'All')";
+                                    _cDAL_sDHN.ExecuteNonQuery(sql);
+                                }
+                            }
+                            strResponse = "Đã xử lý";
+                        }
                     }
                     else
                     {
