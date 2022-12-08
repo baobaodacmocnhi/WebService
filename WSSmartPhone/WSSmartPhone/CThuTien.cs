@@ -58,6 +58,15 @@ namespace WSSmartPhone
             return (bool)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
         }
 
+        private bool checkDongNuoc(string MaNV)
+        {
+            DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from TT_NguoiDung where DongNuoc=1 and MaND=" + MaNV);
+            if (dt != null && dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
         private bool checkChotDangNgan(string NgayGiaiTrach)
         {
             if ((int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
@@ -510,7 +519,8 @@ namespace WSSmartPhone
                 switch (LoaiXuLy)
                 {
                     case "DangNgan":
-                        return "false;Tính năng đã bị Khóa";
+                        if (checkDongNuoc(MaNV) == false)
+                            return "false;Tính năng đã bị Khóa";
                         if (checkActiveMobile(MaNV) == false)
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(Ngay.ToString("yyyyMMdd")) == true)
