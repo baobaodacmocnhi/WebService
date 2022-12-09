@@ -213,6 +213,7 @@
     <Compile Include="Controllers\KhieuNaiController.cs" />
     <Compile Include="Controllers\QLDHNController.cs" />
     <Compile Include="Controllers\QLDHNTCTController.cs" />
+    <Compile Include="Controllers\QuaySoController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ThuongVuController.cs" />
     <Compile Include="Controllers\ThuTienController.cs" />
@@ -293,6 +294,7 @@
     <Content Include="Images\logoctycp.png" />
     <Content Include="Images\logofull.jpg" />
     <Content Include="Images\info.mobile.png" />
+    <Content Include="Images\sawaco.jpg" />
     <Content Include="Images\zaloOACover1333x750.png" />
     <Content Include="Images\zalothongbaotamngungcungcapnuoc.jpg" />
     <Content Include="info.aspx" />
@@ -2163,6 +2165,7 @@
     <Content Include="Views\KhachHang\Login.cshtml" />
     <Content Include="Views\QLDHN\sDHN_SuCo.cshtml" />
     <Content Include="Views\QLDHNTCT\sDHN.cshtml" />
+    <Content Include="Views\QuaySo\Index.cshtml" />
     <None Include="Web References\wrThuongVu\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
