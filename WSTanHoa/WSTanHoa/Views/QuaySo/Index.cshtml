@@ -4,9 +4,19 @@
     ViewBag.Title = "Quay Số May Mắn";
 }
 <link href="~/Content/bootstrap.css" rel="stylesheet" />
-@*<script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/jquery-3.6.0.js"></script>*@
+@*<script src="~/Scripts/bootstrap.js"></script>*@
+    <script src="~/Scripts/jquery-3.6.0.js"></script>
+<script>
+    function generate() {
+        $('#num1').text(Math.floor(Math.random() * 9) + 1);
+        $("#num1").prev().css("color", "red");
+        //$('#num1').attr('style', 'background-color:red');
+        //$('#num1').css("background-color") = 'red' ? $('#num1').attr('style', 'background-color:yellow') : $('#num1').attr('style', 'background-color:red');
+    }
+    setInterval(generate, 100);
+</script>
 <body style="background-color:lightblue">
+    <button onclick="generate()">run</button>
     <div class="text-center text-danger fw-bolder fs-2 mt-1">
         <div class="col">
             <div class="row">
@@ -37,32 +47,32 @@
         </div>
     </div>
 
-    <div class="text-center fw-bolder mt-3" style="font-size:100px;color:limegreen">
+    <div class="text-center fw-bolder mt-3" style="font-size:80px;color:limegreen">
         <div class="row justify-content-center">
             <div class="col-1 align-self-start">
-                <label>1</label>
+                <label id="num1">@ViewBag.num1</label>
             </div>
             <div class="col-1 align-self-center">
-                <label>2</label>
+                <label id="num2">@ViewBag.num2</label>
             </div>
             <div class="col-1 align-self-end">
-                <label>3</label>
+                <label id="num3">@ViewBag.num3</label>
             </div>
         </div>
     </div>
 
-    <div class="text-center fw-bolder mt-5" style="font-size:100px;color:limegreen">
+    <div class="text-center fw-bolder mt-5" style="font-size:80px;color:limegreen">
         <div class="row">
             <div class="col">
-                <label>Đơn vị</label>
+                <label id="donvi">@ViewBag.donvi</label>
             </div>
         </div>
     </div>
 
-    <div class="text-center fw-bolder mt-5" style="font-size:100px;color:limegreen">
+    <div class="text-center fw-bolder mt-5" style="font-size:80px;color:limegreen">
         <div class="row">
             <div class="col">
-                <label>Họ tên</label>
+                <label id="hoten">@ViewBag.hoten</label>
             </div>
         </div>
     </div>
