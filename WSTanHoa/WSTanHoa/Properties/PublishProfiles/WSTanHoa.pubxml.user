@@ -187,10 +187,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>12/07/2022 09:08:42</publishTime>
+      <publishTime>12/12/2022 11:12:35</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>12/07/2022 09:08:42</publishTime>
+      <publishTime>12/12/2022 11:12:36</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -431,6 +431,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Images/logofull.jpg">
       <publishTime>10/27/2021 08:10:11</publishTime>
+    </File>
+    <File Include="Images/sawaco.jpg">
+      <publishTime>12/09/2022 14:23:02</publishTime>
     </File>
     <File Include="Images/zaloOACover1333x750.png">
       <publishTime>10/27/2021 08:10:11</publishTime>
@@ -884,6 +887,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Scripts/_references.js">
       <publishTime>10/20/2022 16:15:34</publishTime>
+    </File>
+    <File Include="Sounds/chucmungchienthang.mp3">
+      <publishTime>12/12/2022 09:47:10</publishTime>
+    </File>
+    <File Include="Sounds/nhacxosokienthiet.mp3">
+      <publishTime>12/12/2022 09:47:15</publishTime>
     </File>
     <File Include="Template/SBAdmin2/css/bootstrap-glyphicons.min.css">
       <publishTime>05/13/2022 08:07:21</publishTime>
@@ -11513,6 +11522,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/QLDHNTCT/sDHN.cshtml">
       <publishTime>12/07/2022 09:03:30</publishTime>
+    </File>
+    <File Include="Views/QuaySo/Index.cshtml">
+      <publishTime>12/12/2022 14:32:13</publishTime>
     </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>

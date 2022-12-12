@@ -3,25 +3,134 @@
     Layout = null;
     ViewBag.Title = "Quay Số May Mắn";
 }
-<link href="~/Content/bootstrap.css" rel="stylesheet" />
-@*<script src="~/Scripts/bootstrap.js"></script>*@
+<head>
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+
+    <link href="~/Content/bootstrap.css" rel="stylesheet" />
+    @*<script src="~/Scripts/bootstrap.js"></script>*@
     <script src="~/Scripts/jquery-3.6.0.js"></script>
-<script>
-    function generate() {
-        $('#num1').text(Math.floor(Math.random() * 9) + 1);
-        $("#num1").prev().css("color", "red");
-        //$('#num1').attr('style', 'background-color:red');
-        //$('#num1').css("background-color") = 'red' ? $('#num1').attr('style', 'background-color:yellow') : $('#num1').attr('style', 'background-color:red');
-    }
-    setInterval(generate, 100);
-</script>
+
+    <script>
+        var myTimer1;
+        var myTimer2;
+        var myTimer3;
+        var soundstart;
+        var soundsend;
+        function quay() {
+            $('#num1').text("");
+            $('#num2').text("");
+            $('#num3').text("");
+            $('#donvi').text("");
+            $('#hoten').text("");
+            $('#num1h').text("");
+            $('#num2h').text("");
+            $('#num3h').text("");
+            $('#donvih').text("");
+            $('#hotenh').text("");
+            soundstart = document.getElementById("quay");
+            soundsend = document.getElementById("ketqua");
+            $.ajax({
+                type: 'GET',
+                url: '/QuaySo/getQuay/',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                    var items = '';
+                    $.each(data, function (i, item) {
+                        $('#num1h').text(item.ChiSo);
+                        $('#num2h').text(item.DanhBo);
+                        $('#num3h').text(item.DiaChi);
+                        $('#donvih').text(item.HoTen);
+                        $('#hotenh').text(item.NoiDung);
+                    });
+
+                },
+                error: function (ex) {
+                    alert("Error: " + ex.statusText);
+                }
+            });
+
+            myTimer1 = setInterval(generate1, 400);
+            myTimer2 = setInterval(generate2, 400);
+            myTimer3 = setInterval(generate3, 400);
+
+            soundstart.play();
+            setTimeout(function () {
+                soundstart.pause();
+                soundstart.currentTime = 0;
+            }, 10000);
+            setTimeout(function () {
+                soundsend.play();
+            }, 10000);
+
+            setTimeout(function () {
+                $('#donvi').text($('#donvih').text());
+            }, 6500);
+
+            setTimeout(function () {
+                $('#hoten').text($('#hotenh').text());
+            }, 12000);
+
+        }
+
+        function generate1() {
+            $('#num1').text(Math.floor(Math.random() * 9) + 1);
+            $('#num1').attr('style', 'background-color:yellow')
+            setTimeout(function () {
+                $('#num1').attr('style', 'background-color:red')
+            }, 200);
+            setTimeout(function () {
+                $('#num1').removeAttr('style')
+                clearInterval(myTimer1);
+                $('#num1').text($('#num1h').text());
+            }, 2000);
+        }
+
+        function generate2() {
+            $('#num2').text(Math.floor(Math.random() * 9) + 1);
+            $('#num2').attr('style', 'background-color:yellow')
+            setTimeout(function () {
+                $('#num2').attr('style', 'background-color:red')
+            }, 200);
+            setTimeout(function () {
+                $('#num2').removeAttr('style')
+                clearInterval(myTimer2);
+                $('#num2').text($('#num2h').text());
+            }, 4000);
+        }
+
+        function generate3() {
+            $('#num3').text(Math.floor(Math.random() * 9) + 1);
+            $('#num3').attr('style', 'background-color:yellow')
+            setTimeout(function () {
+                $('#num3').attr('style', 'background-color:red')
+            }, 200);
+            setTimeout(function () {
+                $('#num3').removeAttr('style')
+                clearInterval(myTimer3);
+                $('#num3').text($('#num3h').text());
+            }, 5700);
+        }
+
+    </script>
+
+</head>
+
+<audio id="quay" preload="auto">
+    <source src="../Sounds/nhacxosokienthiet.mp3" type="audio/mp3" />
+</audio>
+<audio id="ketqua">
+    <source src="../Sounds/chucmungchienthang.mp3" type="audio/mp3" />
+</audio>
 <body style="background-color:lightblue">
-    <button onclick="generate()">run</button>
     <div class="text-center text-danger fw-bolder fs-2 mt-1">
         <div class="col">
             <div class="row">
                 <div class="col">
-                    <img src="~/Images/sawaco.jpg" width="150" />
+                    <img src="~/Images/sawaco.jpg" width="150" onclick="quay()" />
                 </div>
             </div>
             <div class="row mt-2">
@@ -47,32 +156,37 @@
         </div>
     </div>
 
-    <div class="text-center fw-bolder mt-3" style="font-size:80px;color:limegreen">
+    <div class="text-center fw-bolder mt-3" style="font-size:100px;color:limegreen">
         <div class="row justify-content-center">
             <div class="col-1 align-self-start">
-                <label id="num1">@ViewBag.num1</label>
+                <label id="num1"></label>
+                <label id="num1h" hidden="hidden">@ViewBag.num1</label>
             </div>
             <div class="col-1 align-self-center">
-                <label id="num2">@ViewBag.num2</label>
+                <label id="num2"></label>
+                <label id="num2h" hidden="hidden">@ViewBag.num2</label>
             </div>
             <div class="col-1 align-self-end">
-                <label id="num3">@ViewBag.num3</label>
+                <label id="num3"></label>
+                <label id="num3h" hidden="hidden">@ViewBag.num3</label>
             </div>
         </div>
     </div>
 
-    <div class="text-center fw-bolder mt-5" style="font-size:80px;color:limegreen">
+    <div class="text-center fw-bolder mt-2" style="font-size:80px;color:red">
         <div class="row">
             <div class="col">
-                <label id="donvi">@ViewBag.donvi</label>
+                <label id="donvi"></label>
+                <label id="donvih" hidden="hidden">@ViewBag.donvi</label>
             </div>
         </div>
     </div>
 
-    <div class="text-center fw-bolder mt-5" style="font-size:80px;color:limegreen">
+    <div class="text-center fw-bolder mt-3" style="font-size:80px;color:yellow">
         <div class="row">
             <div class="col">
-                <label id="hoten">@ViewBag.hoten</label>
+                <label id="hoten"></label>
+                <label id="hotenh" hidden="hidden">@ViewBag.hoten</label>
             </div>
         </div>
     </div>

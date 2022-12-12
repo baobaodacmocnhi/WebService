@@ -504,6 +504,8 @@
     <Content Include="hdsd_files\image051.jpg" />
     <Content Include="hdsd_files\item0041.xml" />
     <Content Include="hdsd_files\props042.xml" />
+    <Content Include="Sounds\chucmungchienthang.mp3" />
+    <Content Include="Sounds\nhacxosokienthiet.mp3" />
     <Content Include="Template\SBAdmin2\css\bootstrap-glyphicons.min.css" />
     <Content Include="Template\SBAdmin2\css\sb-admin-2.css" />
     <Content Include="Template\SBAdmin2\css\sb-admin-2.min.css" />
