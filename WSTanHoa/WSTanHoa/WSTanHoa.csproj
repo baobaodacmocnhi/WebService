@@ -295,6 +295,8 @@
     <Content Include="Images\logofull.jpg" />
     <Content Include="Images\info.mobile.png" />
     <Content Include="Images\sawaco.jpg" />
+    <Content Include="Images\Slide2022Light.jpg" />
+    <Content Include="Images\vongquaymayman.gif" />
     <Content Include="Images\zaloOACover1333x750.png" />
     <Content Include="Images\zalothongbaotamngungcungcapnuoc.jpg" />
     <Content Include="info.aspx" />
@@ -2167,7 +2169,10 @@
     <Content Include="Views\KhachHang\Login.cshtml" />
     <Content Include="Views\QLDHN\sDHN_SuCo.cshtml" />
     <Content Include="Views\QLDHNTCT\sDHN.cshtml" />
-    <Content Include="Views\QuaySo\Index.cshtml" />
+    <Content Include="Views\QuaySo\Index2.cshtml" />
+    <Content Include="Views\QuaySo\Index.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Web References\wrThuongVu\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

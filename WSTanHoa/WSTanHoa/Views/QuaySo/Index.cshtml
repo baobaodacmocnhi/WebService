@@ -1,24 +1,117 @@
-﻿
-@{
+﻿@{
     Layout = null;
     ViewBag.Title = "Quay Số May Mắn";
 }
+<!DOCTYPE html>
+<audio id="quay" preload="auto">
+    <source src="../Sounds/nhacxosokienthiet.mp3" type="audio/mp3" />
+</audio>
+<audio id="ketqua">
+    <source src="../Sounds/chucmungchienthang.mp3" type="audio/mp3" />
+</audio>
+<html lang="vn">
 <head>
-    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHƯƠNG TRÌNH QUAY SỐ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <link href="~/Content/bootstrap.css" rel="stylesheet" />
-    @*<script src="~/Scripts/bootstrap.js"></script>*@
+        body {
+            font-family: "Lato", sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            line-height: 1.7;
+            color: #777;
+            padding: 2px;
+        }
+
+        .header {
+            height: 100vh;
+            background-image: url("../Images/Slide2022Light.jpg");
+            background-size: cover;
+            background-position: bottom;
+        }
+
+        .logo {
+            top: 40px;
+            left: 20px;
+            width: 100%;
+        }
+
+        .container {
+            position: absolute;
+            top: 30%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .heading {
+            color: #fff;
+            text-transform: uppercase;
+            backface-visibility: hidden;
+            margin-bottom: 60px;
+        }
+
+        .heading-title {
+            display: block;
+            font-size: 60px;
+            font-weight: 400;
+            letter-spacing: 33px;
+            animation-name: hieu-ung-di-chuyen-sang-trai;
+            animation-duration: 2s;
+            animation-timing-function: ease-out;
+        }
+
+        .heading-sub {
+            display: block;
+            font-size: 20px;
+            letter-spacing: 12px;
+            animation-name: hieu-ung-di-chuyen-sang-phai;
+            animation-duration: 2s;
+            animation-timing-function: ease-out;
+        }
+
+        table, th, td {
+            border: 0px solid black;
+        }
+
+
+        #example2 {
+            border: 1px solid;
+            padding: 0px;
+            box-shadow: 5px 10px #888888;
+        }
+
+        #example3 {
+            border: 1px solid;
+            padding: 0px;
+            box-shadow: 5px 10px red;
+        }
+
+        .pcty {
+            font-family: Arial, Helvetica, sans-serif;
+            color: blue;
+        }
+
+        .ten {
+            font-family: "Courier New", "Courier New", monospace;
+            color: darkviolet;
+        }
+    </style>
     <script src="~/Scripts/jquery-3.6.0.js"></script>
-
     <script>
         var myTimer1;
         var myTimer2;
         var myTimer3;
         var soundstart;
         var soundsend;
+
         function quay() {
             $('#num1').text("");
             $('#num2').text("");
@@ -30,6 +123,8 @@
             $('#num3h').text("");
             $('#donvih').text("");
             $('#hotenh').text("");
+            $('#example2').attr('hidden', 'hidden')
+            $('#example3').attr('hidden', 'hidden')
             soundstart = document.getElementById("quay");
             soundsend = document.getElementById("ketqua");
             $.ajax({
@@ -68,10 +163,12 @@
 
             setTimeout(function () {
                 $('#donvi').text($('#donvih').text());
-            }, 6500);
+                $('#example2').removeAttr('hidden');
+            }, 7500);
 
             setTimeout(function () {
                 $('#hoten').text($('#hotenh').text());
+                $('#example3').removeAttr('hidden');
             }, 12000);
 
         }
@@ -119,78 +216,72 @@
 
 </head>
 
-<audio id="quay" preload="auto">
-    <source src="../Sounds/nhacxosokienthiet.mp3" type="audio/mp3" />
-</audio>
-<audio id="ketqua">
-    <source src="../Sounds/chucmungchienthang.mp3" type="audio/mp3" />
-</audio>
-<body style="background-color:lightblue">
-    <div class="text-center text-danger fw-bolder fs-2 mt-1">
-        <div class="col">
-            <div class="row">
-                <div class="col">
-                    <img src="~/Images/sawaco.jpg" width="150" onclick="quay()" />
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col">
-                    HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC
-                </div>
-            </div>
-            <div class="row">
-                <div class="col">
-                    NĂM 2022
-                </div>
-            </div>
+<body>
+    <header>
+        <div class="header">
+            <center style="font-size:25px;font-weight: bold;color:blue;text-align-last:center ">
+                <table>
+                    <tr>
+                        <td rowspan="4">
+                            <img src="~/Images/sawaco.jpg" width="130" />
+                        </td>
+                        <td>
+                            HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN</td>
+                    </tr>
+                    <tr>
+                        <td>CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC</td>
+                    </tr>
+                    <tr>
+                        <td>NĂM 2022</td>
+                    </tr>
+                </table>
+            </center>
+            <table style="width:100%">
+                <tr>
+                    <th>
+                        <img src="~/Images/vongquaymayman.gif" width="150" onclick="quay()"/>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        <center>
+                            <table>
+                                <tr id="rowquay">
+                                    <td style="font-size:100px;font-weight: bold;color:limegreen;">
+                                        <label id="num1"></label>
+                                        <label id="num1h" hidden="hidden">@ViewBag.num1</label>
+                                        <label id="num2"></label>
+                                        <label id="num2h" hidden="hidden">@ViewBag.num2</label>
+                                        <label id="num3"></label>
+                                        <label id="num3h" hidden="hidden">@ViewBag.num3</label>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div id="example2" hidden="hidden">
+                            <center>
+                                <label id="donvi" class="pcty" style="font-size:50px;font-weight: bold; "></label>
+                                <label id="donvih" hidden="hidden">@ViewBag.donvi</label>
+                            </center>
+                        </div>
+                        <div id="example3" hidden="hidden">
+                            <center>
+                                <label id="hoten" class="ten" style="font-size:80px;font-weight: bold;"></label>
+                                <label id="hotenh" hidden="hidden">@ViewBag.hoten</label>
+                            </center>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
-    </div>
-
-    <div class="text-center fw-bolder mt-3" style="font-size:100px;color:limegreen">
-        <div class="row justify-content-center">
-            <div class="col-1 align-self-start">
-                <label id="num1"></label>
-                <label id="num1h" hidden="hidden">@ViewBag.num1</label>
-            </div>
-            <div class="col-1 align-self-center">
-                <label id="num2"></label>
-                <label id="num2h" hidden="hidden">@ViewBag.num2</label>
-            </div>
-            <div class="col-1 align-self-end">
-                <label id="num3"></label>
-                <label id="num3h" hidden="hidden">@ViewBag.num3</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="text-center fw-bolder mt-2" style="font-size:80px;color:red">
-        <div class="row">
-            <div class="col">
-                <label id="donvi"></label>
-                <label id="donvih" hidden="hidden">@ViewBag.donvi</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="text-center fw-bolder mt-3" style="font-size:80px;color:yellow">
-        <div class="row">
-            <div class="col">
-                <label id="hoten"></label>
-                <label id="hotenh" hidden="hidden">@ViewBag.hoten</label>
-            </div>
-        </div>
-    </div>
-
+    </header>
 </body>
-
-
+</html>

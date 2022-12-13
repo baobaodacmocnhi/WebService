@@ -40,7 +40,7 @@ namespace WSTanHoa.Controllers
                 {
                     dt = _cDAL.ExecuteQuery_DataTable("select top 1 STT=right('000' + cast(STT as varchar(3)), 3),DonVi,HoTen from QuaySo where Quay=0 ORDER BY NEWID()");
                 }
-                //_cDAL.ExecuteNonQuery("update QuaySo set Quay=1 where STT=" + dt.Rows[0]["STT"].ToString());
+                _cDAL.ExecuteNonQuery("update QuaySo set Quay=1 where STT=" + dt.Rows[0]["STT"].ToString());
                 MView en = new MView();
                 en.ChiSo = dt.Rows[0]["STT"].ToString().Substring(0, 1);
                 en.DanhBo = dt.Rows[0]["STT"].ToString().Substring(1, 1);
