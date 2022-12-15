@@ -277,46 +277,42 @@
                 <table>
                     <tr>
                         <td rowspan="3">
-                            <img src="~/Images/sawaco.jpg" width="110" style="margin-top:5px;margin-right:10px" />
+                            <img src="~/Images/sawaco.jpg" width="110" style="margin-top:10px;margin-right:10px" />
+                            <div style="margin-top:-20px">
+                                <select id="cmbSanPham" name="cmbSanPham" onchange="showSanPham()">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
                         </td>
                         <td>
-                            HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG
+                            <div>HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG</div>
+                            <div style="margin-top:-10px">KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN</div>
+                            <div style="margin-top:-10px">CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC NĂM 2022</div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN</td>
-                    </tr>
-                    <tr>
-                        <td>CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC NĂM 2022</td>
-                    </tr>
+                    @*<tr>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>*@
                 </table>
             </center>
             <table style="width:100%">
                 <tr>
                     <th>
-                        <center>
-                            <table>
-                                <tr>
-                                    <td><img src="~/Images/vongquay.png" width="150" onclick="quay()" /></td>
-                                    <td>
-                                        <select id="cmbSanPham" name="cmbSanPham" onchange="showSanPham()">
-                                            <option value="0">0</option>
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                        </select>
-                                    </td>
-                                </tr>
-                            </table>
-                        </center>
+                        <img src="~/Images/vongquay.png" width="150" onclick="quay()" style="margin-top:-20px"/>
                     </th>
                 </tr>
                 <tr>
                     <td>
                         <center>
-                            <table>
+                            <table style="margin-top:-20px">
                                 <tr id="rowquay">
                                     <td style="font-size:100px;font-weight: bold;color:red;">
                                         <label id="num1"></label>
@@ -333,7 +329,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <div id="viewSanPham" hidden="hidden">
+                        <div id="viewSanPham" hidden="hidden" style="margin-top:-20px">
                             <center>
                                 <label id="nameSanPham" style="font-size:50px;font-weight: bold;color:red;"></label>
                                 <br />
