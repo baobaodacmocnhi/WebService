@@ -104,6 +104,14 @@
             font-family: "Courier New", "Courier New", monospace;
             color: darkviolet;
         }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            color: rgb(11,83,149);
+            font-weight: bold;
+            font-family: Verdana, Arial, Helvetica, sans-serif;
+        }
     </style>
     <script src="~/Scripts/jquery-3.6.0.js"></script>
     <script>
@@ -273,40 +281,41 @@
 <body>
     <header>
         <div class="header">
-            <center style="font-size:25px;font-weight: bold;color:blue;text-align-last:center ">
-                <table>
-                    <tr>
-                        <td rowspan="3">
-                            <img src="~/Images/sawaco.jpg" width="110" style="margin-top:10px;margin-right:10px" />
-                            <div style="margin-top:-20px">
-                                <select id="cmbSanPham" name="cmbSanPham" onchange="showSanPham()">
-                                    <option value="0">0</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
-                        </td>
-                        <td>
-                            <div>HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG</div>
-                            <div style="margin-top:-10px">KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN</div>
-                            <div style="margin-top:-10px">CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC NĂM 2022</div>
-                        </td>
-                    </tr>
-                    @*<tr>
-                            <td></td>
-                        </tr>
+            @*<center style="font-size:25px;font-weight: bold;color:blue;text-align-last:center ">*@
+                <center style="text-align-last:center ">
+                    <table>
                         <tr>
-                            <td></td>
-                        </tr>*@
-                </table>
-            </center>
+                            <td rowspan="3">
+                                <img src="~/Images/sawaco.jpg" width="110" style="margin-top:10px;margin-right:10px" />
+                                <div style="margin-top:-10px">
+                                    <select id="cmbSanPham" name="cmbSanPham" onchange="showSanPham()">
+                                        <option value="0">0</option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div><h1>HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG</h1></div>
+                                <div style="margin-top:-10px"><h1>KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN</h1></div>
+                                <div style="margin-top:-10px"><h1>CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC NĂM 2022</h1></div>
+                            </td>
+                        </tr>
+                        @*<tr>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                </tr>*@
+                    </table>
+                </center>
             <table style="width:100%">
                 <tr>
                     <th>
-                        <img src="~/Images/vongquay.png" width="150" onclick="quay()" style="margin-top:-20px"/>
+                        <img src="~/Images/vongquay.png" width="150" onclick="quay()" style="margin-top:-10px" />
                     </th>
                 </tr>
                 <tr>
