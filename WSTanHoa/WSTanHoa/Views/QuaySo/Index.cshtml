@@ -2,6 +2,7 @@
     Layout = null;
     ViewBag.Title = "Quay Số May Mắn";
 }
+
 <!DOCTYPE html>
 <audio id="quay" preload="auto">
     <source src="../Sounds/nhacxosokienthiet.mp3" type="audio/mp3" />
@@ -113,6 +114,7 @@
         var soundsend;
 
         function quay() {
+            $('#viewSanPham').attr('hidden', 'hidden');
             $('#num1').text("");
             $('#num2').text("");
             $('#num3').text("");
@@ -177,7 +179,7 @@
             $('#num1').text(Math.floor(Math.random() * 9) + 1);
             $('#num1').attr('style', 'background-color:yellow')
             setTimeout(function () {
-                $('#num1').attr('style', 'background-color:red')
+                $('#num1').attr('style', 'background-color:limegreen')
             }, 200);
             setTimeout(function () {
                 $('#num1').removeAttr('style')
@@ -190,7 +192,7 @@
             $('#num2').text(Math.floor(Math.random() * 9) + 1);
             $('#num2').attr('style', 'background-color:yellow')
             setTimeout(function () {
-                $('#num2').attr('style', 'background-color:red')
+                $('#num2').attr('style', 'background-color:limegreen')
             }, 200);
             setTimeout(function () {
                 $('#num2').removeAttr('style')
@@ -203,13 +205,65 @@
             $('#num3').text(Math.floor(Math.random() * 9) + 1);
             $('#num3').attr('style', 'background-color:yellow')
             setTimeout(function () {
-                $('#num3').attr('style', 'background-color:red')
+                $('#num3').attr('style', 'background-color:limegreen')
             }, 200);
             setTimeout(function () {
                 $('#num3').removeAttr('style')
                 clearInterval(myTimer3);
                 $('#num3').text($('#num3h').text());
             }, 5700);
+        }
+
+        function showSanPham() {
+            $('#num1').text("");
+            $('#num2').text("");
+            $('#num3').text("");
+            $('#donvi').text("");
+            $('#hoten').text("");
+            $('#num1h').text("");
+            $('#num2h').text("");
+            $('#num3h').text("");
+            $('#donvih').text("");
+            $('#hotenh').text("");
+            $('#example2').attr('hidden', 'hidden')
+            $('#example3').attr('hidden', 'hidden')
+            switch ($("#cmbSanPham option:selected").text()) {
+                case '0':
+                    $('#nameSanPham').text('');
+                    $('#imgSanPham').removeAttr('src');
+                    $('#viewSanPham').attr('hidden', 'hidden');
+                    break;
+                case '1':
+                    $('#nameSanPham').text('Samsung Galaxy Z Flip 4');
+                    $('#imgSanPham').attr('src', '../Images/1.png');
+                    $('#imgSanPham').attr('width', '350');
+                    $('#viewSanPham').removeAttr('hidden');
+                    break;
+                case '2':
+                    $('#nameSanPham').text('iPad Gen10 2022 10.9inch WiFi 64G');
+                    $('#imgSanPham').attr('src', '../Images/2.png');
+                    $('#imgSanPham').attr('width', '400');
+                    $('#viewSanPham').removeAttr('hidden');
+                    break;
+                case '3':
+                    $('#nameSanPham').text('Apple Watch SE GPS 40mm');
+                    $('#imgSanPham').attr('src', '../Images/3.png');
+                    $('#imgSanPham').attr('width', '300');
+                    $('#viewSanPham').removeAttr('hidden');
+                    break;
+                case '4':
+                    $('#nameSanPham').text('Tai nghe AirPods 2');
+                    $('#imgSanPham').attr('src', '../Images/4.png');
+                    $('#imgSanPham').attr('width', '250');
+                    $('#viewSanPham').removeAttr('hidden');
+                    break;
+                case '5':
+                    $('#nameSanPham').text('Loa Bluetooth LG XBoom Go PL2');
+                    $('#imgSanPham').attr('src', '../Images/5.png');
+                    $('#imgSanPham').attr('width', '450');
+                    $('#viewSanPham').removeAttr('hidden');
+                    break;
+            }
         }
 
     </script>
@@ -222,8 +276,8 @@
             <center style="font-size:25px;font-weight: bold;color:blue;text-align-last:center ">
                 <table>
                     <tr>
-                        <td rowspan="4">
-                            <img src="~/Images/sawaco.jpg" width="130" />
+                        <td rowspan="3">
+                            <img src="~/Images/sawaco.jpg" width="110" style="margin-top:5px;margin-right:10px" />
                         </td>
                         <td>
                             HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG
@@ -233,17 +287,30 @@
                         <td>KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN</td>
                     </tr>
                     <tr>
-                        <td>CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC</td>
-                    </tr>
-                    <tr>
-                        <td>NĂM 2022</td>
+                        <td>CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC NĂM 2022</td>
                     </tr>
                 </table>
             </center>
             <table style="width:100%">
                 <tr>
                     <th>
-                        <img src="~/Images/vongquaymayman.gif" width="150" onclick="quay()"/>
+                        <center>
+                            <table>
+                                <tr>
+                                    <td><img src="~/Images/vongquay.png" width="150" onclick="quay()" /></td>
+                                    <td>
+                                        <select id="cmbSanPham" name="cmbSanPham" onchange="showSanPham()">
+                                            <option value="0">0</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
                     </th>
                 </tr>
                 <tr>
@@ -251,7 +318,7 @@
                         <center>
                             <table>
                                 <tr id="rowquay">
-                                    <td style="font-size:100px;font-weight: bold;color:limegreen;">
+                                    <td style="font-size:100px;font-weight: bold;color:red;">
                                         <label id="num1"></label>
                                         <label id="num1h" hidden="hidden">@ViewBag.num1</label>
                                         <label id="num2"></label>
@@ -266,9 +333,17 @@
                 </tr>
                 <tr>
                     <td>
+                        <div id="viewSanPham" hidden="hidden">
+                            <center>
+                                <label id="nameSanPham" style="font-size:50px;font-weight: bold;color:red;"></label>
+                                <br />
+                                <img id="imgSanPham" />
+                            </center>
+                        </div>
+
                         <div id="example2" hidden="hidden">
                             <center>
-                                <label id="donvi" class="pcty" style="font-size:50px;font-weight: bold; "></label>
+                                <label id="donvi" class="pcty" style="font-size:50px;font-weight: bold;"></label>
                                 <label id="donvih" hidden="hidden">@ViewBag.donvi</label>
                             </center>
                         </div>

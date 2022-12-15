@@ -190,10 +190,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>12/13/2022 15:43:13</publishTime>
+      <publishTime>12/15/2022 11:09:21</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>12/13/2022 15:43:14</publishTime>
+      <publishTime>12/15/2022 11:09:22</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -366,6 +366,21 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Image/zalothongbaotamngungcungcapnuoc.jpg">
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
+    <File Include="Images/1.png">
+      <publishTime>12/15/2022 10:41:26</publishTime>
+    </File>
+    <File Include="Images/2.png">
+      <publishTime>12/15/2022 10:41:26</publishTime>
+    </File>
+    <File Include="Images/3.png">
+      <publishTime>12/15/2022 10:19:54</publishTime>
+    </File>
+    <File Include="Images/4.png">
+      <publishTime>12/15/2022 10:41:26</publishTime>
+    </File>
+    <File Include="Images/5.png">
+      <publishTime>12/15/2022 10:19:54</publishTime>
+    </File>
     <File Include="Images/ava240.jpg">
       <publishTime>10/27/2021 08:10:11</publishTime>
     </File>
@@ -440,6 +455,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Images/Slide2022Light.jpg">
       <publishTime>12/13/2022 14:24:41</publishTime>
+    </File>
+    <File Include="Images/vongquay.png">
+      <publishTime>12/14/2022 09:56:46</publishTime>
     </File>
     <File Include="Images/vongquaymayman.gif">
       <publishTime>12/13/2022 14:55:32</publishTime>
@@ -11533,7 +11551,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/07/2022 09:03:30</publishTime>
     </File>
     <File Include="Views/QuaySo/Index.cshtml">
-      <publishTime>12/13/2022 15:41:22</publishTime>
+      <publishTime>12/15/2022 11:08:39</publishTime>
     </File>
     <File Include="Views/QuaySo/Index2.cshtml">
       <publishTime>12/12/2022 14:32:13</publishTime>

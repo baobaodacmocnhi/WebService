@@ -46,7 +46,7 @@ namespace WSTanHoa.Controllers
                 en.DanhBo = dt.Rows[0]["STT"].ToString().Substring(1, 1);
                 en.DiaChi = dt.Rows[0]["STT"].ToString().Substring(2, 1);
                 en.HoTen = dt.Rows[0]["DonVi"].ToString();
-                en.NoiDung = dt.Rows[0]["HoTen"].ToString();
+                en.NoiDung = dt.Rows[0]["HoTen"].ToString().ToUpper();
                 vKhongTinHieu.Add(en);
                 return CGlobalVariable.jsSerializer.Serialize(vKhongTinHieu);
             }
