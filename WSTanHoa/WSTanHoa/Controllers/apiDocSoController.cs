@@ -24,7 +24,7 @@ namespace WSTanHoa.Controllers
         private string url = "https://dhntm.sawaco.com.vn/";
         private string urlApi = "https://dhntmapi.sawaco.com.vn/";
         private string urlTest = "http://testdhntm.sawaco.com.vn/";
-        private string urlApiTest = "http://testdhntmapi.sawaco.com.vn/";
+        //private string urlApiTest = "http://testdhntmapi.sawaco.com.vn/";
 
 
         [Route("updateDS_sDHN")]
@@ -1253,14 +1253,14 @@ namespace WSTanHoa.Controllers
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                            | SecurityProtocolType.Ssl3;
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApiTest + "api/Authenticate/login");
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/Authenticate/login");
                     request.Method = "POST";
                     request.ContentType = "application/json";
 
                     var data = new
                     {
                         Username = "quocbao241@gmail.com",
-                        Password = "123@abcDhtm"
+                        Password = "Harry_240189"
                     };
                     var json = CGlobalVariable.jsSerializer.Serialize(data);
                     Byte[] byteArray = Encoding.UTF8.GetBytes(json);
@@ -1308,7 +1308,7 @@ namespace WSTanHoa.Controllers
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                            | SecurityProtocolType.Ssl3;
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApiTest + "api/DongHoNuoc/TraCuuDongHoNuoc?so_seri=" + serialnumber + "&danhBo=" + DanhBo);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/DongHoNuoc/TraCuuDongHoNuoc?so_seri=" + serialnumber + "&danhBo=" + DanhBo);
                     request.Method = "GET";
                     request.ContentType = "application/json";
 
@@ -1352,7 +1352,7 @@ namespace WSTanHoa.Controllers
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                            | SecurityProtocolType.Ssl3;
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApiTest + "api/ChiSoNuoc/LayChiSoNuocTheoNgay?id_donVi=TH&tuNgay=" + Time + "&denNgay=" + Time);
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/ChiSoNuoc/LayChiSoNuocTheoNgay?id_donVi=TH&tuNgay=" + Time + "&denNgay=" + Time);
                     request.Method = "GET";
                     request.ContentType = "application/json";
                     request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
