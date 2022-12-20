@@ -4585,6 +4585,37 @@ namespace WSSmartPhone
                 return false;
         }
 
+        public string test2023()
+        {
+            try
+            {
+                string DocSoID = "20220913162277706";
+                int TieuThu = 0, TienNuoc = 0, ThueGTGT = 0, TDVTN = 0, ThueTDVTN = 0;
+                DateTime dateTu = new DateTime(2022, 08, 12);
+                DateTime dateDen = new DateTime(2022, 09, 28);
+                TimeSpan Time = dateDen - dateTu;
+                int TongSoNgay = Time.Days;
+                int DinhMuc = -1;
+                DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
+                DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
+                if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
+                {
+                    double motngay = Math.Round(double.Parse(dtBienDong.Rows[0]["DM"].ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                    DinhMuc = (int)Math.Round(motngay * TongSoNgay);
+                    int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
+                    string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
+                    TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), dateTu, dateDen
+                         , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
+                         , DinhMuc, int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
+                }
+                return DinhMuc.ToString() + " ; " + TienNuoc + " ; " + ThueGTGT + " ; " + TDVTN + " ; " + ThueTDVTN;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public bool tinhCodeTieuThu(string DocSoID, string Code, int CSM, out int TieuThu, out int TienNuoc, out int ThueGTGT, out int TDVTN, out int ThueTDVTN)
         {
             try
@@ -4607,11 +4638,16 @@ namespace WSSmartPhone
                 DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
                 {
+                    int DinhMuc = int.Parse(dtBienDong.Rows[0]["DM"].ToString());
+                    if (dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
+                    {
+
+                    }
                     int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
                     TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
                          , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
-                         , int.Parse(dtBienDong.Rows[0]["DM"].ToString()), int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
+                         , DinhMuc, int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                 }
                 return true;
             }

@@ -280,6 +280,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public string test2023()
+        {
+            return _cThuTien.test2023();
+        }
+
+        [WebMethod]
         public string get_ThongTin(string DanhBo, string Nam, string Ky)
         {
             return _cThuTien.get_ThongTin_DHN(DanhBo, Nam, Ky);
