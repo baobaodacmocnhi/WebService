@@ -190,10 +190,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/31/2021 20:42:44</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
+<<<<<<< .mine
+      <publishTime>12/19/2022 16:03:01</publishTime>
+||||||| .r794
+      <publishTime>12/15/2022 11:09:21</publishTime>
+=======
       <publishTime>12/15/2022 19:13:19</publishTime>
+>>>>>>> .r797
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
+<<<<<<< .mine
+      <publishTime>12/19/2022 16:03:01</publishTime>
+||||||| .r794
+      <publishTime>12/15/2022 11:09:22</publishTime>
+=======
       <publishTime>12/15/2022 19:13:21</publishTime>
+>>>>>>> .r797
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>12/31/2021 20:42:26</publishTime>
