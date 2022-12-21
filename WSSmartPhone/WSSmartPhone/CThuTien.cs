@@ -4589,26 +4589,34 @@ namespace WSSmartPhone
         {
             try
             {
-                string DocSoID = "20220913162277706";
-                int TieuThu = 0, TienNuoc = 0, ThueGTGT = 0, TDVTN = 0, ThueTDVTN = 0;
-                DateTime dateTu = new DateTime(2022, 08, 12);
-                DateTime dateDen = new DateTime(2022, 09, 28);
-                TimeSpan Time = dateDen - dateTu;
-                int TongSoNgay = Time.Days;
-                int DinhMuc = -1;
-                DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + DocSoID + "'");
-                DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
-                if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
+                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where nam=2022 and ky=9 and dot=17 and danhba='13253317715'");
+                foreach (DataRow item in dt.Rows)
                 {
-                    double motngay = Math.Round(double.Parse(dtBienDong.Rows[0]["DM"].ToString()) / 30, 2, MidpointRounding.AwayFromZero);
-                    DinhMuc = (int)Math.Round(motngay * TongSoNgay);
-                    int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
-                    string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
-                    TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), dateTu, dateDen
-                         , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
-                         , DinhMuc, int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
+                    int TieuThu = int.Parse(item["TieuThuMoi"].ToString()), TienNuoc = 0, ThueGTGT = 0, TDVTN = 0, ThueTDVTN = 0;
+                    DateTime dateTu = new DateTime(2022, 08, 12);
+                    DateTime dateDen = new DateTime(2022, 09, 28);
+                    TimeSpan Time = dateDen - dateTu;
+                    int TongSoNgay = Time.Days;
+                    int DinhMuc = -1, DinhMucHN = -1;
+                    DataTable dtDocSo = _cDAL_DocSo.ExecuteQuery_DataTable("select * from DocSo where DocSoID='" + item["DocSoID"].ToString() + "'");
+                    DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + item["DocSoID"].ToString() + "'");
+                    if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
+                    {
+                        DinhMuc = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select DM from HoaDon where danhba='" + dtBienDong.Rows[0]["DanhBa"].ToString() + "' and nam=2022 and ky=9 and dot=17");
+                        int.TryParse(_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select DinhMucHN from HoaDon where danhba='" + dtBienDong.Rows[0]["DanhBa"].ToString() + "' and nam=2022 and ky=9 and dot=17").ToString(), out DinhMucHN);
+                        double motngay = Math.Round(double.Parse(DinhMuc.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                        double motngayHN = Math.Round(double.Parse(DinhMucHN.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                        DinhMuc = (int)Math.Round(motngay * TongSoNgay);
+                        DinhMucHN = (int)Math.Round(motngayHN * TongSoNgay);
+                        int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
+                        string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
+                        TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), dateTu, dateDen
+                             , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
+                             , DinhMuc, DinhMucHN, TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
+                        //_cDAL_ThuTien.ExecuteNonQuery("insert into HoaDonTest(Dot,DanhBa,DM,DinhMucHN,TieuThu,GiaBan,Thue,Phi,ThueGTGT_TDVTN,TongCong)values(18,'" + dtBienDong.Rows[0]["DanhBa"].ToString() + "'," + DinhMuc + "," + DinhMucHN + "," + TieuThu + "," + TienNuoc + "," + ThueGTGT + "," + TDVTN + "," + ThueTDVTN + "," + (TienNuoc + ThueGTGT + TDVTN + ThueTDVTN) + ")");
+                    }
                 }
-                return DinhMuc.ToString() + " ; " + TienNuoc + " ; " + ThueGTGT + " ; " + TDVTN + " ; " + ThueTDVTN;
+                return "Đã xử lý";
             }
             catch (Exception ex)
             {
@@ -5115,7 +5123,7 @@ namespace WSSmartPhone
         //kinh doanh
         public DataTable getDS_GiaNuoc()
         {
-            return _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from GiaNuoc2");
+            return _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from GiaNuocTest");
         }
 
         public bool checkExists_GiaNuocGiam(int Nam, int Ky, int GiaBieu)
