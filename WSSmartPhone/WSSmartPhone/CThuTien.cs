@@ -1013,7 +1013,12 @@ namespace WSSmartPhone
 
             if (bool.Parse(ButChi) == true)
                 flagButChi = 1;
-
+            if (NiemChi != "NULL")
+                NiemChi = "N'" + NiemChi + "'";
+            if (MauSac != "NULL")
+                MauSac = "N'" + MauSac + "'";
+            if (KhoaKhac_GhiChu != "NULL")
+                KhoaKhac_GhiChu = "N'" + KhoaKhac_GhiChu + "'";
             try
             {
                 var transactionOptions = new TransactionOptions();
@@ -1027,7 +1032,7 @@ namespace WSSmartPhone
                     //         + ",'" + NgayDN.ToString("yyyyMMdd HH:mm:ss") + "',getDate()," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + "," + flagKhoaKhac + ",N'" + KhoaKhac_GhiChu + "','" + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + ViTri + "',N'" + LyDo + "',(select PhiMoNuoc from TT_CacLoaiPhi where CoDHN like '%" + Co + "%')," + CreateBy + ",getDate())";
                     string sql = "insert into TT_KQDongNuoc(MaKQDN,MaDN,DanhBo,MLT,HoTen,DiaChi,DongNuoc,NgayDN,NgayDN_ThucTe,ChiSoDN,ButChi,KhoaTu,NiemChi,MauSac,KhoaKhac,KhoaKhac_GhiChu,Hieu,Co,SoThan,ChiMatSo,ChiKhoaGoc,ViTri,LyDo,PhiMoNuoc,CreateBy,CreateDate)values("
                              + "" + MaKQDN + "," + MaDN + ",'" + DanhBo.Replace(" ", "") + "','" + MLT + "','" + HoTen + "','" + DiaChi + "',1,'" + NgayDN.ToString("yyyyMMdd HH:mm:ss") + "',getDate()"
-                             + "," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + ",'" + NiemChi + "',N'" + MauSac + "'," + flagKhoaKhac + ",N'" + KhoaKhac_GhiChu + "','"
+                             + "," + ChiSoDN + "," + flagButChi + "," + flagKhoaTu + "," + NiemChi + "," + MauSac + "," + flagKhoaKhac + "," + KhoaKhac_GhiChu + ",'"
                              + Hieu + "'," + Co + ",'" + SoThan + "',N'" + ChiMatSo + "',N'" + ChiKhoaGoc + "',N'" + ViTri + "',N'" + LyDo + "',(select PhiMoNuoc from TT_CacLoaiPhi where CoDHN like '%" + Co + "%')," + CreateBy + ",getDate())";
 
                     SqlCommand command = new SqlCommand(sql);
@@ -1130,7 +1135,12 @@ namespace WSSmartPhone
                 else
                     KhoaKhac_GhiChu = "NULL";
             }
-
+            if (NiemChi != "NULL")
+                NiemChi = "N'" + NiemChi + "'";
+            if (MauSac != "NULL")
+                MauSac = "N'" + MauSac + "'";
+            if (KhoaKhac_GhiChu != "NULL")
+                KhoaKhac_GhiChu = "N'" + KhoaKhac_GhiChu + "'";
             if (bool.Parse(ButChi) == true)
                 flagButChi = 1;
 
@@ -1151,7 +1161,7 @@ namespace WSSmartPhone
                     //            + " where DongNuoc2=0 and MaDN=" + MaDN;
                     string sql = "update TT_KQDongNuoc set DongNuoc2=1,PhiMoNuoc=PhiMoNuoc*2,NgayDN1=NgayDN,NgayDN1_ThucTe=NgayDN_ThucTe,ChiSoDN1=ChiSoDN,NiemChi1=NiemChi,MauSac1=MauSac"
                                + ",NgayDN='" + NgayDN.ToString("yyyyMMdd HH:mm:ss") + "',NgayDN_ThucTe=getDate(),ChiSoDN=" + ChiSoDN + ",ButChi=" + flagButChi + ",KhoaTu=" + flagKhoaTu
-                               + ",NiemChi='" + NiemChi + "',MauSac=N'" + MauSac + "',KhoaKhac=" + flagKhoaKhac + ",KhoaKhac_GhiChu=N'" + KhoaKhac_GhiChu + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate()"
+                               + ",NiemChi=" + NiemChi + ",MauSac=" + MauSac + ",KhoaKhac=" + flagKhoaKhac + ",KhoaKhac_GhiChu=" + KhoaKhac_GhiChu + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate()"
                                + ",SoPhieuDN1=SoPhieuDN,NgaySoPhieuDN1=NgaySoPhieuDN,ChuyenDN1=ChuyenDN,NgayChuyenDN1=NgayChuyenDN,SoPhieuDN=NULL,NgaySoPhieuDN=NULL,ChuyenDN=0,NgayChuyenDN=NULL"
                                + " where DongNuoc2=0 and MaDN=" + MaDN;
 
@@ -1247,6 +1257,10 @@ namespace WSSmartPhone
                     NiemChi = "NULL";
                     MauSac = "NULL";
                 }
+                if (NiemChi != "NULL")
+                    NiemChi = "N'" + NiemChi + "'";
+                if (MauSac != "NULL")
+                    MauSac = "N'" + MauSac + "'";
                 var transactionOptions = new TransactionOptions();
                 transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
@@ -1254,7 +1268,7 @@ namespace WSSmartPhone
                     //string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd") + " " + DateTime.Now.ToString("HH:mm:ss.fff") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
                     //string sql = "update TT_KQDongNuoc set MoNuoc=1,HinhMN=@HinhMN,NgayMN='" + NgayMN.ToString("yyyyMMdd HH:mm:ss") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
                     string sql = "update TT_KQDongNuoc set MoNuoc=1,NgayMN='" + NgayMN.ToString("yyyyMMdd HH:mm:ss") + "',NgayMN_ThucTe=getDate(),ChiSoMN=" + ChiSoMN
-                        + ",NiemChiMN='" + NiemChi + "',MauSacMN=N'" + MauSac + "',ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
+                        + ",NiemChiMN=" + NiemChi + ",MauSacMN=" + MauSac + ",ModifyBy=" + CreateBy + ",ModifyDate=getDate() where MaDN=" + MaDN;
                     SqlCommand command = new SqlCommand(sql);
                     //if (HinhMN == "NULL")
                     //    command.Parameters.Add("@HinhMN", SqlDbType.Image).Value = DBNull.Value;
