@@ -4661,15 +4661,21 @@ namespace WSSmartPhone
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
                 {
                     int DinhMuc = int.Parse(dtBienDong.Rows[0]["DM"].ToString());
+                    int DinhMucHN = int.Parse(dtBienDong.Rows[0]["DMHN"].ToString());
                     if (dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
                     {
-
+                        TimeSpan Time = DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString()) - DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString());
+                        int TongSoNgay = Time.Days;
+                        double motngay = Math.Round(double.Parse(DinhMuc.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                        double motngayHN = Math.Round(double.Parse(DinhMucHN.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                        DinhMuc = (int)Math.Round(motngay * TongSoNgay);
+                        DinhMucHN = (int)Math.Round(motngayHN * TongSoNgay);
                     }
                     int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
                     TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
                          , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
-                         , DinhMuc, int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
+                         , DinhMuc, DinhMucHN, TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                 }
                 return true;
             }
@@ -4690,11 +4696,22 @@ namespace WSSmartPhone
                 DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
                 {
+                    int DinhMuc = int.Parse(dtBienDong.Rows[0]["DM"].ToString());
+                    int DinhMucHN = int.Parse(dtBienDong.Rows[0]["DMHN"].ToString());
+                    if (dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
+                    {
+                        TimeSpan Time = DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString()) - DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString());
+                        int TongSoNgay = Time.Days;
+                        double motngay = Math.Round(double.Parse(DinhMuc.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                        double motngayHN = Math.Round(double.Parse(DinhMucHN.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                        DinhMuc = (int)Math.Round(motngay * TongSoNgay);
+                        DinhMucHN = (int)Math.Round(motngayHN * TongSoNgay);
+                    }
                     int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
                     TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
                          , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
-                         , int.Parse(dtBienDong.Rows[0]["DM"].ToString()), int.Parse(dtBienDong.Rows[0]["DMHN"].ToString()), TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
+                         , DinhMuc, DinhMucHN, TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                 }
                 return true;
             }
