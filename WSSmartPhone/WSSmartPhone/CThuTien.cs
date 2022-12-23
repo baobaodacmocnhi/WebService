@@ -3834,7 +3834,7 @@ namespace WSSmartPhone
                         + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot,ds.PhanMay"
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
-                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
+                        + "                          ,GiaBieu=ds.GB,DinhMuc=ds.DM,DinhMucHN=ds.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.NgapNuoc,kh.KetTuong,kh.LapKhoaGoc,kh.BeHBV,kh.BeNapMatNapHBV,kh.GayTayVan"
                         + "                          ,kh.TroNgaiThay,kh.DauChungMayBom,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu,kh.KinhDoanh"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
@@ -4599,7 +4599,7 @@ namespace WSSmartPhone
                 return false;
         }
 
-        public string test2023()
+        private string test2023()
         {
             try
             {
@@ -4660,21 +4660,21 @@ namespace WSSmartPhone
                 DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
                 {
-                    int DinhMuc = int.Parse(dtBienDong.Rows[0]["DM"].ToString());
-                    int DinhMucHN = int.Parse(dtBienDong.Rows[0]["DMHN"].ToString());
-                    if (dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
-                    {
-                        TimeSpan Time = DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString()) - DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString());
-                        int TongSoNgay = Time.Days;
-                        double motngay = Math.Round(double.Parse(DinhMuc.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
-                        double motngayHN = Math.Round(double.Parse(DinhMucHN.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
-                        DinhMuc = (int)Math.Round(motngay * TongSoNgay);
-                        DinhMucHN = (int)Math.Round(motngayHN * TongSoNgay);
-                    }
+                    int DinhMuc = int.Parse(dtDocSo.Rows[0]["DM"].ToString());
+                    int DinhMucHN = int.Parse(dtDocSo.Rows[0]["DMHN"].ToString());
+                    //if (dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
+                    //{
+                    //    TimeSpan Time = DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString()) - DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString());
+                    //    int TongSoNgay = Time.Days;
+                    //    double motngay = Math.Round(double.Parse(DinhMuc.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                    //    double motngayHN = Math.Round(double.Parse(DinhMucHN.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                    //    DinhMuc = (int)Math.Round(motngay * TongSoNgay);
+                    //    DinhMucHN = (int)Math.Round(motngayHN * TongSoNgay);
+                    //}
                     int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
                     TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
-                         , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
+                         , int.Parse(dtDocSo.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
                          , DinhMuc, DinhMucHN, TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                 }
                 return true;
@@ -4696,21 +4696,21 @@ namespace WSSmartPhone
                 DataTable dtBienDong = _cDAL_DocSo.ExecuteQuery_DataTable("select * from BienDong where BienDongID='" + DocSoID + "'");
                 if (dtDocSo != null && dtDocSo.Rows.Count > 0 && dtBienDong != null && dtBienDong.Rows.Count > 0)
                 {
-                    int DinhMuc = int.Parse(dtBienDong.Rows[0]["DM"].ToString());
-                    int DinhMucHN = int.Parse(dtBienDong.Rows[0]["DMHN"].ToString());
-                    if (dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
-                    {
-                        TimeSpan Time = DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString()) - DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString());
-                        int TongSoNgay = Time.Days;
-                        double motngay = Math.Round(double.Parse(DinhMuc.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
-                        double motngayHN = Math.Round(double.Parse(DinhMucHN.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
-                        DinhMuc = (int)Math.Round(motngay * TongSoNgay);
-                        DinhMucHN = (int)Math.Round(motngayHN * TongSoNgay);
-                    }
+                    int DinhMuc = int.Parse(dtDocSo.Rows[0]["DM"].ToString());
+                    int DinhMucHN = int.Parse(dtDocSo.Rows[0]["DMHN"].ToString());
+                    //if (dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
+                    //{
+                    //    TimeSpan Time = DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString()) - DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString());
+                    //    int TongSoNgay = Time.Days;
+                    //    double motngay = Math.Round(double.Parse(DinhMuc.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                    //    double motngayHN = Math.Round(double.Parse(DinhMucHN.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                    //    DinhMuc = (int)Math.Round(motngay * TongSoNgay);
+                    //    DinhMucHN = (int)Math.Round(motngayHN * TongSoNgay);
+                    //}
                     int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
                     TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
-                         , int.Parse(dtBienDong.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
+                         , int.Parse(dtDocSo.Rows[0]["GB"].ToString()), int.Parse(dtBienDong.Rows[0]["SH"].ToString()), int.Parse(dtBienDong.Rows[0]["SX"].ToString()), int.Parse(dtBienDong.Rows[0]["DV"].ToString()), int.Parse(dtBienDong.Rows[0]["HC"].ToString())
                          , DinhMuc, DinhMucHN, TieuThu, ref TienNuocNamCu, ref ChiTietA, ref TienNuocNamMoi, ref ChiTietB, ref TieuThu_DieuChinhGia, ref PhiBVMTNamCu, ref ChiTietPhiBVMTA, ref PhiBVMTNamMoi, ref ChiTietPhiBVMTB, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
                 }
                 return true;
@@ -4833,7 +4833,7 @@ namespace WSSmartPhone
                         + " select ds.DocSoID,MLT=kh.LOTRINH,DanhBo=ds.DanhBa,HoTen=kh.HOTEN,SoNha=kh.SONHA,TenDuong=kh.TENDUONG,ds.Nam,ds.Ky,ds.Dot,ds.PhanMay"
                         + "                          ,Hieu=kh.HIEUDH,Co=kh.CODH,SoThan=kh.SOTHANDH,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,bd.SH,bd.SX,bd.DV,HCSN=bd.HC,ds.TienNuoc,ThueGTGT=ds.Thue,PhiBVMT=ds.BVMT,PhiBVMT_Thue=ds.BVMT_Thue,TongCong=ds.TongTien"
                         + "                          ,DiaChi=(select top 1 DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO+' '+DUONG end end from HOADON_TA.dbo.HOADON where DanhBa=ds.DanhBa order by ID_HOADON desc)"
-                        + "                          ,GiaBieu=bd.GB,DinhMuc=bd.DM,DinhMucHN=bd.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
+                        + "                          ,GiaBieu=ds.GB,DinhMuc=ds.DM,DinhMucHN=ds.DMHN,CSMoi,CodeMoi,TieuThuMoi,ds.TBTT,TuNgay=CONVERT(varchar(10),TuNgay,103),DenNgay=CONVERT(varchar(10),DenNgay,103),cs.*"
                         + "                          ,kh.Gieng,kh.KhoaTu,kh.AmSau,kh.XayDung,kh.DutChi_Goc,kh.DutChi_Than,kh.NgapNuoc,kh.KetTuong,kh.LapKhoaGoc,kh.BeHBV,kh.BeNapMatNapHBV,kh.GayTayVan"
                         + "                          ,kh.TroNgaiThay,kh.DauChungMayBom,kh.MauSacChiGoc,ds.ChuBao,DienThoai=sdt.DienThoai,kh.GhiChu,kh.KinhDoanh"
                         + "                          ,NgayThuTien=(select CONVERT(varchar(10),NgayThuTien,103) from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.ID=dsct.IDDocSo and ds.Nam=@Nam and ds.Ky=@Ky and dsct.IDDot=@Dot)"
