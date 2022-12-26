@@ -212,7 +212,6 @@
     <Compile Include="Controllers\KhachHangController.cs" />
     <Compile Include="Controllers\KhieuNaiController.cs" />
     <Compile Include="Controllers\QLDHNController.cs" />
-    <Compile Include="Controllers\QLDHNTCTController.cs" />
     <Compile Include="Controllers\QuaySoController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ThuongVuController.cs" />
@@ -2173,7 +2172,6 @@
     <Content Include="Template\SBAdmin2\js\sb-admin-2.min.js" />
     <Content Include="Views\KhachHang\Login.cshtml" />
     <Content Include="Views\QLDHN\sDHN_SuCo.cshtml" />
-    <Content Include="Views\QLDHNTCT\sDHN.cshtml" />
     <Content Include="Views\QuaySo\Index2.cshtml" />
     <Content Include="Views\QuaySo\Index.cshtml" />
     <None Include="Web References\wrThuongVu\Reference.map">
