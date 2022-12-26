@@ -4638,6 +4638,8 @@ namespace WSSmartPhone
             }
         }
 
+        List<string> lstTBTT = new List<string> { "60", "61", "62", "63", "64", "66", "80", "F1", "F2", "F3", "F4" };
+
         public bool tinhCodeTieuThu(string DocSoID, string Code, int CSM, out int TieuThu, out int TienNuoc, out int ThueGTGT, out int TDVTN, out int ThueTDVTN)
         {
             try
@@ -4662,15 +4664,13 @@ namespace WSSmartPhone
                 {
                     int DinhMuc = int.Parse(dtDocSo.Rows[0]["DM"].ToString());
                     int DinhMucHN = int.Parse(dtDocSo.Rows[0]["DMHN"].ToString());
-                    //if (dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
-                    //{
-                    //    TimeSpan Time = DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString()) - DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString());
-                    //    int TongSoNgay = Time.Days;
-                    //    double motngay = Math.Round(double.Parse(DinhMuc.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
-                    //    double motngayHN = Math.Round(double.Parse(DinhMucHN.ToString()) / 30, 2, MidpointRounding.AwayFromZero);
-                    //    DinhMuc = (int)Math.Round(motngay * TongSoNgay);
-                    //    DinhMucHN = (int)Math.Round(motngayHN * TongSoNgay);
-                    //}
+                    if (lstTBTT.Contains(Code) && dtDocSo.Rows[0]["Nam"].ToString() == "2023" && dtDocSo.Rows[0]["Ky"].ToString() == "01")
+                    {
+                        TimeSpan Time = DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString()) - DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString());
+                        int TongSoNgay = Time.Days;
+                        double motngay = Math.Round(double.Parse(dtDocSo.Rows[0]["TBTT"].ToString()) / 30, 2, MidpointRounding.AwayFromZero);
+                        TieuThu = (int)Math.Round(motngay * TongSoNgay);
+                    }
                     int TienNuocNamCu = 0, TienNuocNamMoi = 0, PhiBVMTNamCu = 0, PhiBVMTNamMoi = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietA = "", ChiTietB = "", ChiTietPhiBVMTA = "", ChiTietPhiBVMTB = "";
                     TinhTienNuoc(false, false, false, 0, dtBienDong.Rows[0]["DanhBa"].ToString(), int.Parse(dtBienDong.Rows[0]["Ky"].ToString()), int.Parse(dtBienDong.Rows[0]["Nam"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["TuNgay"].ToString()), DateTime.Parse(dtDocSo.Rows[0]["DenNgay"].ToString())
