@@ -1311,6 +1311,7 @@ namespace WSTanHoa.Controllers
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/DongHoNuoc/TraCuuDongHoNuoc?so_seri=" + serialnumber + "&danhBo=" + DanhBo);
                     request.Method = "GET";
                     request.ContentType = "application/json";
+                    request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
 
                     HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                     if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
@@ -1320,7 +1321,7 @@ namespace WSTanHoa.Controllers
                         read.Close();
                         respuesta.Close();
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                        if (int.Parse(obj["token"]) == 1)
+                        if (obj["ketQua"] == 1)
                             return "1";
                         else
                             return "-1";
@@ -1328,6 +1329,241 @@ namespace WSTanHoa.Controllers
                     else
                     {
                         strResponse = "Error: " + respuesta.StatusCode;
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        [Route("them_TCT")]
+        [HttpGet]
+        public string themDHN_TCT(string DanhBo, string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                           | SecurityProtocolType.Ssl3;
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/DongHoNuoc/ThemDongHoNuoc");
+                    request.Method = "POST";
+                    request.ContentType = "application/json";
+                    request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
+                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select serialnumber= CASE WHEN ttkh.HIEUDH='EMS' THEN ISNULL((select Serial_number from [sDHN].[dbo].[DHN_PHAMLAM] where DANHBO=dhn.DanhBo),0) ELSE ttkh.SOTHANDH END"
++ " ,IDModule = ISNULL((select IDLogger from[sDHN].[dbo].[sDHN] where DanhBo = dhn.DanhBo), 0)"
++ " ,IDLogger = ISNULL((select IDLogger from[sDHN].[dbo].[sDHN] where DanhBo = dhn.DanhBo),0)"
++ " ,sim = ''"
++ " ,dhn.DanhBo,dot_ds = SUBSTRING(ttkh.LOTRINH, 1, 2),so_ds = SUBSTRING(ttkh.LOTRINH, 3, 2),MLT = ttkh.LOTRINH"
++ " , ttkh.HOTEN,ttkh.SONHA,ttkh.TENDUONG,phuong = (select tenphuong from CAPNUOCTANHOA.dbo.PHUONG where MAPHUONG = ttkh.PHUONG and MAQUAN = ttkh.QUAN)"
++ " , quan = (select tenquan from CAPNUOCTANHOA.dbo.QUAN where MAQUAN = ttkh.QUAN)"
++ " , DIENTHOAI = (select top 1 DienThoai from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo = ttkh.DANHBO order by CreateDate desc)"
++ " , ttkh.NGAYTHAY,ttkh.HIEUDH,ttkh.CODH,ttkh.SOTHANDH,vitri = ttkh.VITRIDHN,chisobao = '',loaibaothay = '',goclapdat =case when ttkh.ViTriDHN_Hop = 1 then N'Hộp' else '' end"
++ " , tt.tgbh_pin,tt.loai_pin,tt.so_phe_duyet,tt.cty_phe_duyet,tt.chong_nuoc,tt.cong_nghe,tt.ket_noi,hieuluc = 1"
++ " , tt.chu_ky_phat_song,tt.so_lan_gui_lai,ttkh.MADMA,tt.id_cty,tt.id_donvi"
++ " ,gps_latitude = (select top 1 gps_latitude from CAPNUOCTANHOA.dbo.DanhBoGPS where DanhBo = ttkh.DANHBO),gps_lontitude = (select top 1 gps_lontitude from CAPNUOCTANHOA.dbo.DanhBoGPS where DanhBo = ttkh.DANHBO),gps_lontitude = '',hl = 1"
++ " from(SELECT DanhBo = DHN_DANHBO, DIACHI, REPLACE(DHN_TODS, 'DHTM-', 'TH-') AS MADMA, HCT_HIEUDHNGAN AS HG, HCT_SOTHANGAN AS STGAN, HCT_CHISOGAN AS CSGa, HCT_CODHNGAN AS COGAN,"
++ " CAST(HCT_NGAYGAN as date) AS NGAYGAN, CAST(HCT_NGAYKIEMDINH as date) AS KD,"
++ " [DHN_SOTHAN] AS SOTHAN, HCT_SOTHANGO AS THANGO, [DHN_CHISO] AS CSB, HCT_CHISOGO AS CSG, HCT_CHISOGO - DHN_CHISO AS SS,[HCT_CREATEBY], [HCT_MODIFYBY]"
++ " FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND HCT_NGAYGAN IS NOT NULL"
++ " ) dhn,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh,[sDHN].[dbo].[DHTM_THONGTIN] tt"
++ " where dhn.DanhBo=ttkh.DANHBO and dhn.HG=tt.HIEU_DHTM and dhn.DanhBo='" + DanhBo + "'");
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        var data = new
+                        {
+                            serial_number = dt.Rows[0]["serialnumber"].ToString(),
+                            id_module = dt.Rows[0]["IDModule"].ToString(),
+                            id_logger = dt.Rows[0]["IDLogger"].ToString(),
+                            so_sim = dt.Rows[0]["sim"].ToString(),
+                            danh_bo = dt.Rows[0]["DanhBo"].ToString(),
+                            dot = dt.Rows[0]["dot_ds"].ToString(),
+                            so_ds = dt.Rows[0]["so_ds"].ToString(),
+                            mlt = dt.Rows[0]["MLT"].ToString(),
+                            ho_ten_kh = dt.Rows[0]["HOTEN"].ToString(),
+                            so_nha = dt.Rows[0]["SONHA"].ToString(),
+                            duong = dt.Rows[0]["TENDUONG"].ToString(),
+                            phuong = dt.Rows[0]["phuong"].ToString(),
+                            quan = dt.Rows[0]["quan"].ToString(),
+                            dien_thoai = dt.Rows[0]["DIENTHOAI"].ToString(),
+                            ngay_gan = dt.Rows[0]["NGAYTHAY"].ToString(),
+                            hieu = dt.Rows[0]["HIEUDH"].ToString(),
+                            co = dt.Rows[0]["CODH"].ToString(),
+                            so_than = dt.Rows[0]["SOTHANDH"].ToString(),
+                            vi_tri = dt.Rows[0]["vitri"].ToString(),
+                            chi_so_bao = dt.Rows[0]["chisobao"].ToString(),
+                            loai_bao_thay = dt.Rows[0]["loaibaothay"].ToString(),
+                            goc_lap_dat = dt.Rows[0]["goclapdat"].ToString(),
+                            tgbh_pin = dt.Rows[0]["tgbh_pin"].ToString(),
+                            loai_pin = dt.Rows[0]["loai_pin"].ToString(),
+                            so_phe_duyet = dt.Rows[0]["so_phe_duyet"].ToString(),
+                            cty_phe_duyet = dt.Rows[0]["cty_phe_duyet"].ToString(),
+                            chong_nuoc = dt.Rows[0]["chong_nuoc"].ToString(),
+                            cong_nghe = dt.Rows[0]["cong_nghe"].ToString(),
+                            ket_noi = dt.Rows[0]["ket_noi"].ToString(),
+                            chu_ky_phat_song = dt.Rows[0]["chu_ky_phat_song"].ToString(),
+                            so_lan_gui_lai = dt.Rows[0]["so_lan_gui_lai"].ToString(),
+                            //tan_suat_gui_lai = dt.Rows[0]["serialnumber"].ToString(),
+                            dma = dt.Rows[0]["MADMA"].ToString(),
+                            id_cty = dt.Rows[0]["id_cty"].ToString(),
+                            id_donvi = dt.Rows[0]["id_donvi"].ToString(),
+                            //ghi_chu = dt.Rows[0]["ghi_chu"].ToString(),
+                            gps_latitude = dt.Rows[0]["gps_latitude"].ToString(),
+                            gps_lontitude = dt.Rows[0]["gps_lontitude"].ToString(),
+                            gps_altitude = dt.Rows[0]["gps_lontitude"].ToString(),
+                            hieu_luc = dt.Rows[0]["hl"].ToString(),
+                        };
+                        var json = CGlobalVariable.jsSerializer.Serialize(data);
+                        Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                        request.ContentLength = byteArray.Length;
+                        //gắn data post
+                        Stream dataStream = request.GetRequestStream();
+                        dataStream.Write(byteArray, 0, byteArray.Length);
+                        dataStream.Close();
+
+                        HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                        if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                        {
+                            StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                            string result = read.ReadToEnd();
+                            read.Close();
+                            respuesta.Close();
+                            var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                            if (obj["ketQua"] == 1)
+                                return "1";
+                            else
+                                return "-1";
+                        }
+                        else
+                        {
+                            strResponse = "Error: " + respuesta.StatusCode;
+                        }
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        [Route("suaDHN_TCT")]
+        [HttpGet]
+        public string suaDHN_TCT(string DanhBo, string SoThan,string NgayThay, string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                           | SecurityProtocolType.Ssl3;
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/DongHoNuoc/CapNhatDongHoNuoc");
+                    request.Method = "POST";
+                    request.ContentType = "application/json";
+                    request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
+                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select serialnumber= CASE WHEN ttkh.HIEUDH='EMS' THEN ISNULL((select Serial_number from [sDHN].[dbo].[DHN_PHAMLAM] where DANHBO=dhn.DanhBo),0) ELSE ttkh.SOTHANDH END"
++ " ,IDModule = ISNULL((select IDLogger from[sDHN].[dbo].[sDHN] where DanhBo = dhn.DanhBo), 0)"
++ " ,IDLogger = ISNULL((select IDLogger from[sDHN].[dbo].[sDHN] where DanhBo = dhn.DanhBo),0)"
++ " ,sim = ''"
++ " ,dhn.DanhBo,dot_ds = SUBSTRING(ttkh.LOTRINH, 1, 2),so_ds = SUBSTRING(ttkh.LOTRINH, 3, 2),MLT = ttkh.LOTRINH"
++ " , ttkh.HOTEN,ttkh.SONHA,ttkh.TENDUONG,phuong = (select tenphuong from CAPNUOCTANHOA.dbo.PHUONG where MAPHUONG = ttkh.PHUONG and MAQUAN = ttkh.QUAN)"
++ " , quan = (select tenquan from CAPNUOCTANHOA.dbo.QUAN where MAQUAN = ttkh.QUAN)"
++ " , DIENTHOAI = (select top 1 DienThoai from CAPNUOCTANHOA.dbo.SDT_DHN where DanhBo = ttkh.DANHBO order by CreateDate desc)"
++ " , ttkh.NGAYTHAY,ttkh.HIEUDH,ttkh.CODH,ttkh.SOTHANDH,vitri = ttkh.VITRIDHN,chisobao = '',loaibaothay = '',goclapdat =case when ttkh.ViTriDHN_Hop = 1 then N'Hộp' else '' end"
++ " , tt.tgbh_pin,tt.loai_pin,tt.so_phe_duyet,tt.cty_phe_duyet,tt.chong_nuoc,tt.cong_nghe,tt.ket_noi,hieuluc = 1"
++ " , tt.chu_ky_phat_song,tt.so_lan_gui_lai,ttkh.MADMA,tt.id_cty,tt.id_donvi"
++ " ,gps_latitude = (select top 1 gps_latitude from CAPNUOCTANHOA.dbo.DanhBoGPS where DanhBo = ttkh.DANHBO),gps_lontitude = (select top 1 gps_lontitude from CAPNUOCTANHOA.dbo.DanhBoGPS where DanhBo = ttkh.DANHBO),gps_lontitude = '',hl = 1"
++ " from(SELECT DanhBo = DHN_DANHBO, DIACHI, REPLACE(DHN_TODS, 'DHTM-', 'TH-') AS MADMA, HCT_HIEUDHNGAN AS HG, HCT_SOTHANGAN AS STGAN, HCT_CHISOGAN AS CSGa, HCT_CODHNGAN AS COGAN,"
++ " CAST(HCT_NGAYGAN as date) AS NGAYGAN, CAST(HCT_NGAYKIEMDINH as date) AS KD,"
++ " [DHN_SOTHAN] AS SOTHAN, HCT_SOTHANGO AS THANGO, [DHN_CHISO] AS CSB, HCT_CHISOGO AS CSG, HCT_CHISOGO - DHN_CHISO AS SS,[HCT_CREATEBY], [HCT_MODIFYBY]"
++ " FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND HCT_NGAYGAN IS NOT NULL"
++ " ) dhn,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh,[sDHN].[dbo].[DHTM_THONGTIN] tt"
++ " where dhn.DanhBo=ttkh.DANHBO and dhn.HG=tt.HIEU_DHTM and dhn.DanhBo='" + DanhBo + "'");
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        var data = new
+                        {
+                            //serial_number = dt.Rows[0]["serialnumber"].ToString(),
+                            serial_number = SoThan,
+                            id_module = dt.Rows[0]["IDModule"].ToString(),
+                            id_logger = dt.Rows[0]["IDLogger"].ToString(),
+                            so_sim = dt.Rows[0]["sim"].ToString(),
+                            danh_bo = dt.Rows[0]["DanhBo"].ToString(),
+                            dot = dt.Rows[0]["dot_ds"].ToString(),
+                            so_ds = dt.Rows[0]["so_ds"].ToString(),
+                            mlt = dt.Rows[0]["MLT"].ToString(),
+                            ho_ten_kh = dt.Rows[0]["HOTEN"].ToString(),
+                            so_nha = dt.Rows[0]["SONHA"].ToString(),
+                            duong = dt.Rows[0]["TENDUONG"].ToString(),
+                            phuong = dt.Rows[0]["phuong"].ToString(),
+                            quan = dt.Rows[0]["quan"].ToString(),
+                            dien_thoai = dt.Rows[0]["DIENTHOAI"].ToString(),
+                            //ngay_gan = dt.Rows[0]["NGAYTHAY"].ToString(),
+                            ngay_gan = NgayThay,
+                            hieu = dt.Rows[0]["HIEUDH"].ToString(),
+                            co = dt.Rows[0]["CODH"].ToString(),
+                            //so_than = dt.Rows[0]["SOTHANDH"].ToString(),
+                            so_than = SoThan,
+                            vi_tri = dt.Rows[0]["vitri"].ToString(),
+                            chi_so_bao = dt.Rows[0]["chisobao"].ToString(),
+                            loai_bao_thay = dt.Rows[0]["loaibaothay"].ToString(),
+                            goc_lap_dat = dt.Rows[0]["goclapdat"].ToString(),
+                            tgbh_pin = dt.Rows[0]["tgbh_pin"].ToString(),
+                            loai_pin = dt.Rows[0]["loai_pin"].ToString(),
+                            so_phe_duyet = dt.Rows[0]["so_phe_duyet"].ToString(),
+                            cty_phe_duyet = dt.Rows[0]["cty_phe_duyet"].ToString(),
+                            chong_nuoc = dt.Rows[0]["chong_nuoc"].ToString(),
+                            cong_nghe = dt.Rows[0]["cong_nghe"].ToString(),
+                            ket_noi = dt.Rows[0]["ket_noi"].ToString(),
+                            chu_ky_phat_song = dt.Rows[0]["chu_ky_phat_song"].ToString(),
+                            so_lan_gui_lai = dt.Rows[0]["so_lan_gui_lai"].ToString(),
+                            //tan_suat_gui_lai = dt.Rows[0]["serialnumber"].ToString(),
+                            dma = dt.Rows[0]["MADMA"].ToString(),
+                            id_cty = dt.Rows[0]["id_cty"].ToString(),
+                            id_donvi = dt.Rows[0]["id_donvi"].ToString(),
+                            //ghi_chu = dt.Rows[0]["ghi_chu"].ToString(),
+                            gps_latitude = dt.Rows[0]["gps_latitude"].ToString(),
+                            gps_lontitude = dt.Rows[0]["gps_lontitude"].ToString(),
+                            gps_altitude = dt.Rows[0]["gps_lontitude"].ToString(),
+                            hieu_luc = dt.Rows[0]["hl"].ToString(),
+                        };
+                        var json = CGlobalVariable.jsSerializer.Serialize(data);
+                        Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                        request.ContentLength = byteArray.Length;
+                        //gắn data post
+                        Stream dataStream = request.GetRequestStream();
+                        dataStream.Write(byteArray, 0, byteArray.Length);
+                        dataStream.Close();
+
+                        HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                        if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                        {
+                            StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                            string result = read.ReadToEnd();
+                            read.Close();
+                            respuesta.Close();
+                            var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                            if (obj["ketQua"] == 1)
+                                return "1";
+                            else
+                                return "-1";
+                        }
+                        else
+                        {
+                            strResponse = "Error: " + respuesta.StatusCode;
+                        }
                     }
                 }
                 else
@@ -1355,7 +1591,7 @@ namespace WSTanHoa.Controllers
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                                | SecurityProtocolType.Ssl3;
-                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/ChiSoNuoc/TraCuuChiSoNuoc?id_donVi=TH&danhBo="+ item["DanhBo"].ToString() + "&ngay=" + Time);
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/ChiSoNuoc/TraCuuChiSoNuoc?id_donVi=TH&danhBo=" + item["DanhBo"].ToString() + "&ngay=" + Time);
                         request.Method = "GET";
                         request.ContentType = "application/json";
                         request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
