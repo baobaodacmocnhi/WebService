@@ -43,9 +43,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool checkExists_DonTu(string DanhBo, string NoiDung,string SoNgay)
+        public bool checkExists_DonTu(string DanhBo, string NoiDung, string SoNgay)
         {
-            return _cThuTien.checkExists_DonTu(DanhBo, NoiDung,SoNgay);
+            return _cThuTien.checkExists_DonTu(DanhBo, NoiDung, SoNgay);
         }
 
         [WebMethod]
@@ -55,27 +55,27 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public int checkExists_CCCD(string DanhBo, string CCCD, string CMND)
+        public int checkExists_CCCD(string DanhBo, string CCCD, out string result)
         {
-            return _cThuTien.checkExists_CCCD(DanhBo, CCCD, CMND);
+            return _cThuTien.checkExists_CCCD(DanhBo, CCCD, out result);
         }
 
         [WebMethod]
-        public int them_CCCD(string DanhBo, string CCCD)
+        public int them_CCCD(string DanhBo, string CCCD, out string result)
         {
-            return _cThuTien.them_CCCD(DanhBo, CCCD);
+            return _cThuTien.them_CCCD(DanhBo, CCCD, out result);
         }
 
         [WebMethod]
-        public int sua_CCCD(string DanhBo, string CCCD)
+        public int sua_CCCD(string DanhBo, string CCCD, out string result)
         {
-            return _cThuTien.sua_CCCD(DanhBo, CCCD);
+            return _cThuTien.sua_CCCD(DanhBo, CCCD, out result);
         }
 
         [WebMethod]
-        public int xoa_CCCD(string DanhBo, string CCCD)
+        public int xoa_CCCD(string DanhBo, string CCCD, out string result)
         {
-            return _cThuTien.xoa_CCCD(DanhBo, CCCD);
+            return _cThuTien.xoa_CCCD(DanhBo, CCCD, out result);
         }
 
 

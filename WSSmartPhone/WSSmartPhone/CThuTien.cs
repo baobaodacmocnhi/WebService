@@ -58,11 +58,38 @@ namespace WSSmartPhone
             return (bool)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
         }
 
+        private bool checkHanhThu(string MaNV)
+        {
+            DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from TT_NguoiDung where DongNuoc=1 and MaND=" + MaNV);
+            if (dt != null && dt.Rows.Count > 0)
+                return true;
+            else
+                return false;
+        }
+
         private bool checkDongNuoc(string MaNV)
         {
             DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from TT_NguoiDung where DongNuoc=1 and MaND=" + MaNV);
             if (dt != null && dt.Rows.Count > 0)
                 return true;
+            else
+                return false;
+        }
+
+        private bool checkThuTien_HanhThu()
+        {
+            object result = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ThuTien_HanhThu from TT_DeviceConfig");
+            if (result != null)
+                return (bool)result;
+            else
+                return false;
+        }
+
+        private bool checkThuTien_DongNuoc()
+        {
+            object result = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ThuTien_DongNuoc from TT_DeviceConfig");
+            if (result != null)
+                return (bool)result;
             else
                 return false;
         }
@@ -519,8 +546,14 @@ namespace WSSmartPhone
                 switch (LoaiXuLy)
                 {
                     case "DangNgan":
-                        if (checkDongNuoc(MaNV) == false)
-                            return "false;Tính năng đã bị Khóa";
+                        if (checkThuTien_HanhThu() == false)
+                        {
+                            if (checkThuTien_DongNuoc() == false)
+                                return "false;Tính năng đã bị Khóa";
+                            else
+                                if (checkDongNuoc(MaNV) == false)
+                                    return "false;Tính năng đã bị Khóa";
+                        }
                         if (checkActiveMobile(MaNV) == false)
                             return "false;Chưa Active Mobile";
                         if (checkChotDangNgan(Ngay.ToString("yyyyMMdd")) == true)
@@ -4503,16 +4536,33 @@ namespace WSSmartPhone
                                 else
                                 {
                                     string ID = "";
-                                    checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                    if (checkExists != null)
+                                    if (DateTime.Now.Year == 2023)
                                     {
-                                        object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                        if (stt != null)
-                                            ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
+                                        checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yy") + "%'");
+                                        if (checkExists != null)
+                                        {
+                                            object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),3,5))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yy") + "%'");
+                                            if (stt != null)
+                                                ID = DateTime.Now.ToString("yy") + ((int)stt).ToString("00000");
+                                        }
+                                        else
+                                        {
+                                            ID = DateTime.Now.ToString("yy") + 1.ToString("00000");
+                                        }
                                     }
                                     else
                                     {
-                                        ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
+                                        checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                                        if (checkExists != null)
+                                        {
+                                            object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                                            if (stt != null)
+                                                ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
+                                        }
+                                        else
+                                        {
+                                            ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
+                                        }
                                     }
                                     string DinhMucHN = "NULL";
                                     if (dt.Rows[0]["DinhMucHN"].ToString() != "")
@@ -7303,13 +7353,13 @@ namespace WSSmartPhone
             return strResponse;
         }
 
-        public int checkExists_CCCD(string DanhBo, string CCCD, string CMND)
+        public int checkExists_CCCD(string DanhBo, string CCCD, out string result)
         {
-            string result = "";
+            result = "";
             try
             {
-                //string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=" + DanhBo + "&sdd=" + CCCD + "&cmndcu=" + CMND;
-                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=12101905044&sdd=040074001959";
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=" + DanhBo + "&sdd=" + CCCD;
+                //string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=12101905044&sdd=040074001959";
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
@@ -7350,9 +7400,9 @@ namespace WSSmartPhone
             }
         }
 
-        public int them_CCCD(string DanhBo, string CCCD)
+        public int them_CCCD(string DanhBo, string CCCD, out string result)
         {
-            string result = "";
+            result = "";
             try
             {
                 string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/ThemDinhDanh";
@@ -7363,7 +7413,7 @@ namespace WSSmartPhone
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
-                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select HoTen"
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select LoaiCapDM=case when TamTru=1 then '2' else '1' end,NgayHetHan=convert(char(4), NgayHetHan, 12),HoTen"
                 + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -7378,7 +7428,7 @@ namespace WSSmartPhone
                         danhbo = DanhBo,
                         sohokhau_stt = "",
                         hongheo = "0",
-                        loaicapdm = "1",
+                        loaicapdm = dt.Rows[0]["LoaiCapDM"],
                         thoihantt = "",
                         danhbo_tt = "",
                         diachikhachhang = "",
@@ -7412,7 +7462,7 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        result = "Thất Bại";
+                        result = obj["duLieuKhongHopLe"][0]["ghichu"];
                         return 0;
                     }
                 }
@@ -7429,9 +7479,9 @@ namespace WSSmartPhone
             }
         }
 
-        public int sua_CCCD(string DanhBo, string CCCD)
+        public int sua_CCCD(string DanhBo, string CCCD, out string result)
         {
-            string result = "";
+            result = "";
             try
             {
                 string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/CapNhatDinhDanh";
@@ -7442,7 +7492,7 @@ namespace WSSmartPhone
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
-                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select HoTen"
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select LoaiCapDM=case when TamTru=1 then '2' else '1' end,NgayHetHan=convert(char(4), NgayHetHan, 12),HoTen"
                 + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -7457,8 +7507,8 @@ namespace WSSmartPhone
                         danhbo = DanhBo,
                         sohokhau_stt = "",
                         hongheo = "0",
-                        loaicapdm = "1",
-                        thoihantt = "",
+                        loaicapdm = dt.Rows[0]["LoaiCapDM"],
+                        thoihantt = dt.Rows[0]["NgayHetHan"],
                         danhbo_tt = "",
                         diachikhachhang = "",
                         diachiemail = "",
@@ -7491,7 +7541,7 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        result = "Thất Bại";
+                        result = obj["duLieuKhongHopLe"][0]["ghichu"];
                         return 0;
                     }
                 }
@@ -7508,9 +7558,9 @@ namespace WSSmartPhone
             }
         }
 
-        public int xoa_CCCD(string DanhBo, string CCCD)
+        public int xoa_CCCD(string DanhBo, string CCCD, out string result)
         {
-            string result = "";
+            result = "";
             try
             {
                 string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/XoaDinhDanh";
