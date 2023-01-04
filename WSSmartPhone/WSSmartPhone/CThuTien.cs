@@ -4550,20 +4550,20 @@ namespace WSSmartPhone
                                             ID = DateTime.Now.ToString("yy") + 1.ToString("00000");
                                         }
                                     }
-                                    else
-                                    {
-                                        checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                        if (checkExists != null)
-                                        {
-                                            object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                            if (stt != null)
-                                                ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
-                                        }
-                                        else
-                                        {
-                                            ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
-                                        }
-                                    }
+                                    //else
+                                    //{
+                                    //    checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                                    //    if (checkExists != null)
+                                    //    {
+                                    //        object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
+                                    //        if (stt != null)
+                                    //            ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
+                                    //    }
+                                    //    else
+                                    //    {
+                                    //        ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
+                                    //    }
+                                    //}
                                     string DinhMucHN = "NULL";
                                     if (dt.Rows[0]["DinhMucHN"].ToString() != "")
                                         DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
@@ -5204,7 +5204,7 @@ namespace WSSmartPhone
         //kinh doanh
         public DataTable getDS_GiaNuoc()
         {
-            return _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from GiaNuocTest");
+            return _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from GiaNuoc2");
         }
 
         public bool checkExists_GiaNuocGiam(int Nam, int Ky, int GiaBieu)
