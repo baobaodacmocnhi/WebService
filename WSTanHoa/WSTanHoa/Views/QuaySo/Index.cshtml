@@ -141,7 +141,7 @@
                 type: 'GET',
                 url: '/QuaySo/getQuay/',
                 dataType: 'json',
-                data: {},
+                data: { IDGiaiThuong: $("#cmbSanPham option:selected").text() },
                 success: function (data) {
                     var items = '';
                     $.each(data, function (i, item) {
@@ -151,7 +151,6 @@
                         $('#donvih').text(item.HoTen);
                         $('#hotenh').text(item.NoiDung);
                     });
-
                 },
                 error: function (ex) {
                     alert("Error: " + ex.statusText);
@@ -181,6 +180,18 @@
                 $('#example3').removeAttr('hidden');
             }, 12000);
 
+        }
+
+        function trung()
+        {
+            $.ajax({
+                type: 'GET',
+                url: '/QuaySo/trung/',
+                dataType: 'json',
+                data: { STT: $('#num1h').text() + $('#num2h').text() + $('#num3h').text(), IDGiaiThuong: $("#cmbSanPham option:selected").text() },
+                success: function (data) {
+                }
+            });
         }
 
         function generate1() {
@@ -243,31 +254,31 @@
                     break;
                 case '1':
                     $('#nameSanPham').text('Samsung Galaxy Z Flip 4');
-                    $('#imgSanPham').attr('src', '../Images/1.png');
+                    $('#imgSanPham').attr('src', '../Images/QuaySo/1.png');
                     $('#imgSanPham').attr('width', '350');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
                 case '2':
                     $('#nameSanPham').text('iPad Gen10 2022 10.9inch WiFi 64G');
-                    $('#imgSanPham').attr('src', '../Images/2.png');
+                    $('#imgSanPham').attr('src', '../Images/QuaySo/2.png');
                     $('#imgSanPham').attr('width', '400');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
                 case '3':
                     $('#nameSanPham').text('Apple Watch SE GPS 40mm');
-                    $('#imgSanPham').attr('src', '../Images/3.png');
+                    $('#imgSanPham').attr('src', '../Images/QuaySo/3.png');
                     $('#imgSanPham').attr('width', '300');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
                 case '4':
                     $('#nameSanPham').text('Tai nghe AirPods 2');
-                    $('#imgSanPham').attr('src', '../Images/4.png');
+                    $('#imgSanPham').attr('src', '../Images/QuaySo/4.png');
                     $('#imgSanPham').attr('width', '250');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
                 case '5':
                     $('#nameSanPham').text('Loa Bluetooth LG XBoom Go PL2');
-                    $('#imgSanPham').attr('src', '../Images/5.png');
+                    $('#imgSanPham').attr('src', '../Images/QuaySo/5.png');
                     $('#imgSanPham').attr('width', '450');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
@@ -286,7 +297,7 @@
                     <table>
                         <tr>
                             <td rowspan="3">
-                                <img src="~/Images/sawaco.jpg" width="110" style="margin-top:10px;margin-right:10px" />
+                                <img src="~/Images/logoctycp.png" width="110" style="margin-top:10px;margin-right:10px" />
                                 <div style="margin-top:-10px">
                                     <select id="cmbSanPham" name="cmbSanPham" onchange="showSanPham()">
                                         <option value="0">0</option>
@@ -302,6 +313,11 @@
                                 <div><h1>HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG</h1></div>
                                 <div style="margin-top:-10px"><h1>KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN</h1></div>
                                 <div style="margin-top:-10px"><h1>CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC NĂM 2022</h1></div>
+                            </td>
+                            <td rowspan="3">
+                                <div style="margin-top:-10px">
+                                    <button type="button" class="btn btn-success" onclick="trung()">Trúng</button>
+                                </div>
                             </td>
                         </tr>
                         @*<tr>
