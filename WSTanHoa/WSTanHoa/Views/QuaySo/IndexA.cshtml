@@ -1,0 +1,59 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>IndexA</title>
+    <script src="~/Scripts/jquery-3.6.0.js"></script>
+    <script>
+        function trung() {
+            $.ajax({
+                type: 'GET',
+                url: '/QuaySo/trung/',
+                dataType: 'json',
+                data: { STT: $('#STT').val(), IDGiaiThuong: $("#cmbSanPham option:selected").text() },
+                success: function (data) {
+                }
+            });
+        }
+        function reset() {
+            $.ajax({
+                type: 'GET',
+                url: '/QuaySo/reset/',
+                dataType: 'json',
+                data: {},
+                success: function (data) {
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <div style="margin-top:10px">
+        Giải===><select id="cmbSanPham" name="cmbSanPham" style="width:100px;height:50px;font-size:30px">
+            <option value="-1">-1</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+        </select>
+    </div>
+    <div style="margin-top:30px">
+        STT===><input type="number" id="STT" name="STT" style="width:70px;height:50px;font-size:30px" />
+    </div>
+    <div style="margin-top:60px">
+        <button type="button" class="btn btn-success" onclick="trung()" style="width:100px;height:50px;font-size:30px">Trúng</button>
+    </div>
+    <div style="margin-top:200px">
+        <button type="button" class="btn btn-success" onclick="reset()">reset</button>
+    </div>
+</body>
+</html>

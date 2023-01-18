@@ -105,7 +105,7 @@
             color: darkviolet;
         }
 
-        h1 {
+        h2 {
             text-align: center;
             text-transform: uppercase;
             color: rgb(11,83,149);
@@ -151,9 +151,6 @@
                         $('#donvih').text(item.HoTen);
                         $('#hotenh').text(item.NoiDung);
                     });
-                },
-                error: function (ex) {
-                    alert("Error: " + ex.statusText);
                 }
             });
 
@@ -182,8 +179,7 @@
 
         }
 
-        function trung()
-        {
+        function trung() {
             $.ajax({
                 type: 'GET',
                 url: '/QuaySo/trung/',
@@ -247,27 +243,33 @@
             $('#example2').attr('hidden', 'hidden')
             $('#example3').attr('hidden', 'hidden')
             switch ($("#cmbSanPham option:selected").text()) {
-                case '0':
+                case '-1':
                     $('#nameSanPham').text('');
                     $('#imgSanPham').removeAttr('src');
                     $('#viewSanPham').attr('hidden', 'hidden');
                     break;
+                case '0':
+                    $('#nameSanPham').text('');
+                    $('#imgSanPham').attr('src', '../Images/QuaySo/0.jpg');
+                    $('#imgSanPham').attr('width', '600');
+                    $('#viewSanPham').removeAttr('hidden');
+                    break;
                 case '1':
-                    $('#nameSanPham').text('Samsung Galaxy Z Flip 4');
+                    $('#nameSanPham').text('iPad Gen 9 2021 Wifi Cellular 64GB');
                     $('#imgSanPham').attr('src', '../Images/QuaySo/1.png');
-                    $('#imgSanPham').attr('width', '350');
+                    $('#imgSanPham').attr('width', '300');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
                 case '2':
-                    $('#nameSanPham').text('iPad Gen10 2022 10.9inch WiFi 64G');
+                    $('#nameSanPham').text('Apple Watch SE GPS 40mm');
                     $('#imgSanPham').attr('src', '../Images/QuaySo/2.png');
-                    $('#imgSanPham').attr('width', '400');
+                    $('#imgSanPham').attr('width', '350');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
                 case '3':
-                    $('#nameSanPham').text('Apple Watch SE GPS 40mm');
+                    $('#nameSanPham').text('Robot hút bụi Xiaomi Mi Vacuum Mop 2 Lite');
                     $('#imgSanPham').attr('src', '../Images/QuaySo/3.png');
-                    $('#imgSanPham').attr('width', '300');
+                    $('#imgSanPham').attr('width', '450');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
                 case '4':
@@ -277,9 +279,15 @@
                     $('#viewSanPham').removeAttr('hidden');
                     break;
                 case '5':
-                    $('#nameSanPham').text('Loa Bluetooth LG XBoom Go PL2');
+                    $('#nameSanPham').text('Nồi cơm điện - Nồi chiên không dầu - Nồi lẩu nướng đa năng');
                     $('#imgSanPham').attr('src', '../Images/QuaySo/5.png');
-                    $('#imgSanPham').attr('width', '450');
+                    $('#imgSanPham').attr('width', '800');
+                    $('#viewSanPham').removeAttr('hidden');
+                    break;
+                case '6':
+                    $('#nameSanPham').text('Ngân Hàng MB');
+                    //$('#imgSanPham').attr('src', '../Images/QuaySo/5.png');
+                    //$('#imgSanPham').attr('width', '800');
                     $('#viewSanPham').removeAttr('hidden');
                     break;
             }
@@ -293,41 +301,43 @@
     <header>
         <div class="header">
             @*<center style="font-size:25px;font-weight: bold;color:blue;text-align-last:center ">*@
-                <center style="text-align-last:center ">
-                    <table>
-                        <tr>
-                            <td rowspan="3">
-                                <img src="~/Images/logoctycp.png" width="110" style="margin-top:10px;margin-right:10px" />
-                                <div style="margin-top:-10px">
-                                    <select id="cmbSanPham" name="cmbSanPham" onchange="showSanPham()">
-                                        <option value="0">0</option>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                        <option value="4">4</option>
-                                        <option value="5">5</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div><h1>HỘI NGHỊ TỔNG KẾT HOẠT ĐỘNG</h1></div>
-                                <div style="margin-top:-10px"><h1>KHỐI THI ĐUA 4 VÀ CỤM THI ĐUA 2 CÔNG ĐOÀN</h1></div>
-                                <div style="margin-top:-10px"><h1>CÁC ĐƠN VỊ KINH DOANH NGÀNH NƯỚC NĂM 2022</h1></div>
-                            </td>
-                            <td rowspan="3">
-                                <div style="margin-top:-10px">
-                                    <button type="button" class="btn btn-success" onclick="trung()">Trúng</button>
-                                </div>
-                            </td>
+            <center style="text-align-last:center ">
+                <table>
+                    <tr>
+                        <td rowspan="3">
+                            <img src="~/Images/logoctycp.png" width="110" style="margin-top:10px;margin-right:10px" />
+                            <div style="margin-top:-10px">
+                                <select id="cmbSanPham" name="cmbSanPham" onchange="showSanPham()">
+                                    <option value="-1">-1</option>
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div><h2>TỔNG CÔNG TY CẤP NƯỚC SÀI GÒN TNHH MTV</h2></div>
+                            <div style="margin-top:-10px"><h2>CÔNG TY CỔ PHẦN CẤP NƯỚC TÂN HÒA</h2></div>
+                            <div style="margin-top:-10px;font-size:50px;font-weight:bold;color:red">TIỆC TẤT NIÊN 2023</div>
+                        </td>
+                        <td rowspan="3">
+                            <div style="margin-top:-10px">
+                                @*<button type="button" class="btn btn-success" onclick="trung()">Trúng</button>*@
+                            </div>
+                        </td>
+                    </tr>
+                    @*<tr>
+                            <td></td>
                         </tr>
-                        @*<tr>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td></td>
-                </tr>*@
-                    </table>
-                </center>
+                        <tr>
+                            <td></td>
+                        </tr>*@
+                </table>
+            </center>
             <table style="width:100%">
                 <tr>
                     <th>

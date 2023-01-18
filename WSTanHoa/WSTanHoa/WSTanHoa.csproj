@@ -271,11 +271,11 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\QuaySo\0.jpg" />
     <Content Include="Images\QuaySo\1.png" />
     <Content Include="Images\QuaySo\2.png" />
     <Content Include="Images\QuaySo\3.png" />
     <Content Include="Images\QuaySo\4.png" />
-    <Content Include="Images\QuaySo\5.png" />
     <Content Include="Images\Banks\momo.jpg" />
     <Content Include="Images\Banks\shopeepay.png" />
     <Content Include="Images\daihoidoantct2022.png" />
@@ -298,6 +298,7 @@
     <Content Include="Images\logoctycp.png" />
     <Content Include="Images\logofull.jpg" />
     <Content Include="Images\info.mobile.png" />
+    <Content Include="Images\QuaySo\5.png" />
     <Content Include="Images\sawaco.jpg" />
     <Content Include="Images\Slide2022Light.jpg" />
     <Content Include="Images\vongquay.png" />
@@ -2174,6 +2175,7 @@
     <Content Include="Views\QLDHN\sDHN_SuCo.cshtml" />
     <Content Include="Views\QuaySo\Index2.cshtml" />
     <Content Include="Views\QuaySo\Index.cshtml" />
+    <Content Include="Views\QuaySo\IndexA.cshtml" />
     <None Include="Web References\wrThuongVu\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

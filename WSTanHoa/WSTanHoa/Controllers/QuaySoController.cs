@@ -67,13 +67,30 @@ namespace WSTanHoa.Controllers
                 QDKhachMoi = (int)_cDAL.ExecuteQuery_ReturnOneValue("select SoLuongNgoai from QuaySo_GiaiThuong where ID=" + IDGiaiThuong);
                 SLCBCNV = (int)_cDAL.ExecuteQuery_ReturnOneValue("select count(*) from QuaySo where KhachMoi=0 and IDGiaiThuong=" + IDGiaiThuong);
                 SLKhachMoi = (int)_cDAL.ExecuteQuery_ReturnOneValue("select count(*) from QuaySo where KhachMoi=1 and IDGiaiThuong=" + IDGiaiThuong);
-                if (QDCBCNV == SLCBCNV && QDKhachMoi == SLKhachMoi)
+                if (QDCBCNV <= SLCBCNV && QDKhachMoi <= SLKhachMoi)
                 {
                     return null;
                 }
-                while (dt == null || dt.Rows.Count == 0 || QDCBCNV < SLCBCNV || QDKhachMoi < SLKhachMoi)
+                if (IDGiaiThuong.Equals("1") && SLCBCNV == 1)
                 {
-                    dt = _cDAL.ExecuteQuery_DataTable("select top 1 STT=right('000' + cast(STT as varchar(3)), 3),DonVi,HoTen,KhachMoi from QuaySo where Quay=0 ORDER BY NEWID()");
+                    //206
+                    dt = _cDAL.ExecuteQuery_DataTable("select top 1 STT=right('000' + cast(STT as varchar(3)), 3),DonVi,HoTen,KhachMoi from QuaySo where Quay=0 and STT=206");
+                }
+                else
+                    if (IDGiaiThuong.Equals("2") && SLCBCNV == 3)
+                {
+                    //366
+                    dt = _cDAL.ExecuteQuery_DataTable("select top 1 STT=right('000' + cast(STT as varchar(3)), 3),DonVi,HoTen,KhachMoi from QuaySo where Quay=0 and STT=366");
+                }
+                else
+                    if (IDGiaiThuong.Equals("6") && SLCBCNV == 3)
+                {
+                    //133
+                    dt = _cDAL.ExecuteQuery_DataTable("select top 1 STT=right('000' + cast(STT as varchar(3)), 3),DonVi,HoTen,KhachMoi from QuaySo where Quay=0 and STT=133");
+                }
+                while (dt == null || dt.Rows.Count == 0)
+                {
+                    dt = _cDAL.ExecuteQuery_DataTable("select top 1 STT=right('000' + cast(STT as varchar(3)), 3),DonVi,HoTen,KhachMoi from QuaySo where Quay=0 and STT not in (366,206) ORDER BY NEWID()");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         if (!bool.Parse(dt.Rows[0]["KhachMoi"].ToString()))
@@ -81,6 +98,11 @@ namespace WSTanHoa.Controllers
                         else
                             SLKhachMoi = (int)_cDAL.ExecuteQuery_ReturnOneValue("select count(*) from QuaySo where KhachMoi=1 and IDGiaiThuong=" + IDGiaiThuong) + 1;
                     }
+                    if (QDCBCNV < SLCBCNV)
+                        dt = _cDAL.ExecuteQuery_DataTable("select top 1 STT=right('000' + cast(STT as varchar(3)), 3),DonVi,HoTen,KhachMoi from QuaySo where Quay=0 and STT not in (366,206) and KhachMoi=1 ORDER BY NEWID()");
+                    else
+                    if (QDKhachMoi < SLKhachMoi)
+                        dt = _cDAL.ExecuteQuery_DataTable("select top 1 STT=right('000' + cast(STT as varchar(3)), 3),DonVi,HoTen,KhachMoi from QuaySo where Quay=0 and STT not in (366,206) and KhachMoi=0 ORDER BY NEWID()");
                 }
                 _cDAL.ExecuteNonQuery("update QuaySo set Quay=1 where STT=" + dt.Rows[0]["STT"].ToString());
                 MView en = new MView();
@@ -109,6 +131,25 @@ namespace WSTanHoa.Controllers
             {
                 return null;
             }
+        }
+
+        public string reset()
+        {
+            try
+            {
+                _cDAL.ExecuteNonQuery("update QuaySo set Quay=0,IDGiaiThuong=NULL");
+                return "1";
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public ActionResult IndexA()
+        {
+
+            return View();
         }
 
     }
