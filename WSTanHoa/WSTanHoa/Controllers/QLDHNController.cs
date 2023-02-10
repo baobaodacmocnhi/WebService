@@ -159,17 +159,21 @@ namespace WSTanHoa.Controllers
             object soluong = cDAL_sDHN.ExecuteQuery_ReturnOneValue("select SoLuong=COUNT(*) from sDHN_NCC a,sDHN_TCT b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
                                     + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1");
             ViewBag.SoLuong = soluong;
-            DataTable dt = cDAL_sDHN.ExecuteQuery_DataTable("select b.IDNCC,Name,SoLuong=COUNT(*),SoLuongLD=(SELECT count(*) FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL"
-                                    + " and HCT_HIEUDHNGAN = (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1, sDHN.dbo.sDHN_NCC b1 where a1.ID = b.IDNCC and a1.ID = b1.ID))"
-                                    + " from sDHN_NCC a,sDHN_TCT b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
-                                    + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
-                                    + " group by IDNCC,Name order by IDNCC");
+            //DataTable dt = cDAL_sDHN.ExecuteQuery_DataTable("select b.IDNCC,Name,SoLuong=COUNT(*),SoLuongLD=(SELECT count(*) FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL"
+            //                        + " and HCT_HIEUDHNGAN = (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1, sDHN.dbo.sDHN_NCC b1 where a1.ID = b.IDNCC and a1.ID = b1.ID))"
+            //                        + " from sDHN_NCC a,sDHN_TCT b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
+            //                        + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
+            //                        + " group by IDNCC,Name order by IDNCC");
+            DataTable dt = cDAL_sDHN.ExecuteQuery_DataTable("select b.IDNCC,Name,SoLuong=COUNT(*)"
+                        + " from sDHN_NCC a,sDHN_TCT b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
+                        + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
+                        + " group by IDNCC,Name order by IDNCC");
             List<MView> vTong = new List<MView>();
             foreach (DataRow item in dt.Rows)
             {
                 MView en = new MView();
                 en.TieuDe = item["Name"].ToString();
-                en.SoLuong = item["SoLuong"].ToString() + " (" + item["SoLuongLD"].ToString() + ")";
+                en.SoLuong = item["SoLuong"].ToString();// + " (" + item["SoLuongLD"].ToString() + ")";
                 vTong.Add(en);
             }
             ViewBag.vTong = vTong;

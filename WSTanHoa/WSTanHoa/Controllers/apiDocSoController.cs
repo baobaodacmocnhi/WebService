@@ -1782,7 +1782,9 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
-        private string getChiSo_All_TCT(string Time, string checksum)
+        [Route("getChiSo_All_TCT")]
+        [HttpGet]
+        public string getChiSo_All_TCT(string Time, string checksum)
         {
             string strResponse = "";
             try
@@ -1832,8 +1834,8 @@ namespace WSTanHoa.Controllers
                                     string LuuLuong = "NULL";
                                     //if (itemC2["Flow"] != null)
                                     //    LuuLuong = ((int)itemC2["Flow"]).ToString();
-                                    string sql = "if not exists(select * from sDHN_LichSu_TCT where DanhBo='" + itemC2["danh_bo"] + "' and ThoiGianCapNhat=convert(datetime,'" + itemC2["thoi_gian_nhan"] + "'))"
-                                        + " insert into sDHN_LichSu_TCT(DanhBo,ChiSo,Diff,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                    string sql = "if not exists(select * from sDHN_LichSu_TCTA where DanhBo='" + itemC2["danh_bo"] + "' and ThoiGianCapNhat=convert(datetime,'" + itemC2["thoi_gian_nhan"] + "'))"
+                                        + " insert into sDHN_LichSu_TCTA(DanhBo,ChiSo,Diff,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
                                         + ",Longitude,Latitude,Altitude,ChuKyGui"
                                         + ",ThoiGianCapNhat,Loai)"
                                                    + "values("

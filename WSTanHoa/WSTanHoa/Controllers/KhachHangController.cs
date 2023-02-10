@@ -28,6 +28,12 @@ namespace WSTanHoa.Controllers
                 return RedirectToAction("Login", "KhachHang");
             }
             ThongTinKhachHang en = new ThongTinKhachHang();
+            if (DanhBo.ToUpper().Contains("THW"))
+            {
+                object result = cDAL_TTKH.ExecuteQuery_ReturnOneValue("select DanhBo from QR_Dong where KyHieu='THW' and ID=" + DanhBo.Substring(3, DanhBo.Length - 3));
+                if (result != null && result.ToString() != "")
+                    DanhBo = result.ToString();
+            }
             //lấy thông tin khách hàng
             string sql = "select DanhBo"
                          + ",HoTen"
@@ -153,6 +159,7 @@ namespace WSTanHoa.Controllers
                     if (dt != null && dt.Rows.Count > 0)
                         en.ThongTinDongNuoc = dt.Rows[0]["NoiDung"].ToString();
                 }
+                cDAL_TTKH.ExecuteNonQuery("insert into QR_Log(DanhBo) values ('" + DanhBo + "')");
             }
             return View(en);
         }
