@@ -255,19 +255,19 @@ namespace WSSmartPhone
 
         public string getDS_NhanVien_HanhThu()
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
         public string getDS_NhanVien()
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
         public string getDS_NhanVien(string MaTo)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
@@ -3750,19 +3750,19 @@ namespace WSSmartPhone
 
         public string getDS_NhanVien_HanhThu_DHN()
         {
-            string sql = "select MaND,HoTen,May,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from NguoiDung where MaND!=0 and May is not null and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,May,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from NguoiDung where MaND!=0 and May is not null and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
         public string getDS_NhanVien_DHN()
         {
-            string sql = "select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
         public string getDS_NhanVien_DHN(string MaTo)
         {
-            string sql = "select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 order by STT asc";
+            string sql = "select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
