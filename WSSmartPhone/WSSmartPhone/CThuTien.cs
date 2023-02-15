@@ -26,7 +26,7 @@ namespace WSSmartPhone
         CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.KinhDoanh);
-        //CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
+        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
         JavaScriptSerializer jss = new JavaScriptSerializer();
 
         public string DataTableToJSON(DataTable table)
@@ -4830,6 +4830,21 @@ namespace WSSmartPhone
                 responseMess = "Error: " + ex.Message;
             }
             return responseMess;
+        }
+
+        public string dangKyQRCode(string DanhBo, string ID)
+        {
+            CResult result = new CResult();
+            try
+            {
+                result.success = _cDAL_TTKH.ExecuteNonQuery("update QR_Dong set DanhBo='" + DanhBo + "' where DanhBo is null and ID=" + ID);
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return jss.Serialize(result);
         }
 
         //quản lý

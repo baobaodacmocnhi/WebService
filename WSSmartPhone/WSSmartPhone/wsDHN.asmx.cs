@@ -297,6 +297,12 @@ namespace WSSmartPhone
             return _cThuTien.getTonCongTy_DHN(Nam, Ky, Dot, May);
         }
 
+        [WebMethod]
+        public string dangKyQRCode(string DanhBo, string ID)
+        {
+            return _cThuTien.dangKyQRCode(DanhBo, ID);
+        }
+
         //send notification
         [WebMethod]
         public string SendNotificationToClient(string Title, string Content, string UID, string Action, string NameUpdate, string ValueUpdate, string ID)
