@@ -3925,7 +3925,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
-        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
+        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT, string Latitude,string Longitude)
         {
             CResult result = new CResult();
             try
@@ -3984,7 +3984,7 @@ namespace WSSmartPhone
                                     hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
                                     string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
                                         + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong
-                                        + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi=getdate() where DocSoID='" + ID + "'";
+                                        + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi=getdate(),Latitude='" + Latitude + "',Longitude='" + Longitude + "' where DocSoID='" + ID + "'";
                                     success = _cDAL_DocSo.ExecuteNonQuery(sql);
                                     if (HinhDHN != "")
                                         success = ghi_Hinh_DHN(ID, HinhDHN);
@@ -4029,7 +4029,7 @@ namespace WSSmartPhone
             return jss.Serialize(result);
         }
 
-        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV, string NgayDS)
+        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV, string NgayDS, string Latitude, string Longitude)
         {
             CResult result = new CResult();
             try
@@ -4059,7 +4059,7 @@ namespace WSSmartPhone
                             DateTime date = DateTime.ParseExact(NgayDS, "dd/MM/yyyy HH:mm:ss", culture);
                             string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
                                 + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong
-                                + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi='" + date.ToString("yyyyMMdd HH:mm:ss") + "' where DocSoID='" + ID + "'";
+                                + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi='" + date.ToString("yyyyMMdd HH:mm:ss") + "',Latitude='" + Latitude + "',Longitude='" + Longitude + "' where DocSoID='" + ID + "'";
                             result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
                             if (HinhDHN != "")
                                 result.success = ghi_Hinh_DHN(ID, HinhDHN);
@@ -4480,37 +4480,60 @@ namespace WSSmartPhone
                 DataTable dtPC = _cDAL_DocSo.ExecuteQuery_DataTable("select Folder from MaHoa_PhieuChuyen where App=1 and KhongLapDon=1 and Name=N'" + NoiDung + "'");
                 if (dtPC != null && dtPC.Rows.Count > 0)
                 {
-                    switch (NoiDung)
+                    object checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_PhieuChuyen_LichSu where DanhBo='" + DanhBo + "' and NoiDung=N'" + NoiDung + "' and TinhTrang=N'Tồn'");
+                    if (checkExists != null)
                     {
-                        case "Đứt Chì Góc":
-                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate() where DanhBo='" + DanhBo + "' and DutChi_Goc=0");
-                            break;
-                        case "Đứt Chì Thân":
-                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "' and DutChi_Than=0");
-                            break;
-                        //case "Ngập Nước":
-                        //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set NgapNuoc=1,NgapNuoc_Ngay=getdate() where DanhBo='" + DanhBo + "' and NgapNuoc=0");
-                        //    break;
-                        //case "Kẹt Tường":
-                        //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set KetTuong=1,KetTuong_Ngay=getdate() where DanhBo='" + DanhBo + "' and KetTuong=0");
-                        //    break;
-                        //case "Lấp Khóa Góc":
-                        //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set LapKhoaGoc=1,LapKhoaGoc_Ngay=getdate() where DanhBo='" + DanhBo + "' and LapKhoaGoc=0");
-                        //    break;
-                        //case "Bể HBV":
-                        //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set BeHBV=1,BeHBV_Ngay=getdate() where DanhBo='" + DanhBo + "' and BeHBV=0");
-                        //    break;
-                        //case "Bể Nấp, Mất Nấp HBV":
-                        //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set BeNapMatNapHBV=1,BeNapMatNapHBV_Ngay=getdate() where DanhBo='" + DanhBo + "' and BeNapMatNapHBV=0");
-                        //    break;
-                        default:
-                            result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
-                            break;
+                        result.success = false;
+                        result.error = "Danh Bộ đã báo nội dung này rồi";
                     }
-                    //if (result.success)
-                    //    _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
-                    if (Hinh != "")
-                        result.success = ghi_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, dtPC.Rows[0]["Folder"].ToString(), "", DanhBo + ".jpg", Hinh);
+                    else
+                    {
+                        switch (NoiDung)
+                        {
+                            case "Đứt Chì Góc":
+                                result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate() where DanhBo='" + DanhBo + "' and DutChi_Goc=0");
+                                break;
+                            case "Đứt Chì Thân":
+                                result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "' and DutChi_Than=0");
+                                break;
+                            //case "Ngập Nước":
+                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set NgapNuoc=1,NgapNuoc_Ngay=getdate() where DanhBo='" + DanhBo + "' and NgapNuoc=0");
+                            //    break;
+                            //case "Kẹt Tường":
+                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set KetTuong=1,KetTuong_Ngay=getdate() where DanhBo='" + DanhBo + "' and KetTuong=0");
+                            //    break;
+                            //case "Lấp Khóa Góc":
+                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set LapKhoaGoc=1,LapKhoaGoc_Ngay=getdate() where DanhBo='" + DanhBo + "' and LapKhoaGoc=0");
+                            //    break;
+                            //case "Bể HBV":
+                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set BeHBV=1,BeHBV_Ngay=getdate() where DanhBo='" + DanhBo + "' and BeHBV=0");
+                            //    break;
+                            //case "Bể Nấp, Mất Nấp HBV":
+                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set BeNapMatNapHBV=1,BeNapMatNapHBV_Ngay=getdate() where DanhBo='" + DanhBo + "' and BeNapMatNapHBV=0");
+                            //    break;
+                            default:
+                                result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
+                                break;
+                        }
+                        if (result.success)
+                        {
+                            string ID = "";
+                            checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_PhieuChuyen_LichSu where ID like '" + DateTime.Now.ToString("yy") + "%'");
+                            if (checkExists != null)
+                            {
+                                object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),3,5))+1 from MaHoa_PhieuChuyen_LichSu where ID like '" + DateTime.Now.ToString("yy") + "%'");
+                                if (stt != null)
+                                    ID = DateTime.Now.ToString("yy") + ((int)stt).ToString("00000");
+                            }
+                            else
+                            {
+                                ID = DateTime.Now.ToString("yy") + 1.ToString("00000");
+                            }
+                            _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(ID,DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values(" + ID + ",'" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
+                        }
+                        if (Hinh != "")
+                            result.success = ghi_Hinh_241(CGlobalVariable.pathHinhDHNMaHoa, dtPC.Rows[0]["Folder"].ToString(), "", DanhBo + ".jpg", Hinh);
+                    }
                 }
                 else
                 {
@@ -4539,34 +4562,17 @@ namespace WSSmartPhone
                                 else
                                 {
                                     string ID = "";
-                                    if (DateTime.Now.Year == 2023)
+                                    checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yy") + "%'");
+                                    if (checkExists != null)
                                     {
-                                        checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yy") + "%'");
-                                        if (checkExists != null)
-                                        {
-                                            object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),3,5))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yy") + "%'");
-                                            if (stt != null)
-                                                ID = DateTime.Now.ToString("yy") + ((int)stt).ToString("00000");
-                                        }
-                                        else
-                                        {
-                                            ID = DateTime.Now.ToString("yy") + 1.ToString("00000");
-                                        }
+                                        object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),3,5))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yy") + "%'");
+                                        if (stt != null)
+                                            ID = DateTime.Now.ToString("yy") + ((int)stt).ToString("00000");
                                     }
-                                    //else
-                                    //{
-                                    //    checkExists = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 ID from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                    //    if (checkExists != null)
-                                    //    {
-                                    //        object stt = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MAX(SUBSTRING(CAST(ID as varchar(8)),5,4))+1 from MaHoa_DonTu where ID like '" + DateTime.Now.ToString("yyMM") + "%'");
-                                    //        if (stt != null)
-                                    //            ID = DateTime.Now.ToString("yyMM") + ((int)stt).ToString("0000");
-                                    //    }
-                                    //    else
-                                    //    {
-                                    //        ID = DateTime.Now.ToString("yyMM") + 1.ToString("0000");
-                                    //    }
-                                    //}
+                                    else
+                                    {
+                                        ID = DateTime.Now.ToString("yy") + 1.ToString("00000");
+                                    }
                                     string DinhMucHN = "NULL";
                                     if (dt.Rows[0]["DinhMucHN"].ToString() != "")
                                         DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
@@ -4577,8 +4583,6 @@ namespace WSSmartPhone
                                         + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Phuong"] + "," + dt.Rows[0]["Quan"] + "," + MaNV + ",getdate(),N'" + dt.Rows[0]["HopDong"] + "'"
                                         + ")";
                                     result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
-                                    //if (result.success)
-                                    //    _cDAL_DocSo.ExecuteNonQuery("insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'" + NoiDung + "',N'Thêm'," + MaNV + ",getdate())");
                                     if (Hinh != "")
                                         result.success = ghi_Hinh_DonTu_DHN(ID, Hinh, MaNV);
                                     CHoaDon hd = new CHoaDon();

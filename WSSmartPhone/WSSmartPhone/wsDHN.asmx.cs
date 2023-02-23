@@ -208,15 +208,15 @@ namespace WSSmartPhone
 
         //đọc số
         [WebMethod]
-        public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT)
+        public string ghiChiSo(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT, string Latitude, string Longitude)
         {
-            return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV, TBTT);
+            return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, HinhDHN, Dot, MaNV, TBTT, Latitude, Longitude);
         }
 
         [WebMethod]
-        public string ghiChiSo_GianTiep(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV, string NgayDS)
+        public string ghiChiSo_GianTiep(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV, string NgayDS, string Latitude, string Longitude)
         {
-            return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, TieuThu, TienNuoc, ThueGTGT, PhiBVMT, PhiBVMT_Thue, TongCong, HinhDHN, Dot, MaNV, NgayDS);
+            return _cThuTien.ghi_ChiSo_DHN(ID, Code, ChiSo, TieuThu, TienNuoc, ThueGTGT, PhiBVMT, PhiBVMT_Thue, TongCong, HinhDHN, Dot, MaNV, NgayDS, Latitude, Longitude);
         }
 
         [WebMethod]
