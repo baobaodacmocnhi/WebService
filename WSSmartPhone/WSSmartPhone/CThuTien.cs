@@ -3925,7 +3925,7 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
-        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT, string Latitude,string Longitude)
+        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string HinhDHN, string Dot, string MaNV, string TBTT, string Location)
         {
             CResult result = new CResult();
             try
@@ -4029,7 +4029,7 @@ namespace WSSmartPhone
             return jss.Serialize(result);
         }
 
-        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV, string NgayDS, string Latitude, string Longitude)
+        public string ghi_ChiSo_DHN(string ID, string Code, string ChiSo, string TieuThu, string TienNuoc, string ThueGTGT, string PhiBVMT, string PhiBVMT_Thue, string TongCong, string HinhDHN, string Dot, string MaNV, string NgayDS, string Location)
         {
             CResult result = new CResult();
             try
