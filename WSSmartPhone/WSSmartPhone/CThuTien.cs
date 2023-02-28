@@ -3962,6 +3962,13 @@ namespace WSSmartPhone
                                 //}
                                 //else
                                 {
+                                    string Latitude = "", Longitude = "";
+                                    if (Location != "" && Location.Contains(","))
+                                    {
+                                        string[] Locations = Location.Split(',');
+                                        Latitude = Locations[0];
+                                        Longitude = Locations[1];
+                                    }
                                     DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
                                     if (dt != null && dt.Rows.Count > 0)
                                     {
@@ -4055,6 +4062,13 @@ namespace WSSmartPhone
                         }
                         else
                         {
+                            string Latitude = "", Longitude = "";
+                            if (Location != "" && Location.Contains(","))
+                            {
+                                string[] Locations = Location.Split(',');
+                                Latitude = Locations[0];
+                                Longitude = Locations[1];
+                            }
                             IFormatProvider culture = new CultureInfo("en-US", true);
                             DateTime date = DateTime.ParseExact(NgayDS, "dd/MM/yyyy HH:mm:ss", culture);
                             string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
