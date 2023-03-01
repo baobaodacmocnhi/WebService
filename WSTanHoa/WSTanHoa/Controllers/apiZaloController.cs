@@ -992,7 +992,7 @@ namespace WSTanHoa.Controllers
                     //string sql = "select Nam=2021, Ky=8, NgayDoc=GETDATE(), IDZalo='4276209776391262580', DanhBo='13182499650', HoTen='GIENG PTH CONG TY CO PHAN CAP NUOC TAN HOA',DiaChi='GOC TR THU DO+L/LO P.PHU THANH',DienThoai='123456789'";
                     string sql = "select a.Nam, a.Ky, NgayDoc = CONVERT(varchar(10), NgayDoc, 103), z.IDZalo, ttkh.DanhBo, ttkh.HoTen, DiaChi = SONHA + ' ' + TENDUONG,DienThoai = (select DienThoai from [DocSoTH].[dbo].[MayDS]"
                                 + " where May = SUBSTRING(ttkh.LOTRINH, 3, 2))"
-                                + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, Zalo_DangKy z, Zalo_QuanTam zq, [CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+                                + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, [TRUNGTAMKHACHHANG].[dbo].Zalo_DangKy z, [TRUNGTAMKHACHHANG].[dbo].Zalo_QuanTam zq, [CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                                 + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
                                 + " and CAST(DATEADD(DAY, -1, NgayDoc) as date)=CAST(GETDATE() as date)"
                                 + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
