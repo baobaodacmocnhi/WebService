@@ -53,10 +53,12 @@ namespace WSTanHoa.Controllers
                          + ",NgayThay"
                          + ",NgayKiemDinh,DMA=MADMA"
                          + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
+                         + ",Quan,Phuong"
                          + " from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'";
             DataTable dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
             if (dt.Rows.Count > 0)
             {
+                string Quan= dt.Rows[0]["Quan"].ToString(), Phuong = dt.Rows[0]["Phuong"].ToString();
                 en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                 en.HoTen = dt.Rows[0]["HoTen"].ToString();
                 en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
@@ -154,7 +156,7 @@ namespace WSTanHoa.Controllers
                     en.ThongTinDongNuoc = "Địa chỉ đang tạm ngưng cung cấp nước từ " + dt.Rows[0][0].ToString() + " do chưa thanh toán tiền nước kỳ " + KyNo;
                 if (en.ThongTinDongNuoc == "")
                 {
-                    sql = "select top 1 * from SuCoNgungCungCapNuoc where CAST(GETDATE() as date)>=CAST(DATEADD(DAY,-1,DateStart) as date) and CAST(GETDATE() as date)<=CAST(DateEnd as date) and (DMAs like ('%" + en.DMA + "%') or DanhBos like ('%" + DanhBo + "%'))";
+                    sql = "select top 1 * from SuCoNgungCungCapNuoc where CAST(GETDATE() as date)>=CAST(DATEADD(DAY,-1,DateStart) as date) and CAST(GETDATE() as date)<=CAST(DateEnd as date) and (DMAs like ('%" + en.DMA + "%') or DanhBos like ('%" + DanhBo + "%') or (Quan like ('%" + Quan + "%') and Phuong like ('%" + Phuong + "%')))";
                     dt = cDAL_TTKH.ExecuteQuery_DataTable(sql);
                     if (dt != null && dt.Rows.Count > 0)
                         en.ThongTinDongNuoc = dt.Rows[0]["NoiDung"].ToString();
