@@ -677,9 +677,10 @@ namespace WSTanHoa.Controllers
                     }
                     vCanhBao.Add(en);
                 }
+                CGlobalVariable.jsSerializer.MaxJsonLength = int.MaxValue;
                 return CGlobalVariable.jsSerializer.Serialize(vCanhBao);
             }
-            catch
+            catch(Exception ex)
             {
                 return null;
             }

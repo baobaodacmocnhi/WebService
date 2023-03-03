@@ -46,7 +46,7 @@ namespace WSTanHoa.Controllers
             {
                 string NoiDung = "";
                 //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent);
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent+" order by CreateDate desc");
                 if (dt != null && dt.Rows.Count > 0)
                     foreach (DataRow item in dt.Rows)
                     {

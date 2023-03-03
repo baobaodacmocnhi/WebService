@@ -180,10 +180,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>03/01/2023 13:54:45</publishTime>
+      <publishTime>03/03/2023 13:43:11</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>03/01/2023 13:54:46</publishTime>
+      <publishTime>03/03/2023 13:43:12</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -6150,7 +6150,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:13</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>03/01/2023 13:55:07</publishTime>
+      <publishTime>03/03/2023 13:43:31</publishTime>
     </File>
   </ItemGroup>
 </Project>
