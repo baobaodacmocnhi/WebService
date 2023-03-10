@@ -4502,6 +4502,7 @@ namespace WSSmartPhone
                     }
                     else
                     {
+                        CHoaDon hd = new CHoaDon();
                         switch (NoiDung)
                         {
                             case "Đứt Chì Góc":
@@ -4529,6 +4530,16 @@ namespace WSSmartPhone
                                 result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
                                 break;
                         }
+                        switch (NoiDung)
+                        {
+                            case "Âm Sâu":
+                            case "Ngập Nước":
+                            case "Kẹt Tường":
+                            case "Lấp Khóa Góc":
+                                hd.TieuThu = 1;
+                                break;
+                        }
+                        result.message = jss.Serialize(hd);
                         if (result.success)
                         {
                             string ID = "";
