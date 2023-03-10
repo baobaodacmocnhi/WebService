@@ -139,7 +139,7 @@ namespace WSSmartPhone
         [WebMethod]
         public string update_GhiChu(string MaNV, string DanhBo, string DienThoai, string GiaBieu, string NiemChi, string DiemBe)
         {
-            return _cThuTien.update_GhiChu(MaNV, DanhBo, DienThoai, GiaBieu, NiemChi, DiemBe);
+            return _cThuTien.update_GhiChu(MaNV, DanhBo, DienThoai, GiaBieu, NiemChi.ToUpper(), DiemBe);
         }
 
         [WebMethod]
@@ -195,7 +195,7 @@ namespace WSSmartPhone
         {
             IFormatProvider culture = new CultureInfo("en-US", true);
             DateTime date = DateTime.ParseExact(NgayDN, "dd/MM/yyyy HH:mm:ss", culture);
-            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, date, ChiSoDN, ButChi, KhoaTu, NiemChi, MauSac, KhoaKhac, KhoaKhac_GhiChu, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, ViTri, LyDo, CreateBy);
+            return _cThuTien.ThemDongNuoc(MaDN, DanhBo, MLT, HoTen, DiaChi, HinhDN, date, ChiSoDN, ButChi, KhoaTu, NiemChi.ToUpper(), MauSac, KhoaKhac, KhoaKhac_GhiChu, Hieu, Co, SoThan, ChiMatSo, ChiKhoaGoc, ViTri, LyDo, CreateBy);
         }
 
         [WebMethod]
@@ -211,7 +211,7 @@ namespace WSSmartPhone
         {
             IFormatProvider culture = new CultureInfo("en-US", true);
             DateTime date = DateTime.ParseExact(NgayDN, "dd/MM/yyyy HH:mm:ss", culture);
-            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, date, ChiSoDN, ButChi, KhoaTu, NiemChi, MauSac, KhoaKhac, KhoaKhac_GhiChu, CreateBy);
+            return _cThuTien.ThemDongNuoc2(MaDN, HinhDN, date, ChiSoDN, ButChi, KhoaTu, NiemChi.ToUpper(), MauSac, KhoaKhac, KhoaKhac_GhiChu, CreateBy);
         }
 
         [WebMethod]
@@ -225,7 +225,7 @@ namespace WSSmartPhone
         {
             IFormatProvider culture = new CultureInfo("en-US", true);
             DateTime date = DateTime.ParseExact(NgayMN, "dd/MM/yyyy HH:mm:ss", culture);
-            return _cThuTien.ThemMoNuoc(MaDN, HinhMN, date, ChiSoMN, NiemChi, MauSac, CreateBy);
+            return _cThuTien.ThemMoNuoc(MaDN, HinhMN, date, ChiSoMN, NiemChi.ToUpper(), MauSac, CreateBy);
         }
 
         [WebMethod]
