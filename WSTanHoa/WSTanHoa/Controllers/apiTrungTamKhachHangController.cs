@@ -825,7 +825,7 @@ namespace WSTanHoa.Controllers
                                                     enCT.HoTen = dr[j]["HoTen"].ToString();
                                                     enCT.DiaChi = dr[j]["DiaChi"].ToString();
                                                     enCT.VeViec = dr[j]["VeViec"].ToString();
-                                                    enCT.NoiDung = dr[j]["NoiDung"].ToString();
+                                                    //enCT.NoiDung = dr[j]["NoiDung"].ToString();
                                                     enCT.NoiNhan = dr[j]["NoiNhan"].ToString();
                                                     enCT.CreateBy = dr[j]["CreateBy"].ToString();
 
@@ -904,7 +904,7 @@ namespace WSTanHoa.Controllers
                                                     enCT.HoTen = dr[j]["HoTen"].ToString();
                                                     enCT.DiaChi = dr[j]["DiaChi"].ToString();
                                                     enCT.VeViec = dr[j]["VeViec"].ToString();
-                                                    enCT.NoiDung = dr[j]["NoiDung"].ToString();
+                                                    //enCT.NoiDung = dr[j]["NoiDung"].ToString();
                                                     enCT.CreateBy = dr[j]["CreateBy"].ToString();
 
                                                     en.lstToTrinh.Add(enCT);

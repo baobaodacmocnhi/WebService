@@ -659,34 +659,34 @@ namespace WSTanHoa.Controllers
                 }
                 else
                    if (str == "DK DMA")
-                    {
-                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group DMA");
-                    }
-                    else
+                {
+                    cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
+                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group DMA");
+                }
+                else
                        if (str == "DK SDHN")
-                        {
-                            cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
-                        }
-                        else
+                {
+                    cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
+                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
+                }
+                else
                             if (str == "HUY CLN")
-                            {
-                                cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
-                            }
-                            else
+                {
+                    cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
+                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
+                }
+                else
                                if (str == "HUY DMA")
-                                {
-                                    cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
-                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group DMA");
-                                }
-                                else
+                {
+                    cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
+                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group DMA");
+                }
+                else
                                    if (str == "HUY SDHN")
-                                    {
-                                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
-                                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
-                                    }
+                {
+                    cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
+                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
+                }
                 DateTime date = DateTime.Now;
                 if (date.Date.DayOfWeek == DayOfWeek.Saturday || date.Date.DayOfWeek == DayOfWeek.Sunday)
                 {
@@ -989,44 +989,35 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.cheksum)
                 {
-                    //string sql = "select Nam=2021, Ky=8, NgayDoc=GETDATE(), IDZalo='4276209776391262580', DanhBo='13182499650', HoTen='GIENG PTH CONG TY CO PHAN CAP NUOC TAN HOA',DiaChi='GOC TR THU DO+L/LO P.PHU THANH',DienThoai='123456789'";
                     string sql = "select a.Nam, a.Ky, NgayDoc = CONVERT(varchar(10), NgayDoc, 103), z.IDZalo, ttkh.DanhBo, ttkh.HoTen, DiaChi = SONHA + ' ' + TENDUONG,DienThoai = (select DienThoai from [DocSoTH].[dbo].[MayDS]"
                                 + " where May = SUBSTRING(ttkh.LOTRINH, 3, 2))"
                                 + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, [TRUNGTAMKHACHHANG].[dbo].Zalo_DangKy z, [TRUNGTAMKHACHHANG].[dbo].Zalo_QuanTam zq, [CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                                 + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
                                 + " and CAST(DATEADD(DAY, -1, NgayDoc) as date)=CAST(GETDATE() as date)"
                                 + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
-                                + " and z.IDZalo=zq.IDZalo and zq.Follow= 1";
+                                + " and z.IDZalo=zq.IDZalo and zq.Follow= 1 order by ttkh.DANHBO asc";
                     DataTable dt = cDAL_DocSo.ExecuteQuery_DataTable(sql);
-                    string message;
+                    string message = "";
                     foreach (DataRow item in dt.Rows)
                     {
-                        //message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
-                        //            + "\nĐịa chỉ: " + item["DiaChi"]
-                        //            + "\nDanh bộ: " + item["DanhBo"]
-                        //            + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
-                        //            //+ " .Nhưng do giãn cách xã hội nhân viên Công ty không thể đến ghi chỉ số nước. Kính mong"
-                        //            //+ " Quý khách hàng cung cấp chỉ số nước để Công ty tính đúng lượng nước tiêu thụ thực tế"
-                        //            //+ " của Quý khách."
-                        //            + "\nTrường hợp Quý khách đi vắng, Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
-                        //            + "\nTrường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
-                        //            + "\n\n***Cú pháp báo chỉ số nước: CSN_danhbo_chisonuoc"
-                        //            + "\n***Chỉ số nước là dãy số màu đen trên đồng hồ nước"
-                        //            + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
-                        DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"] + "' order by ID_HOADON desc");
-                        message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
-                                    + "\nĐịa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
-                                    + "\nDanh bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString()
-                                    + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
-                                    //+ " .Nhưng do giãn cách xã hội nhân viên Công ty không thể đến ghi chỉ số nước. Kính mong"
-                                    //+ " Quý khách hàng cung cấp chỉ số nước để Công ty tính đúng lượng nước tiêu thụ thực tế"
-                                    //+ " của Quý khách."
-                                    + "\nTrường hợp Quý khách đi vắng, Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
-                                    + "\nTrường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
-                                    + "\n\n***Truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc?function=KiemTra&DanhBo=" + item["DanhBo"]
-                                    + "\n***Chỉ số nước là dãy số MÀU ĐEN NỀN TRẮNG trên đồng hồ nước"
-                                    + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
-                        strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                        try
+                        {
+                            DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"] + "' order by ID_HOADON desc");
+                            message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
+                                        + "\nĐịa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
+                                        + "\nDanh bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString()
+                                        + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
+                                        + "\nTrường hợp Quý khách đi vắng, Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
+                                        + "\nTrường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
+                                        + "\n\n***Truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc?function=KiemTra&DanhBo=" + item["DanhBo"]
+                                        + "\n***Chỉ số nước là dãy số MÀU ĐEN NỀN TRẮNG trên đồng hồ nước"
+                                        + "\nHoặc Quý khách có thể gửi chụp hình đồng hồ nước kèm theo Danh bộ và Địa chỉ cho Zalo: " + item["DienThoai"];
+                            strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                        }
+                        catch (Exception ex)
+                        {
+                            strResponse = ex.Message;
+                        }
                         cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'ghichisonuoc',N'" + message + "',N'" + strResponse + "')");
                     }
                     strResponse = "Đã xử lý";
@@ -1059,45 +1050,52 @@ namespace WSTanHoa.Controllers
                     string sql = "select DanhBo = DANHBA,HoTen = TENKH,DiaChi =case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end, NAM, KY"
                             + " , CSC = CSCU, CSM = CSMOI, TUNGAY = CONVERT(varchar(10), TUNGAY, 103), DENNGAY = CONVERT(varchar(10), DENNGAY, 103), TIEUTHU, TONGCONG, CODE,z.IDZalo"
                             + " from HOADON hd, [TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
-                            + " where CAST(hd.CreateDate as date)=CAST(GETDATE() as date) and hd.DANHBA=z.DanhBo"
-                            + " and zq.Follow=1 and z.IDZalo=zq.IDZalo and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)";
+                            + " where CAST(hd.CreateDate as date)=CAST(getdate() as date) and hd.DANHBA=z.DanhBo"
+                            + " and zq.Follow=1 and z.IDZalo=zq.IDZalo and not exists(select * from TT_ChanThuHo where Nam=hd.NAM and Ky=hd.KY and Dot=hd.DOT)  order by hd.DANHBA asc";
                     DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
-                    string message, hdTon;
+                    string message = "", hdTon;
                     DataTable dtTon;
                     decimal TongCongNo;
                     foreach (DataRow item in dt.Rows)
                     {
-                        message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
+                        try
+                        {
+                            message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
                                     + "\nĐịa chỉ: " + item["DiaChi"]
                                     + "\nDanh bộ: " + item["DanhBo"]
                                     + "\n\nThông báo tiền nước kỳ " + item["Ky"] + "/" + item["Nam"] + " từ ngày " + item["TuNgay"] + " đến ngày " + item["DenNgay"];
-                        if (item["Code"].ToString() != "F" && item["Code"].ToString() != "6")
-                        {
-                            message
-                            += "\nChỉ số cũ: " + item["CSC"]
-                            + "\nChỉ số mới: " + item["CSM"]
-                            + "\nTổng lượng nước tiêu thụ: " + item["TieuThu"];
-                        }
-                        else
-                            message += "\nTổng lượng nước tiêu thụ tạm tính: " + item["TieuThu"];
-
-                        dtTon = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
-                        TongCongNo = 0;
-                        hdTon = "";
-                        foreach (DataRow itemTon in dtTon.Rows)
-                            if (int.Parse(itemTon["Nam"].ToString()) < int.Parse(item["Nam"].ToString()) || (int.Parse(itemTon["Nam"].ToString()) == int.Parse(item["Nam"].ToString()) && int.Parse(itemTon["Ky"].ToString()) < int.Parse(item["Ky"].ToString())))
+                            if (item["Code"].ToString() != "F" && item["Code"].ToString() != "6")
                             {
-                                hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đ";
-                                TongCongNo += decimal.Parse(itemTon["TongCong"].ToString());
+                                message
+                                += "\nChỉ số cũ: " + item["CSC"]
+                                + "\nChỉ số mới: " + item["CSM"]
+                                + "\nTổng lượng nước tiêu thụ: " + item["TieuThu"];
                             }
-                        message += "\nTổng số tiền nước: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đ";
-                        if (TongCongNo > 0)
-                            message += "\nTổng số tiền nước còn nợ: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo) + " đ"
-                                    + hdTon;
-                        message += "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo + int.Parse(item["TongCong"].ToString())) + " đ"
-                                + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(7).ToString("dd/MM/yyyy") + " qua các kênh thanh toán gồm:"
-                                + getThongTinThanhToan();
-                        strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                            else
+                                message += "\nTổng lượng nước tiêu thụ tạm tính: " + item["TieuThu"];
+
+                            dtTon = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
+                            TongCongNo = 0;
+                            hdTon = "";
+                            foreach (DataRow itemTon in dtTon.Rows)
+                                if (int.Parse(itemTon["Nam"].ToString()) < int.Parse(item["Nam"].ToString()) || (int.Parse(itemTon["Nam"].ToString()) == int.Parse(item["Nam"].ToString()) && int.Parse(itemTon["Ky"].ToString()) < int.Parse(item["Ky"].ToString())))
+                                {
+                                    hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đ";
+                                    TongCongNo += decimal.Parse(itemTon["TongCong"].ToString());
+                                }
+                            message += "\nTổng số tiền nước: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đ";
+                            if (TongCongNo > 0)
+                                message += "\nTổng số tiền nước còn nợ: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo) + " đ"
+                                        + hdTon;
+                            message += "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo + int.Parse(item["TongCong"].ToString())) + " đ"
+                                    + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(7).ToString("dd/MM/yyyy") + " qua các kênh thanh toán gồm:"
+                                    + getThongTinThanhToan();
+                            strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                        }
+                        catch (Exception ex)
+                        {
+                            strResponse = ex.Message;
+                        }
                         cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + item["DanhBo"] + "',N'phathanhhoadon',N'" + message + "',N'" + strResponse + "')");
                     }
                     strResponse = "Đã xử lý";
@@ -1125,40 +1123,45 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.cheksum)
                 {
-                    //string sql = "select DanhBo='13011030051',HoTen='VO DAI PHAT',DiaChi='18 (763) LY THUONG KIET'"
-                    //    + " ,Nam=2021,Ky=8,CSC=0,CSM=9,TuNgay='18/06/2021',DenNgay='19/07/2021',TieuThu=9,TongCong=65205,IDZalo='4276209776391262580'";
                     string sql = "select DanhBo = DANHBA,HoTen = TENKH,DiaChi =case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end, NAM, KY"
                             + " , CSC = CSCU, CSM = CSMOI, TUNGAY = CONVERT(varchar(10), TUNGAY, 103), DENNGAY = CONVERT(varchar(10), DENNGAY, 103), TIEUTHU, TONGCONG,z.IDZalo"
                             + " from HOADON hd, [TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
                             + " where hd.NGAYGIAITRACH is null and CAST(DATEADD(DAY, +7, hd.CreateDate) as date)=CAST(GETDATE() as date) and hd.DANHBA=z.DanhBo"
-                            + " and zq.Follow=1 and z.IDZalo=zq.IDZalo";
+                            + " and zq.Follow=1 and z.IDZalo=zq.IDZalo order by hd.DANHBA asc";
                     DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
-                    string message, hdTon;
+                    string message = "", hdTon;
                     DataTable dtTon;
                     decimal TongCong;
                     foreach (DataRow item in dt.Rows)
                     {
-                        dtTon = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
-                        TongCong = 0;
-                        hdTon = "";
-                        foreach (DataRow itemTon in dtTon.Rows)
+                        try
                         {
-                            hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đ";
-                            TongCong += decimal.Parse(itemTon["TongCong"].ToString());
+                            dtTon = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
+                            TongCong = 0;
+                            hdTon = "";
+                            foreach (DataRow itemTon in dtTon.Rows)
+                            {
+                                hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đ";
+                                TongCong += decimal.Parse(itemTon["TongCong"].ToString());
+                            }
+                            if (TongCong > 0)
+                            {
+                                message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
+                                            + "\nĐịa chỉ: " + item["DiaChi"]
+                                            + "\nDanh bộ: " + item["DanhBo"]
+                                            + "\n\nTổng số hóa đơn phải thanh toán: " + dtTon.Rows.Count + " hóa đơn"
+                                            + hdTon
+                                            + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong) + " đ"
+                                            + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + " qua các kênh thanh toán gồm:"
+                                            + getThongTinThanhToan();
+                                strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                            }
                         }
-                        if (TongCong > 0)
+                        catch (Exception ex)
                         {
-                            message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
-                                        + "\nĐịa chỉ: " + item["DiaChi"]
-                                        + "\nDanh bộ: " + item["DanhBo"]
-                                        + "\n\nTổng số hóa đơn phải thanh toán: " + dtTon.Rows.Count + " hóa đơn"
-                                        + hdTon
-                                        + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong) + " đ"
-                                        + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + " qua các kênh thanh toán gồm:"
-                                        + getThongTinThanhToan();
-                            strResponse = sendMessage(item["IDZalo"].ToString(), message);
-                            cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'nhacno',N'" + message + "',N'" + strResponse + "')");
+                            strResponse = ex.Message;
                         }
+                        cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + item["DanhBo"] + "',N'nhacno',N'" + message + "',N'" + strResponse + "')");
                     }
                     strResponse = "Đã xử lý";
                 }
@@ -1520,10 +1523,10 @@ namespace WSTanHoa.Controllers
                             dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where CLN=1");
                         else
                             if (str == "DMA")
-                                dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where DMA=1");
-                            else
+                            dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where DMA=1");
+                        else
                                 if (str == "SDHN")
-                                    dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
+                            dt = cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
                         foreach (DataRow item in dt.Rows)
                         {
                             strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);
@@ -1542,7 +1545,7 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
-        
+
 
 
     }
