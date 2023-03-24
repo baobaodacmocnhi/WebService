@@ -19,6 +19,7 @@ namespace WSSmartPhone
         public static string pathHinhDHN = @"\\rackstation\HinhDHN\DocSo";
         public static string pathHinhDHNMaHoa = @"\\rackstation\HinhDHN\MaHoa";
         public static string pathHinhTV = @"\\rackstation\HinhDHN\ThuongVu";
+        public static string pathHinhTT = @"\\rackstation\HinhDHN\ThuTien";
     }
 
     public class CResult
