@@ -2176,6 +2176,7 @@
     <Content Include="Views\QuaySo\Index2.cshtml" />
     <Content Include="Views\QuaySo\Index.cshtml" />
     <Content Include="Views\QuaySo\IndexA.cshtml" />
+    <Content Include="Views\KhachHang\TienTrinhDon.cshtml" />
     <None Include="Web References\wrThuongVu\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

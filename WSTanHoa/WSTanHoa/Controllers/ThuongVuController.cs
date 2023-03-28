@@ -62,7 +62,7 @@ namespace WSTanHoa.Controllers
                         }
                     }
                 else
-                    NoiDung = "<head><meta charset='UTF-8'></head><body><h3>Không có hình ảnh!</h3></body>";
+                    NoiDung = "<head><meta charset='UTF-8'><link rel='shortcut icon' type='image/ico' href='~/Images/logoctycp.png'></head><body><h3>Không có hình ảnh!</h3></body>";
                 return Content(NoiDung, "text/html");
             }
             else

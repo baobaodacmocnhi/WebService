@@ -1,0 +1,78 @@
+﻿@model WSTanHoa.Models.MView
+@{
+    Layout = null;
+    ViewBag.Title = "Tiến Trình Đơn";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/cssNOTMASTER")
+</head>
+<body style="background-color:#85d8f3;margin-top:-45px">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            @*<img src="~/Images/logoctycp.png" width="100" />*@
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto text-center">
+            <span class="text-primary fw-bold">CÔNG TY CỔ PHẦN CẤP NƯỚC TÂN HÒA</span>
+            <h4 class="text-danger fw-bold">Hotline: 1900.6489</h4>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="card mt-3 rounded-3 shadow-sm">
+            <div class="card-header">
+                <h4 class="text-primary">Tiến Trình Đơn</h4>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped text-center table-bordered">
+                    <thead>
+                        <tr style="background-color:#00b3b3;color:white">
+                            <th class="col">STT</th>
+                            <th class="col">Nội dung</th>
+                            <th class="col">Ngày cập nhật</th>
+                            <th class="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.lst != null && Model.lst.Count > 0)
+                        {
+                            int i = 1;
+                            foreach (var item in Model.lst)
+                            {
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @item.NoiDung
+                                    </td>
+                                    <td>
+                                        @item.ThoiGian
+                                    </td>
+                                    @if (item.DanhBo != "")
+                                    {
+                                        <td>
+                                            <a href="https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=ThuTraLoi_ChiTiet_Hinh&IDFileName=IDTTTL_ChiTiet&IDFileContent=@item.DanhBo">Xem File</a>
+                                        </td>
+                                    }
+                                </tr>
+                                i++;
+                            }
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

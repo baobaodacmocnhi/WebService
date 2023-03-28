@@ -15,6 +15,8 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
         private CConnection cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
         private apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
 
@@ -58,7 +60,7 @@ namespace WSTanHoa.Controllers
             DataTable dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
             if (dt.Rows.Count > 0)
             {
-                string Quan= dt.Rows[0]["Quan"].ToString(), Phuong = dt.Rows[0]["Phuong"].ToString();
+                string Quan = dt.Rows[0]["Quan"].ToString(), Phuong = dt.Rows[0]["Phuong"].ToString();
                 en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                 en.HoTen = dt.Rows[0]["HoTen"].ToString();
                 en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
@@ -240,5 +242,139 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
+        public ActionResult TienTrinhDon(string id)
+        {
+            MView enView = new MView();
+            DataTable dt = new DataTable();
+            if (id != null)
+                if (id.ToLower().Contains("g"))
+                {
+                    dt = cDAL_GanMoi.ExecuteQuery_DataTable("SELECT  biennhan.SHS, biennhan.HOTEN,(SONHA + '  ' + DUONG + ',  P.' + p.TENPHUONG + ',  Q.' + q.TENQUAN) as 'DIACHI',"
+                                + " biennhan.NGAYNHAN AS 'CreateDate',lhs.TENLOAI as 'LOAIHS'"
+                                + " FROM QUAN q,PHUONG p, BIENNHANDON biennhan, LOAI_HOSO lhs"
+                                + " WHERE biennhan.QUAN = q.MAQUAN AND q.MAQUAN = p.MAQUAN  AND biennhan.PHUONG = p.MAPHUONG AND lhs.MALOAI = biennhan.LOAIDON"
+                                + " AND biennhan.SHS = '" + id.ToLower().Replace("g", "") + "'");
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        MView en = new MView();
+                        en.NoiDung = "Ngày nhận đơn";
+                        en.ThoiGian = dt.Rows[0]["CreateDate"].ToString();
+                        enView.lst.Add(en);
+
+                        string sqlCT = "select NgayChuyenThietKe=NGAYCHUYEN_HOSO,NGAYDONGTIEN,SOTIEN,TRONGAITHIETKE,NOIDUNGTRONGAI,NGAYHOANTATTK=(select NGAYHOANTATTK from TOTHIETKE where SOHOSO=donkh.SOHOSO)"
+                            + " ,TaiXet=(select GHICHUTR from TMP_TAIXET where MAHOSO=donkh.SOHOSO)"
+                                      + " ,NgayXinPhepDaoDuong = (select NGAYLAP from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
+                                      + " ,NgayCoPhepDaoDuong = (select NGAYCOPHEP from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
+                                      + " ,CoPhep = (select CoPhep from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
+                                      + " ,NgayThiCong = (select NGAYTHICONG from KH_HOSOKHACHHANG where SHS = donkh.SHS)"
+                                      + " from DON_KHACHHANG donkh where SHS = '" + id.ToLower().Replace("g", "") + "'";
+                        DataTable dtCT = cDAL_GanMoi.ExecuteQuery_DataTable(sqlCT);
+                        if (dtCT != null && dtCT.Rows.Count > 0)
+                        {
+                            if (dtCT.Rows[0]["NgayChuyenThietKe"].ToString() != "")
+                            {
+                                en = new MView();
+                                en.NoiDung = "Ngày chuyển thiết kế";
+                                en.ThoiGian = dtCT.Rows[0]["NgayChuyenThietKe"].ToString();
+                                enView.lst.Add(en);
+                            }
+                            if (dtCT.Rows[0]["SOTIEN"].ToString() != "")
+                            {
+                                en = new MView();
+                                en.NoiDung = "Ngày đóng tiền";
+                                en.ThoiGian = dtCT.Rows[0]["NGAYDONGTIEN"].ToString();
+                                enView.lst.Add(en);
+                            }
+                            if (dtCT.Rows[0]["NgayXinPhepDaoDuong"].ToString() != "")
+                            {
+                                en = new MView();
+                                en.NoiDung = "Ngày xin phép đào đường";
+                                en.ThoiGian = dtCT.Rows[0]["NgayXinPhepDaoDuong"].ToString();
+                                enView.lst.Add(en);
+                            }
+                            if (dtCT.Rows[0]["NgayCoPhepDaoDuong"].ToString() != "")
+                            {
+                                en = new MView();
+                                en.NoiDung = "Ngày có phép đào đường";
+                                en.ThoiGian = dtCT.Rows[0]["NgayCoPhepDaoDuong"].ToString();
+                                enView.lst.Add(en);
+                            }
+                            if (dtCT.Rows[0]["NgayThiCong"].ToString() != "")
+                            {
+                                en = new MView();
+                                en.NoiDung = "Ngày thi công dự kiến";
+                                en.ThoiGian = dtCT.Rows[0]["NgayThiCong"].ToString();
+                                enView.lst.Add(en);
+                            }
+                            if (dtCT.Rows[0]["TRONGAITHIETKE"].ToString() != "" && bool.Parse(dtCT.Rows[0]["TRONGAITHIETKE"].ToString()))
+                            {
+                                en = new MView();
+                                en.NoiDung = "Hồ sơ trở ngại thiết kế";
+                                en.ThoiGian = dtCT.Rows[0]["NOIDUNGTRONGAI"].ToString();
+                                enView.lst.Add(en);
+                            }
+                            if (dtCT.Rows[0]["COPHEP"].ToString() != "" && !bool.Parse(dtCT.Rows[0]["COPHEP"].ToString()))
+                            {
+                                en = new MView();
+                                en.NoiDung = "Hồ sơ trở ngại xin phép đào đường";
+                                enView.lst.Add(en);
+                            }
+                            DataTable dtTN = cDAL_GanMoi.ExecuteQuery_DataTable("select NoiDungTN from KH_HOSOKHACHHANG where TroNgai=1 and SHS='" + id.ToLower().Replace("g", "") + "'");
+                            if (dtTN != null && dtTN.Rows.Count > 0)
+                            {
+                                en = new MView();
+                                en.NoiDung = "Hồ sơ trở ngại";
+                                en.ThoiGian = dtCT.Rows[0]["NoiDungTN"].ToString();
+                                enView.lst.Add(en);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    dt = cDAL_ThuongVu.ExecuteQuery_DataTable("select a.CreateDate,HieuLucKy,DinhMuc=SoNK*4"
+        + " , NgayKTXM = (select top 1 NgayKTXM from KTXM c, KTXM_ChiTiet d where c.MaKTXM = d.MaKTXM and c.MaDonMoi = a.MaDon and d.STT = b.STT order by NgayKTXM desc)"
+        + " , NgayTTTL = (select top 1 d.CreateDate from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"
+        + " , IDTTTL = (select top 1 d.MaCTTTTL from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"
+        + " from DonTu a,DonTu_ChiTiet b where a.MaDon = b.MaDon and a.MaDon = " + id);
+
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        MView en = new MView();
+                        en.NoiDung = "Ngày nhận đơn";
+                        en.ThoiGian = dt.Rows[0]["CreateDate"].ToString();
+                        enView.lst.Add(en);
+
+                        if (dt.Rows[0]["NgayKTXM"].ToString() != "")
+                        {
+                            en = new MView();
+                            en.NoiDung = "Ngày kiểm tra";
+                            en.ThoiGian = dt.Rows[0]["NgayKTXM"].ToString();
+                            enView.lst.Add(en);
+                        }
+                        if (dt.Rows[0]["HieuLucKy"].ToString() != "")
+                        {
+                            en = new MView();
+                            en.NoiDung = "Hiệu lực kỳ";
+                            en.ThoiGian = dt.Rows[0]["HieuLucKy"].ToString();
+                            enView.lst.Add(en);
+
+                            en = new MView();
+                            en.NoiDung = "Định mức";
+                            en.ThoiGian = dt.Rows[0]["DinhMuc"].ToString();
+                            enView.lst.Add(en);
+                        }
+                        if (dt.Rows[0]["IDTTTL"].ToString() != "")
+                        {
+                            en = new MView();
+                            en.NoiDung = "Thư trả lời";
+                            en.ThoiGian = dt.Rows[0]["NgayTTTL"].ToString();
+                            en.DanhBo =  dt.Rows[0]["IDTTTL"].ToString() ;
+                            enView.lst.Add(en);
+                        }
+                    }
+                }
+            return View(enView);
+        }
     }
 }
