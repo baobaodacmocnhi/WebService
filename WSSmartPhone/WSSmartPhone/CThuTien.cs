@@ -7440,7 +7440,7 @@ namespace WSSmartPhone
                         sohokhau_stt = "",
                         hongheo = "0",
                         loaicapdm = dt.Rows[0]["LoaiCapDM"],
-                        thoihantt = "",
+                        thoihantt = dt.Rows[0]["NgayHetHan"],
                         danhbo_tt = "",
                         diachikhachhang = "",
                         diachiemail = "",
@@ -7473,7 +7473,24 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        result = obj["duLieuKhongHopLe"][0]["ghichu"];
+                        try
+                        {
+                            if (obj["duLieuKhongHopLe"][0]["ghichu"].ToString() != "")
+                            result = obj["duLieuKhongHopLe"][0]["ghichu"];
+                        }
+                        catch
+                        {
+
+                        }
+                        try
+                        {
+                            if (obj["duLieuTrung"][0]["id"].ToString() != "")
+                                result = "Dữ liệu trùng";
+                        }
+                        catch
+                        {
+
+                        }
                         return 0;
                     }
                 }
