@@ -250,7 +250,7 @@ namespace WSTanHoa.Controllers
                 if (id.ToLower().Contains("g"))
                 {
                     dt = cDAL_GanMoi.ExecuteQuery_DataTable("SELECT  biennhan.SHS, biennhan.HOTEN,(SONHA + '  ' + DUONG + ',  P.' + p.TENPHUONG + ',  Q.' + q.TENQUAN) as 'DIACHI',"
-                                + " biennhan.NGAYNHAN AS 'CreateDate',lhs.TENLOAI as 'LOAIHS'"
+                                + " CONVERT(char(10),biennhan.NGAYNHAN,103)+' '+CONVERT(char(5),biennhan.NGAYNHAN,108) AS 'CreateDate',lhs.TENLOAI as 'LOAIHS'"
                                 + " FROM QUAN q,PHUONG p, BIENNHANDON biennhan, LOAI_HOSO lhs"
                                 + " WHERE biennhan.QUAN = q.MAQUAN AND q.MAQUAN = p.MAQUAN  AND biennhan.PHUONG = p.MAPHUONG AND lhs.MALOAI = biennhan.LOAIDON"
                                 + " AND biennhan.SHS = '" + id.ToLower().Replace("g", "") + "'");
@@ -261,12 +261,13 @@ namespace WSTanHoa.Controllers
                         en.ThoiGian = dt.Rows[0]["CreateDate"].ToString();
                         enView.lst.Add(en);
 
-                        string sqlCT = "select NgayChuyenThietKe=NGAYCHUYEN_HOSO,NGAYDONGTIEN,SOTIEN,TRONGAITHIETKE,NOIDUNGTRONGAI,NGAYHOANTATTK=(select NGAYHOANTATTK from TOTHIETKE where SOHOSO=donkh.SOHOSO)"
+                        string sqlCT = "select NgayChuyenThietKe=CONVERT(char(10),NGAYCHUYEN_HOSO,103)+' '+CONVERT(char(5),NGAYCHUYEN_HOSO,108),NGAYDONGTIEN=CONVERT(char(10),NGAYDONGTIEN,103)+' '+CONVERT(char(5),NGAYDONGTIEN,108),SOTIEN"
+                            + ",TRONGAITHIETKE,NOIDUNGTRONGAI,NGAYHOANTATTK=(select CONVERT(char(10),NGAYHOANTATTK,103)+' '+CONVERT(char(5),NGAYHOANTATTK,108) from TOTHIETKE where SOHOSO=donkh.SOHOSO)"
                             + " ,TaiXet=(select GHICHUTR from TMP_TAIXET where MAHOSO=donkh.SOHOSO)"
-                                      + " ,NgayXinPhepDaoDuong = (select NGAYLAP from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
-                                      + " ,NgayCoPhepDaoDuong = (select NGAYCOPHEP from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
+                                      + " ,NgayXinPhepDaoDuong = (select CONVERT(char(10),NGAYLAP,103)+' '+CONVERT(char(5),NGAYLAP,108) from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
+                                      + " ,NgayCoPhepDaoDuong = (select CONVERT(char(10),NGAYCOPHEP,103)+' '+CONVERT(char(5),NGAYCOPHEP,108) from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
                                       + " ,CoPhep = (select CoPhep from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
-                                      + " ,NgayThiCong = (select NGAYTHICONG from KH_HOSOKHACHHANG where SHS = donkh.SHS)"
+                                      + " ,NgayThiCong = (select CONVERT(char(10),NGAYTHICONG,103)+' '+CONVERT(char(5),NGAYTHICONG,108) from KH_HOSOKHACHHANG where SHS = donkh.SHS)"
                                       + " from DON_KHACHHANG donkh where SHS = '" + id.ToLower().Replace("g", "") + "'";
                         DataTable dtCT = cDAL_GanMoi.ExecuteQuery_DataTable(sqlCT);
                         if (dtCT != null && dtCT.Rows.Count > 0)
@@ -328,13 +329,15 @@ namespace WSTanHoa.Controllers
                                 enView.lst.Add(en);
                             }
                         }
+                        ViewBag.DanhBo = dt.Rows[0]["HoTen"].ToString();
+                        ViewBag.DiaChi = dt.Rows[0]["DiaChi"].ToString();
                     }
                 }
                 else
                 {
-                    dt = cDAL_ThuongVu.ExecuteQuery_DataTable("select a.CreateDate,HieuLucKy,DinhMuc=SoNK*4"
-        + " , NgayKTXM = (select top 1 NgayKTXM from KTXM c, KTXM_ChiTiet d where c.MaKTXM = d.MaKTXM and c.MaDonMoi = a.MaDon and d.STT = b.STT order by NgayKTXM desc)"
-        + " , NgayTTTL = (select top 1 d.CreateDate from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"
+                    dt = cDAL_ThuongVu.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),a.CreateDate,103)+' '+CONVERT(char(5),a.CreateDate,108),HieuLucKy,DinhMuc=SoNK*4,b.DanhBo,b.DiaChi"
+        + " , NgayKTXM = (select top 1 CONVERT(char(10),NgayKTXM,103)+' '+CONVERT(char(5),NgayKTXM,108) from KTXM c, KTXM_ChiTiet d where c.MaKTXM = d.MaKTXM and c.MaDonMoi = a.MaDon and d.STT = b.STT order by NgayKTXM desc)"
+        + " , NgayTTTL = (select top 1 CONVERT(char(10),d.CreateDate,103)+' '+CONVERT(char(5),d.CreateDate,108) from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"
         + " , IDTTTL = (select top 1 d.MaCTTTTL from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"
         + " from DonTu a,DonTu_ChiTiet b where a.MaDon = b.MaDon and a.MaDon = " + id);
 
@@ -361,7 +364,7 @@ namespace WSTanHoa.Controllers
 
                             en = new MView();
                             en.NoiDung = "Định mức";
-                            en.ThoiGian = dt.Rows[0]["DinhMuc"].ToString();
+                            en.ThoiGian = dt.Rows[0]["DinhMuc"].ToString() + " m³";
                             enView.lst.Add(en);
                         }
                         if (dt.Rows[0]["IDTTTL"].ToString() != "")
@@ -369,9 +372,11 @@ namespace WSTanHoa.Controllers
                             en = new MView();
                             en.NoiDung = "Thư trả lời";
                             en.ThoiGian = dt.Rows[0]["NgayTTTL"].ToString();
-                            en.DanhBo =  dt.Rows[0]["IDTTTL"].ToString() ;
+                            en.DanhBo = dt.Rows[0]["IDTTTL"].ToString();
                             enView.lst.Add(en);
                         }
+                        ViewBag.DanhBo = dt.Rows[0]["DanhBo"].ToString().Insert(7, " ").Insert(4, " ");
+                        ViewBag.DiaChi = dt.Rows[0]["DiaChi"].ToString();
                     }
                 }
             return View(enView);
