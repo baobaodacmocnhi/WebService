@@ -1049,46 +1049,31 @@ namespace WSTanHoa.Controllers
         /// <returns></returns>
         [Route("searchThongTinKhachHang")]
         [HttpGet]
-        public IList<ThongTinKhachHang> searchThongTinKhachHang(string HoTen, string SoNha, string TenDuong, string checksum)
+        public IList<ThongTinKhachHang> searchThongTinKhachHang(string SoThan, string HoTen, string SoNha, string TenDuong, string checksum)
         {
             try
             {
-                string checkHoTen = "", checkSoNha = "", checkTenDuong = "";
+                string checkSoThan = "", checkHoTen = "", checkSoNha = "", checkTenDuong = "";
 
+                if (SoThan != null)
+                    checkSoThan = SoThan;
                 if (HoTen != null)
                     checkHoTen = HoTen;
                 if (SoNha != null)
                     checkSoNha = SoNha;
                 if (TenDuong != null)
                     checkTenDuong = TenDuong;
-                if (CGlobalVariable.getSHA256(checkHoTen + checkSoNha + checkTenDuong + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(checkSoThan + checkHoTen + checkSoNha + checkTenDuong + _pass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
                 DataTable dt = new DataTable();
-
                 List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
-                dt = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + checkHoTen + "','" + checkSoNha + "','" + checkTenDuong + "')");
-                if (dt != null && dt.Rows.Count > 0)
-                {
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        ThongTinKhachHang en = new ThongTinKhachHang();
-                        en.DanhBo = item["DanhBo"].ToString();
-                        en.HoTen = item["HoTen"].ToString();
-                        if (item["DiaChi"].ToString() == item["DiaChiHoaDon"].ToString())
-                            en.DiaChi = item["DiaChi"].ToString();
-                        else
-                            en.DiaChi = item["DiaChi"].ToString() + " =>HD: " + item["DiaChiHoaDon"].ToString();
-
-                        lst.Add(en);
-                    }
-                }
                 //kiếm số thân ĐHN
-                if (checkHoTen == "" && checkTenDuong == "" && checkSoNha != "")
+                if (checkSoThan != "")
                 {
-                    dt = cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG where SoThanDH like N'%" + checkSoNha + "%'");
+                    dt = cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG where SoThanDH like N'%" + checkSoThan + "%'");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         foreach (DataRow item in dt.Rows)
@@ -1102,6 +1087,27 @@ namespace WSTanHoa.Controllers
                         }
                     }
                 }
+                else
+                if (checkHoTen != "" || checkSoNha != "" || checkTenDuong != "")
+                {
+                    dt = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + checkHoTen + "','" + checkSoNha + "','" + checkTenDuong + "')");
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            ThongTinKhachHang en = new ThongTinKhachHang();
+                            en.DanhBo = item["DanhBo"].ToString();
+                            en.HoTen = item["HoTen"].ToString();
+                            if (item["DiaChi"].ToString() == item["DiaChiHoaDon"].ToString())
+                                en.DiaChi = item["DiaChi"].ToString();
+                            else
+                                en.DiaChi = item["DiaChi"].ToString() + " =>HD: " + item["DiaChiHoaDon"].ToString();
+
+                            lst.Add(en);
+                        }
+                    }
+                }
+
                 //kiếm danh bộ hủy
                 //dt = CConstantVariable.cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG_HUYDB where HOTEN like N'%" + checkHoTen + "%' and ((SONHA like N'%" + checkSoNha + "%' and TENDUONG like N'%" + checkTenDuong + "%') or (SONHA+' '+TENDUONG like N'%" + checkSoNha + " " + checkTenDuong + "%'))");
                 //if (dt != null && dt.Rows.Count > 0)
