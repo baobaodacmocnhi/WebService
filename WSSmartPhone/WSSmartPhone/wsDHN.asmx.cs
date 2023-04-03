@@ -70,15 +70,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetDSNhanVienTo(string MaTo)
+        public string GetDS_May_To(string MaTo)
         {
-            return _cThuTien.getDS_NhanVien_DHN(MaTo);
+            return _cThuTien.getDS_May_DHN(MaTo);
         }
 
         [WebMethod]
-        public string getDS_NhanVien()
+        public string getDS_May()
         {
-            return _cThuTien.getDS_NhanVien_DHN();
+            return _cThuTien.getDS_May_DHN();
         }
 
         [WebMethod]

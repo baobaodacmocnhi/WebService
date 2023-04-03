@@ -3754,15 +3754,15 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_NhanVien_DHN()
+        public string getDS_May_DHN()
         {
-            string sql = "select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and An=0 and ActiveMobile=1 order by STT asc";
+            string sql = "select May,MaTo from MayDS order by May asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_NhanVien_DHN(string MaTo)
+        public string getDS_May_DHN(string MaTo)
         {
-            string sql = "select MaND,HoTen,May,MaTo,DienThoai from NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 and ActiveMobile=1 order by STT asc";
+            string sql = "select May,MaTo from MayDS where MaTo=" + MaTo + " order by May asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
@@ -7476,7 +7476,7 @@ namespace WSSmartPhone
                         try
                         {
                             if (obj["duLieuKhongHopLe"][0]["ghichu"].ToString() != "")
-                            result = obj["duLieuKhongHopLe"][0]["ghichu"];
+                                result = obj["duLieuKhongHopLe"][0]["ghichu"];
                         }
                         catch
                         {
