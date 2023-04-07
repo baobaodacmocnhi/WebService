@@ -119,7 +119,7 @@ namespace WSTanHoa.Controllers
                     //lấy tọa độ
                     if (en.ThongTin != "")
                         en.ThongTin += " - ";
-                    en.ThongTin += "<a style='color: blue;' target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewViTri?DanhBo=" + en.DanhBo + "'>Vị trí</a>";
+                    en.ThongTin += "<a style='color: blue;' target='_blank' href='https://google.com/maps/search/" + cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 Latitude+','+Longitude from DocSo where DanhBa='"+en.DanhBo+"' and Latitude is not null order by DocSoID desc").ToString() + "'>Vị trí</a>";
 
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                     {
@@ -604,10 +604,10 @@ namespace WSTanHoa.Controllers
                     enKD.ThongTin = cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select dbo.fnCheckTinhTrangCanKhachHangLienHe('" + DanhBo + "')").ToString();
 
                     foreach (DataRow item in dt.Rows)
-                        if (enKD.lstDonTu.Any(itemA => itemA.MaDon == item["MaDon"].ToString()) == false)
+                        if (enKD.lstDonTu.Any(itemA => itemA.MaDon == item["MaDon"].ToString() + " - " + item["Phong"].ToString()) == false)
                         {
                             DonTu en = new DonTu();
-                            en.MaDon = item["MaDon"].ToString();
+                            en.MaDon = item["MaDon"].ToString() + " - " + item["Phong"].ToString();
                             en.TenLD = item["TenLD"].ToString();
                             if (item["CreateDate"].ToString() != "")
                                 en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
@@ -633,7 +633,10 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     KTXM enCT = new KTXM();
-                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=KTXM_ChiTiet_Hinh&IDFileName=IDKTXM_ChiTiet&IDFileContent=" + dr[j]["MaCTKTXM"].ToString() + "'>File Scan</a>";
+                                                    if (dr[j]["Phong"].ToString() == "TV")
+                                                        enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=KTXM_ChiTiet_Hinh&IDFileName=IDKTXM_ChiTiet&IDFileContent=" + dr[j]["MaCTKTXM"].ToString() + "'>File Scan</a>";
+                                                    else
+                                                        enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/QLDHN/viewFile?TableName=MaHoa_KTXM_Hinh&ID=" + dr[j]["MaCTKTXM"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["NgayKTXM"].ToString() != "")
@@ -708,7 +711,10 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     DCBD enCT = new DCBD();
-                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=DCBD_ChiTietBienDong_Hinh&IDFileName=IDDCBD_ChiTietBienDong&IDFileContent=" + dr[j]["MaDC"].ToString() + "'>File Scan</a>";
+                                                    if (dr[j]["Phong"].ToString() == "TV")
+                                                        enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=DCBD_ChiTietBienDong_Hinh&IDFileName=IDDCBD_ChiTietBienDong&IDFileContent=" + dr[j]["MaDC"].ToString() + "'>File Scan</a>";
+                                                    else
+                                                        enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/QLDHN/viewFile?TableName=MaHoa_DCBD_Hinh&ID=" + dr[j]["MaDC"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
@@ -910,7 +916,10 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     ToTrinh enCT = new ToTrinh();
-                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=ToTrinh_ChiTiet_Hinh&IDFileName=IDToTrinh_ChiTiet&IDFileContent=" + dr[j]["IDCT"].ToString() + "'>File Scan</a>";
+                                                    if (dr[j]["Phong"].ToString() == "TV")
+                                                        enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=ToTrinh_ChiTiet_Hinh&IDFileName=IDToTrinh_ChiTiet&IDFileContent=" + dr[j]["IDCT"].ToString() + "'>File Scan</a>";
+                                                    else
+                                                        enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/QLDHN/viewFile?TableName=MaHoa_ToTrinh_Hinh&ID=" + dr[j]["IDCT"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
