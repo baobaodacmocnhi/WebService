@@ -1459,7 +1459,7 @@ namespace WSTanHoa.Controllers
 
         [Route("suaDHN_TCT")]
         [HttpGet]
-        public string suaDHN_TCT(string DanhBo, string SoThan,string NgayThay, string checksum)
+        public string suaDHN_TCT(string DanhBo, string checksum)
         {
             string strResponse = "";
             try
@@ -1495,8 +1495,7 @@ namespace WSTanHoa.Controllers
                     {
                         var data = new
                         {
-                            //serial_number = dt.Rows[0]["serialnumber"].ToString(),
-                            serial_number = SoThan,
+                            serial_number = dt.Rows[0]["serialnumber"].ToString(),
                             id_module = dt.Rows[0]["IDModule"].ToString(),
                             id_logger = dt.Rows[0]["IDLogger"].ToString(),
                             so_sim = dt.Rows[0]["sim"].ToString(),
@@ -1510,12 +1509,10 @@ namespace WSTanHoa.Controllers
                             phuong = dt.Rows[0]["phuong"].ToString(),
                             quan = dt.Rows[0]["quan"].ToString(),
                             dien_thoai = dt.Rows[0]["DIENTHOAI"].ToString(),
-                            //ngay_gan = dt.Rows[0]["NGAYTHAY"].ToString(),
-                            ngay_gan = NgayThay,
+                            ngay_gan = dt.Rows[0]["NGAYTHAY"].ToString(),
                             hieu = dt.Rows[0]["HIEUDH"].ToString(),
                             co = dt.Rows[0]["CODH"].ToString(),
-                            //so_than = dt.Rows[0]["SOTHANDH"].ToString(),
-                            so_than = SoThan,
+                            so_than = dt.Rows[0]["SOTHANDH"].ToString(),
                             vi_tri = dt.Rows[0]["vitri"].ToString(),
                             chi_so_bao = dt.Rows[0]["chisobao"].ToString(),
                             loai_bao_thay = dt.Rows[0]["loaibaothay"].ToString(),
