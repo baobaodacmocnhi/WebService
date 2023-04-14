@@ -15,9 +15,9 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/DocSo")]
     public class apiDocSoController : ApiController
     {
-        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
         private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private QLDHNController _QLDHNController = new QLDHNController();
@@ -1509,7 +1509,7 @@ namespace WSTanHoa.Controllers
                             phuong = dt.Rows[0]["phuong"].ToString(),
                             quan = dt.Rows[0]["quan"].ToString(),
                             dien_thoai = dt.Rows[0]["DIENTHOAI"].ToString(),
-                            ngay_gan = dt.Rows[0]["NGAYTHAY"].ToString(),
+                            //ngay_gan = dt.Rows[0]["NGAYTHAY"].ToString(),
                             hieu = dt.Rows[0]["HIEUDH"].ToString(),
                             co = dt.Rows[0]["CODH"].ToString(),
                             so_than = dt.Rows[0]["SOTHANDH"].ToString(),
