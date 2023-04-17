@@ -626,9 +626,9 @@ namespace WSTanHoa.Controllers
                                     switch (ds.Tables[i].Rows[0][0].ToString())
                                     {
                                         case "KTXM":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -656,9 +656,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "BamChi":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -680,9 +680,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "DongNuoc":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -704,9 +704,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "DCBD":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -738,9 +738,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "DCHD":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -772,9 +772,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "CHDB":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -805,9 +805,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "PhieuCHDB":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -830,9 +830,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "TTTL":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -855,9 +855,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "GianLan":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -883,9 +883,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "TruyThu":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -909,9 +909,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "ToTrinh":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -936,9 +936,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "ThuMoi":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
@@ -960,9 +960,9 @@ namespace WSTanHoa.Controllers
                                             }
                                             break;
                                         case "TienTrinh":
-                                            if (ds.Tables[i].Select("MaDon = '" + en.MaDon + "'").Count() > 0)
+                                            if (ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'").Count() > 0)
                                             {
-                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + en.MaDon + "'");
+                                                DataRow[] dr = ds.Tables[i].Select("MaDon = '" + item["MaDon"].ToString() + "'");
 
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {

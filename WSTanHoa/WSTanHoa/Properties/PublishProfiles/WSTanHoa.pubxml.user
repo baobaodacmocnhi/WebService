@@ -180,10 +180,22 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/31/2021 20:42:44</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
+<<<<<<< .mine
+      <publishTime>04/10/2023 09:25:13</publishTime>
+||||||| .r837
+      <publishTime>04/07/2023 10:30:02</publishTime>
+=======
       <publishTime>04/14/2023 21:39:20</publishTime>
+>>>>>>> .r840
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
+<<<<<<< .mine
+      <publishTime>04/10/2023 09:25:14</publishTime>
+||||||| .r837
+      <publishTime>04/07/2023 10:30:03</publishTime>
+=======
       <publishTime>04/14/2023 21:39:21</publishTime>
+>>>>>>> .r840
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>12/31/2021 20:42:26</publishTime>
