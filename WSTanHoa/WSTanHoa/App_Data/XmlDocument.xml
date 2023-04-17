@@ -600,7 +600,7 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.searchThongTinKhachHang(System.String,System.String,System.String,System.String)">
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.searchThongTinKhachHang(System.String,System.String,System.String,System.String,System.String)">
             <summary>
             Tìm kiếm thông tin khách hàng bằng họ tên, số nhà, tên đường
             </summary>
@@ -623,6 +623,14 @@
             Lấy thông tin tiến trình xử lý hồ sơ gắn mới
             </summary>
             <param name="SoHoSo"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getThongTinExtra(System.String,System.String)">
+            <summary>
+            Lấy List thông tin mở rộng
+            </summary>
+            <param name="DanhBo"></param>
             <param name="checksum"></param>
             <returns></returns>
         </member>
@@ -683,7 +691,15 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiZaloController.updateDSQuanTam(System.String,System.Int32)">
+        <member name="M:WSTanHoa.Controllers.apiZaloController.ThongBaoDaThanhToanHoaDon(System.Int32,System.String)">
+            <summary>
+            Gửi tin nhắn thông báo đã thanh toán hóa đơn
+            </summary>
+            <param name="MaHD"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiZaloController.updateDSQuanTam(System.String)">
             <summary>
             update danh sách quan tâm
             </summary>
@@ -691,7 +707,7 @@
             <param name="number">số lượng quan tâm</param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.apiZaloController.updateThongTinQuanTam(System.String,System.Int32)">
+        <member name="M:WSTanHoa.Controllers.apiZaloController.updateThongTinQuanTam(System.String)">
             <summary>
             update thông tin tên+avatar
             </summary>
@@ -699,18 +715,68 @@
             <param name="number">1 lần chạy</param>
             <returns></returns>
         </member>
-        <member name="M:WSTanHoa.Controllers.KTCNController.getLichCupNuoc">
+        <member name="F:WSTanHoa.info.form1">
             <summary>
-            Lấy Lịch Cúp Nước chưa được gửi
+            form1 control.
             </summary>
-            <returns></returns>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
         </member>
-        <member name="M:WSTanHoa.Controllers.KTCNController.updateDaGui(System.Int32)">
+        <member name="F:WSTanHoa.info.lbID">
             <summary>
-            Cập Nhật đã Gửi Thông Báo
+            lbID control.
             </summary>
-            <param name="ID"></param>
-            <returns></returns>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:WSTanHoa.info.Image1">
+            <summary>
+            Image1 control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:WSTanHoa.info.lbHoTen">
+            <summary>
+            lbHoTen control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:WSTanHoa.info.lbChucVu">
+            <summary>
+            lbChucVu control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:WSTanHoa.info.lbDienThoai">
+            <summary>
+            lbDienThoai control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
+        </member>
+        <member name="F:WSTanHoa.info.lbEmail">
+            <summary>
+            lbEmail control.
+            </summary>
+            <remarks>
+            Auto-generated field.
+            To modify move field declaration from designer file to code-behind file.
+            </remarks>
         </member>
         <member name="P:WSTanHoa.Models.ThongTinKhachHang.DanhBo">
             <summary>
@@ -914,7 +980,12 @@
         </member>
         <member name="P:WSTanHoa.Models.HoaDonThuTien.PhiBVMT">
             <summary>
-            Phí BVMT
+            Tiền dịch vụ thoát nước
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.HoaDonThuTien.PhiBVMT_Thue">
+            <summary>
+            Thuế TDVTN
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.HoaDonThuTien.TongCong">
@@ -1931,6 +2002,2544 @@
             <summary>
             Tiến trình
             </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThongTinExtra.Title">
+            <summary>
+            Tiêu Đề
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThongTinExtra.lstColumn">
+            <summary>
+            Danh sách Tên Cột
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThongTinExtra.lstContent">
+            <summary>
+            Danh sách nội dung Dòng
+            </summary>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.wsThuongVu">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.#ctor">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.get_HinhCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.ghi_HinhCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.xoa_HinhCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_HinhCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.getAccess_token_CCCDCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.checkExists_CCCDCompleted">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_HinhAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_HinhAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.ghi_Hinh(System.String,System.String,System.String,System.Byte[])">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.ghi_HinhAsync(System.String,System.String,System.String,System.Byte[])">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.ghi_HinhAsync(System.String,System.String,System.String,System.Byte[],System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Hinh(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_HinhAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_HinhAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_Hinh(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_HinhAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_HinhAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.getAccess_token_CCCD">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.getAccess_token_CCCDAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.getAccess_token_CCCDAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.checkExists_CCCD(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.checkExists_CCCDAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.checkExists_CCCDAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.CancelAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_HinhCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_HinhCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.get_HinhCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.ghi_HinhCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.ghi_HinhCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.ghi_HinhCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.xoa_HinhCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.xoa_HinhCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.xoa_HinhCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.xoa_Folder_HinhCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.xoa_Folder_HinhCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.xoa_Folder_HinhCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.getAccess_token_CCCDCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.getAccess_token_CCCDCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.getAccess_token_CCCDCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.checkExists_CCCDCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.checkExists_CCCDCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.checkExists_CCCDCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.wsThuTien">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.#ctor">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.UpdateUIDCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.DangNhapsCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.DangNhaps_AdminCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.DangXuatsCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.DangXuats_PersonCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.DangXuats_AdminCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.updateLoginCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetVersionCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSToCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSNhanVienToCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVienCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NamCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.SendNotificationToClientCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDSHoaDonTon_NhanVienCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDSHoaDonTon_MayCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.XuLy_HoaDonDienTuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.get_GhiChuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.update_GhiChuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.update_DiaChiDHNCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSTamThuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSDongNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSCTDongNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.CheckExist_DongNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.CheckExist_DongNuoc2Completed">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.ThemDongNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.SuaDongNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.ThemDongNuoc2Completed">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.CheckExist_MoNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.ThemMoNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.SuaMoNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.DangNganDongNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSHoaDonTon_DongNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiemCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiemTTKHCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetTongGiaoHoaDonCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetTongDangNganCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetTongTon_DenKyCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetTongTon_TrongKyCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetTongDongMoNuoc_TongCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetTongDongMoNuoc_ChiTietCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetTongThuHo_TongCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetTongThuHo_ChiTietCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.truyvanCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.capnhatCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSHoaDon_LenhHuyCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.Sua_LenhHuyCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_ChotDangNganCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.them_ChotDangNganCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.chotDangNganCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan_01072022Completed">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.syncThanhToanCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan_ThuHoCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.syncNopTien_01072022Completed">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.syncNopTienCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLoCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo_Except12Completed">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo_12Completed">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.showError_NopTienCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.showHDDCBaoCaoThueCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.updateChiTietTienNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.TinhTienNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.UpdateUID(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.UpdateUIDAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.UpdateUIDAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNhaps(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNhapsAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNhapsAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNhaps_Admin(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNhaps_AdminAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNhaps_AdminAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuats(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuatsAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuatsAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuats_Person(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuats_PersonAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuats_PersonAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuats_Admin(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuats_AdminAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangXuats_AdminAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.updateLogin(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.updateLoginAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.updateLoginAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetVersion">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetVersionAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetVersionAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTo">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSToAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSToAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThu">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThuAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThuAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSNhanVienTo(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSNhanVienToAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSNhanVienToAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVienAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVienAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_Nam">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NamAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NamAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SendNotificationToClient(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SendNotificationToClientAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SendNotificationToClientAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDSHoaDonTon_NhanVien(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDSHoaDonTon_NhanVienAsync(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDSHoaDonTon_NhanVienAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDSHoaDonTon_May(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDSHoaDonTon_MayAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDSHoaDonTon_MayAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.XuLy_HoaDonDienTu(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.XuLy_HoaDonDienTuAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.XuLy_HoaDonDienTuAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.get_GhiChu(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.get_GhiChuAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.get_GhiChuAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.update_GhiChu(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.update_GhiChuAsync(System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.update_GhiChuAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.update_DiaChiDHN(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.update_DiaChiDHNAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.update_DiaChiDHNAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTamThu(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTamThuAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTamThuAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSDongNuoc(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSDongNuocAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSDongNuocAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSCTDongNuoc(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSCTDongNuocAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSCTDongNuocAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_DongNuoc(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_DongNuocAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_DongNuocAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_DongNuoc2(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_DongNuoc2Async(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_DongNuoc2Async(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemDongNuoc(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemDongNuocAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemDongNuocAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SuaDongNuoc(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SuaDongNuocAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SuaDongNuocAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemDongNuoc2(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemDongNuoc2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemDongNuoc2Async(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_MoNuoc(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_MoNuocAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CheckExist_MoNuocAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemMoNuoc(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemMoNuocAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.ThemMoNuocAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SuaMoNuoc(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SuaMoNuocAsync(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.SuaMoNuocAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNganDongNuoc(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNganDongNuocAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.DangNganDongNuocAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSHoaDonTon_DongNuoc(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSHoaDonTon_DongNuocAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSHoaDonTon_DongNuocAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiem(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiemAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiemAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiemTTKH(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiemTTKHAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiemTTKHAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongGiaoHoaDon(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongGiaoHoaDonAsync(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongGiaoHoaDonAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDangNgan(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDangNganAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDangNganAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongTon_DenKy(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongTon_DenKyAsync(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongTon_DenKyAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongTon_TrongKy(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongTon_TrongKyAsync(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongTon_TrongKyAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDongMoNuoc_Tong(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDongMoNuoc_TongAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDongMoNuoc_TongAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDongMoNuoc_ChiTiet(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDongMoNuoc_ChiTietAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongDongMoNuoc_ChiTietAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongThuHo_Tong(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongThuHo_TongAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongThuHo_TongAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongThuHo_ChiTiet(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongThuHo_ChiTietAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetTongThuHo_ChiTietAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.truyvan(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.truyvanAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.truyvanAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.capnhat(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.capnhatAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.capnhatAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSHoaDon_LenhHuy(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSHoaDon_LenhHuyAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSHoaDon_LenhHuyAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.Sua_LenhHuy(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.Sua_LenhHuyAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.Sua_LenhHuyAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_ChotDangNgan(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_ChotDangNganAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_ChotDangNganAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.them_ChotDangNgan(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.them_ChotDangNganAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.them_ChotDangNganAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.chotDangNgan(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.chotDangNganAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.chotDangNganAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan_01072022(System.Int32,System.Boolean,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan_01072022Async(System.Int32,System.Boolean,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan_01072022Async(System.Int32,System.Boolean,System.Int32,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan(System.Int32,System.Boolean,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToanAsync(System.Int32,System.Boolean,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToanAsync(System.Int32,System.Boolean,System.Int32,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan_ThuHo(System.Int32,System.Boolean,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan_ThuHoAsync(System.Int32,System.Boolean,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncThanhToan_ThuHoAsync(System.Int32,System.Boolean,System.Int32,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTien_01072022(System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTien_01072022Async(System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTien_01072022Async(System.Int32,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTien(System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienAsync(System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienAsync(System.Int32,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLoAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLoAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo_Except12(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo_Except12Async(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo_Except12Async(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo_12(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo_12Async(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.syncNopTienLo_12Async(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.showError_NopTien(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.showError_NopTienAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.showError_NopTienAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.showHDDCBaoCaoThue(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.showHDDCBaoCaoThueAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.showHDDCBaoCaoThueAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.updateChiTietTienNuoc(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.updateChiTietTienNuocAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.updateChiTietTienNuocAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.TinhTienNuoc(System.Boolean,System.Boolean,System.Boolean,System.Int32,System.String,System.Int32,System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32@,System.String@,System.Int32@,System.String@,System.Int32@,System.Int32@,System.String@,System.Int32@,System.String@,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.TinhTienNuocAsync(System.Boolean,System.Boolean,System.Boolean,System.Int32,System.String,System.Int32,System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Int32,System.String,System.Int32,System.Int32,System.String,System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.TinhTienNuocAsync(System.Boolean,System.Boolean,System.Boolean,System.Int32,System.String,System.Int32,System.Int32,System.DateTime,System.DateTime,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.Int32,System.String,System.Int32,System.String,System.Int32,System.Int32,System.String,System.Int32,System.String,System.Int32,System.Int32,System.Int32,System.Int32,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.CancelAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.UpdateUIDCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.UpdateUIDCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.UpdateUIDCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangNhapsCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangNhapsCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.DangNhapsCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangNhaps_AdminCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangNhaps_AdminCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.DangNhaps_AdminCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangXuatsCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangXuatsCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.DangXuatsCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangXuats_PersonCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangXuats_PersonCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.DangXuats_PersonCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangXuats_AdminCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangXuats_AdminCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.DangXuats_AdminCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.updateLoginCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.updateLoginCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.updateLoginCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetVersionCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetVersionCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetVersionCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSToCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSToCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSToCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSNhanVienToCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSNhanVienToCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSNhanVienToCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVienCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVienCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.getDS_NhanVienCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDS_NamCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDS_NamCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.getDS_NamCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.SendNotificationToClientCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.SendNotificationToClientCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.SendNotificationToClientCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDSHoaDonTon_NhanVienCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDSHoaDonTon_NhanVienCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.getDSHoaDonTon_NhanVienCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDSHoaDonTon_MayCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDSHoaDonTon_MayCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.getDSHoaDonTon_MayCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.XuLy_HoaDonDienTuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.XuLy_HoaDonDienTuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.XuLy_HoaDonDienTuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.get_GhiChuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.get_GhiChuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.get_GhiChuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.update_GhiChuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.update_GhiChuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.update_GhiChuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.update_DiaChiDHNCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.update_DiaChiDHNCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.update_DiaChiDHNCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSTamThuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSTamThuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSTamThuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSDongNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSDongNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSDongNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSCTDongNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSCTDongNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSCTDongNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.CheckExist_DongNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.CheckExist_DongNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.CheckExist_DongNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.CheckExist_DongNuoc2CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.CheckExist_DongNuoc2CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.CheckExist_DongNuoc2CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.ThemDongNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.ThemDongNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.ThemDongNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.SuaDongNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.SuaDongNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.SuaDongNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.ThemDongNuoc2CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.ThemDongNuoc2CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.ThemDongNuoc2CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.CheckExist_MoNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.CheckExist_MoNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.CheckExist_MoNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.ThemMoNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.ThemMoNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.ThemMoNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.SuaMoNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.SuaMoNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.SuaMoNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangNganDongNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.DangNganDongNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.DangNganDongNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSHoaDonTon_DongNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSHoaDonTon_DongNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSHoaDonTon_DongNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSTimKiemCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSTimKiemCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSTimKiemCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSTimKiemTTKHCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSTimKiemTTKHCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSTimKiemTTKHCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongGiaoHoaDonCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongGiaoHoaDonCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetTongGiaoHoaDonCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongDangNganCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongDangNganCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetTongDangNganCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongTon_DenKyCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongTon_DenKyCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetTongTon_DenKyCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongTon_TrongKyCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongTon_TrongKyCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetTongTon_TrongKyCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongDongMoNuoc_TongCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongDongMoNuoc_TongCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetTongDongMoNuoc_TongCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongDongMoNuoc_ChiTietCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongDongMoNuoc_ChiTietCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetTongDongMoNuoc_ChiTietCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongThuHo_TongCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongThuHo_TongCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetTongThuHo_TongCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongThuHo_ChiTietCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetTongThuHo_ChiTietCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetTongThuHo_ChiTietCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.truyvanCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.truyvanCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.truyvanCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.capnhatCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.capnhatCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.capnhatCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSHoaDon_LenhHuyCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.GetDSHoaDon_LenhHuyCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.GetDSHoaDon_LenhHuyCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.Sua_LenhHuyCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.Sua_LenhHuyCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.Sua_LenhHuyCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDS_ChotDangNganCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.getDS_ChotDangNganCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.getDS_ChotDangNganCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.them_ChotDangNganCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.them_ChotDangNganCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.them_ChotDangNganCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.chotDangNganCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.chotDangNganCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.chotDangNganCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncThanhToan_01072022CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncThanhToan_01072022CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.syncThanhToan_01072022CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncThanhToanCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncThanhToanCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.syncThanhToanCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncThanhToan_ThuHoCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncThanhToan_ThuHoCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.syncThanhToan_ThuHoCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTien_01072022CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTien_01072022CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.syncNopTien_01072022CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTienCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTienCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.syncNopTienCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTienLoCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTienLoCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.syncNopTienLoCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTienLo_Except12CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTienLo_Except12CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.syncNopTienLo_Except12CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTienLo_12CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.syncNopTienLo_12CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.syncNopTienLo_12CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.showError_NopTienCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.showError_NopTienCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.showError_NopTienCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.showHDDCBaoCaoThueCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.showHDDCBaoCaoThueCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.showHDDCBaoCaoThueCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.updateChiTietTienNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.updateChiTietTienNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.updateChiTietTienNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.TienNuocNamCu">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.ChiTietNamCu">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.TienNuocNamMoi">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.ChiTietNamMoi">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.TieuThu_DieuChinhGia">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.PhiBVMTNamCu">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.ChiTietPhiBVMTNamCu">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.PhiBVMTNamMoi">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.ChiTietPhiBVMTNamMoi">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.TienNuoc">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.ThueGTGT">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.TDVTN">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.TinhTienNuocCompletedEventArgs.ThueTDVTN">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.wsDHN">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.#ctor">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.GetVersionCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.UpdateUIDCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.DangNhapsCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.DangXuatsCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.DangXuats_PersonCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_NamCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.GetDSToCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.GetDSNhanVienToCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_NhanVienCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_CodeCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_ViTriDHNCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_GiaNuocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_KhongTinhPBVMTCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.checkNgayDocCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_DocSoCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_DocSo_TonCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_Hinh_TonCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_HoaDonTonCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_LichSu_DocSoCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.get_GhiChuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.update_GhiChuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_DienThoaiCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.update_DienThoaiCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.delete_DienThoaiCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.get_HinhCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.ghi_HinhCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.xoa_HinhCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.checkExists_HinhCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.ghiChiSoCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.ghiChiSo_GianTiepCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.insertBillingCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.tinhCodeTieuThu_TieuThuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.tinhCodeTieuThu_CSMCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.get_ThongTinCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getTonFromDienThoaiCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getTonCongTyCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.SendNotificationToClientCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.get_Hinh_MaHoaCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.ghi_Hinh_MaHoaCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.xoa_Hinh_MaHoaCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.xoa_Folder_Hinh_MaHoaCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_PhieuChuyenCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.ghi_DonTuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.ghi_Hinh_DonTuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_DonTuCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_TheoDoiCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_BatThuongCompleted">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetVersion">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetVersionAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetVersionAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.UpdateUID(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.UpdateUIDAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.UpdateUIDAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangNhaps(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangNhapsAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangNhapsAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangXuats(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangXuatsAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangXuatsAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangXuats_Person(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangXuats_PersonAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.DangXuats_PersonAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_Nam">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NamAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NamAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSTo">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSToAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSToAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThu">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThuAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThuAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSNhanVienTo(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSNhanVienToAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSNhanVienToAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVienAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVienAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_Code">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_CodeAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_CodeAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_ViTriDHN">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_ViTriDHNAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_ViTriDHNAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_GiaNuoc">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_GiaNuocAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_GiaNuocAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_KhongTinhPBVMT">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_KhongTinhPBVMTAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_KhongTinhPBVMTAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.checkNgayDoc(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.checkNgayDocAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.checkNgayDocAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DocSo(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DocSoAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DocSoAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DocSo_Ton(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DocSo_TonAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DocSo_TonAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_Hinh_Ton(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_Hinh_TonAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_Hinh_TonAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_HoaDonTon(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_HoaDonTonAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_HoaDonTonAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_LichSu_DocSo(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_LichSu_DocSoAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_LichSu_DocSoAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_GhiChu(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_GhiChuAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_GhiChuAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.update_GhiChu(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.update_GhiChuAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.update_GhiChuAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DienThoai(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DienThoaiAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DienThoaiAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.update_DienThoai(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.update_DienThoaiAsync(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.update_DienThoaiAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.delete_DienThoai(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.delete_DienThoaiAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.delete_DienThoaiAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_Hinh(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_HinhAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_HinhAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_Hinh(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_HinhAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_HinhAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_Hinh(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_HinhAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_HinhAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.checkExists_Hinh(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.checkExists_HinhAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.checkExists_HinhAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghiChiSo(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghiChiSoAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghiChiSoAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghiChiSo_GianTiep(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghiChiSo_GianTiepAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghiChiSo_GianTiepAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.insertBilling(System.String,System.String,System.String@)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.insertBillingAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.insertBillingAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.tinhCodeTieuThu_TieuThu(System.String,System.String,System.Int32,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.tinhCodeTieuThu_TieuThuAsync(System.String,System.String,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.tinhCodeTieuThu_TieuThuAsync(System.String,System.String,System.Int32,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.tinhCodeTieuThu_CSM(System.String,System.String,System.Int32,System.Int32@,System.Int32@,System.Int32@,System.Int32@,System.Int32@)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.tinhCodeTieuThu_CSMAsync(System.String,System.String,System.Int32)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.tinhCodeTieuThu_CSMAsync(System.String,System.String,System.Int32,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_ThongTin(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_ThongTinAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_ThongTinAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getTonFromDienThoai">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getTonFromDienThoaiAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getTonFromDienThoaiAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getTonCongTy(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getTonCongTyAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getTonCongTyAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.SendNotificationToClient(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.SendNotificationToClientAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.SendNotificationToClientAsync(System.String,System.String,System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_Hinh_MaHoa(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_Hinh_MaHoaAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.get_Hinh_MaHoaAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_Hinh_MaHoa(System.String,System.String,System.String,System.Byte[])">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_Hinh_MaHoaAsync(System.String,System.String,System.String,System.Byte[])">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_Hinh_MaHoaAsync(System.String,System.String,System.String,System.Byte[],System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_Hinh_MaHoa(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_Hinh_MaHoaAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_Hinh_MaHoaAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_Folder_Hinh_MaHoa(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_Folder_Hinh_MaHoaAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.xoa_Folder_Hinh_MaHoaAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_PhieuChuyen">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_PhieuChuyenAsync">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_PhieuChuyenAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_DonTu(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_DonTuAsync(System.String,System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_DonTuAsync(System.String,System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_Hinh_DonTu(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_Hinh_DonTuAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.ghi_Hinh_DonTuAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DonTu(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DonTuAsync(System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_DonTuAsync(System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_TheoDoi(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_TheoDoiAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_TheoDoiAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_BatThuong(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_BatThuongAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_BatThuongAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrDHN.wsDHN.CancelAsync(System.Object)">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.GetVersionCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.GetVersionCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.GetVersionCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.UpdateUIDCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.UpdateUIDCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.UpdateUIDCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.DangNhapsCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.DangNhapsCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.DangNhapsCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.DangXuatsCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.DangXuatsCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.DangXuatsCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.DangXuats_PersonCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.DangXuats_PersonCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.DangXuats_PersonCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_NamCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_NamCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_NamCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.GetDSToCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.GetDSToCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.GetDSToCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_NhanVien_HanhThuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_NhanVien_HanhThuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_NhanVien_HanhThuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.GetDSNhanVienToCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.GetDSNhanVienToCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.GetDSNhanVienToCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_NhanVienCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_NhanVienCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_NhanVienCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_CodeCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_CodeCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_CodeCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_ViTriDHNCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_ViTriDHNCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_ViTriDHNCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_GiaNuocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_GiaNuocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_GiaNuocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_KhongTinhPBVMTCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_KhongTinhPBVMTCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_KhongTinhPBVMTCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.checkNgayDocCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.checkNgayDocCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.checkNgayDocCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_DocSoCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_DocSoCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_DocSoCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_DocSo_TonCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_DocSo_TonCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_DocSo_TonCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_Hinh_TonCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_Hinh_TonCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_Hinh_TonCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_HoaDonTonCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_HoaDonTonCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_HoaDonTonCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_LichSu_DocSoCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_LichSu_DocSoCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_LichSu_DocSoCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.get_GhiChuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.get_GhiChuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.get_GhiChuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.update_GhiChuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.update_GhiChuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.update_GhiChuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_DienThoaiCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_DienThoaiCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_DienThoaiCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.update_DienThoaiCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.update_DienThoaiCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.update_DienThoaiCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.delete_DienThoaiCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.delete_DienThoaiCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.delete_DienThoaiCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.get_HinhCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.get_HinhCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.get_HinhCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghi_HinhCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghi_HinhCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.ghi_HinhCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.xoa_HinhCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.xoa_HinhCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.xoa_HinhCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.checkExists_HinhCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.checkExists_HinhCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.checkExists_HinhCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghiChiSoCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghiChiSoCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.ghiChiSoCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghiChiSo_GianTiepCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghiChiSo_GianTiepCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.ghiChiSo_GianTiepCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.insertBillingCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.insertBillingCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.insertBillingCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.insertBillingCompletedEventArgs.message">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.tinhCodeTieuThu_TieuThuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.tinhCodeTieuThu_TieuThuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_TieuThuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_TieuThuCompletedEventArgs.GiaBan">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_TieuThuCompletedEventArgs.ThueGTGT">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_TieuThuCompletedEventArgs.PhiBVMT">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_TieuThuCompletedEventArgs.TongCong">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.tinhCodeTieuThu_CSMCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.tinhCodeTieuThu_CSMCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_CSMCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_CSMCompletedEventArgs.TieuThu">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_CSMCompletedEventArgs.GiaBan">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_CSMCompletedEventArgs.ThueGTGT">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_CSMCompletedEventArgs.PhiBVMT">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.tinhCodeTieuThu_CSMCompletedEventArgs.TongCong">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.get_ThongTinCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.get_ThongTinCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.get_ThongTinCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getTonFromDienThoaiCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getTonCongTyCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getTonCongTyCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getTonCongTyCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.SendNotificationToClientCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.SendNotificationToClientCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.SendNotificationToClientCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.get_Hinh_MaHoaCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.get_Hinh_MaHoaCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.get_Hinh_MaHoaCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghi_Hinh_MaHoaCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghi_Hinh_MaHoaCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.ghi_Hinh_MaHoaCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.xoa_Hinh_MaHoaCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.xoa_Hinh_MaHoaCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.xoa_Hinh_MaHoaCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.xoa_Folder_Hinh_MaHoaCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.xoa_Folder_Hinh_MaHoaCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.xoa_Folder_Hinh_MaHoaCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_PhieuChuyenCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_PhieuChuyenCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_PhieuChuyenCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghi_DonTuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghi_DonTuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.ghi_DonTuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghi_Hinh_DonTuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.ghi_Hinh_DonTuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.ghi_Hinh_DonTuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_DonTuCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_DonTuCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_DonTuCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_TheoDoiCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_TheoDoiCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_TheoDoiCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_BatThuongCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_BatThuongCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_BatThuongCompletedEventArgs.Result">
+            <remarks/>
         </member>
     </members>
 </doc>

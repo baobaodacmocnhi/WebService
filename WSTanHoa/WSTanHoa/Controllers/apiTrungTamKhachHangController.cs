@@ -119,7 +119,7 @@ namespace WSTanHoa.Controllers
                     //lấy tọa độ
                     if (en.ThongTin != "")
                         en.ThongTin += " - ";
-                    en.ThongTin += "<a style='color: blue;' target='_blank' href='https://google.com/maps/search/" + cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 Latitude+','+Longitude from DocSo where DanhBa='"+en.DanhBo+"' and Latitude is not null order by DocSoID desc").ToString() + "'>Vị trí</a>";
+                    en.ThongTin += "<a style='color: blue;' target='_blank' href='https://google.com/maps/search/" + cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 Latitude+','+Longitude from DocSo where DanhBa='" + en.DanhBo + "' and Latitude is not null order by DocSoID desc").ToString() + "'>Vị trí</a>";
 
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                     {
@@ -1310,6 +1310,47 @@ namespace WSTanHoa.Controllers
                         + " order by NgayLap desc";
             return cDAL_ThuTien.ExecuteQuery_DataTable(sql);
         }
+
+        /// <summary>
+        /// Lấy List thông tin mở rộng
+        /// </summary>
+        /// <param name="DanhBo"></param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("getThongTinExtra")]
+        [HttpGet]
+        public IList<ThongTinExtra> getThongTinExtra(string DanhBo, string checksum)
+        {
+            try
+            {
+                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                DataTable dt = new DataTable();
+
+                //dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
+                //dt.Merge(cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo=DanhBa from KhachHang where SDT like '%" + DienThoai + "%'"));
+                List<ThongTinExtra> lst = new List<ThongTinExtra>();
+                foreach (DataRow item in dt.Rows)
+                {
+                    ThongTinExtra en = new ThongTinExtra();
+
+
+                    lst.Add(en);
+                }
+
+                return lst;
+
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
+
 
     }
 

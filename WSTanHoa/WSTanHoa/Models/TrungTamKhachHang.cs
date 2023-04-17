@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 
@@ -1695,6 +1696,35 @@ namespace WSTanHoa.Models
             DiaChi = "";
             CreateDate = null;
             lstGhiChu = new List<GhiChu>();
+        }
+    }
+
+    #endregion
+
+    #region Khác
+
+    public class ThongTinExtra
+    {
+        /// <summary>
+        /// Tiêu Đề
+        /// </summary>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Danh sách Tên Cột
+        /// </summary>
+        public List<string> lstColumn { get; set; }
+
+        /// <summary>
+        /// Danh sách nội dung Dòng
+        /// </summary>
+        public List<DataRow> lstContent { get; set; }
+
+        public ThongTinExtra()
+        {
+            Title = "";
+            lstColumn = new List<string>();
+            lstContent = new List<DataRow>();
         }
     }
 

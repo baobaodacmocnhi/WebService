@@ -994,7 +994,7 @@ namespace WSTanHoa.Controllers
                                 + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
                                 + " and CAST(DATEADD(DAY, -1, NgayDoc) as date)=CAST(GETDATE() as date)"
                                 + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
-                                + " and z.IDZalo=zq.IDZalo and zq.Follow= 1 order by ttkh.DANHBO asc";
+                                + " and z.IDZalo=zq.IDZalo and zq.Follow= 1 and ttkh.ViTriDHN_Ngoai=0 order by ttkh.DANHBO asc";
                     DataTable dt = cDAL_DocSo.ExecuteQuery_DataTable(sql);
                     string message = "";
                     foreach (DataRow item in dt.Rows)
@@ -1006,7 +1006,7 @@ namespace WSTanHoa.Controllers
                                         + "\nĐịa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
                                         + "\nDanh bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString()
                                         + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
-                                        + "\nTrường hợp Quý khách đi vắng, Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
+                                        + "\nTrường hợp Quý khách đi vắng (đồng hồ nước nằm trong bất động sản), Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
                                         + "\nTrường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
                                         + "\n\n***Truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc?function=KiemTra&DanhBo=" + item["DanhBo"]
                                         + "\n***Chỉ số nước là dãy số MÀU ĐEN NỀN TRẮNG trên đồng hồ nước"
