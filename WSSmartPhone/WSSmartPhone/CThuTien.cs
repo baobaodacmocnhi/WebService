@@ -3804,7 +3804,7 @@ namespace WSSmartPhone
                 if (bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select Nam from DocSoTruoc where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and May='" + May + "') then 'true' else 'false' end").ToString()) == true)
                     return true;
                 else
-                    return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and ((dsct.NgayDoc=CAST(DATEADD(day,1,GETDATE()) as date) and CONVERT(varchar(10),GETDATE(),108)>='17:00:00') or dsct.NgayDoc<=CAST(GETDATE() as date)) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
+                    return bool.Parse(_cDAL_DocSo.ExecuteQuery_ReturnOneValue("select case when exists(select NgayDoc from Lich_DocSo ds,Lich_DocSo_ChiTiet dsct where ds.Nam=" + Nam + " and ds.Ky=" + Ky + " and dsct.IDDot=" + Dot + " and ((dsct.NgayDoc=CAST(DATEADD(day,1,GETDATE()) as date) and CONVERT(varchar(10),GETDATE(),108)>='16:00:00') or dsct.NgayDoc<=CAST(GETDATE() as date)) and ds.ID=dsct.IDDocSo) then 'true' else 'false' end").ToString());
         }
 
         //ghi chỉ số
