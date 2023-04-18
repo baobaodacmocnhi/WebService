@@ -91,7 +91,7 @@ namespace WSTanHoa.Controllers
                     //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = ImageToByte(resizedImage);
                     bool result = cDAL_DocSo.ExecuteNonQuery(command);
                     wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
-                    string jsonresult = wsDHN.ghiChiSo(drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString(), "40", ChiSo, Convert.ToBase64String(ImageToByte(resizedImage)), int.Parse(drLich["Dot"].ToString()).ToString("00"), "Chủ Báo", "0");
+                    string jsonresult = wsDHN.ghiChiSo(drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString(), "40", ChiSo, Convert.ToBase64String(ImageToByte(resizedImage)), int.Parse(drLich["Dot"].ToString()).ToString("00"), "Chủ Báo", "0","");
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(jsonresult);
                     if (obj["success"] == true)
                     {
@@ -680,7 +680,7 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.jsSerializer.MaxJsonLength = int.MaxValue;
                 return CGlobalVariable.jsSerializer.Serialize(vCanhBao);
             }
-            catch(Exception ex)
+            catch
             {
                 return null;
             }

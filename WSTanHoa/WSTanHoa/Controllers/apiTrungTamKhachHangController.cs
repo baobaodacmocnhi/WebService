@@ -1323,24 +1323,92 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
-                {
-                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                }
+                //if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                //{
+                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                //}
                 DataTable dt = new DataTable();
-
+                List<ThongTinExtra> lst = new List<ThongTinExtra>();
+                dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select 'a','b','c' union select 'd', 'e', 'f' ");
                 //dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
                 //dt.Merge(cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo=DanhBa from KhachHang where SDT like '%" + DienThoai + "%'"));
-                List<ThongTinExtra> lst = new List<ThongTinExtra>();
-                foreach (DataRow item in dt.Rows)
+                
+                //DataTable dtThayDHN = cDAL_DHN.ExecuteQuery_DataTable("SELECT isnull(DHN_LOAIBANGKE,'')+'-' + isnull(convert(varchar, DHN_SOBANGKE), '') MASO,DHN_NGAYBAOTHAY NGAYBAO, DHN_LYDOTHAY LYDO,HCT_NGAYGAN HOANTHANH, case when HCT_NHOMTRONGAI = 0 then '' else LyDo + ', ' end + isnull(HCT_LYDOTRONGAI, '') TRONGAI"
+                //+ " FROM TB_THAYDHN t1"
+                //+ " join TB_THAYDHN_TRONGAI t2 on t1.HCT_NHOMTRONGAI = t2.ID"
+                //+ " where DHN_DANHBO = '" + DanhBo + "'"
+                //+ " union"
+                //+ " select t1.SHS MASO, t1.NGAYNHAN NGAYBAO, TENLOAI LYDO,NGAYHOANCONG HOANTHANH, isnull(t1.NOIDUNGTRONGAI + ', ', '')+isnull(t1.NOIDUNGTNCHUYEN + ', ', '') + isnull(t3.NOIDUNGTRONGAI + ', ', '') + ', ' + isnull(t4.NOIDUNGTN + ', ', '') TRONGAI"
+                //+ " from TANHOA_WATER.dbo.DON_KHACHHANG t1"
+                //+ " left join TANHOA_WATER.dbo.LOAI_HOSO t2 on t1.LOAIHOSO = t2.MALOAI"
+                //+ " left join TANHOA_WATER.dbo.TOTHIETKE t3 on t1.SHS = t3.SHS"
+                //+ " left join TANHOA_WATER.dbo.KH_HOSOKHACHHANG t4 on t1.SHS = t4.SHS"
+                //+ " where REPLACE(DANHBO,'-', '')= '" + DanhBo + "'"
+                //+ " order by NGAYBAO desc");
+                //ThongTinExtra en = new ThongTinExtra();
+                //en.Title = "Thay ĐHN";
+                //en.totalColumn = 5;
+                //en.lstColumn = new List<string> { "Mã", "Ngày Báo", "Lý Do", "Hoàn Thành", "Trở Ngại" };
+                //en.totalRow = dtThayDHN.Rows.Count;
+                //for (int i = 0; i < en.totalRow; i++)
+                //{
+                //    List<string> lstC = new List<string>();
+                //    for (int j = 0; j < en.totalColumn; j++)
+                //    {
+                //        lstC.Add(dtThayDHN.Rows[i][j].ToString());
+                //    }
+                //    en.lstRow.Add(lstC);
+                //}
+                //lst.Add(en);
+
+                ThongTinExtra en = new ThongTinExtra();
+                en.Title = "Tiêu Đề 1";
+                en.totalColumn = 3;
+                en.lstColumn = new List<string> { "Cột 1", "Cột 2", "Cột 3" };
+                en.totalRow = 2;
+                for (int i = 0; i < en.totalRow; i++)
                 {
-                    ThongTinExtra en = new ThongTinExtra();
-
-
-                    lst.Add(en);
+                    List<string> lstC = new List<string>();
+                    for (int j = 0; j < en.totalColumn; j++)
+                    {
+                        lstC.Add(dt.Rows[i][j].ToString());
+                    }
+                    en.lstRow.Add(lstC);
                 }
-
+                lst.Add(en);
+                //
+                en = new ThongTinExtra();
+                en.Title = "Tiêu Đề 2";
+                en.totalColumn = 2;
+                en.lstColumn = new List<string> { "Cột 1", "Cột 2" };
+                en.totalRow = 2;
+                for (int i = 0; i < en.totalRow; i++)
+                {
+                    List<string> lstC = new List<string>();
+                    for (int j = 0; j < en.totalColumn; j++)
+                    {
+                        lstC.Add(dt.Rows[i][j].ToString());
+                    }
+                    en.lstRow.Add(lstC);
+                }
+                lst.Add(en);
+                //
+                en = new ThongTinExtra();
+                en.Title = "Tiêu Đề 3";
+                en.totalColumn = 4;
+                en.lstColumn = new List<string> { "Cột 1", "Cột 2", "Cột 3", "Cột 4" };
+                en.totalRow = 2;
+                for (int i = 0; i < en.totalRow; i++)
+                {
+                    List<string> lstC = new List<string>();
+                    for (int j = 0; j < en.totalColumn; j++)
+                    {
+                        lstC.Add(dt.Rows[i][j].ToString());
+                    }
+                    en.lstRow.Add(lstC);
+                }
+                lst.Add(en);
                 return lst;
 
             }

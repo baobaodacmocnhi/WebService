@@ -36,20 +36,20 @@ namespace WSTanHoa.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://server5:81/wsdhn.asmx")]
-        public string WSTanHoa_wrDHN_wsDHN {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://server5:81/wsthuongvu.asmx")]
+        public string WSTanHoa_wrThuongVu_wsThuongVu {
             get {
-                return ((string)(this["WSTanHoa_wrDHN_wsDHN"]));
+                return ((string)(this["WSTanHoa_wrThuongVu_wsThuongVu"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://server5:81/wsthuongvu.asmx")]
-        public string WSTanHoa_wrThuongVu_wsThuongVu {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://server5:81/wsdhn.asmx")]
+        public string WSTanHoa_wrDHN_wsDHN {
             get {
-                return ((string)(this["WSTanHoa_wrThuongVu_wsThuongVu"]));
+                return ((string)(this["WSTanHoa_wrDHN_wsDHN"]));
             }
         }
     }

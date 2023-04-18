@@ -66,6 +66,22 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="checkExists_DonTu">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DanhBo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="NoiDung" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SoNgay" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="checkExists_DonTuResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="checkExists_DonTuResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="getAccess_token_CCCD">
         <s:complexType />
       </s:element>
@@ -81,7 +97,6 @@
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="DanhBo" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="CCCD" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="CMND" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -89,6 +104,55 @@
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="1" maxOccurs="1" name="checkExists_CCCDResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="them_CCCD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DanhBo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CCCD" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="them_CCCDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="them_CCCDResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sua_CCCD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DanhBo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CCCD" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="sua_CCCDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="sua_CCCDResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="xoa_CCCD">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DanhBo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CCCD" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="xoa_CCCDResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="xoa_CCCDResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="result" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -118,6 +182,12 @@
   <wsdl:message name="xoa_Folder_HinhSoapOut">
     <wsdl:part name="parameters" element="tns:xoa_Folder_HinhResponse" />
   </wsdl:message>
+  <wsdl:message name="checkExists_DonTuSoapIn">
+    <wsdl:part name="parameters" element="tns:checkExists_DonTu" />
+  </wsdl:message>
+  <wsdl:message name="checkExists_DonTuSoapOut">
+    <wsdl:part name="parameters" element="tns:checkExists_DonTuResponse" />
+  </wsdl:message>
   <wsdl:message name="getAccess_token_CCCDSoapIn">
     <wsdl:part name="parameters" element="tns:getAccess_token_CCCD" />
   </wsdl:message>
@@ -129,6 +199,24 @@
   </wsdl:message>
   <wsdl:message name="checkExists_CCCDSoapOut">
     <wsdl:part name="parameters" element="tns:checkExists_CCCDResponse" />
+  </wsdl:message>
+  <wsdl:message name="them_CCCDSoapIn">
+    <wsdl:part name="parameters" element="tns:them_CCCD" />
+  </wsdl:message>
+  <wsdl:message name="them_CCCDSoapOut">
+    <wsdl:part name="parameters" element="tns:them_CCCDResponse" />
+  </wsdl:message>
+  <wsdl:message name="sua_CCCDSoapIn">
+    <wsdl:part name="parameters" element="tns:sua_CCCD" />
+  </wsdl:message>
+  <wsdl:message name="sua_CCCDSoapOut">
+    <wsdl:part name="parameters" element="tns:sua_CCCDResponse" />
+  </wsdl:message>
+  <wsdl:message name="xoa_CCCDSoapIn">
+    <wsdl:part name="parameters" element="tns:xoa_CCCD" />
+  </wsdl:message>
+  <wsdl:message name="xoa_CCCDSoapOut">
+    <wsdl:part name="parameters" element="tns:xoa_CCCDResponse" />
   </wsdl:message>
   <wsdl:portType name="wsThuongVuSoap">
     <wsdl:operation name="get_Hinh">
@@ -147,6 +235,10 @@
       <wsdl:input message="tns:xoa_Folder_HinhSoapIn" />
       <wsdl:output message="tns:xoa_Folder_HinhSoapOut" />
     </wsdl:operation>
+    <wsdl:operation name="checkExists_DonTu">
+      <wsdl:input message="tns:checkExists_DonTuSoapIn" />
+      <wsdl:output message="tns:checkExists_DonTuSoapOut" />
+    </wsdl:operation>
     <wsdl:operation name="getAccess_token_CCCD">
       <wsdl:input message="tns:getAccess_token_CCCDSoapIn" />
       <wsdl:output message="tns:getAccess_token_CCCDSoapOut" />
@@ -154,6 +246,18 @@
     <wsdl:operation name="checkExists_CCCD">
       <wsdl:input message="tns:checkExists_CCCDSoapIn" />
       <wsdl:output message="tns:checkExists_CCCDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="them_CCCD">
+      <wsdl:input message="tns:them_CCCDSoapIn" />
+      <wsdl:output message="tns:them_CCCDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="sua_CCCD">
+      <wsdl:input message="tns:sua_CCCDSoapIn" />
+      <wsdl:output message="tns:sua_CCCDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="xoa_CCCD">
+      <wsdl:input message="tns:xoa_CCCDSoapIn" />
+      <wsdl:output message="tns:xoa_CCCDSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="wsThuongVuSoap" type="tns:wsThuongVuSoap">
@@ -194,6 +298,15 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="checkExists_DonTu">
+      <soap:operation soapAction="http://tempuri.org/checkExists_DonTu" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getAccess_token_CCCD">
       <soap:operation soapAction="http://tempuri.org/getAccess_token_CCCD" style="document" />
       <wsdl:input>
@@ -205,6 +318,33 @@
     </wsdl:operation>
     <wsdl:operation name="checkExists_CCCD">
       <soap:operation soapAction="http://tempuri.org/checkExists_CCCD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="them_CCCD">
+      <soap:operation soapAction="http://tempuri.org/them_CCCD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sua_CCCD">
+      <soap:operation soapAction="http://tempuri.org/sua_CCCD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="xoa_CCCD">
+      <soap:operation soapAction="http://tempuri.org/xoa_CCCD" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -251,6 +391,15 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="checkExists_DonTu">
+      <soap12:operation soapAction="http://tempuri.org/checkExists_DonTu" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="getAccess_token_CCCD">
       <soap12:operation soapAction="http://tempuri.org/getAccess_token_CCCD" style="document" />
       <wsdl:input>
@@ -262,6 +411,33 @@
     </wsdl:operation>
     <wsdl:operation name="checkExists_CCCD">
       <soap12:operation soapAction="http://tempuri.org/checkExists_CCCD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="them_CCCD">
+      <soap12:operation soapAction="http://tempuri.org/them_CCCD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="sua_CCCD">
+      <soap12:operation soapAction="http://tempuri.org/sua_CCCD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="xoa_CCCD">
+      <soap12:operation soapAction="http://tempuri.org/xoa_CCCD" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

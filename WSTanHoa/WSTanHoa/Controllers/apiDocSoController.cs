@@ -21,10 +21,8 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private QLDHNController _QLDHNController = new QLDHNController();
-        private string url = "https://dhntm.sawaco.com.vn/";
+        //private string url = "https://dhntm.sawaco.com.vn/";
         private string urlApi = "https://dhntmapi.sawaco.com.vn/";
-        private string urlTest = "http://testdhntm.sawaco.com.vn/";
-        //private string urlApiTest = "http://testdhntmapi.sawaco.com.vn/";
 
 
         [Route("updateDS_sDHN")]
@@ -855,7 +853,7 @@ namespace WSTanHoa.Controllers
                 //else
                 //    return false;
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }

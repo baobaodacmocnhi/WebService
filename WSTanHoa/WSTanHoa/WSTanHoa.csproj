@@ -34,7 +34,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>App_Data/XmlDocument.xml</DocumentationFile>
+    <DocumentationFile>App_Data\XmlDocument.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -246,17 +246,17 @@
     <Compile Include="Providers\CConnection.cs" />
     <Compile Include="Providers\CGlobalVariable.cs" />
     <Compile Include="Providers\ErrorResult.cs" />
+    <Compile Include="Web References\wrDHN\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="Web References\wrThuongVu\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
     <Compile Include="Web References\wrThuTien\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-    <Compile Include="Web References\wrDHN\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -2176,10 +2176,6 @@
     <Content Include="Views\QuaySo\Index.cshtml" />
     <Content Include="Views\QuaySo\IndexA.cshtml" />
     <Content Include="Views\KhachHang\TienTrinhDon.cshtml" />
-    <None Include="Web References\wrThuongVu\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Views\BauCu\BCH_View.cshtml" />
     <Content Include="Views\BauCu\BiThu_View.cshtml" />
     <Content Include="Views\BauCu\DaiBieuChinhThuc_View.cshtml" />
@@ -2249,22 +2245,27 @@
     <Content Include="Views\HDSD\BaocaochinhtrichiboKhoiKyThuat2020_2022.pdf" />
     <Content Include="Views\HDSD\BaoCao.cshtml" />
     <Content Include="Views\QLDHN\sDHN.cshtml" />
-    <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
-    <None Include="Web References\wrThuTien\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Views\ThuongVu\DangKyDinhMuc.cshtml" />
     <Content Include="Views\BauCu\BCH.cshtml" />
     <Content Include="Views\BauCu\BiThu.cshtml" />
     <Content Include="Views\BauCu\DaiBieuChinhThuc.cshtml" />
-    <None Include="Web References\wrThuongVu\wsthuongvu.wsdl" />
-    <None Include="Web References\wrThuTien\wsthutien.disco" />
-    <None Include="Web References\wrDHN\Reference.map">
+    <Content Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
+    </Content>
     <None Include="Web References\wrDHN\wsdhn.disco" />
+    <Content Include="Web References\wrThuongVu\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web References\wrDHN\wsdhn.wsdl" />
+    <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
+    <Content Include="Web References\wrThuTien\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </Content>
+    <None Include="Web References\wrThuongVu\wsthuongvu.wsdl" />
+    <None Include="Web References\wrThuTien\wsthutien.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -2300,7 +2301,6 @@
     <Content Include="hdsd_files\themedata.thmx" />
     <Content Include="Views\ThuongVu\TinhTienNuoc.cshtml" />
     <None Include="Web References\wrThuTien\wsthutien.wsdl" />
-    <None Include="Web References\wrDHN\wsdhn.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -2310,17 +2310,6 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="http://server5:81/wsthutien.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\wrThuTien\</RelPath>
-      <UpdateFromURL>http://server5:81/wsthutien.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>WSTanHoa_wrThuTien_wsThuTien</CachedSettingsPropName>
-    </WebReferenceUrl>
     <WebReferenceUrl Include="http://server5:81/wsdhn.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\wrDHN\</RelPath>
@@ -2342,6 +2331,17 @@
       </CachedDynamicPropName>
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>WSTanHoa_wrThuongVu_wsThuongVu</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="http://server5:81/wsthutien.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\wrThuTien\</RelPath>
+      <UpdateFromURL>http://server5:81/wsthutien.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WSTanHoa_wrThuTien_wsThuTien</CachedSettingsPropName>
     </WebReferenceUrl>
   </ItemGroup>
   <PropertyGroup>

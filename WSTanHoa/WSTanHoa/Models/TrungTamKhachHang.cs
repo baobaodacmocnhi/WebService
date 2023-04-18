@@ -1711,20 +1711,31 @@ namespace WSTanHoa.Models
         public string Title { get; set; }
 
         /// <summary>
+        /// Tổng số Cột
+        /// </summary>
+        public int totalColumn { get; set; }
+
+        /// <summary>
         /// Danh sách Tên Cột
         /// </summary>
         public List<string> lstColumn { get; set; }
 
         /// <summary>
+        /// Tổng số Dòng
+        /// </summary>
+        public int totalRow { get; set; }
+
+        /// <summary>
         /// Danh sách nội dung Dòng
         /// </summary>
-        public List<DataRow> lstContent { get; set; }
+        public List<List<string>> lstRow { get; set; }
 
         public ThongTinExtra()
         {
             Title = "";
-            lstColumn = new List<string>();
-            lstContent = new List<DataRow>();
+            totalColumn = totalRow = 0;
+            lstColumn  = new List<string>();
+            lstRow = new List<List<string>>();
         }
     }
 
