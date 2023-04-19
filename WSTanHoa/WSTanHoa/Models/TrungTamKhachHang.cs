@@ -378,6 +378,7 @@ namespace WSTanHoa.Models
             GiaBan = "";
             ThueGTGT = "";
             PhiBVMT = "";
+            PhiBVMT_Thue = "";
             TongCong = "";
             NgayGiaiTrach = null;
             DangNgan = "";
