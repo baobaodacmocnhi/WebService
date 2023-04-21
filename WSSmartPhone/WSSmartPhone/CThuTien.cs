@@ -4483,7 +4483,7 @@ namespace WSSmartPhone
         //phiếu chuyển
         public string getDS_PhieuChuyen_DHN()
         {
-            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select [Name],KhongLapDon from MaHoa_PhieuChuyen where App=1"));
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select [Name],KhongLapDon from MaHoa_PhieuChuyen where App=1 order by [Name] asc"));
         }
 
         public string ghi_DonTu_DHN(string DanhBo, string NoiDung, string GhiChu, string Hinh, string MaNV)
