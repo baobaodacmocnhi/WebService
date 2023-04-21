@@ -270,6 +270,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Images\gianuoc.png" />
     <Content Include="Images\QuaySo\0.jpg" />
     <Content Include="Images\QuaySo\1.png" />
     <Content Include="Images\QuaySo\2.png" />

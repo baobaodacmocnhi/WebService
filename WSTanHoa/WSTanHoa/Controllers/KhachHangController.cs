@@ -23,12 +23,12 @@ namespace WSTanHoa.Controllers
         // GET: KhachHang
         public ActionResult ThongTin(string DanhBo)
         {
-            if (Session["LoginQRCode"] == null)
-            {
-                Session["Url"] = Request.Url;
-                Session["DanhBo"] = DanhBo;
-                return RedirectToAction("Login", "KhachHang");
-            }
+            //if (Session["LoginQRCode"] == null)
+            //{
+            //    Session["Url"] = Request.Url;
+            //    Session["DanhBo"] = DanhBo;
+            //    return RedirectToAction("Login", "KhachHang");
+            //}
             ThongTinKhachHang en = new ThongTinKhachHang();
             if (DanhBo.ToUpper().Contains("THW"))
             {
