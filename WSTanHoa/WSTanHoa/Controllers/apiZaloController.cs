@@ -495,6 +495,7 @@ namespace WSTanHoa.Controllers
                 throw ex;
             }
         }
+
         private void getlichthutien(string IDZalo, ref string strResponse)
         {
             try
@@ -596,49 +597,16 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        private void baochisonuocR()
+        private void getdangkydanhbocuphap(string IDZalo, ref string strResponse)
         {
             try
             {
-                string sql1 = "select t2.IDZalo,t2.CreateDate,t2.NoiDung from"
-+ " (select * from Zalo_Send where cast(CreateDate as date) >= '20210916' and loai = 'ghichisonuoc')t1,"
-+ " (select * from Zalo_Chat where cast(CreateDate as date) >= '20210916' and cast(CreateDate as date) <= '20210917' and noidung like 'csn%')t2"
- + "    where t1.IDZalo = t2.IDZalo";
-                DataTable dt1 = cDAL_TrungTam.ExecuteQuery_DataTable(sql1);
-                foreach (DataRow item in dt1.Rows)
-                {
-                    string[] messages = null;
-                    if (item["NoiDung"].ToString().ToUpper().Contains("CSN_") == true)
-                        messages = item["NoiDung"].ToString().Split('_');
-                    else
-                        if (item["NoiDung"].ToString().ToUpper().Contains("CSN-") == true)
-                        messages = item["NoiDung"].ToString().Split('-');
-                    else
-                        if (item["NoiDung"].ToString().ToUpper().Contains("CSN ") == true)
-                        messages = item["NoiDung"].ToString().Split(' ');
-                    if (messages.Count() == 3 && messages[1].Trim().Length == 11 && messages[2].Trim() != "" && messages[2].Trim().All(char.IsNumber) == true)
-                    {
-                        DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DanhBo,MLT=LOTRINH from TB_DULIEUKHACHHANG where DanhBo='" + messages[1].Trim() + "'");
-                        if (dt != null && dt.Rows.Count > 0)
-                        {
-                            //kiểm tra đã gửi chỉ số nước rồi
-                            string sql = "select top 1 * from DocSo_Zalo where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and cast(createdate as date)='" + DateTime.Parse(item["CreateDate"].ToString()).ToString("yyyyMMdd") + "'";
-                            DataTable dtResult = cDAL_DocSo.ExecuteQuery_DataTable(sql);
-                            if (dtResult == null || dtResult.Rows.Count == 0)
-                            {
-
-                            }
-                            //kiểm tra chỉ số nước
-                            if (IsNumber(messages[2].Trim()) == true)
-                            {
-                                sql = "insert into DocSo_Zalo(DanhBo,ChiSo,CreateDate)values(N'" + messages[1].Trim() + "',N'" + messages[2].Trim() + "','" + DateTime.Parse(item["CreateDate"].ToString()).ToString("yyyyMMdd") + "')";
-                                cDAL_DocSo.ExecuteNonQuery(sql);
-                            }
-
-                        }
-
-                    }
-                }
+                string content = "Cú pháp đăng ký thông tin: DK DB <danh bộ>"
+                    + "\nCú pháp hủy đăng ký thông tin: HUY DB <danh bộ>";
+                strResponse = sendMessage(IDZalo, content);
+                //insert lịch sử truy vấn
+                string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'getdangkycuphapdanhbo',getdate(),N'" + strResponse + "')";
+                cDAL_TrungTam.ExecuteNonQuery(sql);
             }
             catch (Exception ex)
             {
@@ -808,7 +776,7 @@ namespace WSTanHoa.Controllers
                             + "\"template_type\":\"list\","
                             + "\"elements\":[{"
                             + "\"title\":\"QUÝ KHÁCH HÀNG CHƯA ĐĂNG KÝ THÔNG TIN\","
-                            + "\"subtitle\":\"Để sử dụng dịch vụ, Quý Khách Hàng cần phải đăng ký ít nhất một mã khách hàng (Danh Bộ)\","
+                            + "\"subtitle\":\"Để sử dụng dịch vụ tra cứu tự động, Quý Khách Hàng cần phải đăng ký ít nhất một mã khách hàng (Danh Bộ)\","
                             + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\","
                             + "\"default_action\":{"
                             + "\"type\":\"oa.open.url\","
@@ -1241,117 +1209,17 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.cheksum)
                 {
-                    string sql = "select * from Zalo_QuanTam where IDZalo not in (select IDZalo from Zalo_DangKy) and resenddangky=0";
+                    string sql = "select * from Zalo_QuanTam where IDZalo not in (select IDZalo from Zalo_DangKy) and Follow=1";
                     DataTable dt = cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     foreach (DataRow item in dt.Rows)
                     {
-                        string message = resendMessageDangKy_Action(item["IDZalo"].ToString());
-
-                        cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set resenddangky=1,Result=N'" + message + "',ResultDate=getdate() where IDZalo=" + item["IDZalo"]);
+                        string result = sendMessageDangKy(item["IDZalo"].ToString());
+                        cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'',N'resendMessageDangKy',N'',N'" + result + "')");
                     }
                     strResponse = "Đã xử lý";
                 }
                 else
                     strResponse = "Sai checksum";
-            }
-            catch (Exception ex)
-            {
-                strResponse = ex.Message;
-            }
-            return strResponse;
-        }
-
-        private string resendMessageDangKy_Action(string IDZalo)
-        {
-            string strResponse = "";
-            try
-            {
-                string url = "https://openapi.zalo.me/v2.0/oa/message";
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "POST";
-                request.ContentType = "application/json";
-                request.Headers["access_token"] = getAccess_token();
-
-                string data = "{"
-                            + "\"recipient\":{"
-                            + "\"user_id\":\"" + IDZalo + "\""
-                            + "},"
-                            + "\"message\":{"
-                            + "\"attachment\":{"
-                            + "\"type\":\"template\","
-                            + "\"payload\":{"
-                            + "\"template_type\":\"list\","
-                            + "\"elements\":[{"
-                            + "\"title\":\"QUÝ KHÁCH HÀNG CHƯA ĐĂNG KÝ THÔNG TIN\","
-                            + "\"subtitle\":\"Quý khách hàng vui lòng đăng ký thông tin Danh Bộ"
-                            + " để sử dụng những tiện ích của Cấp nước Tân Hòa như: Thông báo phát sinh hóa đơn tiền nước/Thông báo ngày ghi chỉ số nước/Tra cứu nợ tiền nước/..."
-                            + "\","
-                            + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\","
-                            + "\"default_action\":{"
-                            + "\"type\":\"oa.open.url\","
-                            + "\"url\":\"" + _url + "/Zalo?id=" + IDZalo + "\""
-                            + "}"
-                            + "},"
-                            + "{"
-                            + "\"title\":\"Click vào đây để đăng ký\","
-                            + "\"subtitle\":\"Click vào đây để đăng ký\","
-                            + "\"image_url\":\"" + _urlImage + "/logoctycp.png\","
-                            + "\"default_action\":{"
-                            + "\"type\":\"oa.open.url\","
-                            + "\"url\":\"" + _url + "/Zalo?id=" + IDZalo + "\""
-                            + "}"
-                            + "}]"
-                            + "}"
-                            + "}"
-                            + "}"
-                            + "}";
-
-                //tin nhắn nội dung+button phía dưới
-                //string data = "{"
-                //            + "\"recipient\": {"
-                //            + "\"user_id\": \"4276209776391262580\""
-                //            + "},"
-                //            + "\"message\": {"
-                //            + "\"text\": \"Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng kính chào Quý khách hàng\","
-                //            + "\"attachment\": {"
-                //            + "\"type\": \"template\","
-                //            + "\"payload\": {"
-                //            + "\"buttons\": ["
-                //            + "{"
-                //            + "\"title\": \"Click vào đây để đăng ký\","
-                //            + "\"payload\": {"
-                //            + "\"url\": \"" + _url + "/Zalo_DangKy?id=" + IDZalo + "\""
-                //            + "},"
-                //            + "\"type\": \"oa.open.url\""
-                //            + "}"
-                //            + "]"
-                //            + "}"
-                //            + "}"
-                //            + "}"
-                //            + "}";
-                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                {
-                    streamWriter.Write(data);
-                }
-
-                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
-                {
-                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
-                    strResponse = deserializedResult.error + " : " + deserializedResult.message;
-                    if (deserializedResult.error == "-213")
-                    {
-                        string sql2 = "update Zalo_QuanTam set Follow=0 where IDZalo=" + IDZalo;
-                        cDAL_TrungTam.ExecuteNonQuery(sql2);
-                    }
-                    read.Close();
-                    respuesta.Close();
-                }
-                else
-                {
-                    strResponse = "Error: " + respuesta.StatusCode;
-                }
             }
             catch (Exception ex)
             {

@@ -46,7 +46,7 @@ namespace WSTanHoa.Controllers
                 string sql = "select DanhBo"
                              + ",HoTen"
                              + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
-                             + ",DiaChiHoaDon=DiaChiHoaDon+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                             + ",DiaChiHoaDon=(select top 1 SO+' '+DUONG from HOADON_TA.dbo.HOADON where HOADON_TA.dbo.HOADON.DanhBa=TB_DULIEUKHACHHANG.DanhBo order by HOADON_TA.dbo.HOADON.ID_HOADON desc)+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                              + ",HopDong"
                              + ",DienThoai"
                              + ",MLT=LoTrinh"
@@ -70,7 +70,7 @@ namespace WSTanHoa.Controllers
                     sql = "select DanhBo"
                                  + ",HoTen"
                                  + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
-                                 + ",DiaChiHoaDon=DiaChiHoaDon+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
+                                 + ",DiaChiHoaDon=(select top 1 SO+' '+DUONG from HOADON_TA.dbo.HOADON where HOADON_TA.dbo.HOADON.DanhBa=TB_DULIEUKHACHHANG_HUYDB.DanhBo order by HOADON_TA.dbo.HOADON.ID_HOADON desc)+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                                  + ",HopDong"
                                  + ",DienThoai=''"
                                  + ",MLT=LoTrinh"
@@ -95,10 +95,9 @@ namespace WSTanHoa.Controllers
                     ThongTinKhachHang en = new ThongTinKhachHang();
                     en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                     en.HoTen = dt.Rows[0]["HoTen"].ToString();
-                    if (dt.Rows[0]["DiaChi"].ToString() == dt.Rows[0]["DiaChiHoaDon"].ToString())
-                        en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
-                    else
-                        en.DiaChi = dt.Rows[0]["DiaChi"].ToString() + " =>HD: " + dt.Rows[0]["DiaChiHoaDon"].ToString();
+                    en.DiaChi = dt.Rows[0]["DiaChi"].ToString();
+                    if (dt.Rows[0]["DiaChi"].ToString() != dt.Rows[0]["DiaChiHoaDon"].ToString())
+                        en.DiaChiHoaDon = dt.Rows[0]["DiaChiHoaDon"].ToString();
                     en.HopDong = dt.Rows[0]["HopDong"].ToString();
                     en.DienThoai = dt.Rows[0]["DienThoai"].ToString();
                     en.MLT = dt.Rows[0]["MLT"].ToString();
@@ -1107,10 +1106,9 @@ namespace WSTanHoa.Controllers
                             ThongTinKhachHang en = new ThongTinKhachHang();
                             en.DanhBo = item["DanhBo"].ToString();
                             en.HoTen = item["HoTen"].ToString();
-                            if (item["DiaChi"].ToString() == item["DiaChiHoaDon"].ToString())
-                                en.DiaChi = item["DiaChi"].ToString();
-                            else
-                                en.DiaChi = item["DiaChi"].ToString() + " =>HD: " + item["DiaChiHoaDon"].ToString();
+                            en.DiaChi = item["DiaChi"].ToString();
+                            if (item["DiaChi"].ToString() != item["DiaChiHoaDon"].ToString())
+                                en.DiaChiHoaDon = item["DiaChiHoaDon"].ToString();
 
                             lst.Add(en);
                         }
@@ -1333,7 +1331,7 @@ namespace WSTanHoa.Controllers
                 dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select 'a','b','c' union select 'd', 'e', 'f' ");
                 //dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
                 //dt.Merge(cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo=DanhBa from KhachHang where SDT like '%" + DienThoai + "%'"));
-                
+
                 //DataTable dtThayDHN = cDAL_DHN.ExecuteQuery_DataTable("SELECT isnull(DHN_LOAIBANGKE,'')+'-' + isnull(convert(varchar, DHN_SOBANGKE), '') MASO,DHN_NGAYBAOTHAY NGAYBAO, DHN_LYDOTHAY LYDO,HCT_NGAYGAN HOANTHANH, case when HCT_NHOMTRONGAI = 0 then '' else LyDo + ', ' end + isnull(HCT_LYDOTRONGAI, '') TRONGAI"
                 //+ " FROM TB_THAYDHN t1"
                 //+ " join TB_THAYDHN_TRONGAI t2 on t1.HCT_NHOMTRONGAI = t2.ID"

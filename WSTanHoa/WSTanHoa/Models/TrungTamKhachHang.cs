@@ -26,6 +26,11 @@ namespace WSTanHoa.Models
         public string DiaChi { get; set; }
 
         /// <summary>
+        /// Địa chỉ hóa đơn
+        /// </summary>
+        public string DiaChiHoaDon { get; set; }
+
+        /// <summary>
         /// Hợp đồng
         /// </summary>
         public string HopDong { get; set; }
@@ -116,7 +121,7 @@ namespace WSTanHoa.Models
         {
             DanhBo = "";
             HoTen = "";
-            DiaChi = "";
+            DiaChi = DiaChiHoaDon = "";
             HopDong = "";
             DienThoai = "";
             MLT = "";
@@ -1735,7 +1740,7 @@ namespace WSTanHoa.Models
         {
             Title = "";
             totalColumn = totalRow = 0;
-            lstColumn  = new List<string>();
+            lstColumn = new List<string>();
             lstRow = new List<List<string>>();
         }
     }

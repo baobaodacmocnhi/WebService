@@ -793,6 +793,11 @@
             Địa chỉ
             </summary>
         </member>
+        <member name="P:WSTanHoa.Models.ThongTinKhachHang.DiaChiHoaDon">
+            <summary>
+            Địa chỉ hóa đơn
+            </summary>
+        </member>
         <member name="P:WSTanHoa.Models.ThongTinKhachHang.HopDong">
             <summary>
             Hợp đồng
