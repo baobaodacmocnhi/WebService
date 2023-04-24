@@ -22,7 +22,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         private CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVuWFH);
 
         /// <summary>
         /// Lấy thông tin khách hàng
@@ -585,11 +585,11 @@ namespace WSTanHoa.Controllers
         [Route("getDonKinhDoanh")]
         public DonKinhDoanh getDonKinhDoanh(string DanhBo, string checksum)
         {
-            if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
-            {
-                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-            }
+            //if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+            //{
+            //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+            //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            //}
             DataTable dt = new DataTable();
             DataSet ds = new DataSet();
             try
@@ -836,7 +836,7 @@ namespace WSTanHoa.Controllers
                                                 for (int j = 0; j < dr.Count(); j++)
                                                 {
                                                     TTL enCT = new TTL();
-                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=ThuTraLoi_ChiTiet_Hinh&IDFileName=IDThuTraLoi_ChiTiet&IDFileContent=" + dr[j]["MaCTTTTL"].ToString() + "'>File Scan</a>";
+                                                    enCT.MaDon = "<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=ThuTraLoi_ChiTiet_Hinh&IDFileName=IDTTTL_ChiTiet&IDFileContent=" + dr[j]["MaCTTTTL"].ToString() + "'>File Scan</a>";
                                                     enCT.TabSTT = dr[j]["TabSTT"].ToString();
                                                     enCT.TabName = dr[j]["TabName"].ToString();
                                                     if (dr[j]["CreateDate"].ToString() != "")
