@@ -22,7 +22,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         private CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVuWFH);
+        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
 
         /// <summary>
         /// Lấy thông tin khách hàng
@@ -58,6 +58,8 @@ namespace WSTanHoa.Controllers
                              + ",Cap"
                              + ",SoThanDH"
                              + ",ViTriDHN"
+                             + ",ViTriDHN_Ngoai"
+                             + ",ViTriDHN_Hop"
                              + ",NgayThay"
                              + ",NgayKiemDinh"
                              + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
@@ -82,6 +84,8 @@ namespace WSTanHoa.Controllers
                                  + ",Cap"
                                  + ",SoThanDH"
                                  + ",ViTriDHN"
+                                 + ",ViTriDHN_Ngoai='false'"
+                                 + ",ViTriDHN_Hop='false'"
                                  + ",NgayThay"
                                  + ",NgayKiemDinh"
                                  + ",HieuLuc=N'Het '+HieuLucHuy"
@@ -108,7 +112,19 @@ namespace WSTanHoa.Controllers
                     en.CoDH = dt.Rows[0]["CoDH"].ToString();
                     en.Cap = dt.Rows[0]["Cap"].ToString();
                     en.SoThanDH = dt.Rows[0]["SoThanDH"].ToString();
-                    en.ViTriDHN = dt.Rows[0]["ViTriDHN"].ToString();
+                    string str = "";
+                    if (bool.Parse(dt.Rows[0]["ViTriDHN_Ngoai"].ToString()))
+                        str += "Ngoài";
+                    if (bool.Parse(dt.Rows[0]["ViTriDHN_Hop"].ToString()))
+                        if (str != "")
+                            str += " - Hộp";
+                        else
+                            str += "Hộp";
+                    if (str != "")
+                        str += " - "+ dt.Rows[0]["ViTriDHN"].ToString();
+                    else
+                        str += dt.Rows[0]["ViTriDHN"].ToString();
+                    en.ViTriDHN = str;
                     if (dt.Rows[0]["NgayThay"].ToString() != "")
                         en.NgayThay = DateTime.Parse(dt.Rows[0]["NgayThay"].ToString());
                     if (dt.Rows[0]["NgayKiemDinh"].ToString() != "")
