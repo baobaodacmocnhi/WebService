@@ -4505,30 +4505,30 @@ namespace WSSmartPhone
                         CHoaDon hd = new CHoaDon();
                         switch (NoiDung)
                         {
-                            case "Đứt Chì Góc":
-                                result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate() where DanhBo='" + DanhBo + "'");
-                                break;
-                            case "Đứt Chì Thân":
-                                result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "'");
-                                break;
-                            //case "Ngập Nước":
-                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set NgapNuoc=1,NgapNuoc_Ngay=getdate() where DanhBo='" + DanhBo + "' and NgapNuoc=0");
+                            //case "Đứt Chì Góc":
+                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Goc=1,DutChi_Goc_Ngay=getdate() where DanhBo='" + DanhBo + "'");
                             //    break;
-                            //case "Kẹt Tường":
-                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set KetTuong=1,KetTuong_Ngay=getdate() where DanhBo='" + DanhBo + "' and KetTuong=0");
+                            //case "Đứt Chì Thân":
+                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set DutChi_Than=1,DutChi_Than_Ngay=getdate() where DanhBo='" + DanhBo + "'");
                             //    break;
-                            //case "Lấp Khóa Góc":
-                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set LapKhoaGoc=1,LapKhoaGoc_Ngay=getdate() where DanhBo='" + DanhBo + "' and LapKhoaGoc=0");
+                            ////case "Ngập Nước":
+                            ////    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set NgapNuoc=1,NgapNuoc_Ngay=getdate() where DanhBo='" + DanhBo + "' and NgapNuoc=0");
+                            ////    break;
+                            ////case "Kẹt Tường":
+                            ////    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set KetTuong=1,KetTuong_Ngay=getdate() where DanhBo='" + DanhBo + "' and KetTuong=0");
+                            ////    break;
+                            ////case "Lấp Khóa Góc":
+                            ////    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set LapKhoaGoc=1,LapKhoaGoc_Ngay=getdate() where DanhBo='" + DanhBo + "' and LapKhoaGoc=0");
+                            ////    break;
+                            ////case "Bể HBV":
+                            ////    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set BeHBV=1,BeHBV_Ngay=getdate() where DanhBo='" + DanhBo + "' and BeHBV=0");
+                            ////    break;
+                            ////case "Bể Nấp, Mất Nấp HBV":
+                            ////    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set BeNapMatNapHBV=1,BeNapMatNapHBV_Ngay=getdate() where DanhBo='" + DanhBo + "' and BeNapMatNapHBV=0");
+                            ////    break;
+                            //default:
+                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
                             //    break;
-                            //case "Bể HBV":
-                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set BeHBV=1,BeHBV_Ngay=getdate() where DanhBo='" + DanhBo + "' and BeHBV=0");
-                            //    break;
-                            //case "Bể Nấp, Mất Nấp HBV":
-                            //    result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set BeNapMatNapHBV=1,BeNapMatNapHBV_Ngay=getdate() where DanhBo='" + DanhBo + "' and BeNapMatNapHBV=0");
-                            //    break;
-                            default:
-                                result.success = _cDAL_DHN.ExecuteNonQuery("update TB_DULIEUKHACHHANG set " + dtPC.Rows[0]["Folder"].ToString() + "=1," + dtPC.Rows[0]["Folder"].ToString() + "_Ngay=getdate() where DanhBo='" + DanhBo + "'");
-                                break;
                         }
                         switch (NoiDung)
                         {
