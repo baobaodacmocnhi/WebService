@@ -23,6 +23,7 @@ namespace WSTanHoa.Controllers
     {
         decimal IDZalo = -1;
         private dbTrungTamKhachHang db = new dbTrungTamKhachHang();
+        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
 
@@ -60,6 +61,8 @@ namespace WSTanHoa.Controllers
                             if (zalo.DanhBo != null && zalo.DanhBo != "")
                             {
                                 DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+                                if (dt.Rows.Count == 0)
+                                    dt = cDAL_DHN.ExecuteQuery_DataTable("select DanhBo=DANHBO,HoTen=HOTEN,DiaChi=(SONHA+' '+TENDUONG) from TB_DULIEUKHACHHANG where DANHBO='" + zalo.DanhBo.Replace(" ", "") + "'");
                                 if (dt.Rows.Count > 0)
                                 {
                                     zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
@@ -79,6 +82,8 @@ namespace WSTanHoa.Controllers
                             {
                                 //kiểm tra danh bộ
                                 DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + zalo.DanhBo.Replace(" ", "") + "' order by ID_HOADON desc");
+                                if (dt.Rows.Count == 0)
+                                    dt = cDAL_DHN.ExecuteQuery_DataTable("select DanhBo=DANHBO,HoTen=HOTEN,DiaChi=(SONHA+' '+TENDUONG) from TB_DULIEUKHACHHANG where DANHBO='" + zalo.DanhBo.Replace(" ", "") + "'");
                                 if (dt.Rows.Count > 0)
                                 {
                                     zalo.DanhBo = dt.Rows[0]["DanhBo"].ToString();
