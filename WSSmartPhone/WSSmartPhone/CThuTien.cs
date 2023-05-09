@@ -3983,7 +3983,9 @@ namespace WSSmartPhone
                                                 ChiSo = dt.Rows[0]["CSCu"].ToString();
                                             else
                                                 if (Code.Substring(0, 1) == "N")
-                                                    ChiSo = "0";
+                                                { 
+                                                    //ChiSo = "0"; 
+                                                }
                                                 else
                                                     if (Code == "5N" || Code == "5F" || Code == "5K")
                                                         hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
