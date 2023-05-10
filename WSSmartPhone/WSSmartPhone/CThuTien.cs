@@ -636,7 +636,7 @@ namespace WSSmartPhone
                             if (ThemDN(dongnuoc, int.Parse(MaNV)) == false)
                                 return "false,Lỗi Lập TB Đóng Nước";
                         }
-                        sql += " update HOADON set TBDongNuoc_MaNV=" + MaNV + ",TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_Location='" + Location + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and MaNV_DangNgan is null";
+                        sql += " update HOADON set TBDongNuoc_MaNV=" + MaNV + ",TBDongNuoc_Ngay='" + Ngay.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_NgayHen='" + NgayHen.ToString("yyyyMMdd HH:mm:ss") + "',TBDongNuoc_Location='" + Location + "',ModifyBy=" + MaNV + ",ModifyDate=getDate() where ID_HOADON in (" + MaHDs + ") and MaNV_DangNgan is null and TBDongNuoc_Ngay is null ";
                         break;
                     case "XoaDangNgan":
                         //return "false;Tính năng đã bị Khóa";
