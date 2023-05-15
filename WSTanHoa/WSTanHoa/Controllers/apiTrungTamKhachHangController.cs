@@ -601,11 +601,11 @@ namespace WSTanHoa.Controllers
         [Route("getDonKinhDoanh")]
         public DonKinhDoanh getDonKinhDoanh(string DanhBo, string checksum)
         {
-            //if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
-            //{
-            //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-            //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-            //}
+            if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+            {
+                ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
             DataTable dt = new DataTable();
             DataSet ds = new DataSet();
             try
@@ -1337,11 +1337,11 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                //if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
-                //{
-                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                //}
+                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
                 DataTable dt = new DataTable();
                 List<ThongTinExtra> lst = new List<ThongTinExtra>();
                 dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select 'a','b','c' union select 'd', 'e', 'f' ");
