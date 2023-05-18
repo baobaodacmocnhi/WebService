@@ -65,7 +65,7 @@ namespace WSTanHoa.Controllers
                              + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
                              + ",Gieng,DienThoai=(select top 1 DienThoai from SDT_DHN where SDT_DHN.DanhBo=TB_DULIEUKHACHHANG.DanhBo order by CreateDate desc)"
                              + " from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'";
-                dt.Merge(cDAL_DHN.ExecuteQuery_DataTable(sql));
+                dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
                 //lấy thông tin khách hàng đã hủy
                 if (dt == null || dt.Rows.Count == 0)
                 {
@@ -89,9 +89,9 @@ namespace WSTanHoa.Controllers
                                  + ",NgayThay"
                                  + ",NgayKiemDinh"
                                  + ",HieuLuc=N'Het '+HieuLucHuy"
-                                 + ",Gieng=0,DienThoai=''"
+                                 + ",Gieng='false',DienThoai=''"
                                  + " from TB_DULIEUKHACHHANG_HUYDB where DanhBo='" + DanhBo + "'";
-                    dt.Merge(cDAL_DHN.ExecuteQuery_DataTable(sql));
+                    dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
                 }
                 //
                 if (dt != null && dt.Rows.Count > 0)
@@ -121,7 +121,7 @@ namespace WSTanHoa.Controllers
                         else
                             str += "Hộp";
                     if (str != "")
-                        str += " - "+ dt.Rows[0]["ViTriDHN"].ToString();
+                        str += " - " + dt.Rows[0]["ViTriDHN"].ToString();
                     else
                         str += dt.Rows[0]["ViTriDHN"].ToString();
                     en.ViTriDHN = str;
@@ -132,10 +132,13 @@ namespace WSTanHoa.Controllers
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
                     en.ThongTin = "SĐT: " + dt.Rows[0]["DienThoai"].ToString();
                     //lấy tọa độ
-                    if (en.ThongTin != "")
-                        en.ThongTin += " - ";
-                    en.ThongTin += "<a style='color: blue;' target='_blank' href='https://google.com/maps/search/" + cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 Latitude+','+Longitude from DocSo where DanhBa='" + en.DanhBo + "' and Latitude is not null order by DocSoID desc").ToString() + "'>Vị trí</a>";
-
+                    object toado = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 Latitude+','+Longitude from DocSo where DanhBa='" + en.DanhBo + "' and Latitude is not null order by DocSoID desc");
+                    if (toado != null)
+                    {
+                        if (en.ThongTin != "")
+                            en.ThongTin += " - ";
+                        en.ThongTin += "<a style='color: blue;' target='_blank' href='https://google.com/maps/search/" + toado.ToString() + "'>Vị trí</a>";
+                    }
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                     {
                         if (en.ThongTin != "")

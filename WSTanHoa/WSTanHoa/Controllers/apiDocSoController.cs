@@ -1571,6 +1571,107 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
+        [Route("getChiSo_TCT1")]
+        [HttpGet]
+        public string getChiSo_TCT1(string Time, string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.cheksum)
+                {
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("SELECT DanhBo=DHN_DANHBO FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL and HCT_HIEUDHNGAN in (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1)");
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                               | SecurityProtocolType.Ssl3;
+                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/ChiSoNuoc/TraCuuChiSoNuoc?id_donVi=TH&danhBo=" + item["DanhBo"].ToString() + "&ngay=" + Time);
+                        request.Method = "GET";
+                        request.ContentType = "application/json";
+                        request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
+
+                        HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                        if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                        {
+                            StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                            string result = read.ReadToEnd();
+                            read.Close();
+                            respuesta.Close();
+                            CGlobalVariable.jsSerializer.MaxJsonLength = Int32.MaxValue;
+                            var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                            if (obj["ketQua"] == 1)
+                            {
+                                var lst1 = obj["duLieu"];
+                                foreach (var itemC1 in lst1)
+                                {
+                                    var lst2 = CGlobalVariable.jsSerializer.Deserialize<dynamic>(itemC1["livedata"]);
+                                    foreach (var itemC2 in lst2)
+                                    {
+                                        int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
+                                        if (itemC2["pin_yeu"] == true)
+                                            flagCBPinYeu = 1;
+                                        if (itemC2["ro_ri"] == true)
+                                            flagCBRoRi = 1;
+                                        if (itemC2["qua_dong"] == true)
+                                            flagCBQuaDong = 1;
+                                        if (itemC2["chay_nguoc"] == true)
+                                            flagCBChayNguoc = 1;
+                                        if (itemC2["co_nam_cham"] == true)
+                                            flagCBNamCham = 1;
+                                        if (itemC2["kho_ong"] == true)
+                                            flagCBKhoOng = 1;
+                                        if (itemC2["mo_hop"] == true)
+                                            flagCBMoHop = 1;
+                                        string LuuLuong = "NULL";
+                                        //if (itemC2["Flow"] != null)
+                                        //    LuuLuong = ((int)itemC2["Flow"]).ToString();
+                                        string sql = "if not exists(select * from sDHN_LichSu_TCT where DanhBo='" + itemC2["danh_bo"] + "' and ThoiGianCapNhat=convert(datetime,'" + itemC2["thoi_gian_nhan"] + "'))"
+                                            + " insert into sDHN_LichSu_TCT(DanhBo,ChiSo,Diff,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                            + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                            + ",ThoiGianCapNhat,Loai)"
+                                                       + "values("
+                                                       + "'" + itemC2["danh_bo"] + "'"
+                                                       + "," + itemC2["chi_so_nuoc"]
+                                                       + "," + itemC2["tieu_thu"]
+                                                       + ",NULL" //+ item["Battery"]
+                                                       + ",N'" + itemC2["thoi_gian_con_lai"] + "'"
+                                                       + "," + LuuLuong
+                                                       + ",N'" + itemC2["chat_luong_song"] + "'"
+                                                       + "," + flagCBPinYeu
+                                                       + "," + flagCBRoRi
+                                                       + "," + flagCBQuaDong
+                                                       + "," + flagCBChayNguoc
+                                                       + "," + flagCBNamCham
+                                                       + "," + flagCBKhoOng
+                                                       + "," + flagCBMoHop
+                                                       + ",NULL" //+ item["Longitude"]
+                                                       + ",NULL" //+ item["Latitude"]
+                                                       + ",NULL"
+                                                       + ",NULL" //+ item["Interval"]
+                                                       + ",'" + itemC2["thoi_gian_nhan"] + "',N'All')";
+                                        _cDAL_sDHN.ExecuteNonQuery(sql);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            strResponse = "Error: " + respuesta.StatusCode;
+                        }
+                    }
+                    strResponse = "Đã xử lý";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
         [Route("getChiSo_TCT")]
         [HttpGet]
         public string getChiSo_TCT(string Time, string checksum)
