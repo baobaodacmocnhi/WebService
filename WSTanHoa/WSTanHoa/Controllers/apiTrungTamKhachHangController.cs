@@ -23,6 +23,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
 
         /// <summary>
         /// Lấy thông tin khách hàng
@@ -137,7 +138,7 @@ namespace WSTanHoa.Controllers
                     {
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
-                        en.ThongTin += "<a style='color: blue;' target='_blank' href='https://google.com/maps/search/" + toado.ToString() + "'>Vị trí</a>";
+                        en.ThongTin += "<a style='color: blue;' target='_blank' href='https://google.com/maps/search/" + toado.ToString() + "'>Định vị GPS</a>";
                     }
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                     {
@@ -1436,7 +1437,32 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        [Route("getDanhBo_QRCode")]
+        [HttpGet]
+        public string getDanhBo_QRCode(string DanhBo, string checksum)
+        {
+            try
+            {
+                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                if (DanhBo.ToUpper().Contains("THW"))
+                {
+                    object result = null;
+                    result = cDAL_TTKH.ExecuteQuery_ReturnOneValue("select DanhBo from QR_Dong where KyHieu='THW' and ID=" + DanhBo.Substring(3, DanhBo.Length - 3));
+                    if (result != null && result.ToString() != "")
+                        DanhBo = result.ToString();
+                }
+                return DanhBo;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
 
     }
-
 }

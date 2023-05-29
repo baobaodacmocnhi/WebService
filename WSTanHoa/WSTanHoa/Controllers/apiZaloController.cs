@@ -348,21 +348,28 @@ namespace WSTanHoa.Controllers
                     if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                     {
                         string content = getTTKH(item["DanhBo"].ToString());
-                        content += "Danh sách 6 kỳ hóa đơn\n";
-                        foreach (DataRow itemHD in dt_HoaDon.Rows)
+                        if (content == "")
                         {
-                            content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
-                                + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
-                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
-                            if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
-                                content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
-                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
-                                    + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
-                                    + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
-                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
+                            strResponse = sendMessage(IDZalo, "Danh Bộ " + item["DanhBo"].ToString() + " không tồn tại");
                         }
-                        strResponse = sendMessage(IDZalo, content);
+                        else
+                        {
+                            content += "Danh sách 6 kỳ hóa đơn\n";
+                            foreach (DataRow itemHD in dt_HoaDon.Rows)
+                            {
+                                content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
+                                    + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
+                                    + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
+                                if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
+                                    content += "       " + itemHD["ChiTietTienNuoc"].ToString();
+                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
+                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
+                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
+                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
+                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
+                            }
+                            strResponse = sendMessage(IDZalo, content);
+                        }
                     }
                 }
                 //insert lịch sử truy vấn
@@ -390,20 +397,27 @@ namespace WSTanHoa.Controllers
                     if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
                     {
                         string content = getTTKH(item["DanhBo"].ToString());
-                        foreach (DataRow itemHD in dt_HoaDon.Rows)
+                        if (content == "")
                         {
-                            content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
-                                + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
-                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
-                            if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
-                                content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
-                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
-                                    + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
-                                    + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
-                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
+                            strResponse = sendMessage(IDZalo, "Danh Bộ " + item["DanhBo"].ToString() + " không tồn tại");
                         }
-                        strResponse = sendMessage(IDZalo, content);
+                        else
+                        {
+                            foreach (DataRow itemHD in dt_HoaDon.Rows)
+                            {
+                                content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
+                                    + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
+                                    + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
+                                if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
+                                    content += "       " + itemHD["ChiTietTienNuoc"].ToString();
+                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
+                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
+                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
+                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
+                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
+                            }
+                            strResponse = sendMessage(IDZalo, content);
+                        }
                     }
                 }
                 //insert lịch sử truy vấn
@@ -428,31 +442,37 @@ namespace WSTanHoa.Controllers
                 foreach (DataRow item in dt_DanhBo.Rows)
                 {
                     string content = getTTKH(item["DanhBo"].ToString());
-                    DataTable dt_HoaDon = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
-                    if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                    if (content == "")
                     {
-                        content += "Hiện đang còn nợ\n";
-                        foreach (DataRow itemHD in dt_HoaDon.Rows)
-                        {
-                            content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
-                                + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
-                                + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
-                            if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
-                                content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                            content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
-                                    + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
-                                    + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
-                                    + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
-                                    + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
-                        }
-                        strResponse = sendMessage(IDZalo, content);
+                        strResponse = sendMessage(IDZalo, "Danh Bộ " + item["DanhBo"].ToString() + " không tồn tại");
                     }
                     else
                     {
-                        content += "Hiện đang Hết Nợ";
-                        strResponse = sendMessage(IDZalo, content);
+                        DataTable dt_HoaDon = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
+                        if (dt_HoaDon != null && dt_HoaDon.Rows.Count > 0)
+                        {
+                            content += "Hiện đang còn nợ\n";
+                            foreach (DataRow itemHD in dt_HoaDon.Rows)
+                            {
+                                content += "Kỳ " + itemHD["KyHD"].ToString() + ":\n"
+                                    + "    " + getCSC_CSM(itemHD["DanhBo"].ToString(), int.Parse(itemHD["Nam"].ToString()), int.Parse(itemHD["Ky"].ToString())) + "\n"
+                                    + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
+                                if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
+                                    content += "       " + itemHD["ChiTietTienNuoc"].ToString();
+                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
+                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
+                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
+                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
+                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
+                            }
+                            strResponse = sendMessage(IDZalo, content);
+                        }
+                        else
+                        {
+                            content += "Hiện đang Hết Nợ";
+                            strResponse = sendMessage(IDZalo, content);
+                        }
                     }
-
                 }
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'gethoadonton',getdate(),N'" + strResponse + "')";
@@ -475,16 +495,20 @@ namespace WSTanHoa.Controllers
                 }
                 foreach (DataRow item in dt_DanhBo.Rows)
                 {
-                    DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
-
-                    string result_Lich = apiTTKH.getLichDocSo_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
-
-                    string result_NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where ActiveMobile=1 and May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
-
                     string content = getTTKH(item["DanhBo"].ToString());
-                    content += result_NhanVien + "\n"
-                                + result_Lich;
-                    strResponse = sendMessage(IDZalo, content);
+                    if (content == "")
+                    {
+                        strResponse = sendMessage(IDZalo, "Danh Bộ " + item["DanhBo"].ToString() + " không tồn tại");
+                    }
+                    else
+                    {
+                        DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                        string result_Lich = apiTTKH.getLichDocSo_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
+                        string result_NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where ActiveMobile=1 and May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                        content += result_NhanVien + "\n"
+                                    + result_Lich;
+                        strResponse = sendMessage(IDZalo, content);
+                    }
                 }
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'getlichdocso',getdate(),N'" + strResponse + "')";
@@ -507,16 +531,20 @@ namespace WSTanHoa.Controllers
                 }
                 foreach (DataRow item in dt_DanhBo.Rows)
                 {
-                    DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
-
-                    string result_Lich = apiTTKH.getLichThuTien_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
-
-                    string result_NhanVien = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
-
                     string content = getTTKH(item["DanhBo"].ToString());
-                    content += result_NhanVien + "\n"
-                                 + result_Lich;
-                    strResponse = sendMessage(IDZalo, content);
+                    if (content == "")
+                    {
+                        strResponse = sendMessage(IDZalo, "Danh Bộ " + item["DanhBo"].ToString() + " không tồn tại");
+                    }
+                    else
+                    {
+                        DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                        string result_Lich = apiTTKH.getLichThuTien_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
+                        string result_NhanVien = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+                        content += result_NhanVien + "\n"
+                                     + result_Lich;
+                        strResponse = sendMessage(IDZalo, content);
+                    }
                 }
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'getlichthutien',getdate(),N'" + strResponse + "')";
@@ -906,15 +934,9 @@ namespace WSTanHoa.Controllers
 
         private string getTTKH(string DanhBo)
         {
-            //string sql = "select DanhBo"
-            //                 + ",HoTen"
-            //                 + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
-            //                 + ",DinhMuc"
-            //                 + ",DinhMucHN"
-            //                 + ",GiaBieu"
-            //                 + " from TB_DULIEUKHACHHANG where DanhBo=" + DanhBo;
-            //DataTable dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
             DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+            if (dt.Rows.Count == 0)
+                dt = cDAL_DHN.ExecuteQuery_DataTable("select DanhBo=DANHBO,HoTen=HOTEN,DiaChi=(SONHA+' '+TENDUONG),MLT=LOTRINH,GiaBieu,DinhMuc,DinhMucHN from TB_DULIEUKHACHHANG where DANHBO='" + DanhBo + "'");
             if (dt != null && dt.Rows.Count > 0)
             {
                 return "Hệ thống trả lời tự động\n\n"
@@ -926,7 +948,7 @@ namespace WSTanHoa.Controllers
                         + getCSC_CSM_MoiNhat(dt.Rows[0]["DanhBo"].ToString()) + "\n\n";
             }
             else
-                return null;
+                return "";
         }
 
         private string getCSC_CSM_MoiNhat(string DanhBo)
