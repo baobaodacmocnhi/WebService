@@ -18,9 +18,9 @@ namespace WSTanHoa.Controllers
 {
     public class QLDHNController : Controller
     {
-        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
-        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
-        private CConnection cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
+        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
         private apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
         private wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
         private wrThuongVu.wsThuongVu wsThuongVu = new wrThuongVu.wsThuongVu();
@@ -224,7 +224,7 @@ namespace WSTanHoa.Controllers
             {
                 string filename = "";
                 string sql = "select ttkh.DanhBo,DiaChi=SoNha+' '+TenDuong,HoTen,MaDMA,CoDHN=CoDH,Hieu_DHTM,Loai_DHTM,SoThanDH,KieuPhatSong,IDLogger"
-                    + ",DVLAPDAT,NHA_CCDHN,NHA_TICHHOP,XUATXU,NGAYKIEMDINH = CONVERT(varchar(10), NGAYKIEMDINH, 103),NGAYTHAY = CONVERT(varchar(10), NGAYTHAY, 103),,NamLapDat=year(ttkh.NgayThay)";
+                    + ",DVLAPDAT,NHA_CCDHN,NHA_TICHHOP,XUATXU,NGAYKIEMDINH = CONVERT(varchar(10), NGAYKIEMDINH, 103),NGAYTHAY = CONVERT(varchar(10), NGAYTHAY, 103),NamLapDat=year(ttkh.NgayThay)";
                 if (collection["KyHD"].ToString() == "")
                 {
                     string[] fromdatestr = collection["TuNgay"].ToString().Split('/');
@@ -269,8 +269,8 @@ namespace WSTanHoa.Controllers
                     + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo=ttkh.DANHBO";
                 if (collection.AllKeys.Contains("chkBoDaNghiemThu"))
                     sql += " and sdhn.DanhBo not in (select DanhBo from DHTM_NGHIEMTHU)";
-                if (collection.AllKeys.Contains("chkNamLapDat"))
-                    sql += " and year(ttkh.NgayThay)="+ collection["NamLapDat"].ToString();
+                if (collection.AllKeys.Contains("chkBoNamLapDat"))
+                    sql += " and year(ttkh.NgayThay)!="+ collection["NamLapDat"].ToString();
                 if (collection["radLoai"].ToString() == "radNCC")
                 {
                     sql += " and sdhn.IDNCC=" + collection["NCC"].ToString();
