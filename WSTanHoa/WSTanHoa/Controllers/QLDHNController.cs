@@ -512,7 +512,7 @@ namespace WSTanHoa.Controllers
             string sql = "";
             if (function == "export")
             {
-                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,NamLapDat=year(ttkh.NgayThay) from"
+                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,SoThan=ttkh.SOTHANDH,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,NamLapDat=year(ttkh.NgayThay) from"
                     + " (select IDNCC,NCC=ncc.Name,t1.DanhBo,SoLuongNgay=COUNT(t1.DanhBo) from (";
                 while (count > 0)
                 {
@@ -611,7 +611,7 @@ namespace WSTanHoa.Controllers
             string sql = "";
             if (function == "export")
             {
-                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA from"
+                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,SoThan=ttkh.SOTHANDH,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA from"
                     + " (select IDNCC,NCC=ncc.Name,t1.DanhBo,SoLuongNgay=COUNT(t1.DanhBo) from (";
                 while (count > 0)
                 {

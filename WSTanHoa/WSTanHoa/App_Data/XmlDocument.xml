@@ -2033,6 +2033,56 @@
             Danh sách nội dung Dòng
             </summary>
         </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.ID">
+            <summary>
+            ID
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.Loai">
+            <summary>
+            Loại đơn
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.DanhBo">
+            <summary>
+            Danh bộ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.DienThoai">
+            <summary>
+            Điện thoại
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.HoTen">
+            <summary>
+            Họ tên
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.CreateDate">
+            <summary>
+            Ngày tạo
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.TieuDe">
+            <summary>
+            Tiêu đề
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.NoiDung">
+            <summary>
+            Nội dung
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.GhiChu">
+            <summary>
+            Ghi chú
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.urlImage">
+            <summary>
+            url hình ảnh đính kèm
+            </summary>
+        </member>
         <member name="T:WSTanHoa.wrDHN.wsDHN">
             <remarks/>
         </member>

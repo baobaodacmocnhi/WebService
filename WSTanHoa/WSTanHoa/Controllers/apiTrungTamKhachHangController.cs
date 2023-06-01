@@ -24,6 +24,7 @@ namespace WSTanHoa.Controllers
         private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
+        private string urlApi = "https://cskhapi.sawaco.com.vn";
 
         /// <summary>
         /// Lấy thông tin khách hàng
@@ -1178,6 +1179,13 @@ namespace WSTanHoa.Controllers
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/DongHoNuoc/CapNhatDongHoNuoc");
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                //request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
                 DataTable dt = new DataTable();
 
                 dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
@@ -1463,6 +1471,75 @@ namespace WSTanHoa.Controllers
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
         }
+
+        private string getAccess_token()
+        {
+            return cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='cskhapi'").ToString();
+        }
+
+        [Route("getDonTu_CSKH_TCT")]
+        [HttpGet]
+        public IList<DonTu_CSKH_TCT> getDonTu_CSKH_TCT(string Nam, string Thang, string checksum)
+        {
+            try
+            {
+                //if (CGlobalVariable.getSHA256(Nam + Thang + _pass) != checksum)
+                //{
+                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                //}
+                List<DonTu_CSKH_TCT> lst = new List<DonTu_CSKH_TCT>();
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/KhachHangPhanHoi/ThongTinPhanHoi?branch_code=TH&nam=" + Nam + "&thang=" + Thang);
+                request.Method = "GET";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                    if (obj["ketQua"] == 1)
+                    {
+
+                        var lst1 = obj["duLieu"];
+                        foreach (var itemC1 in lst1)
+                        {
+                            DonTu_CSKH_TCT en = new DonTu_CSKH_TCT();
+                            en.ID = itemC1["id"];
+                            en.Loai = itemC1["nameLoaiPhanHoi"];
+                            en.DanhBo = itemC1["danhbo"];
+                            en.DienThoai = itemC1["soDT"];
+                            en.HoTen = itemC1["tenkh"];
+                            en.CreateDate = DateTime.Parse(itemC1["createdDate"]);
+                            en.TieuDe = itemC1["tieuDePhanHoi"];
+                            en.NoiDung = itemC1["noiDungPhanHoi"];
+                            en.GhiChu = itemC1["ghiChuThem"];
+                            if (itemC1["hinhAnhPhanHoi"] != "")
+                                en.urlImage = urlApi + itemC1["hinhAnhPhanHoi"];
+                            lst.Add(en);
+                        }
+                    }
+                    else
+                    {
+
+                    }
+                }
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
+
+
 
     }
 }

@@ -1747,4 +1747,75 @@ namespace WSTanHoa.Models
 
     #endregion
 
+    #region CSKH TCT
+
+    public class DonTu_CSKH_TCT
+    {
+        /// <summary>
+        /// ID
+        /// </summary>
+        public int ID { get; set; }
+
+        /// <summary>
+        /// Loại đơn
+        /// </summary>
+        public string Loai { get; set; }
+
+        /// <summary>
+        /// Danh bộ
+        /// </summary>
+        public string DanhBo { get; set; }
+
+        /// <summary>
+        /// Điện thoại
+        /// </summary>
+        public string DienThoai { get; set; }
+
+        /// <summary>
+        /// Họ tên
+        /// </summary>
+        public string HoTen { get; set; }
+
+        /// <summary>
+        /// Ngày tạo
+        /// </summary>
+        public DateTime? CreateDate { get; set; }
+
+        /// <summary>
+        /// Tiêu đề
+        /// </summary>
+        public string TieuDe { get; set; }
+
+        /// <summary>
+        /// Nội dung
+        /// </summary>
+        public string NoiDung { get; set; }
+
+        /// <summary>
+        /// Ghi chú
+        /// </summary>
+        public string GhiChu { get; set; }
+
+        /// <summary>
+        /// url hình ảnh đính kèm
+        /// </summary>
+        public string urlImage { get; set; }
+
+        public DonTu_CSKH_TCT()
+        {
+            ID = -1;
+            Loai = "";
+            DanhBo = "";
+            DienThoai = "";
+            HoTen = "";
+            CreateDate = null;
+            TieuDe = "";
+            NoiDung = "";
+            GhiChu = "";
+            urlImage = "";
+        }
+    }
+
+    #endregion
+
 }
