@@ -3983,7 +3983,7 @@ namespace WSSmartPhone
                                                 ChiSo = dt.Rows[0]["CSCu"].ToString();
                                             else
                                                 if (Code.Substring(0, 1) == "N")
-                                                { 
+                                                {
                                                     //ChiSo = "0"; 
                                                 }
                                                 else
@@ -7329,8 +7329,9 @@ namespace WSSmartPhone
                 {
                     grant_type = "password",
                     userName = "cskh.cnth",
-                    Password = "cskh2022@tanhoa"
+                    Password = "123456@ABcd"
                 };
+                //Password = "cskh2022@tanhoa"
                 var serializer = new JavaScriptSerializer();
                 var json = serializer.Serialize(data);
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
@@ -7348,8 +7349,13 @@ namespace WSSmartPhone
                     read.Close();
                     respuesta.Close();
                     var obj = jss.Deserialize<dynamic>(result);
-                    bool flag = _cDAL_KinhDoanh.ExecuteNonQuery("update CCCD_Configure set access_token='" + obj["duLieu"]["token"] + "',expires_in=" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + ",CreateDate=getdate()");
-                    strResponse = flag.ToString();
+                    if (obj["ketQua"] == 1)
+                    {
+                        bool flag = _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["duLieu"]["token"] + "',expires_in=" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + ",CreateDate=getdate() where ID='cskhapi'");
+                        strResponse = flag.ToString();
+                    }
+                    else
+                        strResponse = obj["thongBao"];
                 }
                 else
                 {
@@ -7361,6 +7367,11 @@ namespace WSSmartPhone
                 strResponse = ex.Message;
             }
             return strResponse;
+        }
+
+        private string getAccess_token()
+        {
+            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='cskhapi'").ToString();
         }
 
         public int checkExists_CCCD(string DanhBo, string CCCD, out string result)
@@ -7375,7 +7386,7 @@ namespace WSSmartPhone
                        | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
-                request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
 
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
@@ -7422,7 +7433,7 @@ namespace WSSmartPhone
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
                 DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select LoaiCapDM=case when TamTru=1 then '2' else '1' end,NgayHetHan=convert(char(4), NgayHetHan, 12),HoTen"
                 + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
                 if (dt != null && dt.Rows.Count > 0)
@@ -7484,7 +7495,7 @@ namespace WSSmartPhone
                         try
                         {
                             if (obj["duLieuTrung"][0]["id"].ToString() != "")
-                                result = "Dữ liệu trùng";
+                                result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " " + obj["duLieuTrung"][0]["createdDate"].ToString();
                         }
                         catch
                         {
@@ -7518,7 +7529,7 @@ namespace WSSmartPhone
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
                 DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select LoaiCapDM=case when TamTru=1 then '2' else '1' end,NgayHetHan=convert(char(4), NgayHetHan, 12),HoTen"
                 + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
                 if (dt != null && dt.Rows.Count > 0)
@@ -7597,7 +7608,7 @@ namespace WSSmartPhone
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                request.Headers["Authorization"] = "Bearer " + _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select access_token from CCCD_Configure").ToString();
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
                 DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select HoTen"
                 + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
                 if (dt != null && dt.Rows.Count > 0)
