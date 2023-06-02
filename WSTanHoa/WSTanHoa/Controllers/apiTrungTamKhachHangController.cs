@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 using System.Web.Http.Description;
 using WSTanHoa.Models;
@@ -1445,6 +1446,12 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        /// <summary>
+        /// Lấy thông tin danh bộ khi quét QR Code
+        /// </summary>
+        /// <param name="DanhBo"></param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
         [Route("getDanhBo_QRCode")]
         [HttpGet]
         public string getDanhBo_QRCode(string DanhBo, string checksum)
@@ -1477,18 +1484,87 @@ namespace WSTanHoa.Controllers
             return cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='cskhapi'").ToString();
         }
 
-        [Route("getDonTu_CSKH_TCT")]
+        /// <summary>
+        /// Lấy thông tin báo chỉ số nước
+        /// </summary>
+        /// <param name="Nam">Năm</param>
+        /// <param name="Thang">Tháng</param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("getCSN_CSKH_TCT")]
         [HttpGet]
-        public IList<DonTu_CSKH_TCT> getDonTu_CSKH_TCT(string Nam, string Thang, string checksum)
+        public IList<CSKH_TCT> getCSN_CSKH_TCT(string Nam, string Thang, string checksum)
         {
             try
             {
-                //if (CGlobalVariable.getSHA256(Nam + Thang + _pass) != checksum)
-                //{
-                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                //}
-                List<DonTu_CSKH_TCT> lst = new List<DonTu_CSKH_TCT>();
+                if (CGlobalVariable.getSHA256(Nam + Thang + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                List<CSKH_TCT> lst = new List<CSKH_TCT>();
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/LichDocSo/LayChiSoNuocBao?branch_code=TH&nam=" + Nam + "&thang=" + Thang);
+                request.Method = "GET";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                    if (obj["ketQua"] == 1)
+                    {
+                        var lst1 = obj["duLieu"];
+                        foreach (var itemC1 in lst1)
+                        {
+                            CSKH_TCT en = new CSKH_TCT();
+                            en.ID = itemC1["id"];
+                            en.Nam = itemC1["nam"];
+                            en.Ky = itemC1["ky"];
+                            en.DanhBo = itemC1["danhbo"];
+                            en.HoTen = itemC1["tenkh"];
+                            en.CreateDate = DateTime.Parse(itemC1["createdDate"]);
+                            en.CSN = itemC1["chiSoNuoc"];
+                            if (itemC1["hinhAnhChiSo"] != "")
+                                en.urlImage = urlApi + itemC1["hinhAnhChiSo"];
+                            lst.Add(en);
+                        }
+                    }
+                }
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
+
+        /// <summary>
+        /// Lấy thông tin đơn khiếu nại
+        /// </summary>
+        /// <param name="Nam">Năm</param>
+        /// <param name="Thang">Tháng</param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("getDonTu_CSKH_TCT")]
+        [HttpGet]
+        public IList<CSKH_TCT> getDonTu_CSKH_TCT(string Nam, string Thang, string checksum)
+        {
+            try
+            {
+                if (CGlobalVariable.getSHA256(Nam + Thang + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                List<CSKH_TCT> lst = new List<CSKH_TCT>();
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
@@ -1506,11 +1582,10 @@ namespace WSTanHoa.Controllers
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                     if (obj["ketQua"] == 1)
                     {
-
                         var lst1 = obj["duLieu"];
                         foreach (var itemC1 in lst1)
                         {
-                            DonTu_CSKH_TCT en = new DonTu_CSKH_TCT();
+                            CSKH_TCT en = new CSKH_TCT();
                             en.ID = itemC1["id"];
                             en.Loai = itemC1["nameLoaiPhanHoi"];
                             en.DanhBo = itemC1["danhbo"];
@@ -1525,10 +1600,6 @@ namespace WSTanHoa.Controllers
                             lst.Add(en);
                         }
                     }
-                    else
-                    {
-
-                    }
                 }
                 return lst;
             }
@@ -1539,7 +1610,65 @@ namespace WSTanHoa.Controllers
             }
         }
 
-
+        /// <summary>
+        /// cập nhật phản hồi đơn khiếu nại
+        /// </summary>
+        /// <param name="ID">ID đơn khiếu nại</param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("insertPhanHoi_DonTu_CSKH_TCT")]
+        [HttpGet]
+        public bool insertPhanHoi_DonTu_CSKH_TCT(string ID, string checksum)
+        {
+            try
+            {
+                if (CGlobalVariable.getSHA256(ID + _pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                List<CSKH_TCT> lst = new List<CSKH_TCT>();
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/KhachHangPhanHoi/TraLoiPhanHoi");
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                var data = new
+                {
+                    IDPhanHoi = ID,
+                    NoiDungTraLoi = "Công ty Cổ phần Cấp nước Tân Hòa đã tiếp nhận thông tin của Quý khách. Công ty sẽ phản hồi thông tin trong thời gian sớm nhất. Khi cần hỗ trợ thêm thông tin vui lòng liên hệ tổng đài 19006489. Xin cảm ơn!",
+                    NguoiPhanHoi = "cskh.cnth"
+                };
+                var json = CGlobalVariable.jsSerializer.Serialize(data);
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                request.ContentLength = byteArray.Length;
+                //gắn data post
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                    if (obj["ketQua"] == 1)
+                        return true;
+                    else
+                        return false;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
 
     }
 }

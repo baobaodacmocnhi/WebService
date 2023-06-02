@@ -1255,7 +1255,6 @@ namespace WSTanHoa.Controllers
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/Authenticate/login");
                     request.Method = "POST";
                     request.ContentType = "application/json";
-
                     var data = new
                     {
                         Username = "quocbao241@gmail.com",
@@ -1268,7 +1267,6 @@ namespace WSTanHoa.Controllers
                     Stream dataStream = request.GetRequestStream();
                     dataStream.Write(byteArray, 0, byteArray.Length);
                     dataStream.Close();
-
                     HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                     if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                     {

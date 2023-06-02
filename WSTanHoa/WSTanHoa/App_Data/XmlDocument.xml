@@ -634,6 +634,40 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getDanhBo_QRCode(System.String,System.String)">
+            <summary>
+            Lấy thông tin danh bộ khi quét QR Code
+            </summary>
+            <param name="DanhBo"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getCSN_CSKH_TCT(System.String,System.String,System.String)">
+            <summary>
+            Lấy thông tin báo chỉ số nước
+            </summary>
+            <param name="Nam">Năm</param>
+            <param name="Thang">Tháng</param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getDonTu_CSKH_TCT(System.String,System.String,System.String)">
+            <summary>
+            Lấy thông tin đơn khiếu nại
+            </summary>
+            <param name="Nam">Năm</param>
+            <param name="Thang">Tháng</param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.insertPhanHoi_DonTu_CSKH_TCT(System.String,System.String)">
+            <summary>
+            cập nhật phản hồi đơn khiếu nại
+            </summary>
+            <param name="ID">ID đơn khiếu nại</param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiZaloController.webhook2020(System.String,System.String,System.String)">
             <summary>
             webhook receive zalo, 2020 webhook từ view gọi sang api
@@ -2033,54 +2067,69 @@
             Danh sách nội dung Dòng
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.ID">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.ID">
             <summary>
             ID
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.Loai">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.Loai">
             <summary>
             Loại đơn
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.DanhBo">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.DanhBo">
             <summary>
             Danh bộ
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.DienThoai">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.DienThoai">
             <summary>
             Điện thoại
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.HoTen">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.HoTen">
             <summary>
             Họ tên
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.CreateDate">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.CreateDate">
             <summary>
             Ngày tạo
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.TieuDe">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.TieuDe">
             <summary>
             Tiêu đề
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.NoiDung">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.NoiDung">
             <summary>
             Nội dung
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.GhiChu">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.GhiChu">
             <summary>
             Ghi chú
             </summary>
         </member>
-        <member name="P:WSTanHoa.Models.DonTu_CSKH_TCT.urlImage">
+        <member name="P:WSTanHoa.Models.CSKH_TCT.urlImage">
             <summary>
             url hình ảnh đính kèm
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CSKH_TCT.Nam">
+            <summary>
+            Năm
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CSKH_TCT.Ky">
+            <summary>
+            Kỳ
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CSKH_TCT.CSN">
+            <summary>
+            Chỉ số nước
             </summary>
         </member>
         <member name="T:WSTanHoa.wrDHN.wsDHN">

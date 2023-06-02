@@ -1749,7 +1749,7 @@ namespace WSTanHoa.Models
 
     #region CSKH TCT
 
-    public class DonTu_CSKH_TCT
+    public class CSKH_TCT
     {
         /// <summary>
         /// ID
@@ -1801,7 +1801,22 @@ namespace WSTanHoa.Models
         /// </summary>
         public string urlImage { get; set; }
 
-        public DonTu_CSKH_TCT()
+        /// <summary>
+        /// Năm
+        /// </summary>
+        public string Nam { get; set; }
+
+        /// <summary>
+        /// Kỳ
+        /// </summary>
+        public string Ky { get; set; }
+
+        /// <summary>
+        /// Chỉ số nước
+        /// </summary>
+        public int CSN { get; set; }
+
+        public CSKH_TCT()
         {
             ID = -1;
             Loai = "";
@@ -1813,6 +1828,9 @@ namespace WSTanHoa.Models
             NoiDung = "";
             GhiChu = "";
             urlImage = "";
+            Nam = "";
+            Ky = "";
+            CSN = -1;
         }
     }
 
