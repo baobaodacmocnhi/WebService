@@ -149,7 +149,7 @@ namespace WSTanHoa.Controllers
         public ActionResult sDHN(FormCollection collection, string function, string TuNgay, string DenNgay, string NgayXem)
         {
             //update sDHN
-            cDAL_DHN.ExecuteNonQuery(" insert into sDHN.dbo.sDHN_TCT(DanhBo,serialnumber,IDNCC)"
+            cDAL_DHN.ExecuteNonQuery("delete sDHN.dbo.sDHN_TCT insert into sDHN.dbo.sDHN_TCT(DanhBo,serialnumber,IDNCC)"
                             + " select dhn.DanhBo, serialnumber = CASE WHEN ttkh.HIEUDH = 'EMS' THEN ISNULL((select Serial_number from[sDHN].[dbo].[DHN_PHAMLAM] where DANHBO = dhn.DanhBo), 0) ELSE ttkh.SOTHANDH END, tt.ID"
                             + " from(SELECT DanhBo = DHN_DANHBO, DIACHI, REPLACE(DHN_TODS, 'DHTM-', 'TH-') AS MADMA, HCT_HIEUDHNGAN AS HG, HCT_SOTHANGAN AS STGAN, HCT_CHISOGAN AS CSGa, HCT_CODHNGAN AS COGAN,"
                             + " CAST(HCT_NGAYGAN as date) AS NGAYGAN, CAST(HCT_NGAYKIEMDINH as date) AS KD,"
@@ -167,11 +167,20 @@ namespace WSTanHoa.Controllers
             ViewBag.DMA = ToSelectList(dtNCC, "DMA", "DMA");
             //get năm
             dtNCC = cDAL_DHN.ExecuteQuery_DataTable("SELECT Nam=year(HCT_NGAYGAN)"
-                +" FROM TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND HCT_NGAYGAN IS NOT NULL"
+                + " FROM TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND HCT_NGAYGAN IS NOT NULL"
                 + " and DHN_DANHBO in (select DanhBo from sDHN.dbo.sDHN_TCT where Valid = 1)"
                 + " group by year(HCT_NGAYGAN)"
                 + " order by year(HCT_NGAYGAN)");
-            ViewBag.NamLapDat = ToSelectList(dtNCC, "Nam", "Nam");
+            //ViewBag.NamLapDat = ToSelectList(dtNCC, "Nam", "Nam");
+            string Nam = "";
+            foreach (DataRow item in dtNCC.Rows)
+            {
+                if (Nam == "")
+                    Nam = item["Nam"].ToString();
+                else
+                    Nam += ";" + item["Nam"].ToString();
+            }
+            ViewBag.NamLapDat = Nam;
             dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select DMA=MADMA from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                  + " where Valid = 1 and sdhn.DanhBo = ttkh.DANHBO"
                  + " group by MADMA"
@@ -269,8 +278,17 @@ namespace WSTanHoa.Controllers
                     + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo=ttkh.DANHBO";
                 if (collection.AllKeys.Contains("chkBoDaNghiemThu"))
                     sql += " and sdhn.DanhBo not in (select DanhBo from DHTM_NGHIEMTHU)";
-                if (collection.AllKeys.Contains("chkBoNamLapDat"))
-                    sql += " and year(ttkh.NgayThay)!="+ collection["NamLapDat"].ToString();
+                if (collection.AllKeys.Contains("chkNamLapDat"))
+                {
+                    string[] NamLapDats = collection["NamLapDat"].ToString().Split(';');
+                    string NamLapDat = "";
+                    foreach (string item in NamLapDats)
+                        if (NamLapDat == "")
+                            NamLapDat = item;
+                        else
+                            NamLapDat += "," + item;
+                    sql += " and year(ttkh.NgayThay) in (" + NamLapDat + ")";
+                }
                 if (collection["radLoai"].ToString() == "radNCC")
                 {
                     sql += " and sdhn.IDNCC=" + collection["NCC"].ToString();
@@ -478,7 +496,7 @@ namespace WSTanHoa.Controllers
                         en.SoLuong = dr.Count().ToString();
                         en.NoiDung = item["ID"].ToString();
                         string SL = "";
-                        DataTable dtSL =null ;
+                        DataTable dtSL = null;
                         if (!bool.Parse(KhongDu24records))
                             dtSL = getDS_KhongTinHieu_GroupNamLapDat_sDHN("", en.NoiDung, SoNgay, Ngay);
                         else
@@ -512,8 +530,9 @@ namespace WSTanHoa.Controllers
             string sql = "";
             if (function == "export")
             {
-                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,SoThan=ttkh.SOTHANDH,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,NamLapDat=year(ttkh.NgayThay) from"
-                    + " (select IDNCC,NCC=ncc.Name,t1.DanhBo,SoLuongNgay=COUNT(t1.DanhBo) from (";
+                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,SoThan=ttkh.SOTHANDH,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,NamLapDat=year(ttkh.NgayThay)"
+                + " ,gps_latitude=(select top 1 gps_latitude from CAPNUOCTANHOA.dbo.DanhBoGPS where DanhBo=ttkh.DANHBO),gps_lontitude=(select top 1 gps_lontitude from CAPNUOCTANHOA.dbo.DanhBoGPS where DanhBo = ttkh.DANHBO)"
+                + " from (select IDNCC,NCC=ncc.Name,t1.DanhBo,SoLuongNgay=COUNT(t1.DanhBo) from (";
                 while (count > 0)
                 {
                     sql += " select IDNCC,DanhBo,SoLuong=(select COUNT(*) from sDHN_LichSu_TCT where DanhBo=sDHN_TCT.DanhBo and CAST(ThoiGianCapNhat as date)='" + date.ToString("yyyyMMdd") + "')"
@@ -611,8 +630,9 @@ namespace WSTanHoa.Controllers
             string sql = "";
             if (function == "export")
             {
-                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,SoThan=ttkh.SOTHANDH,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA from"
-                    + " (select IDNCC,NCC=ncc.Name,t1.DanhBo,SoLuongNgay=COUNT(t1.DanhBo) from (";
+                sql = "select t1.*,HieuDHN=ttsdhn.HIEU_DHTM,SoThan=ttkh.SOTHANDH,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA"
+                + " ,gps_latitude=(select top 1 gps_latitude from CAPNUOCTANHOA.dbo.DanhBoGPS where DanhBo=ttkh.DANHBO),gps_lontitude=(select top 1 gps_lontitude from CAPNUOCTANHOA.dbo.DanhBoGPS where DanhBo = ttkh.DANHBO)"
+                + " from (select IDNCC,NCC=ncc.Name,t1.DanhBo,SoLuongNgay=COUNT(t1.DanhBo) from (";
                 while (count > 0)
                 {
                     sql += " select IDNCC,DanhBo,SoLuong=(select COUNT(*) from sDHN_LichSu_TCT where DanhBo=sDHN_TCT.DanhBo and CAST(ThoiGianCapNhat as date)='" + date.ToString("yyyyMMdd") + "')"
