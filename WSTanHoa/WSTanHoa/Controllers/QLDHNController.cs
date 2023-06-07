@@ -149,7 +149,7 @@ namespace WSTanHoa.Controllers
         public ActionResult sDHN(FormCollection collection, string function, string TuNgay, string DenNgay, string NgayXem)
         {
             //update sDHN
-            cDAL_DHN.ExecuteNonQuery("delete sDHN.dbo.sDHN_TCT insert into sDHN.dbo.sDHN_TCT(DanhBo,serialnumber,IDNCC)"
+            cDAL_DHN.ExecuteNonQuery("insert into sDHN.dbo.sDHN_TCT(DanhBo,serialnumber,IDNCC)"
                             + " select dhn.DanhBo, serialnumber = CASE WHEN ttkh.HIEUDH = 'EMS' THEN ISNULL((select Serial_number from[sDHN].[dbo].[DHN_PHAMLAM] where DANHBO = dhn.DanhBo), 0) ELSE ttkh.SOTHANDH END, tt.ID"
                             + " from(SELECT DanhBo = DHN_DANHBO, DIACHI, REPLACE(DHN_TODS, 'DHTM-', 'TH-') AS MADMA, HCT_HIEUDHNGAN AS HG, HCT_SOTHANGAN AS STGAN, HCT_CHISOGAN AS CSGa, HCT_CODHNGAN AS COGAN,"
                             + " CAST(HCT_NGAYGAN as date) AS NGAYGAN, CAST(HCT_NGAYKIEMDINH as date) AS KD,"
