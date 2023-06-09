@@ -1084,7 +1084,6 @@ namespace WSTanHoa.Controllers
             try
             {
                 string checkSoThan = "", checkHoTen = "", checkSoNha = "", checkTenDuong = "";
-
                 if (SoThan != null)
                     checkSoThan = SoThan;
                 if (HoTen != null)
@@ -1112,7 +1111,6 @@ namespace WSTanHoa.Controllers
                             en.DanhBo = item["DanhBo"].ToString();
                             en.HoTen = item["HoTen"].ToString();
                             en.DiaChi = item["DiaChi"].ToString();
-
                             lst.Add(en);
                         }
                     }
@@ -1131,12 +1129,10 @@ namespace WSTanHoa.Controllers
                             en.DiaChi = item["DiaChi"].ToString();
                             if (item["DiaChi"].ToString() != item["DiaChiHoaDon"].ToString())
                                 en.DiaChiHoaDon = item["DiaChiHoaDon"].ToString();
-
                             lst.Add(en);
                         }
                     }
                 }
-
                 //kiếm danh bộ hủy
                 //dt = CConstantVariable.cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG_HUYDB where HOTEN like N'%" + checkHoTen + "%' and ((SONHA like N'%" + checkSoNha + "%' and TENDUONG like N'%" + checkTenDuong + "%') or (SONHA+' '+TENDUONG like N'%" + checkSoNha + " " + checkTenDuong + "%'))");
                 //if (dt != null && dt.Rows.Count > 0)
