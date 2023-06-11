@@ -1353,7 +1353,7 @@ namespace WSTanHoa.Controllers
                 }
                 DataTable dt = new DataTable();
                 List<ThongTinExtra> lst = new List<ThongTinExtra>();
-                dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select 'a','b','c' union select 'd', 'e', 'f' ");
+                dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select 'a','b','c','d' union select 'e', 'f', 'g','h' ");
                 //dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
                 //dt.Merge(cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo=DanhBa from KhachHang where SDT like '%" + DienThoai + "%'"));
 
