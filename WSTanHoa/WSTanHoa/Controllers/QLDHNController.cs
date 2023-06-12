@@ -509,6 +509,7 @@ namespace WSTanHoa.Controllers
                                 SL += "\r\n" + itemSL["NamLapDat"].ToString() + " : " + itemSL["SoLuong"].ToString();
                         }
                         en.DanhBo = SL;
+                        en.TieuThu = dt.Rows.Count.ToString();
                         vKhongTinHieu.Add(en);
                     }
                 }

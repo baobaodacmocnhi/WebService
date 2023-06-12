@@ -1433,7 +1433,6 @@ namespace WSTanHoa.Controllers
                 }
                 lst.Add(en);
                 return lst;
-
             }
             catch (Exception ex)
             {
