@@ -1474,7 +1474,8 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        private string getAccess_token()
+        #region api TCT
+        private string getAccess_token_TCT()
         {
             return cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='cskhapi'").ToString();
         }
@@ -1504,7 +1505,7 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/LichDocSo/LayChiSoNuocBao?branch_code=TH&nam=" + Nam + "&thang=" + Thang);
                 request.Method = "GET";
                 request.ContentType = "application/json";
-                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                request.Headers["Authorization"] = "Bearer " + getAccess_token_TCT();
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
@@ -1566,7 +1567,7 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/KhachHangPhanHoi/ThongTinPhanHoi?branch_code=TH&nam=" + Nam + "&thang=" + Thang);
                 request.Method = "GET";
                 request.ContentType = "application/json";
-                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                request.Headers["Authorization"] = "Bearer " + getAccess_token_TCT();
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
@@ -1629,7 +1630,7 @@ namespace WSTanHoa.Controllers
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/KhachHangPhanHoi/TraLoiPhanHoi");
                 request.Method = "POST";
                 request.ContentType = "application/json";
-                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                request.Headers["Authorization"] = "Bearer " + getAccess_token_TCT();
                 var data = new
                 {
                     IDPhanHoi = ID,
@@ -1665,5 +1666,99 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        #endregion
+
+        #region api chất lượng nước
+
+        private string getAccess_token_CLN()
+        {
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.capnuoctanhoa.com.vn/index.php?m=api&username=api&password=tanhoa@123&s=dang-nhap");
+                request.Method = "POST";
+                request.ContentLength = 0;
+                request.ContentType = "application/x-www-form-urlencoded";
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                    if (obj["success"] == true)
+                    {
+                        return obj["data"]["token"];
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
+
+        /// <summary>
+        /// Lấy danh sách chất lượng nước
+        /// </summary>
+        /// <returns></returns>
+        [Route("getChatLuongNuoc")]
+        [HttpGet]
+        public IList<CSKH_TCT> getDonTu_CSKH_TCT(string checksum)
+        {
+            try
+            {
+                if (CGlobalVariable.getSHA256(_pass) != checksum)
+                {
+                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                }
+                string token = getAccess_token_CLN();
+                List<CSKH_TCT> lst = new List<CSKH_TCT>();
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://www.capnuoctanhoa.com.vn/index.php?m=api&s=chat-luong-nuoc");
+                request.Method = "GET";
+                request.ContentType = "application/json";
+                request.Headers["token"] = token;
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                    if (obj["success"] == true)
+                    {
+                        var lst1 = obj["data"];
+                        foreach (var itemC1 in lst1)
+                        {
+                            CSKH_TCT en = new CSKH_TCT();
+                            en.ID = int.Parse(itemC1["id"]);
+                            en.CreateDate = DateTime.Parse(itemC1["date"]);
+                            en.TieuDe = itemC1["title"];
+                            if (itemC1["file_download"] != "")
+                                en.urlFile = itemC1["file_download"];
+                            lst.Add(en);
+                        }
+                    }
+                }
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
+
+        #endregion
     }
 }

@@ -1802,6 +1802,11 @@ namespace WSTanHoa.Models
         public string urlImage { get; set; }
 
         /// <summary>
+        /// url file
+        /// </summary>
+        public string urlFile { get; set; }
+
+        /// <summary>
         /// Năm
         /// </summary>
         public string Nam { get; set; }
@@ -1828,6 +1833,7 @@ namespace WSTanHoa.Models
             NoiDung = "";
             GhiChu = "";
             urlImage = "";
+            urlFile = "";
             Nam = "";
             Ky = "";
             CSN = -1;

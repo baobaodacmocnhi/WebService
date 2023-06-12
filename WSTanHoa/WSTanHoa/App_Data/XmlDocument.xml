@@ -668,6 +668,12 @@
             <param name="checksum"></param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.getDonTu_CSKH_TCT(System.String)">
+            <summary>
+            Lấy danh sách chất lượng nước
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiZaloController.webhook2020(System.String,System.String,System.String)">
             <summary>
             webhook receive zalo, 2020 webhook từ view gọi sang api
@@ -2115,6 +2121,11 @@
         <member name="P:WSTanHoa.Models.CSKH_TCT.urlImage">
             <summary>
             url hình ảnh đính kèm
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.CSKH_TCT.urlFile">
+            <summary>
+            url file
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.CSKH_TCT.Nam">
