@@ -1689,7 +1689,8 @@ namespace WSTanHoa.Controllers
                         {
                             CSKH_TCT en = new CSKH_TCT();
                             en.ID = int.Parse(itemC1["id"]);
-                            en.CreateDate = DateTime.Parse(itemC1["date"]);
+                            string[] dates = ((string)itemC1["date"]).ToString().Split('-');
+                            en.CreateDate = new DateTime(int.Parse(dates[2]), int.Parse(dates[1]), int.Parse(dates[0]));
                             en.TieuDe = itemC1["title"];
                             if (itemC1["file_download"] != "")
                                 en.urlFile = itemC1["file_download"];

@@ -1096,6 +1096,7 @@ namespace WSTanHoa.Controllers
             {
                 strResponse = ex.Message;
             }
+            cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('',N'',N'phathanhhoadon',N'',N'" + strResponse + "')");
             return strResponse;
         }
 
@@ -1161,6 +1162,7 @@ namespace WSTanHoa.Controllers
             {
                 strResponse = ex.Message;
             }
+            cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('',N'',N'nhacno',N'',N'" + strResponse + "')");
             return strResponse;
         }
 
@@ -1219,6 +1221,7 @@ namespace WSTanHoa.Controllers
             {
                 strResponse = ex.Message;
             }
+            cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('',N'',N'thanhtoanhoadon',N'',N'" + strResponse + "')");
             return strResponse;
         }
 
