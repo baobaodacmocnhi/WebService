@@ -271,7 +271,13 @@ namespace WSTanHoa.Controllers
                             + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DanhBo=ttkh.DanhBo order by diff)t1)"
                             + ",ThoiGiansDHN=(select ThoiGianCapNhat from"
                             + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) * -1 else datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) end"
-                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DanhBo=ttkh.DanhBo order by diff)t1)";
+                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DanhBo=ttkh.DanhBo order by diff)t1)"
+                            + " ,CanhBaosDHN=(select top 1"
+                            + " + case when sum(CAST(CBNamCham AS INT)) > 0 then ' ; NC' + convert(varchar(1000), sum(CAST(CBNamCham AS INT)) / 24) + 'd' else '' end"
+                            + " + case when sum(CAST(CBMoHop AS INT)) > 0 then ' ; PH' else '' end"
+                            + " + case when sum(CAST(CBChayNguoc AS INT)) > 0 then ' ; CN' else '' end"
+                            + " + case when sum(CAST(CBRoRi AS INT)) > 0 then ' ; RR' + convert(varchar(1000), sum(CAST(CBRoRi AS INT)) / 24) + 'd' else '' end"
+                            + " from sDHN_LichSu_TCT where YEAR(sDHN_LichSu_TCT.ThoiGianCapNhat) = 2023 and MONTH(sDHN_LichSu_TCT.ThoiGianCapNhat) = 2 and sDHN_LichSu_TCT.DanhBo = ttkh.DanhBo)";
                     }
                 }
                 sql += " from sDHN_TCT sdhn,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"

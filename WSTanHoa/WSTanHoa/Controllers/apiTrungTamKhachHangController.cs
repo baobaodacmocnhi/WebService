@@ -140,7 +140,7 @@ namespace WSTanHoa.Controllers
                     {
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
-                        en.ThongTin += "<a style='color: blue;' target='_blank' href='https://google.com/maps/search/" + toado.ToString() + "'>Định vị GPS</a>";
+                        en.ThongTin += "<a style='color: blue;' target='_blank' href='https://www.google.com/maps/search/?api=1&query=" + toado.ToString() + "'>Định vị GPS</a>";
                     }
                     if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                     {
