@@ -674,6 +674,15 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiTrungTamKhachHangController.sala_updateDienThoai(System.String,System.String,System.String)">
+            <summary>
+            Cập nhật số điện thoại từ crm
+            </summary>
+            <param name="FromCreateDate">yyyy-MM-dd</param>
+            <param name="ToCreateDate">yyyy-MM-dd</param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiZaloController.webhook2020(System.String,System.String,System.String)">
             <summary>
             webhook receive zalo, 2020 webhook từ view gọi sang api
@@ -911,6 +920,16 @@
         <member name="P:WSTanHoa.Models.ThongTinKhachHang.ThongTin">
             <summary>
             Thông tin
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThongTinKhachHang.HoSoGoc">
+            <summary>
+            Hồ sơ gốc
+            </summary>
+        </member>
+        <member name="P:WSTanHoa.Models.ThongTinKhachHang.BamChi">
+            <summary>
+            Bấm chì
             </summary>
         </member>
         <member name="P:WSTanHoa.Models.DocSo.NhanVien">

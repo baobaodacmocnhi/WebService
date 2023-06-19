@@ -18,8 +18,8 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuTien")]
     public class apiThuTienController : ApiController
     {
-        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
         MResult _result = new MResult();
 
         // GET api/<controller>
@@ -52,7 +52,7 @@ namespace WSTanHoa.Controllers
                 var headers = Request.Headers;
                 if (headers.Contains("checksum"))
                 {
-                    if (headers.GetValues("checksum").First() != CGlobalVariable.cheksum)
+                    if (headers.GetValues("checksum").First() != CGlobalVariable.checksum)
                     {
                         _result.alert = "ERR:11";
                         _result.message = "Sai Mã Xác Nhận";
@@ -77,7 +77,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                return (bool)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
+                return (bool)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ActiveMobile from TT_NguoiDung where MaND=" + MaNV);
             }
             catch (Exception ex)
             {
@@ -89,7 +89,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if ((int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
+                if ((int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(*) from TT_ChotDangNgan where CAST(NgayChot as date)='" + NgayGiaiTrach + "' and Chot=1") > 0)
                     return true;
                 else
                     return false;
@@ -127,9 +127,9 @@ namespace WSTanHoa.Controllers
             try
             {
                 object MaNV = null;
-                MaNV = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
+                MaNV = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
                 if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
-                    MaNV = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
+                    MaNV = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
 
                 if (MaNV == null || MaNV.ToString() == "")
                 {
@@ -138,9 +138,9 @@ namespace WSTanHoa.Controllers
                 }
 
                 //xóa máy đăng nhập MaNV khác
-                object MaNV_UID_Old = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                object MaNV_UID_Old = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
                 if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
-                    cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                    _cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
 
                 //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                 //{
@@ -152,17 +152,17 @@ namespace WSTanHoa.Controllers
                 //    }
                 //}
 
-                object MaNV_UID = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                object MaNV_UID = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
                 if (MaNV_UID != null)
                     if ((int)MaNV_UID == 0)
-                        cDAL_ThuTien.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                        _cDAL_ThuTien.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
                     else
-                        cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+                        _cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
 
-                DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV);
+                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV);
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     
@@ -201,7 +201,7 @@ namespace WSTanHoa.Controllers
                                     + " from HOADON hd,[KTKS_DonKH].[dbo].[DCBD_ChiTietHoaDon] ctdchd"
                                     + " where hd.BaoCaoThue=1 and CAST(NGAYGIAITRACH as date)='" + DateTime.ParseExact(NgayGiaiTrach, "dd/MM/yyyy", CultureInfo.InvariantCulture).ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null"
                                     + " and hd.DANHBA=ctdchd.DanhBo and hd.NAM= ctdchd.Nam and hd.Ky= ctdchd.Ky";
-                        DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                         worksheet.Cells["A1"].LoadFromDataTable(dt, true);
                         byte[] bytes = package.GetAsByteArray();
                         excelFile = bytes;

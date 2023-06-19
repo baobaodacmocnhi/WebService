@@ -1,0 +1,537 @@
+{
+	"info": {
+		"_postman_id": "bc04f477-422d-48d7-a90a-b56399a86c55",
+		"name": "Tan Hoa API v2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8317987"
+	},
+	"item": [
+		{
+			"name": "Khách hàng",
+			"item": [
+				{
+					"name": "Danh sách",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/customers/get?from_date=2023-06-14",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"customers",
+								"get"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "anh hung",
+									"disabled": true
+								},
+								{
+									"key": "phone",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "from_date",
+									"value": "2023-06-14"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Thêm mới",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullname\": \"Test\",\n    \"phone\": \"0978830477,09788304758\",\n    \"email\": \"test1@gmail.com,test2@gmail.com\",\n    \"danhbo\": \"13141985588,13113810985\",\n    \"note\" : \"Đăng ký mới\"\n}"
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/customers/add",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"customers",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hiệu chỉnh",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullname\": \"Test 3\",\n    \"phone\": \"0978830477 \",\n    \"email\": \"test1@gmail.com \",\n    \"danhbo\": \"13141985588 \",\n    \"note\" : \"Cập nhật thông tin\"\n}\n"
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/customers/update/983516867416506423",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"customers",
+								"update",
+								"983516867416506423"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xoá",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/customers/delete/983516867416506423",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"customers",
+								"delete",
+								"983516867416506423"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Chuyển xử lý",
+			"item": [
+				{
+					"name": "Danh sách",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/tickets/get?from_date=2023-05-14&limit=1",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"tickets",
+								"get"
+							],
+							"query": [
+								{
+									"key": "from_date",
+									"value": "2023-05-14"
+								},
+								{
+									"key": "limit",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Thêm mới",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer_id\" : \"455316867451827037\",\n    \"contact_name\" : \"1111\",\n    \"contract_phone\" : \"1111\",\n    \"danhbo\" : \"verifyCustomToken\",\n    \"address\" : \"So 1\",\n    \"type_id\" : \"1981\",\n    \"status_id\" : \"2022\",\n    \"title\" : \"Test \",\n     \"note\" : \"Note\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/tickets/add",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"tickets",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hiệu chỉnh",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"customer_id\" : \"455316867451827037\",\n    \"contact_name\" : \"1111\",\n    \"contract_phone\" : \"1111\",\n    \"danhbo\" : \"verifyCustomToken\",\n    \"address\" : \"So 1\",\n    \"type_id\" : \"1981\",\n    \"status_id\" : \"2022\",\n    \"title\" : \"Test 2 \",\n     \"note\" : \"Note 2222\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/tickets/update/793616867455142928",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"tickets",
+								"update",
+								"793616867455142928"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Thêm nhật ký",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n     \"note\" : \"Note 33\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/tickets/note/793616867455142928",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"tickets",
+								"note",
+								"793616867455142928"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Xoá",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer TOKEN",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/tickets/delete/793616867455142928",
+							"protocol": "https",
+							"host": [
+								"crm",
+								"cskhtanhoa",
+								"com",
+								"vn"
+							],
+							"port": "8443",
+							"path": [
+								"openapi",
+								"v2",
+								"tickets",
+								"delete",
+								"793616867455142928"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "- Tổng đài",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer TOKEN",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/calls?limit=1",
+					"protocol": "https",
+					"host": [
+						"crm",
+						"cskhtanhoa",
+						"com",
+						"vn"
+					],
+					"port": "8443",
+					"path": [
+						"openapi",
+						"v2",
+						"calls"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "o",
+							"disabled": true
+						},
+						{
+							"key": "takecare_by_user_id",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "dest_number",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "caller_number",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "limit",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "- Người dùng",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer TOKEN",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://crm.cskhtanhoa.com.vn:8443/openapi/v2/users",
+					"protocol": "https",
+					"host": [
+						"crm",
+						"cskhtanhoa",
+						"com",
+						"vn"
+					],
+					"port": "8443",
+					"path": [
+						"openapi",
+						"v2",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

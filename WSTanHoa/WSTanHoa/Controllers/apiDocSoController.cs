@@ -32,7 +32,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.cheksum == checksum)
+                if (CGlobalVariable.checksum == checksum)
                 {
                     updateDS_sDHN_HoaSen();
                     updateDS_sDHN_Rynan();
@@ -260,7 +260,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.cheksum == checksum)
+                if (CGlobalVariable.checksum == checksum)
                 {
                     string[] datestr = Time.Split('-');
                     DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from"
@@ -307,7 +307,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.cheksum == checksum)
+                if (CGlobalVariable.checksum == checksum)
                 {
                     DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select DanhBo,IDNCC from sDHN where Valid=1 order by DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -350,7 +350,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.cheksum == checksum)
+                if (CGlobalVariable.checksum == checksum)
                 {
                     DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select DanhBo,IDNCC from sDHN where Valid=1 order by DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -390,7 +390,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.cheksum == checksum)
+                if (CGlobalVariable.checksum == checksum)
                 {
                     DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select DanhBo,IDNCC from sDHN where Valid=1 order by DanhBo");
                     for (int i = 0; i < dt.Rows.Count; i++)
@@ -1247,7 +1247,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CGlobalVariable.cheksum)
+                if (checksum == CGlobalVariable.checksum)
                 {
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
@@ -1300,7 +1300,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CGlobalVariable.cheksum)
+                if (checksum == CGlobalVariable.checksum)
                 {
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
@@ -1345,7 +1345,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CGlobalVariable.cheksum)
+                if (checksum == CGlobalVariable.checksum)
                 {
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
@@ -1461,7 +1461,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CGlobalVariable.cheksum)
+                if (checksum == CGlobalVariable.checksum)
                 {
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
@@ -1680,7 +1680,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CGlobalVariable.cheksum)
+                if (checksum == CGlobalVariable.checksum)
                 {
                     DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("SELECT DanhBo=DHN_DANHBO FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL and HCT_HIEUDHNGAN in (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1)");
                     //DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("SELECT DanhBo=DHN_DANHBO FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL and HCT_HIEUDHNGAN in (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1) and DHN_DANHBO in('13141978120','13132120521')");
@@ -1782,7 +1782,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CGlobalVariable.cheksum)
+                if (checksum == CGlobalVariable.checksum)
                 {
                     string[] datestr = Time.Split('-');
                     DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from"
@@ -1887,7 +1887,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                if (checksum == CGlobalVariable.cheksum)
+                if (checksum == CGlobalVariable.checksum)
                 {
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls

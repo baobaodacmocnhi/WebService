@@ -11,7 +11,7 @@ namespace WSTanHoa.Controllers
 {
     public class TestController : Controller
     {
-        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
 
         // GET: Test
         public ActionResult Index(string action, string radLoai, string TuNgay, string DenNgay)
@@ -36,7 +36,7 @@ namespace WSTanHoa.Controllers
                            + " where CAST(CreateDate as date)>='" + dateTu.ToString("yyyyMMdd") + "' and CAST(CreateDate as date)<='" + dateDen.ToString("yyyyMMdd") + "'"
                            + " group by TenDichVu"
                            + " order by TenDichVu";
-                    dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                    dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     DataRow[] dr;
                     if (dt.Rows.Count > 0)
                         for (int i = 0; i < rowCount; i++)
@@ -135,7 +135,7 @@ namespace WSTanHoa.Controllers
                            + " and MaNV_DangNgan is not null and MaNH is null"
                            + " group by MaNH"
                            + " order by bank.NGANHANG";
-                    dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                    dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                     if (dt.Rows.Count > 0)
                         for (int i = 0; i < rowCount; i++)
                         {

@@ -16,7 +16,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuHo")]
     public class apiThuHoController : ApiController
     {
-        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -31,7 +31,7 @@ namespace WSTanHoa.Controllers
             //check exist
             try
             {
-                count = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where DANHBA='" + DanhBo + "'");
+                count = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where DANHBA='" + DanhBo + "'");
             }
             catch (Exception ex)
             {
@@ -48,7 +48,7 @@ namespace WSTanHoa.Controllers
             //get hoadon tồn
             try
             {
-                dt = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
             }
             catch (Exception ex)
             {
@@ -95,7 +95,7 @@ namespace WSTanHoa.Controllers
             {
                 try
                 {
-                    dt = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                    dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG) from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
                 }
                 catch (Exception ex)
                 {
@@ -123,7 +123,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                return (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+                return (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
             }
             catch (Exception ex)
             {
@@ -144,7 +144,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                return (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select TienDu=dbo.fnGetTienDu(" + DanhBo + ")");
+                return (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select TienDu=dbo.fnGetTienDu(" + DanhBo + ")");
             }
             catch (Exception ex)
             {
@@ -175,7 +175,7 @@ namespace WSTanHoa.Controllers
             string PasswordSQL = "";
             try
             {
-                PasswordSQL = (string)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
+                PasswordSQL = (string)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
             }
             catch (Exception ex)
             {
@@ -203,7 +203,7 @@ namespace WSTanHoa.Controllers
             int checkExist = 0;
             try
             {
-                checkExist = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                checkExist = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
@@ -234,7 +234,7 @@ namespace WSTanHoa.Controllers
             List<ThuHoHoaDon> lstHD = new List<ThuHoHoaDon>();
             try
             {
-                DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
+                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + DanhBo + ")");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     foreach (DataRow item in dt.Rows)
@@ -288,9 +288,9 @@ namespace WSTanHoa.Controllers
                                     + "         end"
                                     + "     end";
                         if (checkExist_GiaiTrach == "")
-                            checkExist_GiaiTrach += arrayMaHD[i] + " : " + cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
+                            checkExist_GiaiTrach += arrayMaHD[i] + " : " + _cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
                         else
-                            checkExist_GiaiTrach += " ; " + arrayMaHD[i] + " : " + cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
+                            checkExist_GiaiTrach += " ; " + arrayMaHD[i] + " : " + _cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString();
                     }
                     catch (Exception ex)
                     {
@@ -328,12 +328,12 @@ namespace WSTanHoa.Controllers
                 transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
-                    int ID = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from TT_DichVuThuTong");
+                    int ID = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from TT_DichVuThuTong");
 
                     string SoHoaDons = "", Kys = "", sql_ChiTiet = "";
                     for (int i = 0; i < arrayMaHD.Length; i++)
                     {
-                        DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
+                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD=ID_HOADON,SOHOADON,DanhBo=DANHBA,NAM,KY,GIABAN,ThueGTGT=THUE,PhiBVMT=PHI,TONGCONG from HOADON where ID_HOADON=" + arrayMaHD[i]);
                         sql_ChiTiet += "insert into TT_DichVuThu(MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,TenDichVu,IDDichVu,IDGiaoDich,CreateDate)"
                             + " values(" + dt.Rows[0]["MaHD"] + ",'" + dt.Rows[0]["SoHoaDon"] + "','" + dt.Rows[0]["DanhBo"] + "'," + dt.Rows[0]["Nam"] + "," + dt.Rows[0]["Ky"] + "," + dt.Rows[0]["TongCong"] + ",N'" + TenDichVu + "'," + ID + ",'" + IDGiaoDich + "',getdate()) ";
                         if (string.IsNullOrEmpty(SoHoaDons) == true)
@@ -349,8 +349,8 @@ namespace WSTanHoa.Controllers
                     }
                     string sql_Tong = "insert into TT_DichVuThuTong(ID,DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,TenDichVu,IDGiaoDich,CreateDate)"
                                 + " values(" + ID + ",'" + DanhBo + "','" + MaHDs + "','" + SoHoaDons + "','" + Kys + "'," + SoTien + "," + PhiMoNuoc + "," + TienDu + "," + TongCong + ",N'" + TenDichVu + "','" + IDGiaoDich + "',getdate())";
-                    cDAL_ThuTien.ExecuteNonQuery(sql_Tong);
-                    cDAL_ThuTien.ExecuteNonQuery(sql_ChiTiet);
+                    _cDAL_ThuTien.ExecuteNonQuery(sql_Tong);
+                    _cDAL_ThuTien.ExecuteNonQuery(sql_ChiTiet);
                     scope.Complete();
                     CGlobalVariable.log.Error("insertThuHo Thành Công (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                     return true;
@@ -379,7 +379,7 @@ namespace WSTanHoa.Controllers
             string PasswordSQL = "";
             try
             {
-                PasswordSQL = (string)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
+                PasswordSQL = (string)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select Password from NGANHANG where Username='" + TenDichVu + "'");
             }
             catch (Exception ex)
             {
@@ -406,7 +406,7 @@ namespace WSTanHoa.Controllers
             int checkExist = 0;
             try
             {
-                checkExist = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                checkExist = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaHD) from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
@@ -424,10 +424,10 @@ namespace WSTanHoa.Controllers
             //kiểm tra hóa đơn đã giải trách, không xóa được
             try
             {
-                DataTable dt = cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    int count = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
+                    int count = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(ID_HOADON) from HOADON where ID_HOADON=" + dt.Rows[i]["MaHD"] + " and NGAYGIAITRACH is not null");
                     if (count > 0)
                     {
                         ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorGiaiTrach, ErrorResponse.ErrorCodeGiaiTrach);
@@ -447,7 +447,7 @@ namespace WSTanHoa.Controllers
             int phimonuoc = 0;
             try
             {
-                phimonuoc = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                phimonuoc = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
@@ -470,10 +470,10 @@ namespace WSTanHoa.Controllers
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     //cDAL_ThuTien.BeginTransaction();
-                    cDAL_ThuTien.ExecuteNonQuery("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                    cDAL_ThuTien.ExecuteNonQuery("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                    cDAL_ThuTien.ExecuteNonQuery("insert TT_DichVuThuTong_Huy select * from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
-                    cDAL_ThuTien.ExecuteNonQuery("delete TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    _cDAL_ThuTien.ExecuteNonQuery("insert TT_DichVuThu_Huy select * from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    _cDAL_ThuTien.ExecuteNonQuery("delete TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    _cDAL_ThuTien.ExecuteNonQuery("insert TT_DichVuThuTong_Huy select * from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                    _cDAL_ThuTien.ExecuteNonQuery("delete TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
                     scope.Complete();
                     //cDAL_ThuTien.CommitTransaction();
                     CGlobalVariable.log.Error("deleteThuHo Thành Công (TenDichVu=" + TenDichVu + "IDGiaoDich=" + IDGiaoDich + ")");
@@ -509,7 +509,7 @@ namespace WSTanHoa.Controllers
             DataTable dt = new DataTable();
             try
             {
-                dt = cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select MaHD,SoHoaDon,DanhBo,Nam,Ky,SoTien,CreateDate from TT_DichVuThu where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {
@@ -563,7 +563,7 @@ namespace WSTanHoa.Controllers
             DataTable dt = new DataTable();
             try
             {
-                dt = cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,MaHDs,SoHoaDons,Kys,SoTien,PhiMoNuoc,TienDu,TongCong,CreateDate from TT_DichVuThuTong where TenDichVu=N'" + TenDichVu + "' and IDGiaoDich='" + IDGiaoDich + "'");
             }
             catch (Exception ex)
             {

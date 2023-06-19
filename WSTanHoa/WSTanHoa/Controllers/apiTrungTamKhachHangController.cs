@@ -18,14 +18,43 @@ namespace WSTanHoa.Controllers
     public class apiTrungTamKhachHangController : ApiController
     {
         string _pass = "s@l@2019";
-        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
-        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
-        private CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
-        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
-        private CConnection cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
-        private string urlApi = "https://cskhapi.sawaco.com.vn";
+        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
+        private CConnection _cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
+        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
+        private string _urlApi = "https://cskhapi.sawaco.com.vn";
+
+        private bool checkExists_HoSoGoc(string DanhBo)
+        {
+            try
+            {
+                List<CSKH_TCT> lst = new List<CSKH_TCT>();
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://old.cskhtanhoa.com.vn:1803/api/thuongvu/checkhosogoc/" + DanhBo);
+                request.Method = "GET";
+                request.ContentType = "application/json";
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    return bool.Parse(result);
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                ErrorResponse error = new ErrorResponse(ex.Message, ErrorResponse.ErrorCodeSQL);
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+            }
+        }
 
         /// <summary>
         /// Lấy thông tin khách hàng
@@ -68,7 +97,7 @@ namespace WSTanHoa.Controllers
                              + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
                              + ",Gieng,DienThoai=(select top 1 DienThoai from SDT_DHN where SDT_DHN.DanhBo=TB_DULIEUKHACHHANG.DanhBo order by CreateDate desc)"
                              + " from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'";
-                dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
+                dt = _cDAL_DHN.ExecuteQuery_DataTable(sql);
                 //lấy thông tin khách hàng đã hủy
                 if (dt == null || dt.Rows.Count == 0)
                 {
@@ -94,7 +123,7 @@ namespace WSTanHoa.Controllers
                                  + ",HieuLuc=N'Het '+HieuLucHuy"
                                  + ",Gieng='false',DienThoai=''"
                                  + " from TB_DULIEUKHACHHANG_HUYDB where DanhBo='" + DanhBo + "'";
-                    dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
+                    dt = _cDAL_DHN.ExecuteQuery_DataTable(sql);
                 }
                 //
                 if (dt != null && dt.Rows.Count > 0)
@@ -133,51 +162,55 @@ namespace WSTanHoa.Controllers
                     if (dt.Rows[0]["NgayKiemDinh"].ToString() != "")
                         en.NgayKiemDinh = DateTime.Parse(dt.Rows[0]["NgayKiemDinh"].ToString());
                     en.HieuLuc = dt.Rows[0]["HieuLuc"].ToString();
-                    en.ThongTin = "SĐT: " + dt.Rows[0]["DienThoai"].ToString();
+                    en.ThongTin = "";
                     //lấy tọa độ
-                    object toado = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 Latitude+','+Longitude from DocSo where DanhBa='" + en.DanhBo + "' and Latitude is not null order by DocSoID desc");
+                    object toado = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 Latitude+','+Longitude from DocSo where DanhBa='" + en.DanhBo + "' and Latitude is not null order by DocSoID desc");
                     if (toado != null)
                     {
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
                         en.ThongTin += "<a style='color: blue;' target='_blank' href='https://www.google.com/maps/search/?api=1&query=" + toado.ToString() + "'>Định vị GPS</a>";
                     }
-                    if ((int)cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
+                    if ((int)_cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(DanhBo) from DonTu_ChiTiet where DanhBo='" + dt.Rows[0]["DanhBo"].ToString() + "' and CAST(CreateDate as date)>=CAST(DATEADD(DAY, -14, GETDATE()) as date) ") == 1)
                     {
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
                         en.ThongTin = "Có Đơn trong 14 ngày gần nhất";
                     }
-                    //if ((int)cDAL_DocSo12.ExecuteQuery_ReturnOneValue("select count(DanhBa) from KhachHang where DanhBa='" + dt.Rows[0]["DanhBo"].ToString() + "' and Gieng=1") == 1)
-                    //{
-                    //    if (en.ThongTin != "")
-                    //        en.ThongTin += " - ";
-                    //    en.ThongTin += "Có sử dụng Giếng";
-                    //}
                     if (bool.Parse(dt.Rows[0]["Gieng"].ToString()))
                     {
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
                         en.ThongTin += "Có sử dụng Giếng";
                     }
+                    if (checkExists_HoSoGoc(en.DanhBo))
+                        en.HoSoGoc = "<a style='color: blue;' target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/thuongvu/hosogoc/" + en.DanhBo + "'>Xem File</a>";
+                    else
+                        en.HoSoGoc = "Chưa scan";
                     if (en.ThongTin != "")
                         en.ThongTin += " - ";
-                    en.ThongTin += "<a style='color: blue;' target='_blank' href='http://113.161.88.180:1802/api/thuongvu/hosogoc/" + en.DanhBo + "'>Hồ sơ gốc</a>";
+                    en.ThongTin += "<a style='color: blue;' target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/thuongvu/hosogoc/" + en.DanhBo + "'>Hồ sơ gốc</a>";
                     DataTable dtNiemChi = getDS_NiemChi(dt.Rows[0]["DanhBo"].ToString());
                     if (dtNiemChi != null && dtNiemChi.Rows.Count > 0)
                     {
-                        string NoiDung = "";
-                        foreach (DataRow item in dtNiemChi.Rows)
-                            if (bool.Parse(item["KhoaTu"].ToString()))
-                                NoiDung += item["NoiDung"].ToString() + ", Khóa Từ\n";
-                            else
-                                NoiDung += item["NoiDung"].ToString() + ", Khóa Chì: " + item["NiemChi"].ToString() + " " + item["MauSac"].ToString() + "\n";
+                        //string NoiDung = "";
+                        //foreach (DataRow item in dtNiemChi.Rows)
+                        //    if (bool.Parse(item["KhoaTu"].ToString()))
+                        //        NoiDung += item["NoiDung"].ToString() + ", Khóa Từ\n";
+                        //    else
+                        //        NoiDung += item["NoiDung"].ToString() + ", Khóa Chì: " + item["NiemChi"].ToString() + " " + item["MauSac"].ToString() + "\n";
                         if (en.ThongTin != "")
                             en.ThongTin += " - ";
                         if (bool.Parse(dtNiemChi.Rows[0]["KhoaTu"].ToString()))
+                        {
                             en.ThongTin += "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Từ</a>";
+                            en.BamChi = "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Từ</a>";
+                        }
                         else
+                        {
                             en.ThongTin += "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[0]["NiemChi"].ToString() + " " + dtNiemChi.Rows[0]["MauSac"].ToString() + "</a>";
+                            en.BamChi = "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[0]["NiemChi"].ToString() + " " + dtNiemChi.Rows[0]["MauSac"].ToString() + "</a>";
+                        }
                     }
                     return en;
                 }
@@ -222,10 +255,10 @@ namespace WSTanHoa.Controllers
                                + " from DocSo"
                                + " where DanhBa=" + DanhBo
                                + " order by Nam desc,CAST(Ky as int) desc";
-                dt = cDAL_DocSo.ExecuteQuery_DataTable(sql);
+                dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
                 if (dt != null && dt.Rows.Count > 0)
                 {
-                    object result = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2));
+                    object result = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2));
                     if (result != null)
                     {
                         en.NhanVien = result.ToString();
@@ -247,7 +280,7 @@ namespace WSTanHoa.Controllers
                 }
                 //lấy ghi chú
                 sql = "select NoiDung,CreateDate from TB_GHICHU where DanhBo='" + DanhBo + "' order by CreateDate desc";
-                dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
+                dt = _cDAL_DHN.ExecuteQuery_DataTable(sql);
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -285,7 +318,7 @@ namespace WSTanHoa.Controllers
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
-                DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
                 if (dt_ThongTin != null && dt_ThongTin.Rows.Count > 0)
                 {
                     ThongTinKhachHang en = new ThongTinKhachHang();
@@ -297,7 +330,7 @@ namespace WSTanHoa.Controllers
 
                     string result_Lich = getLichDocSo_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
-                    string result_NhanVien = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                    string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
 
                     en.ThongTin = result_NhanVien + " ; " + result_Lich;
                     return en;
@@ -325,7 +358,7 @@ namespace WSTanHoa.Controllers
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
                                    + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))"
                                    + " order by NgayDoc desc";
-            return cDAL_DocSo.ExecuteQuery_DataTable(sql_Lich);
+            return _cDAL_DocSo.ExecuteQuery_DataTable(sql_Lich);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -388,7 +421,7 @@ namespace WSTanHoa.Controllers
                 bool CNKD = false;
 
                 string sql = "select * from fnTimKiem('" + DanhBo + "','') order by MaHD desc";
-                dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -404,7 +437,7 @@ namespace WSTanHoa.Controllers
                         enCT.SoHoaDon = item["SoHoaDon"].ToString();
                         enCT.Ky = item["Ky"].ToString();
                         enCT.TieuThu = item["TieuThu"].ToString();
-                        DataTable dtHDDC = cDAL_ThuTien.ExecuteQuery_DataTable("select [GIABAN_DC],[THUE_DC],[PHI_DC],[PHI_Thue_DC],[TONGCONG_DC] from DIEUCHINH_HD where FK_HOADON=" + item["MaHD"].ToString());
+                        DataTable dtHDDC = _cDAL_ThuTien.ExecuteQuery_DataTable("select [GIABAN_DC],[THUE_DC],[PHI_DC],[PHI_Thue_DC],[TONGCONG_DC] from DIEUCHINH_HD where FK_HOADON=" + item["MaHD"].ToString());
                         if (dtHDDC != null && dtHDDC.Rows.Count > 0)
                         {
                             enCT.GiaBan = (int.Parse(item["GiaBan"].ToString()) - int.Parse(dtHDDC.Rows[0]["GIABAN_DC"].ToString())).ToString();
@@ -457,11 +490,11 @@ namespace WSTanHoa.Controllers
                     else
                         en.ThongTin = "Hiện còn nợ (CNKĐ): " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", TongNo);
 
-                int PhiMoNuoc = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+                int PhiMoNuoc = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
                 if (PhiMoNuoc > 0)
                     en.ThongTin += " ; Phí mở nước: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", PhiMoNuoc);
 
-                dt = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnThuHoChuaDangNgan(" + DanhBo + ")");
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnThuHoChuaDangNgan(" + DanhBo + ")");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     en.ThongTin += " ; Đã Thu Hộ " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", int.Parse(dt.Rows[0]["TongCong"].ToString())) + " - Kỳ " + dt.Rows[0]["Kys"].ToString() + " - ngày " + dt.Rows[0]["CreateDate"].ToString() + " - qua " + dt.Rows[0]["TenDichVu"].ToString();
@@ -491,7 +524,7 @@ namespace WSTanHoa.Controllers
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
-                DataTable dt_ThongTin = cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
                 if (dt_ThongTin != null && dt_ThongTin.Rows.Count > 0)
                 {
                     ThongTinKhachHang en = new ThongTinKhachHang();
@@ -503,7 +536,7 @@ namespace WSTanHoa.Controllers
 
                     string result_Lich = getLichThuTien_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
-                    string result_NhanVien = cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+                    string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên thu tiền: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
 
                     en.ThongTin = result_NhanVien + " ; " + result_Lich;
                     return en;
@@ -531,7 +564,7 @@ namespace WSTanHoa.Controllers
                                    + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
                                    + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))";
             //+ " order by a.CreateDate desc";
-            return cDAL_DocSo.ExecuteQuery_DataTable(sql_Lich);
+            return _cDAL_DocSo.ExecuteQuery_DataTable(sql_Lich);
         }
 
         [ApiExplorerSettings(IgnoreApi = true)]
@@ -616,13 +649,13 @@ namespace WSTanHoa.Controllers
             DataSet ds = new DataSet();
             try
             {
-                dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("exec spTimKiemByBanhBo_DonTu '" + DanhBo + "'");
-                ds = cDAL_KinhDoanh.ExecuteQuery_DataSet("exec spTimKiemByBanhBo_DonTuChiTiet '" + DanhBo + "'");
+                dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("exec spTimKiemByBanhBo_DonTu '" + DanhBo + "'");
+                ds = _cDAL_KinhDoanh.ExecuteQuery_DataSet("exec spTimKiemByBanhBo_DonTuChiTiet '" + DanhBo + "'");
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     DonKinhDoanh enKD = new DonKinhDoanh();
-                    enKD.ThongTin = cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select dbo.fnCheckTinhTrangCanKhachHangLienHe('" + DanhBo + "')").ToString();
+                    enKD.ThongTin = _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select dbo.fnCheckTinhTrangCanKhachHangLienHe('" + DanhBo + "')").ToString();
 
                     foreach (DataRow item in dt.Rows)
                         if (enKD.lstDonTu.Any(itemA => itemA.MaDon == item["MaDon"].ToString() + " - " + item["Phong"].ToString()) == false)
@@ -1034,7 +1067,7 @@ namespace WSTanHoa.Controllers
                 //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 //}
-                DataTable dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from fnGetHoSoScan('" + DanhBo + "') order by CreateDate desc");
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from fnGetHoSoScan('" + DanhBo + "') order by CreateDate desc");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     List<HoSoScan> lst = new List<HoSoScan>();
@@ -1102,7 +1135,7 @@ namespace WSTanHoa.Controllers
                 //kiếm số thân ĐHN
                 if (checkSoThan != "")
                 {
-                    dt = cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG where SoThanDH like N'%" + checkSoThan + "%'");
+                    dt = _cDAL_DHN.ExecuteQuery_DataTable("select DANHBO,HOTEN,DiaChi=SONHA+' '+TENDUONG from TB_DULIEUKHACHHANG where SoThanDH like N'%" + checkSoThan + "%'");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         foreach (DataRow item in dt.Rows)
@@ -1118,7 +1151,7 @@ namespace WSTanHoa.Controllers
                 else
                 if (checkHoTen != "" || checkSoNha != "" || checkTenDuong != "")
                 {
-                    dt = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + checkHoTen + "','" + checkSoNha + "','" + checkTenDuong + "')");
+                    dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnTimKiemTTKH('" + checkHoTen + "','" + checkSoNha + "','" + checkTenDuong + "')");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         foreach (DataRow item in dt.Rows)
@@ -1179,14 +1212,14 @@ namespace WSTanHoa.Controllers
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "api/DongHoNuoc/CapNhatDongHoNuoc");
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_urlApi + "api/DongHoNuoc/CapNhatDongHoNuoc");
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 //request.Headers["Authorization"] = "Bearer " + _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select access_token from Configure").ToString();
                 DataTable dt = new DataTable();
 
-                dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
-                dt.Merge(cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo=DanhBa from KhachHang where SDT like '%" + DienThoai + "%'"));
+                dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select distinct DanhBo from DonDienThoai where DanhBo!='' and DienThoai like '%" + DienThoai + "%'");
+                dt.Merge(_cDAL_DocSo.ExecuteQuery_DataTable("select DanhBo=DanhBa from KhachHang where SDT like '%" + DienThoai + "%'"));
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     List<ThongTinKhachHang> lst = new List<ThongTinKhachHang>();
@@ -1235,7 +1268,7 @@ namespace WSTanHoa.Controllers
                             + " WHERE biennhan.QUAN = q.MAQUAN AND q.MAQUAN = p.MAQUAN  AND biennhan.PHUONG = p.MAPHUONG AND lhs.MALOAI = biennhan.LOAIDON"
                             + " AND biennhan.SHS = '" + SoHoSo + "'";
 
-                dt = cDAL_GanMoi.ExecuteQuery_DataTable(sql);
+                dt = _cDAL_GanMoi.ExecuteQuery_DataTable(sql);
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
@@ -1252,7 +1285,7 @@ namespace WSTanHoa.Controllers
                                   + " NgayCoPhepDaoDuong = (select NGAYCOPHEP from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS)),"
                                   + " NgayThiCong = (select NGAYTHICONG from KH_HOSOKHACHHANG where SHS = donkh.SHS)"
                                   + " from DON_KHACHHANG donkh where SHS = '" + SoHoSo + "'";
-                    DataTable dtCT = cDAL_GanMoi.ExecuteQuery_DataTable(sqlCT);
+                    DataTable dtCT = _cDAL_GanMoi.ExecuteQuery_DataTable(sqlCT);
 
                     GhiChu enCT = new GhiChu();
                     enCT.NoiDung = "Ngày Chuyển Thiết Kế";
@@ -1331,7 +1364,7 @@ namespace WSTanHoa.Controllers
                         + " select NoiDung=N'Thương Vụ bấm chì: '+CONVERT(varchar(10),NgayBC,103)+' '+CONVERT(varchar(10),NgayBC,108)"
                         + " ,NiemChi,MauSac,KhoaTu='false',KhoaKhac='false',NgayLap=NgayBC from KTKS_DonKH.dbo.BamChi_ChiTiet where DanhBo = '" + DanhBo + "'"
                         + " order by NgayLap desc";
-            return cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+            return _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
         }
 
         /// <summary>
@@ -1352,7 +1385,7 @@ namespace WSTanHoa.Controllers
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
                 List<ThongTinExtra> lst = new List<ThongTinExtra>();
-                DataTable dtThayDHN = cDAL_DHN.ExecuteQuery_DataTable("SELECT isnull(DHN_LOAIBANGKE,'')+'-' + isnull(convert(varchar, DHN_SOBANGKE), '') MASO,DHN_NGAYBAOTHAY NGAYBAO, DHN_LYDOTHAY LYDO,HCT_NGAYGAN HOANTHANH, case when HCT_NHOMTRONGAI = 0 then '' else LyDo + ', ' end + isnull(HCT_LYDOTRONGAI, '') TRONGAI"
+                DataTable dtThayDHN = _cDAL_DHN.ExecuteQuery_DataTable("SELECT isnull(DHN_LOAIBANGKE,'')+'-' + isnull(convert(varchar, DHN_SOBANGKE), '') MASO,DHN_NGAYBAOTHAY NGAYBAO, DHN_LYDOTHAY LYDO,HCT_NGAYGAN HOANTHANH, case when HCT_NHOMTRONGAI = 0 then '' else LyDo + ', ' end + isnull(HCT_LYDOTRONGAI, '') TRONGAI"
                 + " FROM TB_THAYDHN t1"
                 + " join TB_THAYDHN_TRONGAI t2 on t1.HCT_NHOMTRONGAI = t2.ID"
                 + " where DHN_DANHBO = '" + DanhBo + "'"
@@ -1408,7 +1441,7 @@ namespace WSTanHoa.Controllers
                 if (DanhBo.ToUpper().Contains("THW"))
                 {
                     object result = null;
-                    result = cDAL_TTKH.ExecuteQuery_ReturnOneValue("select DanhBo from QR_Dong where KyHieu='THW' and ID=" + DanhBo.Substring(3, DanhBo.Length - 3));
+                    result = _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select DanhBo from QR_Dong where KyHieu='THW' and ID=" + DanhBo.Substring(3, DanhBo.Length - 3));
                     if (result != null && result.ToString() != "")
                         DanhBo = result.ToString();
                 }
@@ -1424,7 +1457,7 @@ namespace WSTanHoa.Controllers
         #region api TCT
         private string getAccess_token_TCT()
         {
-            return cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='cskhapi'").ToString();
+            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='cskhapi'").ToString();
         }
 
         /// <summary>
@@ -1449,7 +1482,7 @@ namespace WSTanHoa.Controllers
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/LichDocSo/LayChiSoNuocBao?branch_code=TH&nam=" + Nam + "&thang=" + Thang);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_urlApi + "/api/LichDocSo/LayChiSoNuocBao?branch_code=TH&nam=" + Nam + "&thang=" + Thang);
                 request.Method = "GET";
                 request.ContentType = "application/json";
                 request.Headers["Authorization"] = "Bearer " + getAccess_token_TCT();
@@ -1475,7 +1508,7 @@ namespace WSTanHoa.Controllers
                             en.CreateDate = DateTime.Parse(itemC1["createdDate"]);
                             en.CSN = itemC1["chiSoNuoc"];
                             if (itemC1["hinhAnhChiSo"] != "")
-                                en.urlImage = urlApi + itemC1["hinhAnhChiSo"];
+                                en.urlImage = _urlApi + itemC1["hinhAnhChiSo"];
                             lst.Add(en);
                         }
                     }
@@ -1511,7 +1544,7 @@ namespace WSTanHoa.Controllers
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/KhachHangPhanHoi/ThongTinPhanHoi?branch_code=TH&nam=" + Nam + "&thang=" + Thang);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_urlApi + "/api/KhachHangPhanHoi/ThongTinPhanHoi?branch_code=TH&nam=" + Nam + "&thang=" + Thang);
                 request.Method = "GET";
                 request.ContentType = "application/json";
                 request.Headers["Authorization"] = "Bearer " + getAccess_token_TCT();
@@ -1539,7 +1572,7 @@ namespace WSTanHoa.Controllers
                             en.NoiDung = itemC1["noiDungPhanHoi"];
                             en.GhiChu = itemC1["ghiChuThem"];
                             if (itemC1["hinhAnhPhanHoi"] != "")
-                                en.urlImage = urlApi + itemC1["hinhAnhPhanHoi"];
+                                en.urlImage = _urlApi + itemC1["hinhAnhPhanHoi"];
                             lst.Add(en);
                         }
                     }
@@ -1574,7 +1607,7 @@ namespace WSTanHoa.Controllers
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/api/KhachHangPhanHoi/TraLoiPhanHoi");
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(_urlApi + "/api/KhachHangPhanHoi/TraLoiPhanHoi");
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 request.Headers["Authorization"] = "Bearer " + getAccess_token_TCT();
@@ -1708,5 +1741,96 @@ namespace WSTanHoa.Controllers
         }
 
         #endregion
+
+        #region api sala
+
+        string _tokensala = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMjI0NDE2ODY3NDcwMTEyNjAyIiwidXNlcm5hbWUiOiJvcGVuYXBpIiwicGFzc3dvcmQiOiJkM2JkYmMxZGYyZTZlZGUyN2Y5MTVkNDg1ZDgzZDllMiJ9.QODFPm_-JwkPTam_sZoYUNSvYhG79ljbtNRaC0bB1JQ";
+
+        /// <summary>
+        /// Cập nhật số điện thoại từ crm
+        /// </summary>
+        /// <param name="FromCreateDate">yyyy-MM-dd</param>
+        /// <param name="ToCreateDate">yyyy-MM-dd</param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("sala_updateDienThoai")]
+        [HttpGet]
+        public string sala_updateDienThoai(string FromCreateDate, string ToCreateDate, string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                           | SecurityProtocolType.Ssl3;
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://crm.cskhtanhoa.com.vn:8443/openapi/v2/customers/get?from_date=" + FromCreateDate + "&to_date=" + ToCreateDate);
+                    request.Method = "GET";
+                    request.ContentType = "application/json";
+                    request.Headers["Authorization"] = "Bearer " + _tokensala;
+
+                    HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        CGlobalVariable.jsSerializer.MaxJsonLength = Int32.MaxValue;
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        if (obj["total"] > 0)
+                        {
+                            var lst1 = obj["data"];
+                            string sql = "";
+                            foreach (var itemC1 in lst1)
+                                if (itemC1["danhbo"] != null && ((string)itemC1["phone"]).Length == 10)
+                                {
+                                    //if (itemC1["danhbo"] == "")
+                                    //    strResponse = itemC1["danhbo"] + " " + itemC1["phone"] + " " + itemC1["name"] + " " + itemC1["created_at"];
+                                    string name = "";
+                                    if (itemC1["name"] != null && ((string)itemC1["name"]).Trim().Length > 0)
+                                    {
+                                        name = itemC1["name"];
+                                        name = name.Replace("'", "");
+                                    }
+                                    if (((string)itemC1["danhbo"]).Length == 11)
+                                        sql += " if not exists(select DanhBo from SDT_DHN where DanhBo='" + itemC1["danhbo"] + "' and DienThoai='" + itemC1["phone"] + "')"
+                                            + " insert into SDT_DHN(DanhBo,DienThoai,HoTen,SoChinh,GhiChu,CreateBy,CreateDate)values('" + itemC1["danhbo"] + "','" + itemC1["phone"] + "',N'" + name + "',0,N'P. KH',0,GETDATE())";
+                                    else
+                                        if (((string)itemC1["danhbo"]).Length > 11)
+                                    {
+                                        string[] danhbos = ((string)itemC1["danhbo"]).Split(',');
+                                        foreach (string danhbo in danhbos)
+                                            if (danhbo.Length == 11)
+                                            {
+                                                sql += " if not exists(select DanhBo from SDT_DHN where DanhBo='" + danhbo + "' and DienThoai='" + itemC1["phone"] + "')"
+                                                + " insert into SDT_DHN(DanhBo,DienThoai,HoTen,SoChinh,GhiChu,CreateBy,CreateDate)values('" + danhbo + "','" + itemC1["phone"] + "',N'" + name + "',0,N'P. KH',0,GETDATE())";
+                                            }
+                                    }
+                                }
+                            if (sql != "")
+                                _cDAL_DHN.ExecuteNonQuery(sql);
+                            strResponse = "Đã xử lý";
+                        }
+                    }
+                    else
+                    {
+                        strResponse = "Error: " + respuesta.StatusCode;
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+
+        #endregion
+
     }
 }

@@ -12,13 +12,13 @@ namespace WSTanHoa.Controllers
 {
     public class KhachHangController : Controller
     {
-        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
-        private CConnection cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
-        private CConnection cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
-        private CConnection cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
-        private CConnection cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
-        private apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
+        private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection _cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
+        private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
+        private apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
 
         // GET: KhachHang
         public ActionResult ThongTin(string DanhBo)
@@ -32,7 +32,7 @@ namespace WSTanHoa.Controllers
             ThongTinKhachHang en = new ThongTinKhachHang();
             if (DanhBo.ToUpper().Contains("THW"))
             {
-                object result = cDAL_TTKH.ExecuteQuery_ReturnOneValue("select DanhBo from QR_Dong where KyHieu='THW' and ID=" + DanhBo.Substring(3, DanhBo.Length - 3));
+                object result = _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select DanhBo from QR_Dong where KyHieu='THW' and ID=" + DanhBo.Substring(3, DanhBo.Length - 3));
                 if (result != null && result.ToString() != "")
                     DanhBo = result.ToString();
             }
@@ -57,7 +57,7 @@ namespace WSTanHoa.Controllers
                          + ",HieuLuc=convert(varchar(2),Ky)+'/'+convert(char(4),Nam)"
                          + ",Quan,Phuong"
                          + " from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'";
-            DataTable dt = cDAL_DHN.ExecuteQuery_DataTable(sql);
+            DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable(sql);
             if (dt.Rows.Count > 0)
             {
                 string Quan = dt.Rows[0]["Quan"].ToString(), Phuong = dt.Rows[0]["Phuong"].ToString();
@@ -71,23 +71,23 @@ namespace WSTanHoa.Controllers
                 en.DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
                 en.DMA = dt.Rows[0]["DMA"].ToString().Replace("TH-", "");
                 //
-                object result = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 N''+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2));
+                object result = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 N''+HoTen+' : '+DienThoai from NguoiDung where May=" + dt.Rows[0]["MLT"].ToString().Substring(2, 2));
                 if (result != null)
                 {
                     en.NVDocSo = result.ToString();
-                    en.NVDocSo += " ; " + apiTTKH.getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
+                    en.NVDocSo += " ; " + _apiTTKH.getLichDocSo_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
                 }
                 //
                 string KyNo = "";
                 int TongNo = 0;
                 sql = "select top 12 * from fnTimKiem('" + DanhBo + "','') order by MaHD desc";
-                DataTable dt2 = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                DataTable dt2 = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                 //lấy thu hộ
-                DataTable dt3 = cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnThuHoChuaDangNgan(" + DanhBo + ")");
+                DataTable dt3 = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnThuHoChuaDangNgan(" + DanhBo + ")");
                 if (dt2 != null && dt2.Rows.Count > 0)
                 {
                     en.NVThuTien = dt2.Rows[0]["NhanVien"].ToString();
-                    en.NVThuTien += " ; " + apiTTKH.getLichThuTien_Func_String(DanhBo, dt2.Rows[0]["MLT"].ToString());
+                    en.NVThuTien += " ; " + _apiTTKH.getLichThuTien_Func_String(DanhBo, dt2.Rows[0]["MLT"].ToString());
 
                     foreach (DataRow item in dt2.Rows)
                     {
@@ -143,7 +143,7 @@ namespace WSTanHoa.Controllers
                 if (TongNo > 0)
                     en.ThongTin = "Số tiền chưa thanh toán: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", TongNo);
                 //
-                int PhiMoNuoc = (int)cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
+                int PhiMoNuoc = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select PhiMoNuoc=dbo.fnGetPhiMoNuoc(" + DanhBo + ")");
                 if (PhiMoNuoc > 0)
                     en.ThongTin += "; Phí mở nước: " + String.Format(CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##đ}", PhiMoNuoc);
                 //
@@ -153,17 +153,17 @@ namespace WSTanHoa.Controllers
                 }
                 //lấy thông tin đóng nước
                 sql = "select top 1 CONVERT(varchar(10),NgayDN,103)+' '+CONVERT(varchar(10),NgayDN,108) from TT_KQDongNuoc where MoNuoc=0 and TroNgaiMN=0 and DanhBo='" + DanhBo + "' order by NgayDN desc";
-                dt = cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
                 if (dt != null && dt.Rows.Count > 0)
                     en.ThongTinDongNuoc = "Địa chỉ đang tạm ngưng cung cấp nước từ " + dt.Rows[0][0].ToString() + " do chưa thanh toán tiền nước kỳ " + KyNo;
                 if (en.ThongTinDongNuoc == "")
                 {
                     sql = "select top 1 * from SuCoNgungCungCapNuoc where CAST(GETDATE() as date)>=CAST(DATEADD(DAY,-1,DateStart) as date) and CAST(GETDATE() as date)<=CAST(DateEnd as date) and (DMAs like ('%" + en.DMA + "%') or DanhBos like ('%" + DanhBo + "%') or (Quan like ('%" + Quan + "%') and Phuong like ('%" + Phuong + "%')))";
-                    dt = cDAL_TTKH.ExecuteQuery_DataTable(sql);
+                    dt = _cDAL_TTKH.ExecuteQuery_DataTable(sql);
                     if (dt != null && dt.Rows.Count > 0)
                         en.ThongTinDongNuoc = dt.Rows[0]["NoiDung"].ToString();
                 }
-                cDAL_TTKH.ExecuteNonQuery("insert into QR_Log(DanhBo) values ('" + DanhBo + "')");
+                _cDAL_TTKH.ExecuteNonQuery("insert into QR_Log(DanhBo) values ('" + DanhBo + "')");
             }
             return View(en);
         }
@@ -173,7 +173,7 @@ namespace WSTanHoa.Controllers
             List<ThongTinKhachHang> model = new List<ThongTinKhachHang>();
             if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "").Length == 11)
             {
-                DataTable dtNiemChi = apiTTKH.getDS_NiemChi(DanhBo.Replace(" ", "").Replace("-", ""));
+                DataTable dtNiemChi = _apiTTKH.getDS_NiemChi(DanhBo.Replace(" ", "").Replace("-", ""));
                 for (int i = 0; i < dtNiemChi.Rows.Count; i++)
                 {
                     ThongTinKhachHang en = new ThongTinKhachHang();
@@ -201,7 +201,7 @@ namespace WSTanHoa.Controllers
                     }
                     else
                     {
-                        DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select DienThoai,CreateDate from SDT_DHN where DanhBo='" + Session["DanhBo"] + "' and DienThoai='" + DienThoai + "'"
+                        DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select DienThoai,CreateDate from SDT_DHN where DanhBo='" + Session["DanhBo"] + "' and DienThoai='" + DienThoai + "'"
                             + " union all"
                             + " select DienThoai,CreateDate from SDT_DHN_QRCode where DanhBo='" + Session["DanhBo"] + "' and DienThoai='" + DienThoai + "'"
                             + " order by CreateDate desc");
@@ -222,10 +222,10 @@ namespace WSTanHoa.Controllers
                     if (DienThoaiDK.Substring(0, 1) != "0")
                         ModelState.AddModelError("", "Số điện thoại di động SAI");
                     if (DienThoaiDK.Length == 10 && DienThoaiDK.Substring(0, 1) == "0")
-                        cDAL_DHN.ExecuteQuery_DataTable("insert into SDT_DHN_QRCode(DanhBo,DienThoai)values('" + Session["DanhBo"] + "','" + DienThoaiDK + "')");
+                        _cDAL_DHN.ExecuteQuery_DataTable("insert into SDT_DHN_QRCode(DanhBo,DienThoai)values('" + Session["DanhBo"] + "','" + DienThoaiDK + "')");
                 }
                 List<MView> vDienThoai = new List<MView>();
-                DataTable dt2 = cDAL_DHN.ExecuteQuery_DataTable("select DienThoai,CreateDate from SDT_DHN where DanhBo='" + Session["DanhBo"] + "'"
+                DataTable dt2 = _cDAL_DHN.ExecuteQuery_DataTable("select DienThoai,CreateDate from SDT_DHN where DanhBo='" + Session["DanhBo"] + "'"
                     + " union all"
                     + " select DienThoai,CreateDate from SDT_DHN_QRCode where DanhBo='" + Session["DanhBo"] + "'"
                     + " order by CreateDate desc");
@@ -249,7 +249,7 @@ namespace WSTanHoa.Controllers
             if (id != null)
                 if (id.ToLower().Contains("g"))
                 {
-                    dt = cDAL_GanMoi.ExecuteQuery_DataTable("SELECT  biennhan.SHS, biennhan.HOTEN,(SONHA + '  ' + DUONG + ',  P.' + p.TENPHUONG + ',  Q.' + q.TENQUAN) as 'DIACHI',"
+                    dt = _cDAL_GanMoi.ExecuteQuery_DataTable("SELECT  biennhan.SHS, biennhan.HOTEN,(SONHA + '  ' + DUONG + ',  P.' + p.TENPHUONG + ',  Q.' + q.TENQUAN) as 'DIACHI',"
                                 + " CONVERT(char(10),biennhan.NGAYNHAN,103)+' '+CONVERT(char(5),biennhan.NGAYNHAN,108) AS 'CreateDate',lhs.TENLOAI as 'LOAIHS'"
                                 + " FROM QUAN q,PHUONG p, BIENNHANDON biennhan, LOAI_HOSO lhs"
                                 + " WHERE biennhan.QUAN = q.MAQUAN AND q.MAQUAN = p.MAQUAN  AND biennhan.PHUONG = p.MAPHUONG AND lhs.MALOAI = biennhan.LOAIDON"
@@ -269,7 +269,7 @@ namespace WSTanHoa.Controllers
                                       + " ,CoPhep = (select CoPhep from KH_XINPHEPDAODUONG where MADOT = (select MADOTDD from KH_HOSOKHACHHANG where SHS = donkh.SHS))"
                                       + " ,NgayThiCong = (select CONVERT(char(10),NGAYTHICONG,103)+' '+CONVERT(char(5),NGAYTHICONG,108) from KH_HOSOKHACHHANG where SHS = donkh.SHS)"
                                       + " from DON_KHACHHANG donkh where SHS = '" + id.ToLower().Replace("g", "") + "'";
-                        DataTable dtCT = cDAL_GanMoi.ExecuteQuery_DataTable(sqlCT);
+                        DataTable dtCT = _cDAL_GanMoi.ExecuteQuery_DataTable(sqlCT);
                         if (dtCT != null && dtCT.Rows.Count > 0)
                         {
                             if (dtCT.Rows[0]["NgayChuyenThietKe"].ToString() != "")
@@ -320,7 +320,7 @@ namespace WSTanHoa.Controllers
                                 en.NoiDung = "Hồ sơ trở ngại xin phép đào đường";
                                 enView.lst.Add(en);
                             }
-                            DataTable dtTN = cDAL_GanMoi.ExecuteQuery_DataTable("select NoiDungTN from KH_HOSOKHACHHANG where TroNgai=1 and SHS='" + id.ToLower().Replace("g", "") + "'");
+                            DataTable dtTN = _cDAL_GanMoi.ExecuteQuery_DataTable("select NoiDungTN from KH_HOSOKHACHHANG where TroNgai=1 and SHS='" + id.ToLower().Replace("g", "") + "'");
                             if (dtTN != null && dtTN.Rows.Count > 0)
                             {
                                 en = new MView();
@@ -335,7 +335,7 @@ namespace WSTanHoa.Controllers
                 }
                 else
                 {
-                    dt = cDAL_ThuongVu.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),a.CreateDate,103)+' '+CONVERT(char(5),a.CreateDate,108),HieuLucKy,DinhMuc=SoNK*4,b.DanhBo,b.DiaChi"
+                    dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select CreateDate=CONVERT(char(10),a.CreateDate,103)+' '+CONVERT(char(5),a.CreateDate,108),HieuLucKy,DinhMuc=SoNK*4,b.DanhBo,b.DiaChi"
         + " , NgayKTXM = (select top 1 CONVERT(char(10),NgayKTXM,103)+' '+CONVERT(char(5),NgayKTXM,108) from KTXM c, KTXM_ChiTiet d where c.MaKTXM = d.MaKTXM and c.MaDonMoi = a.MaDon and d.STT = b.STT order by NgayKTXM desc)"
         + " , NgayTTTL = (select top 1 CONVERT(char(10),d.CreateDate,103)+' '+CONVERT(char(5),d.CreateDate,108) from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"
         + " , IDTTTL = (select top 1 d.MaCTTTTL from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"

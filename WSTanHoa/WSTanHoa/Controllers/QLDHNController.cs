@@ -18,12 +18,12 @@ namespace WSTanHoa.Controllers
 {
     public class QLDHNController : Controller
     {
-        private CConnection cDAL_DHN = new CConnection(CGlobalVariable.DHN);
-        private CConnection cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
-        private apiTrungTamKhachHangController apiTTKH = new apiTrungTamKhachHangController();
-        private wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
-        private wrThuongVu.wsThuongVu wsThuongVu = new wrThuongVu.wsThuongVu();
+        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
+        private apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
+        private wrDHN.wsDHN _wsDHN = new wrDHN.wsDHN();
+        private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         public ActionResult BaoChiSoNuoc(string function, string DanhBo, string ChiSo, HttpPostedFileBase Hinh)
         {
@@ -31,7 +31,7 @@ namespace WSTanHoa.Controllers
             {
                 if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
                 {
-                    DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
+                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         ViewBag.DanhBo = dt.Rows[0]["DanhBo"];
@@ -53,8 +53,8 @@ namespace WSTanHoa.Controllers
                     ModelState.AddModelError("", "Thiếu Hình ĐHN");
                 if (DanhBo != "" && ChiSo != "" && Hinh != null && Hinh.ContentLength > 0)
                 {
-                    DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
-                    DataRow drLich = apiTTKH.getLichDocSo_Func_DataRow(dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["MLT"].ToString());
+                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
+                    DataRow drLich = _apiTTKH.getLichDocSo_Func_DataRow(dt.Rows[0]["DanhBo"].ToString(), dt.Rows[0]["MLT"].ToString());
                     //nếu trước 1 ngày
                     if (DateTime.Now.Date < DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-1))
                     {
@@ -76,7 +76,7 @@ namespace WSTanHoa.Controllers
                         return View();
                     }
                     //kiểm tra đã gửi chỉ số nước rồi
-                    DataTable dtResult = cDAL_DocSo.ExecuteQuery_DataTable("select top 1 * from DocSo where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + "' and (CodeMoi not like '' or ChuBao=1)");
+                    DataTable dtResult = _cDAL_DocSo.ExecuteQuery_DataTable("select top 1 * from DocSo where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + "' and (CodeMoi not like '' or ChuBao=1)");
                     if (dtResult != null && dtResult.Rows.Count > 0)
                     //if (DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date >= DateTime.Parse(drLich["NgayDoc"].ToString()).Date.AddDays(-1)
                     //    || DateTime.Parse(dtResult.Rows[0]["CreateDate"].ToString()).Date == DateTime.Parse(drLich["NgayChuyenListing"].ToString()).Date)
@@ -89,15 +89,15 @@ namespace WSTanHoa.Controllers
                     SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ")");
                     //SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo,Hinh)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ",@Hinh)");
                     //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = ImageToByte(resizedImage);
-                    bool result = cDAL_DocSo.ExecuteNonQuery(command);
+                    bool result = _cDAL_DocSo.ExecuteNonQuery(command);
                     wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
                     string jsonresult = wsDHN.ghiChiSo(drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString(), "40", ChiSo, Convert.ToBase64String(ImageToByte(resizedImage)), int.Parse(drLich["Dot"].ToString()).ToString("00"), "Chủ Báo", "0", "");
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(jsonresult);
                     if (obj["success"] == true)
                     {
-                        cDAL_DocSo.ExecuteNonQuery("update DocSo set ChuBao=1 where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + "'");
+                        _cDAL_DocSo.ExecuteNonQuery("update DocSo set ChuBao=1 where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + "'");
                         ModelState.AddModelError("", "Thành Công, Cám ơn Quý Khách Hàng đã cung cấp chỉ số nước");
-                        object UID = cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 UID from NguoiDung where May=(select PhanMay from DocSo where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + "') order by MaND asc");
+                        object UID = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select top 1 UID from NguoiDung where May=(select PhanMay from DocSo where DocSoID='" + drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString() + "') order by MaND asc");
                         wsDHN.SendNotificationToClient("Chủ Báo", dt.Rows[0]["MLT"].ToString() + "-" + dt.Rows[0]["DanhBo"].ToString() + "-" + dt.Rows[0]["DiaChi"].ToString(), UID.ToString(), "ChuBao", "name", obj["message"], drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString());
                     }
                     else
@@ -113,7 +113,7 @@ namespace WSTanHoa.Controllers
             {
                 string NoiDung = "";
                 //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-                DataTable dt = cDAL_DocSo.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where IDParent=" + ID);
+                DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where IDParent=" + ID);
                 if (dt != null && dt.Rows.Count > 0)
                     foreach (DataRow item in dt.Rows)
                     {
@@ -121,16 +121,16 @@ namespace WSTanHoa.Controllers
                         switch (TableName)
                         {
                             case "MaHoa_DonTu_Hinh":
-                                FileContent = wsDHN.get_Hinh_MaHoa("DonTu", ID, item["filename"].ToString());
+                                FileContent = _wsDHN.get_Hinh_MaHoa("DonTu", ID, item["filename"].ToString());
                                 break;
                             case "MaHoa_DCBD_Hinh":
-                                FileContent = wsDHN.get_Hinh_MaHoa("DCBD", ID, item["filename"].ToString());
+                                FileContent = _wsDHN.get_Hinh_MaHoa("DCBD", ID, item["filename"].ToString());
                                 break;
                             case "MaHoa_KTXM_Hinh":
-                                FileContent = wsDHN.get_Hinh_MaHoa("KTXM", ID, item["filename"].ToString());
+                                FileContent = _wsDHN.get_Hinh_MaHoa("KTXM", ID, item["filename"].ToString());
                                 break;
                             case "MaHoa_ToTrinh_Hinh":
-                                FileContent = wsDHN.get_Hinh_MaHoa("ToTrinh", ID, item["filename"].ToString());
+                                FileContent = _wsDHN.get_Hinh_MaHoa("ToTrinh", ID, item["filename"].ToString());
                                 break;
                             default:
                                 break;
@@ -149,7 +149,7 @@ namespace WSTanHoa.Controllers
         public ActionResult sDHN(FormCollection collection, string function, string TuNgay, string DenNgay, string NgayXem)
         {
             //update sDHN
-            cDAL_DHN.ExecuteNonQuery("insert into sDHN.dbo.sDHN_TCT(DanhBo,serialnumber,IDNCC)"
+            _cDAL_DHN.ExecuteNonQuery("insert into sDHN.dbo.sDHN_TCT(DanhBo,serialnumber,IDNCC)"
                             + " select dhn.DanhBo, serialnumber = CASE WHEN ttkh.HIEUDH = 'EMS' THEN ISNULL((select Serial_number from[sDHN].[dbo].[DHN_PHAMLAM] where DANHBO = dhn.DanhBo), 0) ELSE ttkh.SOTHANDH END, tt.ID"
                             + " from(SELECT DanhBo = DHN_DANHBO, DIACHI, REPLACE(DHN_TODS, 'DHTM-', 'TH-') AS MADMA, HCT_HIEUDHNGAN AS HG, HCT_SOTHANGAN AS STGAN, HCT_CHISOGAN AS CSGa, HCT_CODHNGAN AS COGAN,"
                             + " CAST(HCT_NGAYGAN as date) AS NGAYGAN, CAST(HCT_NGAYKIEMDINH as date) AS KD,"
@@ -158,15 +158,15 @@ namespace WSTanHoa.Controllers
                             + " and DHN_DANHBO not in(select DanhBo from sDHN.dbo.sDHN_TCT)) dhn,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh,[sDHN].[dbo].[DHTM_THONGTIN] tt"
                             + " where dhn.DanhBo=ttkh.DANHBO and dhn.HG=tt.HIEU_DHTM");
             //get ncc
-            DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from sDHN_NCC");
+            DataTable dtNCC = _cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from sDHN_NCC");
             ViewBag.NCC = ToSelectList(dtNCC, "ID", "Name");
-            dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select DMA=MADMA from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+            dtNCC = _cDAL_sDHN.ExecuteQuery_DataTable("select DMA=MADMA from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                  + " where Valid = 1 and sdhn.DanhBo = ttkh.DANHBO"
                  + " group by MADMA"
                  + " order by MADMA");
             ViewBag.DMA = ToSelectList(dtNCC, "DMA", "DMA");
             //get năm
-            dtNCC = cDAL_DHN.ExecuteQuery_DataTable("SELECT Nam=year(HCT_NGAYGAN)"
+            dtNCC = _cDAL_DHN.ExecuteQuery_DataTable("SELECT Nam=year(HCT_NGAYGAN)"
                 + " FROM TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND HCT_NGAYGAN IS NOT NULL"
                 + " and DHN_DANHBO in (select DanhBo from sDHN.dbo.sDHN_TCT where Valid = 1)"
                 + " group by year(HCT_NGAYGAN)"
@@ -181,20 +181,20 @@ namespace WSTanHoa.Controllers
                     Nam += ";" + item["Nam"].ToString();
             }
             ViewBag.NamLapDat = Nam;
-            dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select DMA=MADMA from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+            dtNCC = _cDAL_sDHN.ExecuteQuery_DataTable("select DMA=MADMA from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                  + " where Valid = 1 and sdhn.DanhBo = ttkh.DANHBO"
                  + " group by MADMA"
                  + " order by MADMA");
             ViewBag.DMA = ToSelectList(dtNCC, "DMA", "DMA");
             //get số lượng sDHN
-            object soluong = cDAL_sDHN.ExecuteQuery_ReturnOneValue("select SoLuong=COUNT(*) from sDHN_NCC a,sDHN_TCT b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1");
+            object soluong = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select SoLuong=COUNT(*) from sDHN_NCC a,sDHN_TCT b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1");
             ViewBag.SoLuong = soluong;
             //DataTable dt = cDAL_sDHN.ExecuteQuery_DataTable("select b.IDNCC,Name,SoLuong=COUNT(*),SoLuongLD=(SELECT count(*) FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL"
             //                        + " and HCT_HIEUDHNGAN = (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1, sDHN.dbo.sDHN_NCC b1 where a1.ID = b.IDNCC and a1.ID = b1.ID))"
             //                        + " from sDHN_NCC a,sDHN_TCT b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
             //                        + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
             //                        + " group by IDNCC,Name order by IDNCC");
-            DataTable dt = cDAL_sDHN.ExecuteQuery_DataTable("select b.IDNCC,Name,SoLuong=COUNT(*)"
+            DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select b.IDNCC,Name,SoLuong=COUNT(*)"
                         + " from sDHN_NCC a,sDHN_TCT b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
                         + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1"
                         + " group by IDNCC,Name order by IDNCC");
@@ -205,7 +205,7 @@ namespace WSTanHoa.Controllers
                 en.TieuDe = item["Name"].ToString();
                 en.SoLuong = item["SoLuong"].ToString();
                 string SL = "";
-                DataTable dtSL = cDAL_DHN.ExecuteQuery_DataTable("SELECT Nam=year(HCT_NGAYGAN),SoLuong=count(DHN_DANHBO)"
+                DataTable dtSL = _cDAL_DHN.ExecuteQuery_DataTable("SELECT Nam=year(HCT_NGAYGAN),SoLuong=count(DHN_DANHBO)"
                         + " FROM TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND HCT_NGAYGAN IS NOT NULL and HCT_HIEUDHNGAN = (select HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN where ID=" + item["IDNCC"].ToString() + ")"
                         + " and DHN_DANHBO in (select DanhBo from sDHN.dbo.sDHN_TCT where Valid=1)"
                         + " group by year(HCT_NGAYGAN)"
@@ -298,7 +298,7 @@ namespace WSTanHoa.Controllers
                 if (collection["radLoai"].ToString() == "radNCC")
                 {
                     sql += " and sdhn.IDNCC=" + collection["NCC"].ToString();
-                    filename = cDAL_sDHN.ExecuteQuery_ReturnOneValue("select Name from sDHN_NCC where ID=" + collection["NCC"].ToString()).ToString();
+                    filename = _cDAL_sDHN.ExecuteQuery_ReturnOneValue("select Name from sDHN_NCC where ID=" + collection["NCC"].ToString()).ToString();
                 }
                 else
                     if (collection["radLoai"].ToString() == "radDMA")
@@ -334,7 +334,7 @@ namespace WSTanHoa.Controllers
                 + " from sDHN_TCT sdhn,sDHN_LichSu_TCT ls,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                 + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo= ttkh.DANHBO and sdhn.DanhBo= ls.DanhBo"
                 + " and sdhn.DanhBo= '" + collection["DanhBo"].ToString() + "' and cast(ThoiGianCapNhat as date)>='" + fromdate.ToString("yyyyMMdd") + "' and cast(ThoiGianCapNhat as date)<='" + todate.ToString("yyyyMMdd") + "' order by ThoiGianCapNhat";
-                    dt = cDAL_sDHN.ExecuteQuery_DataTable(sql);
+                    dt = _cDAL_sDHN.ExecuteQuery_DataTable(sql);
                     for (int i = 1; i < dt.Rows.Count; i++)
                     {
                         dt.Rows[i]["TieuThu"] = (double.Parse(dt.Rows[i]["ChiSo"].ToString()) - double.Parse(dt.Rows[i - 1]["ChiSo"].ToString())).ToString();
@@ -342,7 +342,7 @@ namespace WSTanHoa.Controllers
                     filename = "DanhBo." + collection["DanhBo"].ToString();
                 }
                 else
-                    dt = cDAL_sDHN.ExecuteQuery_DataTable(sql);
+                    dt = _cDAL_sDHN.ExecuteQuery_DataTable(sql);
                 dt.TableName = "Sheet1";
                 using (XLWorkbook wb = new XLWorkbook())
                 {
@@ -375,7 +375,7 @@ namespace WSTanHoa.Controllers
             {
                 if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
                 {
-                    DataTable dt = cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
+                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         ViewBag.DanhBo = dt.Rows[0]["DanhBo"];
@@ -409,12 +409,12 @@ namespace WSTanHoa.Controllers
                     }
                     string[] datestr = collection["NgayXuLy"].ToString().Split('/');
                     DateTime date = new DateTime(int.Parse(datestr[2]), int.Parse(datestr[1]), int.Parse(datestr[0]), DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second);
-                    cDAL_sDHN.ExecuteNonQuery("insert into SuCo_LichSu(DanhBo,CreateDate,IDSuCo_Loai,NoiDungXuLy,NgayXuLy)values('" + DanhBo + "',getdate()," + collection["SuCo"].ToString() + ",N'" + collection["NoiDungXuLy"].ToString() + "','" + date.ToString("yyyy-MM-dd HH:mm:ss") + "')");
+                    _cDAL_sDHN.ExecuteNonQuery("insert into SuCo_LichSu(DanhBo,CreateDate,IDSuCo_Loai,NoiDungXuLy,NgayXuLy)values('" + DanhBo + "',getdate()," + collection["SuCo"].ToString() + ",N'" + collection["NoiDungXuLy"].ToString() + "','" + date.ToString("yyyy-MM-dd HH:mm:ss") + "')");
                     ModelState.AddModelError("", "Thành Công");
                 }
             }
             //
-            DataTable dtThongKe = cDAL_sDHN.ExecuteQuery_DataTable("select MADMA,HIEU_DHTM,SuCo=a.Name,SoLuong=COUNT(*)"
+            DataTable dtThongKe = _cDAL_sDHN.ExecuteQuery_DataTable("select MADMA,HIEU_DHTM,SuCo=a.Name,SoLuong=COUNT(*)"
                                         + " from SuCo_Loai a, SuCo_LichSu b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh, DHTM_THONGTIN tt, sDHN_TCT dhn"
                                         + " where a.ID = b.IDSuCo_Loai and b.DanhBo = ttkh.DANHBO and tt.ID = dhn.IDNCC and dhn.DanhBo = ttkh.DANHBO"
                                         + " group by MADMA, HIEU_DHTM, a.Name order by MADMA");
@@ -430,9 +430,9 @@ namespace WSTanHoa.Controllers
             }
             ViewBag.vThongKe = vThongKe;
             //
-            DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from SuCo_Loai order by STT asc");
+            DataTable dtNCC = _cDAL_sDHN.ExecuteQuery_DataTable("select ID,Name from SuCo_Loai order by STT asc");
             ViewBag.NCC = ToSelectList(dtNCC, "ID", "Name");
-            DataTable dtLichSu = cDAL_sDHN.ExecuteQuery_DataTable("select LoaiSuCo=Name,Hieu=HIEU_DHTM,ttkh.DanhBo,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,NoiDungXuLy,NgayXuLy=CONVERT(varchar(10),NgayXuLy,103)"
+            DataTable dtLichSu = _cDAL_sDHN.ExecuteQuery_DataTable("select LoaiSuCo=Name,Hieu=HIEU_DHTM,ttkh.DanhBo,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,NoiDungXuLy,NgayXuLy=CONVERT(varchar(10),NgayXuLy,103)"
                                     + " from SuCo_Loai a, SuCo_LichSu b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh,DHTM_THONGTIN tt,sDHN_TCT dhn"
                                     + " where a.ID = b.IDSuCo_Loai and b.DanhBo = ttkh.DANHBO and tt.ID=dhn.IDNCC and dhn.DanhBo=ttkh.DANHBO order by b.NgayXuLy desc");
             List<ThongTinKhachHang> vLichSu = new List<ThongTinKhachHang>();
@@ -455,7 +455,7 @@ namespace WSTanHoa.Controllers
         {
             if (DanhBo != null && DanhBo != "")
             {
-                byte[] FileContent = wsThuongVu.get_Hinh("sDHN_SuCo", "", DanhBo + ".pdf");
+                byte[] FileContent = _wsThuongVu.get_Hinh("sDHN_SuCo", "", DanhBo + ".pdf");
                 return new FileContentResult(FileContent, "application/pdf");
             }
             else
@@ -491,7 +491,7 @@ namespace WSTanHoa.Controllers
                     dt = getDS_KhongTinHieu_sDHN("", "", SoNgay, Ngay);
                 else
                     dt = getDS_BatThuong_sDHN("", "", SoNgay, Ngay);
-                DataTable dtNCC = cDAL_sDHN.ExecuteQuery_DataTable("select * from sDHN_NCC");
+                DataTable dtNCC = _cDAL_sDHN.ExecuteQuery_DataTable("select * from sDHN_NCC");
                 foreach (DataRow item in dtNCC.Rows)
                 {
                     DataRow[] dr = dt.Select("IDNCC=" + item["ID"]);
@@ -574,7 +574,7 @@ namespace WSTanHoa.Controllers
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " order by IDNCC";
             }
-            return cDAL_sDHN.ExecuteQuery_DataTable(sql);
+            return _cDAL_sDHN.ExecuteQuery_DataTable(sql);
         }
 
         [NonAction]
@@ -624,7 +624,7 @@ namespace WSTanHoa.Controllers
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " )t1 group by t1.IDNCC,t1.NamLapDat order by t1.IDNCC";
             }
-            return cDAL_sDHN.ExecuteQuery_DataTable(sql);
+            return _cDAL_sDHN.ExecuteQuery_DataTable(sql);
         }
 
         [NonAction]
@@ -674,7 +674,7 @@ namespace WSTanHoa.Controllers
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " order by IDNCC";
             }
-            return cDAL_sDHN.ExecuteQuery_DataTable(sql);
+            return _cDAL_sDHN.ExecuteQuery_DataTable(sql);
         }
 
         [NonAction]
@@ -724,7 +724,7 @@ namespace WSTanHoa.Controllers
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " )t1 group by t1.IDNCC,t1.NamLapDat order by t1.IDNCC";
             }
-            return cDAL_sDHN.ExecuteQuery_DataTable(sql);
+            return _cDAL_sDHN.ExecuteQuery_DataTable(sql);
         }
 
         //-------------------------
@@ -867,7 +867,7 @@ namespace WSTanHoa.Controllers
         [NonAction]
         public DataTable getDS_CanhBao_PinYeu_sDHN(DateTime date)
         {
-            return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Pin Yếu',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='PinYeu' from"
+            return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Pin Yếu',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='PinYeu' from"
                                                     + " (select distinct DanhBo from sDHN_LichSu_TCT"
                                                     + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and CBPinYeu = 1)t1, sDHN_NCC ncc, sDHN_TCT dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1"
@@ -877,7 +877,7 @@ namespace WSTanHoa.Controllers
         [NonAction]
         public DataTable getDS_CanhBao_RoRi_sDHN(DateTime date)
         {
-            return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Rò Rỉ',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='RoRi' from"
+            return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Rò Rỉ',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='RoRi' from"
                                                      + " (select DanhBo, SL = COUNT(*) from sDHN_LichSu_TCT"
                                                      + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and Diff - 0.5 >= 0.5 group by DanhBo)t1, sDHN_NCC ncc, sDHN_TCT dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                      + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1 and t1.SL = (select COUNT(DanhBo) from sDHN_LichSu_TCT"
@@ -888,7 +888,7 @@ namespace WSTanHoa.Controllers
         [NonAction]
         public DataTable getDS_CanhBao_QuaDong_sDHN(DateTime date)
         {
-            return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Quá Dòng',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='QuaDong' from"
+            return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Quá Dòng',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='QuaDong' from"
                                                     + " (select distinct DanhBo from sDHN_LichSu_TCT"
                                                     + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and CBQuaDong = 1)t1, sDHN_NCC ncc, sDHN_TCT dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1"
@@ -898,7 +898,7 @@ namespace WSTanHoa.Controllers
         [NonAction]
         public DataTable getDS_CanhBao_ChayNguoc_sDHN(DateTime date)
         {
-            return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Chạy Ngược',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='ChayNguoc' from"
+            return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Chạy Ngược',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='ChayNguoc' from"
                                                     + " (select distinct DanhBo from sDHN_LichSu_TCT"
                                                     + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and Diff<=-0.5)t1, sDHN_NCC ncc, sDHN_TCT dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1"
@@ -908,7 +908,7 @@ namespace WSTanHoa.Controllers
         [NonAction]
         public DataTable getDS_CanhBao_NamCham_sDHN(DateTime date)
         {
-            return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Nam Châm',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='NamCham' from"
+            return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Nam Châm',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='NamCham' from"
                                                     + " (select distinct DanhBo from sDHN_LichSu_TCT"
                                                     + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and CBNamCham = 1)t1, sDHN_NCC ncc, sDHN_TCT dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1"
@@ -918,7 +918,7 @@ namespace WSTanHoa.Controllers
         [NonAction]
         public DataTable getDS_CanhBao_KhoOng_sDHN(DateTime date)
         {
-            return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Khô Ống',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='KhoOng' from"
+            return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Khô Ống',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='KhoOng' from"
                                                     + " (select distinct DanhBo from sDHN_LichSu_TCT"
                                                     + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and CBKhoOng = 1)t1, sDHN_NCC ncc, sDHN_TCT dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1"
@@ -928,7 +928,7 @@ namespace WSTanHoa.Controllers
         [NonAction]
         public DataTable getDS_CanhBao_MoHop_sDHN(DateTime date)
         {
-            return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Mở Hộp',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='MoHop' from"
+            return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Mở Hộp',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA,IDNCC,NCC=ncc.Name,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='MoHop' from"
                                                     + " (select distinct DanhBo from sDHN_LichSu_TCT"
                                                     + " where CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyyMMdd") + "' and CBMoHop = 1)t1, sDHN_NCC ncc, sDHN_TCT dhn, DHTM_THONGTIN ttsdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                     + " where ncc.ID = dhn.IDNCC and ncc.ID = ttsdhn.ID and dhn.DanhBo = t1.DanhBo and dhn.DanhBo = ttkh.DANHBO and Valid = 1"
@@ -994,13 +994,13 @@ namespace WSTanHoa.Controllers
         public DataTable getDS_KhongTinHieu_sDHN(string function, DateTime date)
         {
             if (function == "export")
-                return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Không Tín Hiệu',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='0' from"
+                return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Không Tín Hiệu',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='0' from"
                                                         + " (select DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA, SoLuong = (select COUNT(DanhBo) from sDHN_LichSu_TCT ls where ls.DanhBo = dhn.DanhBo and CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyy-MM-dd") + "'),IDNCC,NCC=ncc.Name"
                                                         + " from sDHN_NCC ncc,sDHN_TCT dhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                         + " where ncc.ID=dhn.IDNCC and dhn.DanhBo = ttkh.DANHBO and Valid = 1)t1,DHTM_THONGTIN ttsdhn"
                                                         + " where t1.SoLuong = 0 and t1.IDNCC=ttsdhn.ID order by NCC");
             else
-                return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Không Tín Hiệu',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='0' from"
+                return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Không Tín Hiệu',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='0' from"
                                                         + " (select DanhBo=dhn.DanhBo, SoLuong = (select COUNT(DanhBo) from sDHN_LichSu_TCT ls where ls.DanhBo = dhn.DanhBo and CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyy-MM-dd") + "'),IDNCC,NCC=ncc.Name"
                                                         + " from sDHN_NCC ncc,sDHN_TCT dhn"
                                                         + " where ncc.ID=dhn.IDNCC and Valid = 1)t1,DHTM_THONGTIN ttsdhn"
@@ -1011,13 +1011,13 @@ namespace WSTanHoa.Controllers
         public DataTable getDS_BinhThuong_sDHN(string function, DateTime date)
         {
             if (function == "export")
-                return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Bình Thường',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='2' from"
+                return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Bình Thường',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='2' from"
                                                         + " (select DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA, SoLuong = (select COUNT(DanhBo) from sDHN_LichSu_TCT ls where ls.DanhBo = dhn.DanhBo and CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyy-MM-dd") + "'),IDNCC,NCC=ncc.Name"
                                                         + " from sDHN_NCC ncc,sDHN_TCT dhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                         + " where ncc.ID=dhn.IDNCC and dhn.DanhBo = ttkh.DANHBO and Valid = 1)t1,DHTM_THONGTIN ttsdhn"
                                                         + " where t1.SoLuong >= 24 and t1.IDNCC=ttsdhn.ID order by NCC");
             else
-                return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Bình Thường',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='2' from"
+                return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Bình Thường',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='2' from"
                                               + " (select DanhBo=dhn.DanhBo, SoLuong = (select COUNT(DanhBo) from sDHN_LichSu_TCT ls where ls.DanhBo = dhn.DanhBo and CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyy-MM-dd") + "'),IDNCC,NCC=ncc.Name"
                                               + " from sDHN_NCC ncc,sDHN_TCT dhn"
                                               + " where ncc.ID=dhn.IDNCC and Valid = 1)t1,DHTM_THONGTIN ttsdhn"
@@ -1028,13 +1028,13 @@ namespace WSTanHoa.Controllers
         public DataTable getDS_BatThuong_sDHN(string function, DateTime date)
         {
             if (function == "export")
-                return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Bất Thường',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='1' from"
+                return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Bất Thường',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='1' from"
                                                         + " (select DanhBo=dhn.DanhBo,MLT=ttkh.LOTRINH,HoTen=ttkh.HOTEN,DiaChi=ttkh.SONHA+' '+ttkh.TENDUONG,DMA=ttkh.MADMA, SoLuong = (select COUNT(DanhBo) from sDHN_LichSu_TCT ls where ls.DanhBo = dhn.DanhBo and CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyy-MM-dd") + "'),IDNCC,NCC=ncc.Name"
                                                         + " from sDHN_NCC ncc,sDHN_TCT dhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
                                                         + " where ncc.ID=dhn.IDNCC and dhn.DanhBo = ttkh.DANHBO and Valid = 1)t1,DHTM_THONGTIN ttsdhn"
                                                         + " where t1.SoLuong > 0 and t1.SoLuong < 24 and t1.IDNCC=ttsdhn.ID order by NCC");
             else
-                return cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Bất Thường',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='1' from"
+                return _cDAL_sDHN.ExecuteQuery_DataTable("select Loai=N'Bất Thường',ThoiGian='" + date.ToString("dd/MM/yyyy") + "',t1.*,HieuDHN=ttsdhn.HIEU_DHTM,Loai2='1' from"
                                                       + " (select DanhBo=dhn.DanhBo, SoLuong = (select COUNT(DanhBo) from sDHN_LichSu_TCT ls where ls.DanhBo = dhn.DanhBo and CAST(ThoiGianCapNhat as date) = '" + date.ToString("yyyy-MM-dd") + "'),IDNCC,NCC=ncc.Name"
                                                       + " from sDHN_NCC ncc,sDHN_TCT dhn"
                                                       + " where ncc.ID=dhn.IDNCC and Valid = 1)t1,DHTM_THONGTIN ttsdhn"

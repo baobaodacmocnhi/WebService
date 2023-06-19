@@ -16,7 +16,7 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
-        private wrThuongVu.wsThuongVu wsThuongVu = new wrThuongVu.wsThuongVu();
+        private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: ThuongVu
         //public ActionResult viewFile(string TableName, string IDFileName, string IDFileContent)
@@ -50,7 +50,7 @@ namespace WSTanHoa.Controllers
                 if (dt != null && dt.Rows.Count > 0)
                     foreach (DataRow item in dt.Rows)
                     {
-                        byte[] FileContent = wsThuongVu.get_Hinh(TableName, IDFileContent, item["filename"].ToString());
+                        byte[] FileContent = _wsThuongVu.get_Hinh(TableName, IDFileContent, item["filename"].ToString());
                         if (item["filename"].ToString().ToLower().Contains(".pdf"))
                         {
                             return viewFilePDF(FileContent);

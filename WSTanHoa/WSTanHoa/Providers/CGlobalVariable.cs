@@ -12,7 +12,7 @@ namespace WSTanHoa.Providers
     public class CGlobalVariable
     {
         public static decimal IDZalo = 4276209776391262580;
-        public static string cheksum = "tanho@2022";
+        public static string checksum = "tanho@2022";
         public static string DHN = "Data Source=server9;Initial Catalog=CAPNUOCTANHOA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string DHNWFH = "Data Source=113.161.88.180,1933;Initial Catalog=CAPNUOCTANHOA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string DocSo = "Data Source=server9;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";

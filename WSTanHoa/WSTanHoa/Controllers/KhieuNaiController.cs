@@ -15,8 +15,8 @@ namespace WSTanHoa.Controllers
 {
     public class KhieuNaiController : Controller
     {
-        private dbTrungTamKhachHang db = new dbTrungTamKhachHang();
-        decimal IDZalo = -1;
+        private dbTrungTamKhachHang _db = new dbTrungTamKhachHang();
+        decimal _IDZalo = -1;
 
         // GET: KhieuNai
         public async Task<ActionResult> Index(decimal? id)
@@ -28,9 +28,9 @@ namespace WSTanHoa.Controllers
             }
 
             if (Session["IDZalo"] != null)
-                IDZalo = decimal.Parse(Session["IDZalo"].ToString());
+                _IDZalo = decimal.Parse(Session["IDZalo"].ToString());
 
-            return View(await db.KhieuNais.Where(item => item.IDZalo == IDZalo).ToListAsync());
+            return View(await _db.KhieuNais.Where(item => item.IDZalo == _IDZalo).ToListAsync());
         }
 
         // GET: KhieuNai/Details/5
@@ -40,7 +40,7 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            KhieuNai khieuNai = await db.KhieuNais.FindAsync(id);
+            KhieuNai khieuNai = await _db.KhieuNais.FindAsync(id);
             if (khieuNai == null)
             {
                 return HttpNotFound();
@@ -63,14 +63,14 @@ namespace WSTanHoa.Controllers
         {
             if (ModelState.IsValid && Session["IDZalo"] !=null)
             {
-                if (db.KhieuNais.Count() == 0)
+                if (_db.KhieuNais.Count() == 0)
                     khieuNai.ID = 1;
                 else
-                    khieuNai.ID = db.KhieuNais.Max(item => item.ID) + 1;
+                    khieuNai.ID = _db.KhieuNais.Max(item => item.ID) + 1;
                 khieuNai.IDZalo = decimal.Parse(Session["IDZalo"].ToString());
                 khieuNai.CreateDate = DateTime.Now;
-                db.KhieuNais.Add(khieuNai);
-                await db.SaveChangesAsync();
+                _db.KhieuNais.Add(khieuNai);
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             //ViewBag.lstKhachHang = new SelectList(db.Zaloes.Where(item=>item.IDZalo==CConstantVariable.IDZalo), "DanhBo", "DanhBo");
@@ -84,7 +84,7 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            KhieuNai khieuNai = await db.KhieuNais.FindAsync(id);
+            KhieuNai khieuNai = await _db.KhieuNais.FindAsync(id);
             if (khieuNai == null)
             {
                 return HttpNotFound();
@@ -101,8 +101,8 @@ namespace WSTanHoa.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(khieuNai).State = EntityState.Modified;
-                await db.SaveChangesAsync();
+                _db.Entry(khieuNai).State = EntityState.Modified;
+                await _db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
             return View(khieuNai);
@@ -115,15 +115,15 @@ namespace WSTanHoa.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            KhieuNai khieuNai = await db.KhieuNais.FindAsync(id);
+            KhieuNai khieuNai = await _db.KhieuNais.FindAsync(id);
             if (khieuNai == null)
             {
                 return HttpNotFound();
             }
             else
             {
-                db.KhieuNais.Remove(khieuNai);
-                db.SaveChanges();
+                _db.KhieuNais.Remove(khieuNai);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             //return View(khieuNai);
@@ -134,9 +134,9 @@ namespace WSTanHoa.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            KhieuNai khieuNai = await db.KhieuNais.FindAsync(id);
-            db.KhieuNais.Remove(khieuNai);
-            await db.SaveChangesAsync();
+            KhieuNai khieuNai = await _db.KhieuNais.FindAsync(id);
+            _db.KhieuNais.Remove(khieuNai);
+            await _db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
@@ -144,7 +144,7 @@ namespace WSTanHoa.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

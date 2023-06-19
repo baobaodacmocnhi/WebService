@@ -105,6 +105,16 @@ namespace WSTanHoa.Models
         /// </summary>
         public string ThongTin { get; set; }
 
+        /// <summary>
+        /// Hồ sơ gốc
+        /// </summary>
+        public string HoSoGoc { get; set; }
+
+        /// <summary>
+        /// Bấm chì
+        /// </summary>
+        public string BamChi { get; set; }
+
         public string ThongTinDongNuoc { get; set; }
 
         public string DMA { get; set; }
@@ -137,6 +147,8 @@ namespace WSTanHoa.Models
             NgayKiemDinh = null;
             HieuLuc = "";
             ThongTin = "";
+            HoSoGoc = "";
+            BamChi = "";
             ThongTinDongNuoc = "";
             DMA = "";
             NVDocSo = "";

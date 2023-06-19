@@ -11,8 +11,8 @@ namespace WSTanHoa.Controllers
 {
     public class HomeController : Controller
     {
-        private CConnection cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
-        private CConnection cDAL_BauCu = new CConnection(CGlobalVariable.BauCu);
+        private CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection _cDAL_BauCu = new CConnection(CGlobalVariable.BauCu);
 
         public ActionResult Index()
         {
@@ -25,7 +25,7 @@ namespace WSTanHoa.Controllers
         {
             if (action == "login")
             {
-                DataTable dt = cDAL_KinhDoanh.ExecuteQuery_DataTable("select MaU,HoTen from users where an=0 and taikhoan='" + username + "' and matkhau='" + password + "'");
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select MaU,HoTen from users where an=0 and taikhoan='" + username + "' and matkhau='" + password + "'");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     Session["ID"] = dt.Rows[0]["MaU"].ToString();
