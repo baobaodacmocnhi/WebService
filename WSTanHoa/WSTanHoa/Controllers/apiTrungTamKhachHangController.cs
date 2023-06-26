@@ -80,7 +80,7 @@ namespace WSTanHoa.Controllers
                              + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                              + ",DiaChiHoaDon=(select top 1 SO+' '+DUONG from HOADON_TA.dbo.HOADON where HOADON_TA.dbo.HOADON.DanhBa=TB_DULIEUKHACHHANG.DanhBo order by HOADON_TA.dbo.HOADON.ID_HOADON desc)+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                              + ",HopDong"
-                             + ",DienThoai"
+                             //+ ",DienThoai"
                              + ",MLT=LoTrinh"
                              + ",DinhMuc"
                              + ",DinhMucHN"
@@ -106,7 +106,7 @@ namespace WSTanHoa.Controllers
                                  + ",DiaChi=SoNha+' '+TenDuong+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                                  + ",DiaChiHoaDon=(select top 1 SO+' '+DUONG from HOADON_TA.dbo.HOADON where HOADON_TA.dbo.HOADON.DanhBa=TB_DULIEUKHACHHANG_HUYDB.DanhBo order by HOADON_TA.dbo.HOADON.ID_HOADON desc)+', P.'+(select TenPhuong from Phuong where MaPhuong=Phuong and MaQuan=Quan)+', Q.'+(select TenQuan from Quan where MaQuan=Quan)"
                                  + ",HopDong"
-                                 + ",DienThoai=''"
+                                 //+ ",DienThoai=''"
                                  + ",MLT=LoTrinh"
                                  + ",DinhMuc"
                                  + ",DinhMucHN"
@@ -135,7 +135,10 @@ namespace WSTanHoa.Controllers
                     if (dt.Rows[0]["DiaChi"].ToString() != dt.Rows[0]["DiaChiHoaDon"].ToString())
                         en.DiaChiHoaDon = dt.Rows[0]["DiaChiHoaDon"].ToString();
                     en.HopDong = dt.Rows[0]["HopDong"].ToString();
-                    en.DienThoai = dt.Rows[0]["DienThoai"].ToString();
+                    object DienThoais = _cDAL_DHN.ExecuteQuery_ReturnOneValue("select DienThoai=stuff((select ';' + DienThoai from CAPNUOCTANHOA.dbo.SDT_DHN"
+                                    + " where DanhBo = '" + dt.Rows[0]["DanhBo"].ToString() + "' order by CreateDate desc for xml path('')),1,1,'')");
+                    if (DienThoais != null)
+                        en.DienThoai = DienThoais.ToString();
                     en.MLT = dt.Rows[0]["MLT"].ToString();
                     en.DinhMuc = dt.Rows[0]["DinhMuc"].ToString();
                     en.DinhMucHN = dt.Rows[0]["DinhMucHN"].ToString();
@@ -187,9 +190,9 @@ namespace WSTanHoa.Controllers
                         en.HoSoGoc = "<a style='color: blue;' target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/thuongvu/hosogoc/" + en.DanhBo + "'>Xem File</a>";
                     else
                         en.HoSoGoc = "Chưa scan";
-                    if (en.ThongTin != "")
-                        en.ThongTin += " - ";
-                    en.ThongTin += "<a style='color: blue;' target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/thuongvu/hosogoc/" + en.DanhBo + "'>Hồ sơ gốc</a>";
+                    //if (en.ThongTin != "")
+                    //    en.ThongTin += " - ";
+                    //en.ThongTin += "<a style='color: blue;' target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/thuongvu/hosogoc/" + en.DanhBo + "'>Hồ sơ gốc</a>";
                     DataTable dtNiemChi = getDS_NiemChi(dt.Rows[0]["DanhBo"].ToString());
                     if (dtNiemChi != null && dtNiemChi.Rows.Count > 0)
                     {
@@ -203,12 +206,12 @@ namespace WSTanHoa.Controllers
                             en.ThongTin += " - ";
                         if (bool.Parse(dtNiemChi.Rows[0]["KhoaTu"].ToString()))
                         {
-                            en.ThongTin += "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Từ</a>";
+                            //en.ThongTin += "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Từ</a>";
                             en.BamChi = "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Từ</a>";
                         }
                         else
                         {
-                            en.ThongTin += "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[0]["NiemChi"].ToString() + " " + dtNiemChi.Rows[0]["MauSac"].ToString() + "</a>";
+                            //en.ThongTin += "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[0]["NiemChi"].ToString() + " " + dtNiemChi.Rows[0]["MauSac"].ToString() + "</a>";
                             en.BamChi = "<a style='color: red;' target='_blank' href='https://service.cskhtanhoa.com.vn/khachhang/lichsubamchi?danhbo=" + dt.Rows[0]["DanhBo"].ToString() + "'>" + dtNiemChi.Rows[0]["NoiDung"].ToString() + ", Khóa Chì: " + dtNiemChi.Rows[0]["NiemChi"].ToString() + " " + dtNiemChi.Rows[0]["MauSac"].ToString() + "</a>";
                         }
                     }
