@@ -43,6 +43,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public List<string> get_FileinFolder_241(string FolderLoai, string FolderIDCT)
+        {
+            return _cThuTien.get_FileinFolder_241(CGlobalVariable.pathHinhTV, FolderLoai, FolderIDCT);
+        }
+
+        [WebMethod]
         public bool checkExists_DonTu(string DanhBo, string NoiDung, string SoNgay)
         {
             return _cThuTien.checkExists_DonTu(DanhBo, NoiDung, SoNgay);
