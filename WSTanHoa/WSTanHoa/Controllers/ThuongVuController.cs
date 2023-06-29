@@ -449,5 +449,34 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
+        public ActionResult viewImageCCCD(string TableName, string IDFileName, string IDFileContent)
+        {
+            if (TableName != null && IDFileName != null && IDFileContent != null && TableName != "" && IDFileName != "" && IDFileContent != "")
+            {
+                string NoiDung = "";
+                //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent + " order by CreateDate desc");
+                if (dt != null && dt.Rows.Count > 0)
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        byte[] FileContent = _wsThuongVu.get_Hinh(TableName, IDFileContent, item["filename"].ToString());
+                        if (item["filename"].ToString().ToLower().Contains(".pdf"))
+                        {
+                            return viewFilePDF(FileContent);
+                        }
+                        else
+                        {
+                            if (FileContent != null)
+                                NoiDung += "<img height='100%' src='data:image/jpeg;base64," + Convert.ToBase64String(FileContent) + "'/></br></br>";
+                        }
+                    }
+                else
+                    NoiDung = "<head><meta charset='UTF-8'><link rel='shortcut icon' type='image/ico' href='~/Images/logoctycp.png'></head><body><h3>Không có hình ảnh!</h3></body>";
+                return Content(NoiDung, "text/html");
+            }
+            else
+                return null;
+        }
+
     }
 }
