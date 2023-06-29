@@ -29,6 +29,8 @@
                      + "            <td><input type='text' class='form-control' name='DCThuongTru" + (i + 1) + "' value=''></td>"
                      + "            <td><input type='text' class='form-control' name='DCTamTru" + (i + 1) + "' value=''></td>"
                      + "            <td><input type='number' class='form-control' name='CCCD" + (i + 1) + "' value=''></td>"
+                     + "            <td><input type='file' class='form-control' name='HinhCCCD' value=''></td>"
+                     + "            <td><input type='file' class='form-control' name='HinhCT' value=''></td>"
                      + "        </tr>";
             }
             $("#tblCCCD tbody").append(str);
@@ -71,7 +73,7 @@
                         </tr>
                     </table>
                 }
-                @using (Html.BeginForm("DangKyDinhMuc", "ThuongVu", FormMethod.Post))
+                @using (Html.BeginForm("DangKyDinhMuc", "ThuongVu", FormMethod.Post, new { encType = "multipart/form-data" }))
                 {
                     <table>
                         <tr style="visibility:collapse">
@@ -91,11 +93,13 @@
                         <thead>
                             <tr class="text-center fw-bold">
                                 <td style="width:50px">STT</td>
-                                <td style="width:200px">Họ tên</td>
-                                <td style="width:100px">Ngày sinh</td>
-                                <td style="width:300px">Địa chỉ thường trú</td>
-                                <td style="width:300px">Địa chỉ tạm trú</td>
-                                <td style="width:160px">CCCD/Số định danh</td>
+                                <td>Họ tên</td>
+                                <td>Ngày sinh</td>
+                                <td>Địa chỉ thường trú</td>
+                                <td>Địa chỉ tạm trú</td>
+                                <td>CCCD/Số định danh</td>
+                                <td style="width:120px">Hình CCCD</td>
+                                <td style="width:120px">Hình CT01/CT07/CT08</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,6 +110,8 @@
                                 <td><input type="text" class="form-control" name="DCThuongTru1" value=""></td>
                                 <td><input type="text" class="form-control" name="DCTamTru1" value=""></td>
                                 <td><input type="number" class="form-control" name="CCCD1" value=""></td>
+                                <td><input type="file" class="form-control" name="HinhCCCD" accept="image/png, image/jpeg"></td>
+                                <td><input type="file" class="form-control" name="HinhCT" accept="image/png, image/jpeg"></td>
                             </tr>
                         </tbody>
                         <tfoot>
@@ -121,6 +127,19 @@
                         </tfoot>
                     </table>
                 }
+                <div>
+                    <table>
+                        <tr>
+                            <td><b style="color:red">Lưu ý:</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>1. Quý khách hàng vui lòng cung cấp đầy đủ thông tin kèm hình ảnh CCCD</b></td>
+                        </tr>
+                        <tr>
+                            <td><b>2. Đối với Quý khách hàng không có hộ khẩu thường trú tại TP.HCM, vui lòng cung cấp thêm hình ảnh CT01/CT07/CT08</b></td>
+                        </tr>
+                    </table>
+                </div>
             </div>
         </div>
 

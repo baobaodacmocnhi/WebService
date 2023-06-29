@@ -85,13 +85,13 @@ namespace WSTanHoa.Controllers
                         return View();
                     }
                     Image image = Image.FromStream(Hinh.InputStream);
-                    Bitmap resizedImage = resizeImage(image, 0.5m);
+                    Bitmap resizedImage =CGlobalVariable.resizeImage(image, 0.5m);
                     SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ")");
                     //SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo,Hinh)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ",@Hinh)");
                     //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = ImageToByte(resizedImage);
                     bool result = _cDAL_DocSo.ExecuteNonQuery(command);
                     wrDHN.wsDHN wsDHN = new wrDHN.wsDHN();
-                    string jsonresult = wsDHN.ghiChiSo(drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString(), "40", ChiSo, Convert.ToBase64String(ImageToByte(resizedImage)), int.Parse(drLich["Dot"].ToString()).ToString("00"), "Chủ Báo", "0", "");
+                    string jsonresult = wsDHN.ghiChiSo(drLich["Nam"].ToString() + int.Parse(drLich["Ky"].ToString()).ToString("00") + dt.Rows[0]["DanhBo"].ToString(), "40", ChiSo, Convert.ToBase64String(CGlobalVariable.ImageToByte(resizedImage)), int.Parse(drLich["Dot"].ToString()).ToString("00"), "Chủ Báo", "0", "");
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(jsonresult);
                     if (obj["success"] == true)
                     {
@@ -1183,47 +1183,6 @@ namespace WSTanHoa.Controllers
         }
 
         //-------------------------
-
-        [NonAction]
-        public Bitmap resizeImage(Image image, int width, int height)
-        {
-            var destRect = new Rectangle(0, 0, width, height);
-            var destImage = new Bitmap(width, height);
-
-            destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-
-            using (var graphics = Graphics.FromImage(destImage))
-            {
-                graphics.CompositingMode = CompositingMode.SourceCopy;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-                using (var wrapMode = new ImageAttributes())
-                {
-                    wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-                    graphics.DrawImage(image, destRect, 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-                }
-            }
-
-            return destImage;
-        }
-
-        [NonAction]
-        public Bitmap resizeImage(Image image, decimal percentage)
-        {
-            int width = (int)Math.Round(image.Width * percentage, MidpointRounding.AwayFromZero);
-            int height = (int)Math.Round(image.Height * percentage, MidpointRounding.AwayFromZero);
-            return resizeImage(image, width, height);
-        }
-
-        [NonAction]
-        public byte[] ImageToByte(Bitmap image)
-        {
-            ImageConverter converter = new ImageConverter();
-            return (byte[])converter.ConvertTo(image, typeof(byte[]));
-        }
 
         public ActionResult TaiApp()
         {
