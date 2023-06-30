@@ -431,12 +431,12 @@ namespace WSTanHoa.Controllers
                             + ",N'" + form["CCCD" + (i + 1) + ""].ToString().Trim() + "',N'" + form["HoTen" + (i + 1) + ""].ToString().Trim() + "','" + form["NgaySinh" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCThuongTru" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCTamTru" + (i + 1) + ""].ToString().Trim() + "')";
                         Image image = Image.FromStream(HinhCCCD.ElementAt(i).InputStream);
                         Bitmap resizedImage = CGlobalVariable.resizeImage(image, 0.5m);
-                        _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CCCD" + i.ToString() + Path.GetExtension(HinhCCCD.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImage));
+                        _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CCCD" + (i + 1).ToString() + Path.GetExtension(HinhCCCD.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImage));
                         if (HinhCT.ElementAt(i) != null && HinhCT.ElementAt(i).ContentLength > 0)
                         {
                             Image imageCT = Image.FromStream(HinhCT.ElementAt(i).InputStream);
                             Bitmap resizedImageCT = CGlobalVariable.resizeImage(imageCT, 0.5m);
-                            _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CT" + i.ToString() + Path.GetExtension(HinhCT.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImageCT));
+                            _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CT" + (i + 1).ToString() + Path.GetExtension(HinhCT.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImageCT));
                         }
                     }
 
@@ -449,18 +449,17 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
-        public ActionResult viewImageCCCD(string TableName, string IDFileName, string IDFileContent)
+        public ActionResult viewImageCCCD(string FolderCT)
         {
-            if (TableName != null && IDFileName != null && IDFileContent != null && TableName != "" && IDFileName != "" && IDFileContent != "")
+            if (FolderCT != null && FolderCT != "")
             {
                 string NoiDung = "";
-                //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent + " order by CreateDate desc");
-                if (dt != null && dt.Rows.Count > 0)
-                    foreach (DataRow item in dt.Rows)
+                string[] result = _wsThuongVu.get_FileinFolder("DangKyDinhMuc", FolderCT);
+                if (result != null && result.Count() > 0)
+                    foreach (string item in result)
                     {
-                        byte[] FileContent = _wsThuongVu.get_Hinh(TableName, IDFileContent, item["filename"].ToString());
-                        if (item["filename"].ToString().ToLower().Contains(".pdf"))
+                        byte[] FileContent = _wsThuongVu.get_Hinh("DangKyDinhMuc", FolderCT, item.Substring(item.LastIndexOf('\\') + 1, item.Length - item.LastIndexOf('\\') - 1));
+                        if (item.ToLower().Contains(".pdf"))
                         {
                             return viewFilePDF(FileContent);
                         }

@@ -3305,6 +3305,9 @@
         <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_HinhCompleted">
             <remarks/>
         </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolderCompleted">
+            <remarks/>
+        </member>
         <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.checkExists_DonTuCompleted">
             <remarks/>
         </member>
@@ -3359,6 +3362,15 @@
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_HinhAsync(System.String,System.String,System.Object)">
             <remarks/>
         </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolderAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolderAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.checkExists_DonTu(System.String,System.String,System.String)">
             <remarks/>
         </member>
@@ -3386,7 +3398,7 @@
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.checkExists_CCCDAsync(System.String,System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCD(System.String,System.String,System.String@)">
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCD(System.String,System.String)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCDAsync(System.String,System.String)">
@@ -3452,6 +3464,15 @@
         <member name="P:WSTanHoa.wrThuongVu.xoa_Folder_HinhCompletedEventArgs.Result">
             <remarks/>
         </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_FileinFolderCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_FileinFolderCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.get_FileinFolderCompletedEventArgs.Result">
+            <remarks/>
+        </member>
         <member name="T:WSTanHoa.wrThuongVu.checkExists_DonTuCompletedEventHandler">
             <remarks/>
         </member>
@@ -3489,9 +3510,6 @@
             <remarks/>
         </member>
         <member name="P:WSTanHoa.wrThuongVu.them_CCCDCompletedEventArgs.Result">
-            <remarks/>
-        </member>
-        <member name="P:WSTanHoa.wrThuongVu.them_CCCDCompletedEventArgs.result">
             <remarks/>
         </member>
         <member name="T:WSTanHoa.wrThuongVu.sua_CCCDCompletedEventHandler">

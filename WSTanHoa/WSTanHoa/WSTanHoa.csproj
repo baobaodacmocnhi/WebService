@@ -2250,21 +2250,21 @@
     <Content Include="Views\BauCu\BCH.cshtml" />
     <Content Include="Views\BauCu\BiThu.cshtml" />
     <Content Include="Views\BauCu\DaiBieuChinhThuc.cshtml" />
-    <Content Include="Web References\wrDHN\Reference.map">
+    <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Web References\wrDHN\wsdhn.disco" />
-    <Content Include="Web References\wrThuongVu\Reference.map">
+    <None Include="Web References\wrThuongVu\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Web References\wrDHN\wsdhn.wsdl" />
     <None Include="Web References\wrThuongVu\wsthuongvu.disco" />
-    <Content Include="Web References\wrThuTien\Reference.map">
+    <None Include="Web References\wrThuTien\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <None Include="Web References\wrThuongVu\wsthuongvu.wsdl" />
     <None Include="Web References\wrThuTien\wsthutien.disco" />
     <Content Include="Web.config">

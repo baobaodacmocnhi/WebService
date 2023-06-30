@@ -37,6 +37,8 @@ namespace WSTanHoa.wrThuongVu {
         
         private System.Threading.SendOrPostCallback xoa_Folder_HinhOperationCompleted;
         
+        private System.Threading.SendOrPostCallback get_FileinFolderOperationCompleted;
+        
         private System.Threading.SendOrPostCallback checkExists_DonTuOperationCompleted;
         
         private System.Threading.SendOrPostCallback getAccess_token_CCCDOperationCompleted;
@@ -98,6 +100,9 @@ namespace WSTanHoa.wrThuongVu {
         
         /// <remarks/>
         public event xoa_Folder_HinhCompletedEventHandler xoa_Folder_HinhCompleted;
+        
+        /// <remarks/>
+        public event get_FileinFolderCompletedEventHandler get_FileinFolderCompleted;
         
         /// <remarks/>
         public event checkExists_DonTuCompletedEventHandler checkExists_DonTuCompleted;
@@ -251,6 +256,37 @@ namespace WSTanHoa.wrThuongVu {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/get_FileinFolder", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string[] get_FileinFolder(string FolderLoai, string FolderIDCT) {
+            object[] results = this.Invoke("get_FileinFolder", new object[] {
+                        FolderLoai,
+                        FolderIDCT});
+            return ((string[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void get_FileinFolderAsync(string FolderLoai, string FolderIDCT) {
+            this.get_FileinFolderAsync(FolderLoai, FolderIDCT, null);
+        }
+        
+        /// <remarks/>
+        public void get_FileinFolderAsync(string FolderLoai, string FolderIDCT, object userState) {
+            if ((this.get_FileinFolderOperationCompleted == null)) {
+                this.get_FileinFolderOperationCompleted = new System.Threading.SendOrPostCallback(this.Onget_FileinFolderOperationCompleted);
+            }
+            this.InvokeAsync("get_FileinFolder", new object[] {
+                        FolderLoai,
+                        FolderIDCT}, this.get_FileinFolderOperationCompleted, userState);
+        }
+        
+        private void Onget_FileinFolderOperationCompleted(object arg) {
+            if ((this.get_FileinFolderCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.get_FileinFolderCompleted(this, new get_FileinFolderCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/checkExists_DonTu", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
         public bool checkExists_DonTu(string DanhBo, string NoiDung, string SoNgay) {
             object[] results = this.Invoke("checkExists_DonTu", new object[] {
@@ -344,11 +380,10 @@ namespace WSTanHoa.wrThuongVu {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/them_CCCD", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public int them_CCCD(string DanhBo, string CCCD, out string result) {
+        public int them_CCCD(string DanhBo, string CCCD) {
             object[] results = this.Invoke("them_CCCD", new object[] {
                         DanhBo,
                         CCCD});
-            result = ((string)(results[1]));
             return ((int)(results[0]));
         }
         
@@ -563,6 +598,32 @@ namespace WSTanHoa.wrThuongVu {
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    public delegate void get_FileinFolderCompletedEventHandler(object sender, get_FileinFolderCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class get_FileinFolderCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal get_FileinFolderCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
     public delegate void checkExists_DonTuCompletedEventHandler(object sender, checkExists_DonTuCompletedEventArgs e);
     
     /// <remarks/>
@@ -669,14 +730,6 @@ namespace WSTanHoa.wrThuongVu {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((int)(this.results[0]));
-            }
-        }
-        
-        /// <remarks/>
-        public string result {
-            get {
-                this.RaiseExceptionIfNecessary();
-                return ((string)(this.results[1]));
             }
         }
     }
