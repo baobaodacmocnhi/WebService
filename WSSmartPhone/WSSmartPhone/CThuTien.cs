@@ -5211,19 +5211,15 @@ namespace WSSmartPhone
             }
         }
 
-        public List<string> get_FileinFolder_241(string pathroot, string FolderLoai, string FolderIDCT)
+        public string[] get_FileinFolder_241(string pathroot, string FolderLoai, string FolderIDCT)
         {
             try
             {
-                List<string> result = new List<string>();
                 if (Directory.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == true)
                 {
-                    foreach (string files in Directory.GetFiles(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT))
-                    {
-                        result.Add(files);
-                    }
+                    return Directory.GetFiles(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT);
                 }
-                return result;
+                return null;
             }
             catch (Exception ex)
             {

@@ -43,7 +43,7 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public List<string> get_FileinFolder_241(string FolderLoai, string FolderIDCT)
+        public string[] get_FileinFolder(string FolderLoai, string FolderIDCT)
         {
             return _cThuTien.get_FileinFolder_241(CGlobalVariable.pathHinhTV, FolderLoai, FolderIDCT);
         }
