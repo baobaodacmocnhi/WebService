@@ -3398,7 +3398,7 @@
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.checkExists_CCCDAsync(System.String,System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCD(System.String,System.String)">
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCD(System.String,System.String,System.String@)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCDAsync(System.String,System.String)">
@@ -3510,6 +3510,9 @@
             <remarks/>
         </member>
         <member name="P:WSTanHoa.wrThuongVu.them_CCCDCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.them_CCCDCompletedEventArgs.result">
             <remarks/>
         </member>
         <member name="T:WSTanHoa.wrThuongVu.sua_CCCDCompletedEventHandler">

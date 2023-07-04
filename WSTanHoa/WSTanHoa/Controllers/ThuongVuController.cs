@@ -13,7 +13,7 @@ namespace WSTanHoa.Controllers
 {
     public class ThuongVuController : Controller
     {
-        private CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
@@ -47,7 +47,7 @@ namespace WSTanHoa.Controllers
             {
                 string NoiDung = "";
                 //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent + " order by CreateDate desc");
+                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent + " order by CreateDate desc");
                 if (dt != null && dt.Rows.Count > 0)
                     foreach (DataRow item in dt.Rows)
                     {
@@ -72,9 +72,9 @@ namespace WSTanHoa.Controllers
 
         private byte[] getFile(string TableName, string IDFileName, string IDFileContent)
         {
-            int count = (int)_cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select count(*) from " + TableName + " where " + IDFileName + "=" + IDFileContent);
+            int count = (int)_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select count(*) from " + TableName + " where " + IDFileName + "=" + IDFileContent);
             if (count > 0)
-                return (byte[])_cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select Hinh from " + TableName + " where " + IDFileName + "=" + IDFileContent);
+                return (byte[])_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select Hinh from " + TableName + " where " + IDFileName + "=" + IDFileContent);
             else
                 return null;
         }
@@ -325,12 +325,12 @@ namespace WSTanHoa.Controllers
 
         private DataTable getDS_GiaNuoc()
         {
-            return _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from GiaNuoc2");
+            return _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from GiaNuoc2");
         }
 
         private DataTable getGiaNuocGiam(int Nam, int Ky, int GiaBieu)
         {
-            return _cDAL_KinhDoanh.ExecuteQuery_DataTable("select * from GiaNuoc_Giam where Nam like '%" + Nam + "%' and Ky like '%" + Ky.ToString("00") + "%' and GiaBieu like '%" + GiaBieu + "%'");
+            return _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from GiaNuoc_Giam where Nam like '%" + Nam + "%' and Ky like '%" + Ky.ToString("00") + "%' and GiaBieu like '%" + GiaBieu + "%'");
         }
 
         private bool checkExists_GiamGiaNuoc(int Nam, int Ky, int GiaBieu, ref DataTable dt)
@@ -409,7 +409,7 @@ namespace WSTanHoa.Controllers
                         return View();
                     }
                 }
-                string checkExists = _cDAL_KinhDoanh.ExecuteQuery_ReturnOneValue("select case when exists(select ID from DCBD_DKDM_DanhBo where DanhBo='" + DanhBo + "' and cast(createdate as date)=cast(getdate() as date)) then 1 else 0 end").ToString();
+                string checkExists = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select case when exists(select ID from DCBD_DKDM_DanhBo where DanhBo='" + DanhBo + "' and cast(createdate as date)=cast(getdate() as date)) then 1 else 0 end").ToString();
                 if (checkExists == "1")
                 {
                     ModelState.AddModelError("", "Danh Bộ đã nhập trong ngày");
@@ -440,7 +440,7 @@ namespace WSTanHoa.Controllers
                         }
                     }
 
-                    if (_cDAL_KinhDoanh.ExecuteNonQuery(sql))
+                    if (_cDAL_ThuongVu.ExecuteNonQuery(sql))
                         ModelState.AddModelError("", "Đăng Ký Thành Công");
                     else
                         ModelState.AddModelError("", "Đăng Ký Không Thành Công");
@@ -476,6 +476,7 @@ namespace WSTanHoa.Controllers
             else
                 return null;
         }
+
 
     }
 }

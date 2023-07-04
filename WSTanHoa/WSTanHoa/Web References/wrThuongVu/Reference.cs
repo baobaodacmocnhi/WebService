@@ -380,10 +380,11 @@ namespace WSTanHoa.wrThuongVu {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/them_CCCD", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public int them_CCCD(string DanhBo, string CCCD) {
+        public int them_CCCD(string DanhBo, string CCCD, out string result) {
             object[] results = this.Invoke("them_CCCD", new object[] {
                         DanhBo,
                         CCCD});
+            result = ((string)(results[1]));
             return ((int)(results[0]));
         }
         
@@ -730,6 +731,14 @@ namespace WSTanHoa.wrThuongVu {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((int)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public string result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[1]));
             }
         }
     }

@@ -202,6 +202,7 @@
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\apiDocSoController.cs" />
     <Compile Include="Controllers\apiThuHoController.cs" />
+    <Compile Include="Controllers\apiThuongVuController.cs" />
     <Compile Include="Controllers\apiThuTienController.cs" />
     <Compile Include="Controllers\apiTrungTamKhachHangController.cs" />
     <Compile Include="Controllers\apiZaloController.cs" />
