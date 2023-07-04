@@ -67,9 +67,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public int them_CCCD(string DanhBo, string CCCD)
+        public int them_CCCD(string DanhBo, string CCCD, out string result)
         {
-            string result = "";
+            //string result = "";
             return _cThuTien.them_CCCD(DanhBo, CCCD, out result);
         }
 
