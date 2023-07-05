@@ -740,6 +740,14 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.apiZaloController.ThongBaoDongNuoc(System.String,System.String)">
+            <summary>
+            Gửi tin nhắn thông báo đóng nước khi nhân viên lập lệnh
+            </summary>
+            <param name="MaDN"></param>
+            <param name="checksum"></param>
+            <returns></returns>
+        </member>
         <member name="M:WSTanHoa.Controllers.apiZaloController.ThongBaoDaThanhToanHoaDon(System.Int32,System.String)">
             <summary>
             Gửi tin nhắn thông báo đã thanh toán hóa đơn

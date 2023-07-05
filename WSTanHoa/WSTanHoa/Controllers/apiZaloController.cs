@@ -362,11 +362,11 @@ namespace WSTanHoa.Controllers
                                     + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
                                 if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                     content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
-                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
-                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
-                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
-                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
+                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đồng\n"
+                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đồng\n"
+                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đồng\n"
+                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đồng\n"
+                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đồng\n\n";
                             }
                             strResponse = sendMessage(IDZalo, content);
                         }
@@ -410,11 +410,11 @@ namespace WSTanHoa.Controllers
                                     + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
                                 if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                     content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
-                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
-                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
-                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
-                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
+                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đồng\n"
+                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đồng\n"
+                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đồng\n"
+                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đồng\n"
+                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đồng\n\n";
                             }
                             strResponse = sendMessage(IDZalo, content);
                         }
@@ -459,11 +459,11 @@ namespace WSTanHoa.Controllers
                                     + "    Tiêu Thụ: " + itemHD["TieuThu"].ToString() + "m³    Định Mức: " + itemHD["DinhMuc"].ToString() + "\n";
                                 if (string.IsNullOrEmpty(itemHD["ChiTietTienNuoc"].ToString()) == false)
                                     content += "       " + itemHD["ChiTietTienNuoc"].ToString();
-                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đ\n"
-                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đ\n"
-                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đ\n"
-                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đ\n"
-                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đ\n\n";
+                                content += "    Giá Bán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["GiaBan"].ToString())) + " đồng\n"
+                                        + "    Thuế GTGT: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["ThueGTGT"].ToString())) + " đồng\n"
+                                        + "    TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT"].ToString())) + " đồng\n"
+                                        + "    Thuế TDVTN: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["PhiBVMT_Thue"].ToString())) + " đồng\n"
+                                        + "    Tổng Cộng: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(itemHD["TongCong"].ToString())) + " đồng\n\n";
                             }
                             strResponse = sendMessage(IDZalo, content);
                         }
@@ -973,7 +973,7 @@ namespace WSTanHoa.Controllers
         [HttpGet]
         public string ThongBaoNgayGhiChiSoNuoc(string checksum)
         {
-            string strResponse = "";
+            string DanhBo = "", strResponse = "";
             try
             {
                 if (checksum == CGlobalVariable.checksum)
@@ -991,10 +991,11 @@ namespace WSTanHoa.Controllers
                     {
                         try
                         {
+                            DanhBo = item["DanhBo"].ToString();
                             DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"] + "' order by ID_HOADON desc");
                             message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
                                         + "\nĐịa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
-                                        + "\nDanh bộ: " + dt_ThongTin.Rows[0]["DanhBo"].ToString()
+                                        + "\nDanh bộ: " + item["DanhBo"].ToString()
                                         + "\n\nKỳ " + item["Ky"] + "/" + item["Nam"] + " sẽ được ghi chỉ số vào ngày " + item["NgayDoc"]
                                         + "\nTrường hợp Quý khách đi vắng (đồng hồ nước nằm trong bất động sản), Quý khách có thể cung cấp chỉ số nước qua tin nhắn Zalo OA hoặc Tổng đài: 1900.6489"
                                         + "\nTrường hợp Quý khách không thể cung cấp chỉ số thì Công ty sẽ tạm tính tiêu thụ bằng trung bình 03 kỳ hóa đơn gần nhất của Quý khách. Trân trọng!"
@@ -1017,6 +1018,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 strResponse = ex.Message;
+                _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(0,'" + DanhBo + "',N'ghichisonuoc',N'',N'" + strResponse + "')");
             }
             return strResponse;
         }
@@ -1029,7 +1031,7 @@ namespace WSTanHoa.Controllers
         [HttpGet]
         public string ThongBaoPhatHanhHoaDon(string checksum)
         {
-            string strResponse = "";
+            string DanhBo = "", strResponse = "";
             try
             {
                 if (checksum == CGlobalVariable.checksum)
@@ -1049,6 +1051,7 @@ namespace WSTanHoa.Controllers
                     {
                         try
                         {
+                            DanhBo = item["DanhBo"].ToString();
                             message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
                                     + "\nĐịa chỉ: " + item["DiaChi"]
                                     + "\nDanh bộ: " + item["DanhBo"]
@@ -1069,15 +1072,15 @@ namespace WSTanHoa.Controllers
                             foreach (DataRow itemTon in dtTon.Rows)
                                 if (int.Parse(itemTon["Nam"].ToString()) < int.Parse(item["Nam"].ToString()) || (int.Parse(itemTon["Nam"].ToString()) == int.Parse(item["Nam"].ToString()) && int.Parse(itemTon["Ky"].ToString()) < int.Parse(item["Ky"].ToString())))
                                 {
-                                    hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đ";
+                                    hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đồng";
                                     TongCongNo += decimal.Parse(itemTon["TongCong"].ToString());
                                 }
-                            message += "\nTổng số tiền nước: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đ";
+                            message += "\nTổng số tiền nước: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đồng";
                             if (TongCongNo > 0)
-                                message += "\nTổng số tiền nước còn nợ: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo) + " đ"
+                                message += "\nTổng số tiền nước còn nợ: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo) + " đồng"
                                         + hdTon;
-                            message += "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo + int.Parse(item["TongCong"].ToString())) + " đ"
-                                    + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(7).ToString("dd/MM/yyyy") + " qua các kênh thanh toán gồm:"
+                            message += "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo + int.Parse(item["TongCong"].ToString())) + " đồng"
+                                    + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
                                     + getThongTinThanhToan();
                             strResponse = sendMessage(item["IDZalo"].ToString(), message);
                         }
@@ -1095,8 +1098,8 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 strResponse = ex.Message;
+                _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(0,'" + DanhBo + "',N'phathanhhoadon',N'',N'" + strResponse + "')");
             }
-            _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('',N'',N'phathanhhoadon',N'',N'" + strResponse + "')");
             return strResponse;
         }
 
@@ -1108,7 +1111,7 @@ namespace WSTanHoa.Controllers
         [HttpGet]
         public string ThongBaoNhacNo(string checksum)
         {
-            string strResponse = "";
+            string DanhBo = "", strResponse = "";
             try
             {
                 if (checksum == CGlobalVariable.checksum)
@@ -1131,18 +1134,19 @@ namespace WSTanHoa.Controllers
                             hdTon = "";
                             foreach (DataRow itemTon in dtTon.Rows)
                             {
-                                hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đ";
+                                hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đồng";
                                 TongCong += decimal.Parse(itemTon["TongCong"].ToString());
                             }
                             if (TongCong > 0)
                             {
+                                DanhBo = item["DanhBo"].ToString();
                                 message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
                                             + "\nĐịa chỉ: " + item["DiaChi"]
                                             + "\nDanh bộ: " + item["DanhBo"]
                                             + "\n\nTổng số hóa đơn phải thanh toán: " + dtTon.Rows.Count + " hóa đơn"
                                             + hdTon
-                                            + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong) + " đ"
-                                            + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + " qua các kênh thanh toán gồm:"
+                                            + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong) + " đồng"
+                                            + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
                                             + getThongTinThanhToan();
                                 strResponse = sendMessage(item["IDZalo"].ToString(), message);
                             }
@@ -1161,12 +1165,84 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 strResponse = ex.Message;
+                _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('','" + DanhBo + "',N'nhacno',N'',N'" + strResponse + "')");
             }
-            _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('',N'',N'nhacno',N'',N'" + strResponse + "')");
             return strResponse;
         }
 
-        private string getThongTinThanhToan()
+        /// <summary>
+        /// Gửi tin nhắn thông báo đóng nước khi nhân viên lập lệnh
+        /// </summary>
+        /// <param name="MaDN"></param>
+        /// <param name="checksum"></param>
+        /// <returns></returns>
+        [Route("ThongBaoDongNuoc")]
+        [HttpGet]
+        public string ThongBaoDongNuoc(string MaDN, string checksum)
+        {
+            string DanhBo = "", strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    string message = "", hdTon = "";
+                    decimal TongCong = 0;
+                    string sql = "select distinct DanhBo = DANHBA,z.IDZalo"
+                            + " from HOADON hd,TT_CTDongNuoc ctdn, [TRUNGTAMKHACHHANG].[dbo].[Zalo_DangKy] z, [TRUNGTAMKHACHHANG].[dbo].[Zalo_QuanTam] zq"
+                            + " where ctdn.MaDN=" + MaDN + " and hd.ID_HOADON=ctdn.MaHD and hd.DANHBA=z.DanhBo"
+                            + " and zq.Follow=1 and z.IDZalo=zq.IDZalo order by hd.DANHBA asc";
+                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                    DataTable dtTon = _cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo = DANHBA, HoTen = TENKH, DiaChi =case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end, NAM, hd.KY"
+                            + " , CSC = CSCU, CSM = CSMOI, TUNGAY = CONVERT(varchar(10), TUNGAY, 103), DENNGAY = CONVERT(varchar(10), DENNGAY, 103), hd.TIEUTHU, hd.TONGCONG"
+                            + " from HOADON hd,TT_CTDongNuoc ctdn where ctdn.MaDN=" + MaDN + " and hd.ID_HOADON=ctdn.MaHD order by hd.ID_HOADON asc");
+                    foreach (DataRow itemTon in dtTon.Rows)
+                    {
+                        hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đồng";
+                        TongCong += decimal.Parse(itemTon["TongCong"].ToString());
+                    }
+                    if (TongCong > 0)
+                    {
+                        DanhBo = dtTon.Rows[0]["DanhBo"].ToString();
+                        message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + dtTon.Rows[0]["HoTen"]
+                                            + "\nĐịa chỉ: " + dtTon.Rows[0]["DiaChi"]
+                                            + "\nDanh bộ: " + dtTon.Rows[0]["DanhBo"]
+                                            + "\n\nThông báo tạm ngưng cung cấp nước"
+                                            + "\nCông ty sẽ tạm ngưng cung cấp nước tại địa chỉ trên kề từ ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy")
+                                            + "\nLý do: Quý khách chưa thanh toán tiền nước"
+                                            + hdTon
+                                            + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong) + " đồng"
+                                            + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
+                                            + getThongTinThanhToan();
+                    }
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        try
+                        {
+                            if (TongCong > 0)
+                            {
+                                strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            strResponse = ex.Message;
+                        }
+                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + dtTon.Rows[0]["DanhBo"] + "',N'nhacno',N'" + message + "',N'" + strResponse + "')");
+                    }
+                    strResponse = "Đã xử lý";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+                _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(0,'" + DanhBo + "',N'dongnuoc',N'',N'" + strResponse + "')");
+            }
+            return strResponse;
+        }
+
+        private string getThongTinThanhToan_Old()
         {
             string str = "\n  - Ví điện tử: Payoo, Momo, VNpay, Shopeepay, Zalopay, Viettelpay,..."
                     + "\n  - Các ngân hàng: Agribank, MB bank, Vietcombank, ACB, Đông Á,..."
@@ -1174,6 +1250,14 @@ namespace WSTanHoa.Controllers
                     + "\nKhi thanh toán tiền nước, Quý khách cần ghi rõ số danh bộ, kỳ hóa đơn, địa chỉ và số điện thoại."
                     + "\nNếu đã thanh toán vui lòng bỏ qua thông báo này."
                     + "\n\nĐể được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
+                    + "\nTrân trọng!";
+            return str;
+        }
+
+        private string getThongTinThanhToan()
+        {
+            string str = "\nCác kênh thanh toán gồm: ví điện tử (Payoo,Momo,Viettelpay,...), các ngân hàng (Agribank, Vietcombank, MB Bank,...)"
+                    + "\n- Hoặc chuyển khoản cho Công ty Cổ phần Cấp nước Tân Hòa theo số tài khoản 6220 4311 01100092 tại Ngân hàng Nông nghiệp và Phát triển nông thôn Việt Nam-Chi nhánh Chợ Lớn(AGR), số tài khoản 046 100 057 3975 tại Ngân hàng TMCP Ngoại thương Việt Nam-Chi nhánh Tân Bình Dương(VCB), số tài khoản 201 110 067 9999 tại Ngân hàng TMCP Quân đội-Chi nhánh Bắc Sài Gòn(MB),... Khi thanh toán tiền nước, Quý khách ghi rõ số danh bộ, kỳ hóa đơn, địa chỉ và số điện thoại."
                     + "\nTrân trọng!";
             return str;
         }
@@ -1206,7 +1290,7 @@ namespace WSTanHoa.Controllers
                                     + "\nĐịa chỉ: " + item["DiaChi"]
                                     + "\nDanh bộ: " + item["DanhBo"]
                                     + "\n\nCảm ơn Quý khách đã thanh toán hóa đơn tiền nước kỳ " + item["Ky"] + "/" + item["Nam"]
-                                    + ", với số tiền " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đ"
+                                    + ", với số tiền " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đồng"
                                     + "\n\nĐể được phục vụ và hỗ trợ thêm thông tin, vui lòng liên hệ tổng đài 1900.6489 hoặc website: https://cskhtanhoa.com.vn"
                                     + "\nTrân trọng!";
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);
