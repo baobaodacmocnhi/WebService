@@ -4322,87 +4322,26 @@ namespace WSSmartPhone
         //ghi chú
         public string get_GhiChu_DHN(string DanhBo)
         {
-            string sql = "select SoNha,TenDuong,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,Gieng,KhoaTu,AmSau,XayDung,NgapNuoc,KetTuong,LapKhoaGoc,BeHBV,BeNapMatNapHBV from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'";
+            string sql = "select SoNha,TenDuong,ViTri=VITRIDHN,ViTriNgoai=ViTriDHN_Ngoai,ViTriHop=ViTriDHN_Hop,Gieng,KhoaTu from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "") + "'";
             return DataTableToJSON(_cDAL_DHN.ExecuteQuery_DataTable(sql));
         }
 
-        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string AmSau, string XayDung, string DutChiGoc, string DutChiThan
-            , string NgapNuoc, string KetTuong, string LapKhoaGoc, string BeHBV, string BeNapMatNapHBV, string GayTayVan, string TroNgaiThay, string DauChungMayBom, string MauSacChiGoc, string GhiChu, string KinhDoanh, string MaNV)
+        public string update_GhiChu_DHN(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string MauSacChiGoc, string GhiChu, string KinhDoanh, string MaNV)
         {
             CResult result = new CResult();
             try
             {
                 string flagGieng = bool.Parse(Gieng) == true ? "1" : "0";
                 string flagKhoaTu = bool.Parse(KhoaTu) == true ? "1" : "0";
-                string flagAmSau = bool.Parse(AmSau) == true ? "1" : "0";
-                string flagXayDung = bool.Parse(XayDung) == true ? "1" : "0";
-                string flagDutChiGoc = bool.Parse(XayDung) == true ? "1" : "0";
-                string flagDutChiThan = bool.Parse(XayDung) == true ? "1" : "0";
-                string flagNgapNuoc = bool.Parse(NgapNuoc) == true ? "1" : "0";
-                string flagKetTuong = bool.Parse(KetTuong) == true ? "1" : "0";
-                string flagLapKhoaGoc = bool.Parse(LapKhoaGoc) == true ? "1" : "0";
-                string flagBeHBV = bool.Parse(BeHBV) == true ? "1" : "0";
-                string flagBeNapMatNapHBV = bool.Parse(BeNapMatNapHBV) == true ? "1" : "0";
-                string flagGayTayVan = bool.Parse(GayTayVan) == true ? "1" : "0";
-                string flagTroNgaiThay = bool.Parse(TroNgaiThay) == true ? "1" : "0";
-                string flagDauChungMayBom = bool.Parse(DauChungMayBom) == true ? "1" : "0";
                 string flagViTriNgoai = bool.Parse(ViTriNgoai) == true ? "1" : "0";
                 string flagViTriHop = bool.Parse(ViTriHop) == true ? "1" : "0";
-                //string sql = "";
-                //sql += "update TB_DULIEUKHACHHANG set AmSau=" + flagAmSau + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and AmSau=1";
-                //sql += " update TB_DULIEUKHACHHANG set XayDung=" + flagXayDung + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and XayDung=1";
-                //sql += " update TB_DULIEUKHACHHANG set DutChi_Goc=" + flagDutChiGoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and DutChi_Goc=1";
-                //sql += " update TB_DULIEUKHACHHANG set DutChi_Than=" + flagDutChiThan + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and DutChi_Than=1";
-                //sql += " update TB_DULIEUKHACHHANG set NgapNuoc=" + flagNgapNuoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and NgapNuoc=1";
-                //sql += " update TB_DULIEUKHACHHANG set KetTuong=" + flagKetTuong + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and KetTuong=1";
-                //sql += " update TB_DULIEUKHACHHANG set LapKhoaGoc=" + flagLapKhoaGoc + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and LapKhoaGoc=1";
-                //sql += " update TB_DULIEUKHACHHANG set BeHBV=" + flagBeHBV + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and BeHBV=1";
-                //sql += " update TB_DULIEUKHACHHANG set BeNapMatNapHBV=" + flagBeNapMatNapHBV + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and BeNapMatNapHBV=1";
-                //sql += " update TB_DULIEUKHACHHANG set GayTayVan=" + flagGayTayVan + " where DanhBo='" + DanhBo.Replace(" ", "") + "' and GayTayVan=1";
-                //sql += " update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
-                //    + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu
-                //    + ",MauSacChiGoc=N'" + MauSacChiGoc + "',GhiChu=N'" + GhiChu + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 string sql = "update TB_DULIEUKHACHHANG set SoNha=N'" + SoNha + "',TenDuong=N'" + TenDuong + "',VITRIDHN=N'" + ViTri + "',ViTriDHN_Ngoai=" + flagViTriNgoai + ",ViTriDHN_Hop=" + flagViTriHop
                     + ",Gieng=" + flagGieng + ",KhoaTu=" + flagKhoaTu
-                    //+ ",AmSau=" + flagAmSau
-                    //+ ",XayDung=" + flagXayDung
-                    //+ ",DutChi_Goc=" + flagDutChiGoc
-                    //+ ",DutChi_Than=" + flagDutChiThan
-                    //+ ",NgapNuoc=" + flagNgapNuoc
-                    //+ ",KetTuong=" + flagKetTuong
-                    //+ ",LapKhoaGoc=" + flagLapKhoaGoc
-                    //+ ",BeHBV=" + flagBeHBV
-                    //+ ",BeNapMatNapHBV=" + flagBeNapMatNapHBV
-                    //+ ",GayTayVan=" + flagGayTayVan
-                    //+ ",TroNgaiThay=" + flagTroNgaiThay
-                    //+ ",DauChungMayBom=" + flagDauChungMayBom
                     + ",MauSacChiGoc=N'" + MauSacChiGoc + "',GhiChu=N'" + GhiChu + "',KinhDoanh=N'" + KinhDoanh + "',MODIFYBY=" + MaNV + ",MODIFYDATE=getdate() where DanhBo='" + DanhBo.Replace(" ", "") + "'";
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
                 if (result.success)
                 {
-                    //string sql2 = "";
-                    //if (flagAmSau == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Âm Sâu',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagXayDung == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Xây Dựng',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagDutChiGoc == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Đứt Chì Góc',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagDutChiThan == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Đứt Chì Thân',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagNgapNuoc == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Ngập Nước',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagKetTuong == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Kẹt Tường',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagLapKhoaGoc == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Lấp Khóa Góc',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagBeHBV == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Bể HBV',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagBeNapMatNapHBV == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Bể Nấp, Mất Nấp HBV',N'Xóa'," + MaNV + ",getdate())";
-                    //if (flagGayTayVan == "0")
-                    //    sql2 += " insert into MaHoa_PhieuChuyen_LichSu(DanhBo,NoiDung,GhiChu,CreateBy,CreateDate)values('" + DanhBo + "',N'Gãy Tay Van',N'Xóa'," + MaNV + ",getdate())";
-                    //if (sql2 != "")
-                    //    _cDAL_DocSo.ExecuteNonQuery(sql2);
+                    
                 }
             }
             catch (Exception ex)
