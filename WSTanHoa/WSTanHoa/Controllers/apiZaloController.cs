@@ -1058,9 +1058,9 @@ namespace WSTanHoa.Controllers
                                     + "\n\nThông báo tiền nước kỳ " + item["Ky"] + "/" + item["Nam"] + " từ ngày " + item["TuNgay"] + " đến ngày " + item["DenNgay"];
                             if (item["Code"].ToString() != "F" && item["Code"].ToString() != "6")
                             {
-                                message
-                                += "\nChỉ số cũ: " + item["CSC"]
-                                + "\nChỉ số mới: " + item["CSM"]
+                                message += ""
+                                //+ "\nChỉ số cũ: " + item["CSC"]
+                                //+ "\nChỉ số mới: " + item["CSM"]
                                 + "\nTổng lượng nước tiêu thụ: " + item["TieuThu"];
                             }
                             else
@@ -1080,7 +1080,7 @@ namespace WSTanHoa.Controllers
                                 message += "\nTổng số tiền nước còn nợ: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo) + " đồng"
                                         + hdTon;
                             message += "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo + int.Parse(item["TongCong"].ToString())) + " đồng"
-                                    + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
+                                    + "\n\nGhi chú: Quý khách thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
                                     + getThongTinThanhToan();
                             strResponse = sendMessage(item["IDZalo"].ToString(), message);
                         }
@@ -1146,7 +1146,7 @@ namespace WSTanHoa.Controllers
                                             + "\n\nTổng số hóa đơn phải thanh toán: " + dtTon.Rows.Count + " hóa đơn"
                                             + hdTon
                                             + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong) + " đồng"
-                                            + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
+                                            + "\n\nGhi chú: Quý khách thanh toán trước ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
                                             + getThongTinThanhToan();
                                 strResponse = sendMessage(item["IDZalo"].ToString(), message);
                             }
@@ -1211,7 +1211,7 @@ namespace WSTanHoa.Controllers
                                             + "\nLý do: Quý khách chưa thanh toán tiền nước"
                                             + hdTon
                                             + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong) + " đồng"
-                                            + "\n\nQuý khách vui lòng thanh toán trước ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
+                                            + "\n\nGhi chú: Quý khách thanh toán trước ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
                                             + getThongTinThanhToan();
                     }
                     foreach (DataRow item in dt.Rows)
