@@ -20,20 +20,74 @@
             if (rows == "")
                 rows = 0;
             var str = "";
-            $("#tblCCCD tbody tr").remove();
+            //$("#tblCCCD tbody tr").remove();
+            //for (var i = 0; i < rows ; i++) {
+            //    str += "<tr>"
+            //         + "            <td><input type='text' class='form-control' name='STT" + (i + 1) + "' value='" + (i + 1) + "'></td>"
+            //         + "            <td><input type='text' class='form-control' name='HoTen" + (i + 1) + "' value=''></td>"
+            //         + "            <td><input type='date' class='form-control' name='NgaySinh" + (i + 1) + "' value=''></td>"
+            //         + "            <td><input type='text' class='form-control' name='DCThuongTru" + (i + 1) + "' value=''></td>"
+            //         + "            <td><input type='text' class='form-control' name='DCTamTru" + (i + 1) + "' value=''></td>"
+            //         + "            <td><input type='number' class='form-control' name='CCCD" + (i + 1) + "' value=''></td>"
+            //         + "            <td><input type='file' class='form-control' name='HinhCCCD' value=''></td>"
+            //         + "            <td><input type='file' class='form-control' name='HinhCT' value=''></td>"
+            //         + "        </tr>";
+            //}
+            //$("#tblCCCD tbody").append(str);
+            $("#tblCCCD div").remove();
             for (var i = 0; i < rows ; i++) {
-                str += "<tr>"
-                     + "            <td><input type='text' class='form-control' name='STT" + (i + 1) + "' value='" + (i + 1) + "'></td>"
-                     + "            <td><input type='text' class='form-control' name='HoTen" + (i + 1) + "' value=''></td>"
-                     + "            <td><input type='date' class='form-control' name='NgaySinh" + (i + 1) + "' value=''></td>"
-                     + "            <td><input type='text' class='form-control' name='DCThuongTru" + (i + 1) + "' value=''></td>"
-                     + "            <td><input type='text' class='form-control' name='DCTamTru" + (i + 1) + "' value=''></td>"
-                     + "            <td><input type='number' class='form-control' name='CCCD" + (i + 1) + "' value=''></td>"
-                     + "            <td><input type='file' class='form-control' name='HinhCCCD' value=''></td>"
-                     + "            <td><input type='file' class='form-control' name='HinhCT' value=''></td>"
-                     + "        </tr>";
+                str += "<div class='col container bg-light rounded-3 shadow-sm pb-3 m-2'>"
+                    + "        <div class='row mt-3'>"
+                    + "            <div class='col'>"
+                    + "                <label class='form-label'>STT</label>"
+                    + "                <input type='text' class='form-control' name='STT" + (i + 1) + "' value='" + (i + 1) + "'>"
+                    + "            </div>"
+                    + "        </div>"
+                    + "        <div class='row mt-3'>"
+                    + "            <div class='col'>"
+                    + "                <label class='form-label'>Họ tên</label>"
+                    + "                <input type='text' class='form-control' name='HoTen" + (i + 1) + "' value=''>"
+                    + "            </div>"
+                    + "        </div>"
+                    + "        <div class='row mt-3'>"
+                    + "            <div class='col'>"
+                    + "                <label class='form-label'>Ngày sinh</label>"
+                    + "                <input type='date' class='form-control' name='NgaySinh" + (i + 1) + "' value=''>"
+                    + "            </div>"
+                    + "        </div>"
+                    + "        <div class='row mt-3'>"
+                    + "            <div class='col'>"
+                    + "                <label class='form-label'>Địa chỉ thường trú</label>"
+                    + "                <input type='text' class='form-control' name='DCThuongTru" + (i + 1) + "' value=''>"
+                    + "            </div>"
+                    + "        </div>"
+                    + "        <div class='row mt-3'>"
+                    + "            <div class='col'>"
+                    + "                <label class='form-label'>Địa chỉ tạm trú</label>"
+                    + "                <input type='text' class='form-control' name='DCTamTru" + (i + 1) + "' value=''>"
+                    + "            </div>"
+                    + "        </div>"
+                    + "        <div class='row mt-3'>"
+                    + "            <div class='col'>"
+                    + "                <label class='form-label'>CCCD/Số định danh</label>"
+                    + "                <input type='number' class='form-control' name='CCCD" + (i + 1) + "' value=''>"
+                    + "            </div>"
+                    + "        </div>"
+                    + "        <div class='row mt-3'>"
+                    + "            <div class='col'>"
+                    + "                <label class='form-label'>Hình CCCD</label>"
+                    + "                <input type='file' class='form-control' name='HinhCCCD' accept='image/png, image/jpeg'>"
+                    + "            </div>"
+                    + "        </div>"
+                    + "        <div class='row mt-3'>"
+                    + "            <div class='col'>"
+                    + "                <label class='form-label'>Hình CT01/CT07/CT08</label>"
+                    + "                <input type='file' class='form-control' name='HinhCT' accept='image/png, image/jpeg'>"
+                    + "            </div>"
+                    + "        </div>"
+                    + "    </div>";
             }
-            $("#tblCCCD tbody").append(str);
+            $("#tblCCCD").append(str);
         }
     </script>
 </head>
@@ -89,7 +143,11 @@
                             <td><input type="number" class="form-control fw-bold" name="SoNK" value="" onkeyup="fillrows();"></td>
                         </tr>
                     </table>
-                    <table id="tblCCCD">
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.AntiForgeryToken()
+                    </div>
+                    @*<table id="tblCCCD">
                         <thead>
                             <tr class="text-center fw-bold">
                                 <td style="width:50px">STT</td>
@@ -125,7 +183,60 @@
                                 <td colspan="6" class="text-center pt-2"><button type="submit" class="btn btn-primary" name="function" value="Gui" onclick="return confirm('Bạn có chắc chắn?');">Gửi</button></td>
                             </tr>
                         </tfoot>
-                    </table>
+                    </table>*@
+                    <div id="tblCCCD" class="row text-center g-2 m-2">
+                        <div class="col container bg-light rounded-3 shadow-sm pb-3 m-2">
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="form-label">STT</label>
+                                    <input type="text" class="form-control" name="STT1" value="">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="form-label">Họ tên</label>
+                                    <input type="text" class="form-control" name="HoTen1" value="">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="form-label">Ngày sinh</label>
+                                    <input type="date" class="form-control" name="NgaySinh1" value="">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="form-label">Địa chỉ thường trú</label>
+                                    <input type="text" class="form-control" name="DCThuongTru1" value="">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="form-label">Địa chỉ tạm trú</label>
+                                    <input type="text" class="form-control" name="DCTamTru1" value="">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="form-label">CCCD/Số định danh</label>
+                                    <input type="number" class="form-control" name="CCCD1" value="">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="form-label">Hình CCCD</label>
+                                    <input type="file" class="form-control" name="HinhCCCD" accept="image/png, image/jpeg">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <label class="form-label">Hình CT01/CT07/CT08</label>
+                                    <input type="file" class="form-control" name="HinhCT" accept="image/png, image/jpeg">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-center"><button type="submit" class="btn btn-primary" name="function" value="Gui" onclick="return confirm('Bạn có chắc chắn?');">Gửi</button></div>
                 }
                 <div>
                     <table>
