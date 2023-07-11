@@ -148,42 +148,42 @@
                         @Html.AntiForgeryToken()
                     </div>
                     @*<table id="tblCCCD">
-                        <thead>
-                            <tr class="text-center fw-bold">
-                                <td style="width:50px">STT</td>
-                                <td>Họ tên</td>
-                                <td>Ngày sinh</td>
-                                <td>Địa chỉ thường trú</td>
-                                <td>Địa chỉ tạm trú</td>
-                                <td>CCCD/Số định danh</td>
-                                <td style="width:120px">Hình CCCD</td>
-                                <td style="width:120px">Hình CT01/CT07/CT08</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><input type="text" class="form-control" name="STT1" value=""></td>
-                                <td><input type="text" class="form-control" name="HoTen1" value=""></td>
-                                <td><input type="date" class="form-control" name="NgaySinh1" value=""></td>
-                                <td><input type="text" class="form-control" name="DCThuongTru1" value=""></td>
-                                <td><input type="text" class="form-control" name="DCTamTru1" value=""></td>
-                                <td><input type="number" class="form-control" name="CCCD1" value=""></td>
-                                <td><input type="file" class="form-control" name="HinhCCCD" accept="image/png, image/jpeg"></td>
-                                <td><input type="file" class="form-control" name="HinhCT" accept="image/png, image/jpeg"></td>
-                            </tr>
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <td colspan="6" class="pt-2">
-                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    @Html.AntiForgeryToken()
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="6" class="text-center pt-2"><button type="submit" class="btn btn-primary" name="function" value="Gui" onclick="return confirm('Bạn có chắc chắn?');">Gửi</button></td>
-                            </tr>
-                        </tfoot>
-                    </table>*@
+                            <thead>
+                                <tr class="text-center fw-bold">
+                                    <td style="width:50px">STT</td>
+                                    <td>Họ tên</td>
+                                    <td>Ngày sinh</td>
+                                    <td>Địa chỉ thường trú</td>
+                                    <td>Địa chỉ tạm trú</td>
+                                    <td>CCCD/Số định danh</td>
+                                    <td style="width:120px">Hình CCCD</td>
+                                    <td style="width:120px">Hình CT01/CT07/CT08</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" class="form-control" name="STT1" value=""></td>
+                                    <td><input type="text" class="form-control" name="HoTen1" value=""></td>
+                                    <td><input type="date" class="form-control" name="NgaySinh1" value=""></td>
+                                    <td><input type="text" class="form-control" name="DCThuongTru1" value=""></td>
+                                    <td><input type="text" class="form-control" name="DCTamTru1" value=""></td>
+                                    <td><input type="number" class="form-control" name="CCCD1" value=""></td>
+                                    <td><input type="file" class="form-control" name="HinhCCCD" accept="image/png, image/jpeg"></td>
+                                    <td><input type="file" class="form-control" name="HinhCT" accept="image/png, image/jpeg"></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="pt-2">
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @Html.AntiForgeryToken()
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" class="text-center pt-2"><button type="submit" class="btn btn-primary" name="function" value="Gui" onclick="return confirm('Bạn có chắc chắn?');">Gửi</button></td>
+                                </tr>
+                            </tfoot>
+                        </table>*@
                     <div id="tblCCCD" class="row text-center g-2 m-2">
                         <div class="col container bg-light rounded-3 shadow-sm pb-3 m-2">
                             <div class="row mt-3">
@@ -253,6 +253,14 @@
                             <td><b>3. Trong trường hợp khách hàng không cung cấp hoặc cung cấp không đầy đủ hồ sơ, yêu cầu của Quý khách không thể thực hiện được.</b></td>
                         </tr>
                     </table>
+                </div>
+                <div>
+                    <div class="mt-2 text-primary font-weight-bold">
+                        Clip hướng dẫn thao tác
+                    </div>
+                    <div>
+                        <iframe width="100%" height="auto" src="https://www.youtube.com/embed/_rqnUuit1J0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
                 </div>
             </div>
         </div>

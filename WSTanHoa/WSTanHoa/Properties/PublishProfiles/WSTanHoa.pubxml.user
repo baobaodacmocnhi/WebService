@@ -6129,7 +6129,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/ThuongVu/DangKyDinhMuc.cshtml">
-      <publishTime>07/10/2023 15:11:36</publishTime>
+      <publishTime>07/11/2023 10:15:20</publishTime>
     </File>
     <File Include="Views/ThuongVu/TinhTienNuoc.cshtml">
       <publishTime>12/08/2021 15:49:33</publishTime>
