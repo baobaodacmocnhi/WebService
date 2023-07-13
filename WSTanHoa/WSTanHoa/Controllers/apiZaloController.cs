@@ -1227,7 +1227,7 @@ namespace WSTanHoa.Controllers
                         {
                             strResponse = ex.Message;
                         }
-                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + dtTon.Rows[0]["DanhBo"] + "',N'nhacno',N'" + message + "',N'" + strResponse + "')");
+                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"] + ",N'" + dtTon.Rows[0]["DanhBo"] + "',N'dongnuoc',N'" + message + "',N'" + strResponse + "')");
                     }
                     strResponse = "Đã xử lý";
                 }
