@@ -1682,8 +1682,8 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
-                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("SELECT DanhBo=DHN_DANHBO FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL and HCT_HIEUDHNGAN in (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1)");
-                    //DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("SELECT DanhBo=DHN_DANHBO FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL and HCT_HIEUDHNGAN in (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1) and DHN_DANHBO in('13141978120','13132120521')");
+                    //DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("SELECT DanhBo=DHN_DANHBO FROM CAPNUOCTANHOA.dbo.TB_THAYDHN WHERE DHN_LOAIBANGKE='DHTM' AND HCT_NGAYGAN IS NOT NULL and HCT_HIEUDHNGAN in (select a1.HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN a1)");
+                    DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select c.DanhBo from sDHN_NCC a,sDHN_TCT b,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1");
                     foreach (DataRow item in dt.Rows)
                     {
                         ServicePointManager.Expect100Continue = true;
@@ -1786,8 +1786,8 @@ namespace WSTanHoa.Controllers
                 {
                     string[] datestr = Time.Split('-');
                     DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from"
-                                     + " (select DanhBo, IDNCC, SoLuong = (select COUNT(*) from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = '" + datestr[0] + datestr[1] + datestr[2] + "' and DanhBo = sDHN_TCT.DanhBo) from sDHN_TCT"
-                                     + " where Valid = 1)t1"
+                                     + " (select c.DanhBo, IDNCC, SoLuong = (select COUNT(*) from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = '" + datestr[0] + datestr[1] + datestr[2] + "' and DanhBo = c.DanhBo) from sDHN_NCC a, sDHN_TCT b, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG c"
+                                     + " where a.ID = b.IDNCC and b.DanhBo = c.DANHBO and Valid = 1)t1"
                                      + " where t1.SoLuong < 24");
                     foreach (DataRow item in dt.Rows)
                     {
