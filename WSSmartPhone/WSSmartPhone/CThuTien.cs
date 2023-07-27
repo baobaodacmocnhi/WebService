@@ -3778,7 +3778,7 @@ namespace WSSmartPhone
 
         public string getDS_Code_DHN()
         {
-            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN order by stt asc"));
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN2023 where [active]=1 order by stt asc"));
         }
 
         public bool checkChot_BillState_DHN(string Nam, string Ky, string Dot)
@@ -4629,7 +4629,7 @@ namespace WSSmartPhone
             try
             {
                 TienNuoc = ThueGTGT = TDVTN = ThueTDVTN = 0;
-                string sql = "EXEC [dbo].[spTinhTieuThu]"
+                string sql = "EXEC [dbo].[spTinhTieuThu2023]"
                    + " @DANHBO = N'" + DocSoID.Substring(6, 11) + "',"
                    + " @KY = " + DocSoID.Substring(4, 2) + ","
                    + " @NAM = " + DocSoID.Substring(0, 4) + ","
