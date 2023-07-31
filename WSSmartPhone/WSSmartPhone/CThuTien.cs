@@ -3778,7 +3778,7 @@ namespace WSSmartPhone
 
         public string getDS_Code_DHN()
         {
-            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa from TTDHN2023 where [active]=1 order by stt asc"));
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select Code,MoTa=TTDHN from TTDHN2023 where [active]=1 order by stt asc"));
         }
 
         public bool checkChot_BillState_DHN(string Nam, string Ky, string Dot)
@@ -3972,14 +3972,14 @@ namespace WSSmartPhone
                                     DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
                                     if (dt != null && dt.Rows.Count > 0)
                                     {
-                                        if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
+                                        if (Code.Substring(0, 1) == "4" && Code != "F5" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
                                         {
                                             Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
                                         }
-                                        if (Code.Substring(0, 1) == "F" || Code == "61" || Code == "66")
+                                        if (Code != "F5" && (Code.Substring(0, 1) == "F" || Code == "61" || Code == "66"))
                                             ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
                                         else
-                                            if (Code.Substring(0, 1) == "K")
+                                            if (Code.Substring(0, 1) == "F5")
                                                 ChiSo = dt.Rows[0]["CSCu"].ToString();
                                             else
                                                 if (Code.Substring(0, 1) == "N")
@@ -4341,7 +4341,7 @@ namespace WSSmartPhone
                 result.success = _cDAL_DHN.ExecuteNonQuery(sql);
                 if (result.success)
                 {
-                    
+
                 }
             }
             catch (Exception ex)
