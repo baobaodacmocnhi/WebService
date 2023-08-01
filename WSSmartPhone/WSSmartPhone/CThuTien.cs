@@ -3979,7 +3979,7 @@ namespace WSSmartPhone
                                         if (Code != "F5" && (Code.Substring(0, 1) == "F" || Code == "61" || Code == "66"))
                                             ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
                                         else
-                                            if (Code.Substring(0, 1) == "F5")
+                                            if (Code == "F5")
                                                 ChiSo = dt.Rows[0]["CSCu"].ToString();
                                             else
                                                 if (Code.Substring(0, 1) == "N")
@@ -4287,7 +4287,7 @@ namespace WSSmartPhone
             try
             {
                 string sql = "select ChuaDoc=(select COUNT(DocSoID) from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' and CodeMoi like '')"
-                    + ",F=(select COUNT(DocSoID) from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' and CodeMoi like 'F%')";
+                    + ",F=(select COUNT(DocSoID) from DocSo where Nam=" + Nam + " and Ky='" + Ky + "' and Dot='" + Dot + "' and PhanMay='" + May + "' and CodeMoi not like 'F5' and CodeMoi like 'F%')";
                 result.message = DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
                 result.success = true;
             }
