@@ -4234,6 +4234,7 @@ namespace WSSmartPhone
                 result.success = false;
                 result.error = ex.Message;
             }
+            jss.MaxJsonLength = Int32.MaxValue;
             return jss.Serialize(result);
         }
 
