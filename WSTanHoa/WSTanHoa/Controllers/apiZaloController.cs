@@ -1521,7 +1521,39 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
-
+        
+        [Route("sendEContract")]
+        [HttpPost]
+        public MResult sendEContract()
+        {
+            MResult result = new MResult();
+            try
+            {
+                string jsonResult = Request.Content.ReadAsStringAsync().Result;
+                if (jsonResult != null)
+                {
+                    var jsonContent = JObject.Parse(jsonResult);
+                    string DienThoai = jsonContent["sdt"].ToString(), NoiDung = jsonContent["message"].ToString(), checksum = jsonContent["checksum"].ToString();
+                    if (checksum == CGlobalVariable.checksum)
+                    {
+                        DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + DienThoai + "'");
+                        sendMessage(dt.Rows[0]["IDZalo"].ToString(), NoiDung);
+                        result.success = true;
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.error = "Sai checksum";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return result;
+        }
 
 
     }

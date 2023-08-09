@@ -1388,12 +1388,12 @@ namespace WSTanHoa.Controllers
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
                 List<ThongTinExtra> lst = new List<ThongTinExtra>();
-                DataTable dtThayDHN = _cDAL_DHN.ExecuteQuery_DataTable("SELECT isnull(DHN_LOAIBANGKE,'')+'-' + isnull(convert(varchar, DHN_SOBANGKE), '') MASO,DHN_NGAYBAOTHAY NGAYBAO, DHN_LYDOTHAY LYDO,HCT_NGAYGAN HOANTHANH, case when HCT_NHOMTRONGAI = 0 then '' else LyDo + ', ' end + isnull(HCT_LYDOTRONGAI, '') TRONGAI"
+                DataTable dtThayDHN = _cDAL_DHN.ExecuteQuery_DataTable("SELECT isnull(DHN_LOAIBANGKE,'')+'-' + isnull(convert(varchar, DHN_SOBANGKE), '') MASO,DHN_NGAYBAOTHAY NGAYBAO, 'THAY '+DHN_LYDOTHAY AS LYDO,HCT_NGAYGAN HOANTHANH, case when HCT_NHOMTRONGAI = 0 then '' else LyDo + ', ' end + isnull(HCT_LYDOTRONGAI, '') TRONGAI"
                 + " FROM TB_THAYDHN t1"
                 + " join TB_THAYDHN_TRONGAI t2 on t1.HCT_NHOMTRONGAI = t2.ID"
                 + " where DHN_DANHBO = '" + DanhBo + "'"
                 + " union"
-                + " select t1.SHS MASO, t1.NGAYNHAN NGAYBAO, TENLOAI LYDO,NGAYHOANCONG HOANTHANH, isnull(t1.NOIDUNGTRONGAI + ', ', '')+isnull(t1.NOIDUNGTNCHUYEN + ', ', '') + isnull(t3.NOIDUNGTRONGAI + ', ', '') + ', ' + isnull(t4.NOIDUNGTN + ', ', '') TRONGAI"
+                + " select t1.SHS MASO, t1.NGAYNHAN NGAYBAO, TENLOAI+'; '+t1.GHICHU AS LYDO,NGAYHOANCONG HOANTHANH, isnull(t1.NOIDUNGTRONGAI + ', ', '')+isnull(t1.NOIDUNGTNCHUYEN + ', ', '') + isnull(t3.NOIDUNGTRONGAI + ', ', '') + ', ' + isnull(t4.NOIDUNGTN + ', ', '') TRONGAI"
                 + " from TANHOA_WATER.dbo.DON_KHACHHANG t1"
                 + " left join TANHOA_WATER.dbo.LOAI_HOSO t2 on t1.LOAIHOSO = t2.MALOAI"
                 + " left join TANHOA_WATER.dbo.TOTHIETKE t3 on t1.SHS = t3.SHS"
@@ -1401,7 +1401,7 @@ namespace WSTanHoa.Controllers
                 + " where REPLACE(DANHBO,'-', '')= '" + DanhBo + "'"
                 + " order by NGAYBAO desc");
                 ThongTinExtra en = new ThongTinExtra();
-                en.Title = "Thay ĐHN";
+                en.Title = "Công tác Thi Công";
                 en.totalColumn = 5;
                 en.lstColumn = new List<string> { "Mã", "Ngày Báo", "Lý Do", "Hoàn Thành", "Trở Ngại" };
                 en.totalRow = dtThayDHN.Rows.Count;
