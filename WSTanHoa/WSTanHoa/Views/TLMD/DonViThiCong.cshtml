@@ -1,0 +1,56 @@
+﻿@model List<WSTanHoa.Models.MDonViThiCong>
+    @{
+
+    }
+
+    <!DOCTYPE html>
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Đơn Vị Thi Công</title>
+    </head>
+    <body>
+        <div class="row d-flex justify-content-center">
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Danh Sách Đơn Vị Thi Công</h6>
+
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Đơn vị thi công</th>
+                                    <th>Người đại diện</th>
+                                    <th>Điện thoại</th>
+                                    <th>Tài khoản</th>
+                                    <th>Mật khẩu</th>
+                                    <th>Active</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.STT</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.DaiDien</td>
+                                        <td>@item.DienThoai</td>
+                                        <td>@item.Username</td>
+                                        <td>@item.Password</td>
+                                        <td>@item.Active</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

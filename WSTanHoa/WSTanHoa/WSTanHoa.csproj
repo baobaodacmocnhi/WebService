@@ -216,6 +216,7 @@
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\ThuongVuController.cs" />
     <Compile Include="Controllers\ThuTienController.cs" />
+    <Compile Include="Controllers\TLMDController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Controllers\ZaloChatController.cs" />
     <Compile Include="Controllers\ZaloController.cs" />
@@ -2251,6 +2252,8 @@
     <Content Include="Views\BauCu\BCH.cshtml" />
     <Content Include="Views\BauCu\BiThu.cshtml" />
     <Content Include="Views\BauCu\DaiBieuChinhThuc.cshtml" />
+    <Content Include="Views\TLMD\ThiCong.cshtml" />
+    <Content Include="Views\TLMD\DonViThiCong.cshtml" />
     <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
