@@ -9,7 +9,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>08/04/2023 08:30:25</publishTime>
+      <publishTime>08/11/2023 16:08:16</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>10/27/2021 08:10:09</publishTime>
@@ -180,10 +180,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>08/09/2023 11:06:46</publishTime>
+      <publishTime>08/11/2023 16:09:18</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>08/09/2023 11:06:46</publishTime>
+      <publishTime>08/11/2023 16:09:19</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -6123,7 +6123,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>09/08/2022 11:10:15</publishTime>
+      <publishTime>08/11/2023 09:10:11</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -6136,6 +6136,18 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/ThuongVu/viewFile.cshtml">
       <publishTime>06/15/2022 15:00:53</publishTime>
+    </File>
+    <File Include="Views/TLMD/DonViThiCong.cshtml">
+      <publishTime>08/11/2023 14:47:41</publishTime>
+    </File>
+    <File Include="Views/TLMD/ThiCong.cshtml">
+      <publishTime>08/11/2023 14:51:12</publishTime>
+    </File>
+    <File Include="Views/TLMD/updateDonViThiCong.cshtml">
+      <publishTime>08/11/2023 14:25:59</publishTime>
+    </File>
+    <File Include="Views/TLMD/updateThiCong.cshtml">
+      <publishTime>08/11/2023 14:57:17</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>06/29/2023 14:17:37</publishTime>

@@ -1,0 +1,51 @@
+﻿@model WSTanHoa.Models.MDonViThiCong
+@{
+    ViewBag.Title = "Cập Nhật Đơn Vị Thi Công";
+}
+<title>@ViewBag.Title</title>
+
+<div class="container bg-light mt-3 py-2 rounded-3 shadow-sm">
+    @using (Html.BeginForm("updateDonViThiCong", "TLMD", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-2">
+                <label for="inputID" class="form-label">@Html.DisplayNameFor(model => model.ID)</label>
+                <input type="number" class="form-control" name="inputID" value="@Html.DisplayFor(model => model.ID)" readonly>
+            </div>
+            <div class="col-12 mt-3 form-group">
+                <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.Name)</label>
+                <input type="text" class="form-control" name="inputName" value="@Html.DisplayFor(model => model.Name)" />
+            </div>
+            <div class="col-6 mt-3">
+                <label for="inputDaiDien" class="form-label">@Html.DisplayNameFor(model => model.DaiDien)</label>
+                <input type="text" class="form-control" name="inputDaiDien" value="@Html.DisplayFor(model => model.DaiDien)" />
+            </div>
+            <div class="col-6 mt-3">
+                <label for="inputDienThoai" class="form-label">@Html.DisplayNameFor(model => model.DienThoai)</label>
+                <input type="text" class="form-control" name="inputDienThoai" value="@Html.DisplayFor(model => model.DienThoai)" />
+            </div>
+            <div class="col-5 mt-3">
+                <label for="inputUsername" class="form-label">@Html.DisplayNameFor(model => model.Username)</label>
+                <input type="text" class="form-control" name="inputUsername" value="@Html.DisplayFor(model => model.Username)" />
+            </div>
+            <div class="col-5 mt-3">
+                <label for="inputPassword" class="form-label">@Html.DisplayNameFor(model => model.Password)</label>
+                <input type="text" class="form-control" name="inputPassword" value="@Html.DisplayFor(model => model.Password)" />
+            </div>
+            <div class="form-check">
+                <label for="inputActive" class="form-label">@Html.DisplayNameFor(model => model.Active)</label>
+                <input type="checkbox" class="form-control" name="inputActive" checked="@Model.Active" />
+            </div>
+            <div class="col mt-3">
+                @if (Model == null || Model.ID <= 0)
+                {
+                    <button type="submit" name="Loai" value="insert" class="btn btn-primary">Thêm mới</button>
+                }
+                else
+                {
+                    <button type="submit" name="Loai" value="update" class="btn btn-primary">Cập nhật</button>
+                }
+            </div>
+        </div>
+    }
+</div>

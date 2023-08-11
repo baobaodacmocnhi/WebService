@@ -1,17 +1,58 @@
-﻿
+﻿@model List<WSTanHoa.Models.MThiCong>
 @{
-   
+    ViewBag.Title = "Thi Công";
 }
 
-<!DOCTYPE html>
+<title>@ViewBag.Title</title>
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Thi Công</title>
-</head>
-<body>
-    <div> 
+<div class="row d-flex justify-content-center">
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Danh Sách Thi Công</h6>
+
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+            <div>
+                <a href="@Url.Action("updateThiCong","TLMD")" class="btn btn-primary">Thêm mới</a>
+            </div>
+            <div class="table-responsive mt-2">
+                <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Dự án/Điểm bể</th>
+                            <th>Danh bộ</th>
+                            <th>Điểm đầu</th>
+                            <th>Điểm cuối</th>
+                            <th>Tên đường</th>
+                            <th>Đơn vị thi công</th>
+                            <th>Kết cấu</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.STT</td>
+                                <td>@item.Name</td>
+                                <td>@item.DanhBo</td>
+                                <td>@item.DiemDau</td>
+                                <td>@item.DiemCuoi</td>
+                                <td>@item.TenDuong</td>
+                                <td>@item.IDDonViThiCong</td>
+                                <td>@item.IDKetCau</td>
+                                <td>
+                                    <a href="@Url.Action("updateThiCong", "TLMD", new { Loai="viewUpdate",ID= @item.ID})" class="btn btn-warning">Sửa</a>
+                                    <a href="@Url.Action("updateThiCong", "TLMD", new { Loai="delete",ID= @item.ID})" oncl onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</div>

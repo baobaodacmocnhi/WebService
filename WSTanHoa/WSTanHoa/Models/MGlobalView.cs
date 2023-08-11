@@ -119,4 +119,54 @@ namespace WSTanHoa.Models
         }
     }
 
+    public class MThiCong
+    {
+        [Display(Name = "STT")]
+        public int STT { get; set; }
+
+        [Display(Name = "ID")]
+        public int ID { get; set; }
+
+        [Display(Name = "Dự án/Điểm bể")]
+        public string Name { get; set; }
+
+        [Display(Name = "Đơn vị thi công")]
+        public int IDDonViThiCong { get; set; }
+
+        [Display(Name = "Kết cấu")]
+        public int IDKetCau { get; set; }
+
+        [Display(Name = "Danh bộ")]
+        public string DanhBo { get; set; }
+
+        [Display(Name = "Điểm đầu")]
+        public string DiemDau { get; set; }
+
+        [Display(Name = "Điểm cuối")]
+        public string DiemCuoi { get; set; }
+
+        [Display(Name = "Tên đường")]
+        public string TenDuong { get; set; }
+
+        [Display(Name = "Người tạo")]
+        public int? CreateBy { get; set; }
+
+        [Display(Name = "Ngày tạo")]
+        public DateTime CreateDate { get; set; }
+
+        [Display(Name = "Người sửa")]
+        public int? ModifyBy { get; set; }
+
+        [Display(Name = "Ngày sửa")]
+        public DateTime? ModifyDate { get; set; }
+
+        public MThiCong()
+        {
+            STT = ID = 0;
+            Name = DanhBo = DiemDau = DiemCuoi = TenDuong = "";
+            CreateBy = ModifyBy = null;
+            ModifyDate = null;
+        }
+    }
+
 }

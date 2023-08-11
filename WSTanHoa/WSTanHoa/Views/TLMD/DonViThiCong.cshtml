@@ -1,56 +1,57 @@
 ﻿@model List<WSTanHoa.Models.MDonViThiCong>
-    @{
+@{
+    ViewBag.Title = "Đơn Vị Thi Công";
+}
 
-    }
+<title>@ViewBag.Title</title>
 
-    <!DOCTYPE html>
+<div class="row d-flex justify-content-center">
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Danh Sách Đơn Vị Thi Công</h6>
 
-    <html>
-    <head>
-        <meta name="viewport" content="width=device-width" />
-        <title>Đơn Vị Thi Công</title>
-    </head>
-    <body>
-        <div class="row d-flex justify-content-center">
-            <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                    <h6 class="m-0 font-weight-bold text-primary">Danh Sách Đơn Vị Thi Công</h6>
-
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Đơn vị thi công</th>
-                                    <th>Người đại diện</th>
-                                    <th>Điện thoại</th>
-                                    <th>Tài khoản</th>
-                                    <th>Mật khẩu</th>
-                                    <th>Active</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>@item.STT</td>
-                                        <td>@item.Name</td>
-                                        <td>@item.DaiDien</td>
-                                        <td>@item.DienThoai</td>
-                                        <td>@item.Username</td>
-                                        <td>@item.Password</td>
-                                        <td>@item.Active</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+            <div>
+                <a href="@Url.Action("updateDonViThiCong","TLMD")" class="btn btn-primary">Thêm mới</a>
+            </div>
+            <div class="table-responsive mt-2">
+                <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Đơn vị thi công</th>
+                            <th>Người đại diện</th>
+                            <th>Điện thoại</th>
+                            <th>Tài khoản</th>
+                            <th>Mật khẩu</th>
+                            <th>Active</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.STT</td>
+                                <td>@item.Name</td>
+                                <td>@item.DaiDien</td>
+                                <td>@item.DienThoai</td>
+                                <td>@item.Username</td>
+                                <td>@item.Password</td>
+                                <td>@item.Active</td>
+                                <td>
+                                    <a href="@Url.Action("updateDonViThiCong", "TLMD", new { Loai="viewUpdate",ID= @item.ID})" class="btn btn-warning">Sửa</a>
+                                    <a href="@Url.Action("updateDonViThiCong", "TLMD", new { Loai="delete",ID= @item.ID})" onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-    </body>
-</html>
+    </div>
+</div>
+

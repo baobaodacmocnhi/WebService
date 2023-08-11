@@ -1,0 +1,52 @@
+﻿@model WSTanHoa.Models.MThiCong
+@{
+    ViewBag.Title = "Cập Nhật Thi Công";
+}
+
+<title>@ViewBag.Title</title>
+
+<div class="container bg-light mt-3 py-2 rounded-3 shadow-sm">
+    @using (Html.BeginForm("updateDonViThiCong", "TLMD", FormMethod.Post))
+    {
+        <div class="row">
+            <div class="col-2">
+                <label for="inputID" class="form-label">@Html.DisplayNameFor(model => model.ID)</label>
+                <input type="number" class="form-control" name="inputID" value="@Html.DisplayFor(model => model.ID)" readonly>
+            </div>
+            <div class="col-12 mt-3 form-group">
+                <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.Name)</label>
+                <input type="text" class="form-control" name="inputName" value="@Html.DisplayFor(model => model.Name)" />
+            </div>
+            <div class="col-4 mt-3">
+                <label for="inputDiemDau" class="form-label">@Html.DisplayNameFor(model => model.DiemDau)</label>
+                <input type="text" class="form-control" name="inputDiemDau" value="@Html.DisplayFor(model => model.DiemDau)" />
+            </div>
+            <div class="col-4 mt-3">
+                <label for="inputDiemCuoi" class="form-label">@Html.DisplayNameFor(model => model.DiemCuoi)</label>
+                <input type="text" class="form-control" name="inputDiemCuoi" value="@Html.DisplayFor(model => model.DiemCuoi)" />
+            </div>
+            <div class="col-4 mt-3">
+                <label for="inputTenDuong" class="form-label">@Html.DisplayNameFor(model => model.TenDuong)</label>
+                <input type="text" class="form-control" name="inputTenDuong" value="@Html.DisplayFor(model => model.TenDuong)" />
+            </div>
+            <div class="col-5 mt-3">
+                <label for="inputIDDonViThiCong" class="form-label">@Html.DisplayNameFor(model => model.IDDonViThiCong)</label>
+                <input type="text" class="form-control" name="inputIDDonViThiCong" value="@Html.DisplayFor(model => model.IDDonViThiCong)" />
+            </div>
+            <div class="col-5 mt-3">
+                <label for="inputIDKetCau" class="form-label">@Html.DisplayNameFor(model => model.IDKetCau)</label>
+                <input type="text" class="form-control" name="inputIDKetCau" value="@Html.DisplayFor(model => model.IDKetCau)" />
+            </div>
+            <div class="col mt-3">
+                @if (Model == null || Model.ID <= 0)
+                {
+                    <button type="submit" name="Loai" value="insert" class="btn btn-primary">Thêm mới</button>
+                }
+                else
+                {
+                    <button type="submit" name="Loai" value="update" class="btn btn-primary">Cập nhật</button>
+                }
+            </div>
+        </div>
+    }
+</div>

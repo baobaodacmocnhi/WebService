@@ -207,7 +207,7 @@ namespace WSTanHoa.Controllers
                 string SL = "";
                 DataTable dtSL = _cDAL_DHN.ExecuteQuery_DataTable("SELECT Nam=year(HCT_NGAYGAN),SoLuong=count(DHN_DANHBO)"
                         + " FROM TB_THAYDHN WHERE DHN_LOAIBANGKE = 'DHTM' AND HCT_NGAYGAN IS NOT NULL and HCT_HIEUDHNGAN = (select HIEU_DHTM from sDHN.dbo.DHTM_THONGTIN where ID=" + item["IDNCC"].ToString() + ")"
-                        + " and DHN_DANHBO in (select DanhBo from sDHN.dbo.sDHN_TCT where Valid=1)"
+                        + " and DHN_DANHBO in (select DanhBo from sDHN.dbo.sDHN_TCT where Valid=1) and DHN_DANHBO in (select DanhBo from [CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG])"
                         + " group by year(HCT_NGAYGAN)"
                         + " order by year(HCT_NGAYGAN)");
                 foreach (DataRow itemSL in dtSL.Rows)
@@ -568,8 +568,8 @@ namespace WSTanHoa.Controllers
                     count--;
                     date = date.AddDays(-1);
                 }
-                sql += ")t1,sDHN_NCC ncc"
-                        + " where t1.SoLuong = 0 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
+                sql += ")t1,sDHN_NCC ncc,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                        + " where t1.SoLuong = 0 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%' and t1.DanhBo=ttkh.DanhBo"
                         + " group by IDNCC,ncc.Name,t1.DanhBo"
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " order by IDNCC";
@@ -618,8 +618,8 @@ namespace WSTanHoa.Controllers
                     count--;
                     date = date.AddDays(-1);
                 }
-                sql += ")t1,sDHN_NCC ncc"
-                        + " where t1.SoLuong = 0 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
+                sql += ")t1,sDHN_NCC ncc,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                        + " where t1.SoLuong = 0 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%' and t1.DanhBo=ttkh.DanhBo"
                         + " group by IDNCC,ncc.Name,t1.DanhBo,t1.NamLapDat"
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " )t1 group by t1.IDNCC,t1.NamLapDat order by t1.IDNCC";
@@ -668,8 +668,8 @@ namespace WSTanHoa.Controllers
                     count--;
                     date = date.AddDays(-1);
                 }
-                sql += ")t1,sDHN_NCC ncc"
-                        + " where t1.SoLuong > 0 and t1.SoLuong < 24 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
+                sql += ")t1,sDHN_NCC ncc,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                        + " where t1.SoLuong > 0 and t1.SoLuong < 24 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%' and t1.DanhBo=ttkh.DanhBo"
                         + " group by IDNCC,ncc.Name,t1.DanhBo"
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " order by IDNCC";
@@ -718,8 +718,8 @@ namespace WSTanHoa.Controllers
                     count--;
                     date = date.AddDays(-1);
                 }
-                sql += ")t1,sDHN_NCC ncc"
-                        + " where t1.SoLuong > 0 and t1.SoLuong < 24 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%'"
+                sql += ")t1,sDHN_NCC ncc,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                        + " where t1.SoLuong > 0 and t1.SoLuong < 24 and t1.IDNCC = ncc.ID and t1.IDNCC like '%" + NCC + "%' and t1.DanhBo=ttkh.DanhBo"
                         + " group by IDNCC,ncc.Name,t1.DanhBo,t1.NamLapDat"
                         + " having COUNT(t1.DanhBo) = " + SoNgay
                         + " )t1 group by t1.IDNCC,t1.NamLapDat order by t1.IDNCC";
