@@ -4,9 +4,30 @@
 }
 
 <title>@ViewBag.Title</title>
-
+<script src="~/Scripts/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#inputDanhBo").change(function () {
+            if ($("#inputDanhBo").val().length == 11)
+                $.ajax({
+                    type: 'GET',
+                    url: '/TLMD/getTTKH/',
+                    dataType: 'json',
+                    data: { DanhBo: $("#inputDanhBo").val() },
+                    success: function (data) {
+                        $("#inputDiemDau").val(data.SoNha);
+                        $("#inputDiemCuoi").val(data.SoNha);
+                        $("#inputTenDuong").val(data.TenDuong);
+                    },
+                    error: function (ex) {
+                        alert("Error: " + ex.statusText);
+                    }
+                });
+        });
+    });
+</script>
 <div class="container bg-light mt-3 py-2 rounded-3 shadow-sm">
-    @using (Html.BeginForm("updateDonViThiCong", "TLMD", FormMethod.Post))
+    @using (Html.BeginForm("updateThiCong", "TLMD", FormMethod.Post))
     {
         <div class="row">
             <div class="col-2">
@@ -17,26 +38,34 @@
                 <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.Name)</label>
                 <input type="text" class="form-control" name="inputName" value="@Html.DisplayFor(model => model.Name)" />
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-3 mt-3">
+                <label for="inputDanhBo" class="form-label">@Html.DisplayNameFor(model => model.DanhBo)</label>
+                <input type="text" class="form-control" id="inputDanhBo" name="inputDanhBo" value="@Html.DisplayFor(model => model.DanhBo)" />
+            </div>
+            <div class="col-3 mt-3">
                 <label for="inputDiemDau" class="form-label">@Html.DisplayNameFor(model => model.DiemDau)</label>
-                <input type="text" class="form-control" name="inputDiemDau" value="@Html.DisplayFor(model => model.DiemDau)" />
+                <input type="text" class="form-control" id="inputDiemDau" name="inputDiemDau" value="@Html.DisplayFor(model => model.DiemDau)" />
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-3 mt-3">
                 <label for="inputDiemCuoi" class="form-label">@Html.DisplayNameFor(model => model.DiemCuoi)</label>
-                <input type="text" class="form-control" name="inputDiemCuoi" value="@Html.DisplayFor(model => model.DiemCuoi)" />
+                <input type="text" class="form-control" id="inputDiemCuoi" name="inputDiemCuoi" value="@Html.DisplayFor(model => model.DiemCuoi)" />
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-3 mt-3">
                 <label for="inputTenDuong" class="form-label">@Html.DisplayNameFor(model => model.TenDuong)</label>
-                <input type="text" class="form-control" name="inputTenDuong" value="@Html.DisplayFor(model => model.TenDuong)" />
+                <input type="text" class="form-control" id="inputTenDuong" name="inputTenDuong" value="@Html.DisplayFor(model => model.TenDuong)" />
             </div>
             <div class="col-5 mt-3">
                 <label for="inputIDDonViThiCong" class="form-label">@Html.DisplayNameFor(model => model.IDDonViThiCong)</label>
-                <input type="text" class="form-control" name="inputIDDonViThiCong" value="@Html.DisplayFor(model => model.IDDonViThiCong)" />
+                @*<input type="text" class="form-control" name="inputIDDonViThiCong" value="@Html.DisplayFor(model => model.IDDonViThiCong)" />*@
+                @Html.DropDownListFor(model => model.IDDonViThiCong, ViewBag.DonViThiCong as SelectList, new { @class = "form-control" })
             </div>
             <div class="col-5 mt-3">
                 <label for="inputIDKetCau" class="form-label">@Html.DisplayNameFor(model => model.IDKetCau)</label>
-                <input type="text" class="form-control" name="inputIDKetCau" value="@Html.DisplayFor(model => model.IDKetCau)" />
+                @*<input type="text" class="form-control" name="inputIDKetCau" value="@Html.DisplayFor(model => model.IDKetCau)" />*@
+                @Html.DropDownListFor(model => model.IDKetCau, ViewBag.KetCau as SelectList, new { @class = "form-control" })
             </div>
+        </div>
+        <div class="row">
             <div class="col mt-3">
                 @if (Model == null || Model.ID <= 0)
                 {

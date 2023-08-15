@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewBag.Title = "Đổi Mật Khẩu";
+}
+
+<title>@ViewBag.Title</title>
+
+<div class="container bg-light mt-3 rounded-3">
+    @using (Html.BeginForm("DoiMatKhau", "TLMD", FormMethod.Post))
+    {
+        <div class="">
+            <div class="row pt-3 px-3">
+                <div class="col-auto mx-auto">
+                    <input class="form-control" type="password" id="passwordCu" name="passwordCu" placeholder="Mật khẩu cũ">
+                </div>
+            </div>
+            <div class="row pt-3 px-3">
+                <div class="col-auto mx-auto">
+                    <input class="form-control" type="password" id="passwordMoi" name="passwordMoi" placeholder="Mật khẩu mới">
+                </div>
+            </div>
+            <div class="row pt-3 px-3">
+                <div class="col-auto mx-auto">
+                    <input class="form-control" type="password" id="passwordMoi2" name="passwordMoi2" placeholder="Mật khẩu mới">
+                </div>
+            </div>
+            <div class="row pt-3 px-3">
+                <div class="col-auto mx-auto">
+                    <button type="submit" name="action" value="login" class="btn btn-primary mb-3">Cập nhật</button>
+                </div>
+            </div>
+            <div class="row pt-3 px-3">
+                <div class="col-auto mx-auto">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.AntiForgeryToken()
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

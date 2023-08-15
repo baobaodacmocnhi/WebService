@@ -15,12 +15,14 @@ namespace WSTanHoa.Models
         public string DanhBo { get; set; }
         public string HoTen { get; set; }
         public string DiaChi { get; set; }
+        public string SoNha { get; set; }
+        public string TenDuong { get; set; }
         public string ChiSo { get; set; }
         public string TieuThu { get; set; }
         public List<MView> lst { get; set; }
         public MView()
         {
-            TieuDe = NoiDung = SoLuong = ThoiGian = DanhBo = HoTen = DiaChi = ChiSo = TieuThu = "";
+            TieuDe = NoiDung = SoLuong = ThoiGian = DanhBo = HoTen = DiaChi = SoNha = TenDuong = ChiSo = TieuThu = "";
             lst = new List<MView>();
         }
     }

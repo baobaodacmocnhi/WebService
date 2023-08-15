@@ -36,6 +36,8 @@
                 <label for="inputActive" class="form-label">@Html.DisplayNameFor(model => model.Active)</label>
                 <input type="checkbox" class="form-control" name="inputActive" checked="@Model.Active" />
             </div>
+        </div>
+        <div class="row">
             <div class="col mt-3">
                 @if (Model == null || Model.ID <= 0)
                 {

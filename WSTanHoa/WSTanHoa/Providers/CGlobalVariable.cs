@@ -97,5 +97,8 @@ namespace WSTanHoa.Providers
             ImageConverter converter = new ImageConverter();
             return (byte[])converter.ConvertTo(image, typeof(byte[]));
         }
+
+        
+
     }
 }
