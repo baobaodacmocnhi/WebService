@@ -31,6 +31,7 @@ namespace WSTanHoa.Providers
         public static string ThuongVuWFH = "Data Source=113.161.88.180,1933;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string TrungTamKhachHang = "Data Source=server9;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string TrungTamKhachHangWFH = "Data Source=113.161.88.180,1933;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
+        public static string CLN = "Data Source=server14;Initial Catalog=viwater;Persist Security Info=True;User ID=sa;Password=Chatluongnuoc@tanhoa";
         public static string BauCu = "Data Source=113.161.88.180,1933;Initial Catalog=DH_CODONG;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string pathHinhDHN = @"\\rackstation\HinhDHN";
         public static string pathHinhDHNMaHoa = @"\\rackstation\HinhDHN\MaHoa";

@@ -7,64 +7,68 @@
 @Scripts.Render("~/bundles/datepicker")
 
 <div class="row d-flex justify-content-center">
-    <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">Danh Sách Thi Công</h6>
-            <a href="@Url.Action("updateThiCong","TLMD")" class="btn btn-primary">Thêm mới</a>
-        </div>
-        <!-- Card Body -->
-        <div class="card-body">
-            <div class="row">
-                <div class="col-auto">
-                    <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off" onchange="">
-                </div>
-                <div class="col-auto">
-                    <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
-                </div>
-                <div class="col-auto">
-                    <a href="@Url.Action("ThiCong","TLMD")" class="btn btn-primary">Xem</a>
-                </div>
+    @using (Html.BeginForm("ThiCong", "TLMD", FormMethod.Get))
+    {
+        <div class="card shadow mb-4">
+            <!-- Card Header - Dropdown -->
+            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                <h6 class="m-0 font-weight-bold text-primary">Danh Sách Thi Công</h6>
+                <a href="@Url.Action("updateThiCong","TLMD")" class="btn btn-primary">Thêm mới</a>
             </div>
-            <div class="table-responsive mt-2">
-                <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
-                    <thead>
-                        <tr>
-                            <th>STT</th>
-                            <th>Dự án/Điểm bể</th>
-                            <th>Danh bộ</th>
-                            <th>Điểm đầu</th>
-                            <th>Điểm cuối</th>
-                            <th>Tên đường</th>
-                            <th>Đơn vị thi công</th>
-                            <th>Kết cấu</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model != null)
-                        {
-                            foreach (var item in Model)
+            <!-- Card Body -->
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-auto">
+                        <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off" onchange="">
+                    </div>
+                    <div class="col-auto">
+                        <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off">
+                    </div>
+                    <div class="col-auto">
+                        @*<a href="@Url.Action("ThiCong","TLMD")" class="btn btn-primary">Xem</a>*@
+                        <button type="submit" name="action" value="login" class="btn btn-primary">Xem</button>
+                    </div>
+                </div>
+                <div class="table-responsive mt-2">
+                    <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Dự án/Điểm bể</th>
+                                <th>Danh bộ</th>
+                                <th>Điểm đầu</th>
+                                <th>Điểm cuối</th>
+                                <th>Tên đường</th>
+                                <th>Đơn vị thi công</th>
+                                <th>Kết cấu</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
                             {
-                                <tr>
-                                    <td>@item.STT</td>
-                                    <td>@item.Name</td>
-                                    <td>@item.DanhBo</td>
-                                    <td>@item.DiemDau</td>
-                                    <td>@item.DiemCuoi</td>
-                                    <td>@item.TenDuong</td>
-                                    <td>@item.IDDonViThiCong</td>
-                                    <td>@item.IDKetCau</td>
-                                    <td>
-                                        <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "viewUpdate", ID = @item.ID })" class="btn btn-warning">Sửa</a>
-                                        <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID = @item.ID })" oncl onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>
-                                    </td>
-                                </tr>
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@item.STT</td>
+                                        <td>@item.Name</td>
+                                        <td>@item.DanhBo</td>
+                                        <td>@item.DiemDau</td>
+                                        <td>@item.DiemCuoi</td>
+                                        <td>@item.TenDuong</td>
+                                        <td>@item.IDDonViThiCong</td>
+                                        <td>@item.IDKetCau</td>
+                                        <td>
+                                            <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "viewUpdate", ID = @item.ID })" class="btn btn-warning">Sửa</a>
+                                            <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID = @item.ID })" oncl onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
+    }
 </div>
