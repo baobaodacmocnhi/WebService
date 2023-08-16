@@ -23,11 +23,15 @@ namespace WSTanHoa.Controllers
         {
             if (form.AllKeys.Contains("username"))
             {
-                DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select ID,Name from TLMD_User where Active=1 and Username='" + form["username"].ToString().Trim() + "' and Password='" + form["password"].ToString().Trim() + "'");
+                DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select ID,Name,Admin,TruongPhong,IDPhong from TLMD_User where Active=1 and Username='" + form["username"].ToString().Trim() + "' and Password='" + form["password"].ToString().Trim() + "'");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     Session["ID"] = dt.Rows[0]["ID"].ToString();
                     Session["Name"] = dt.Rows[0]["Name"].ToString();
+                    Session["Admin"] = dt.Rows[0]["Admin"].ToString();
+                    Session["TruongPhong"] = dt.Rows[0]["TruongPhong"].ToString();
+                    Session["IDPhong"] = dt.Rows[0]["IDPhong"].ToString();
+                    Session["Rules"] = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_PhanQuyenUser where IDUser=" + dt.Rows[0]["ID"].ToString());
                     return Redirect(Session["Url"].ToString());
                 }
             }
@@ -44,6 +48,13 @@ namespace WSTanHoa.Controllers
                     ModelState.AddModelError("", "Thất bại");
             }
             return View();
+        }
+
+        public bool checkRules(string IDMenu, string action)
+        {
+            DataTable dt = (DataTable)Session["Rules"];
+            DataRow[] dr = dt.Select("IDMenu=" + IDMenu);
+            return bool.Parse(dr[0][action].ToString());
         }
 
         public string getTTKH(string DanhBo)
@@ -64,54 +75,74 @@ namespace WSTanHoa.Controllers
 
         public ActionResult ThiCong(FormCollection form)
         {
-            //if (Session["ID"] == null)
-            //{
-            //    Session["Url"] = Request.Url;
-            //    return RedirectToAction("DangNhap");
-            //}
-            if (form.AllKeys.Contains("TuNgay"))
+            if (Session["ID"] == null)
             {
-                string[] dateTus = form["TuNgay"].ToString().Split('/');
-                string[] dateDens = form["DenNgay"].ToString().Split('/');
-                List<MThiCong> lst = new List<MThiCong>();
-                DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_ThiCong where cast(createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'");
-                int STT = 1;
-                foreach (DataRow item in dt.Rows)
-                {
-                    MThiCong en = new MThiCong();
-                    en.STT = STT++;
-                    en.ID = int.Parse(item["ID"].ToString());
-                    en.Name = item["Name"].ToString();
-                    en.IDDonViThiCong = int.Parse(item["IDDonViThiCong"].ToString());
-                    en.IDKetCau = int.Parse(item["IDKetCau"].ToString());
-                    en.DanhBo = item["DanhBo"].ToString();
-                    en.DiemDau = item["DiemDau"].ToString();
-                    en.DiemCuoi = item["DiemCuoi"].ToString();
-                    en.TenDuong = item["TenDuong"].ToString();
-                    int a = -1;
-                    int.TryParse(item["CreateBy"].ToString(), out a);
-                    en.CreateBy = a;
-                    en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
-                    int.TryParse(item["ModifyBy"].ToString(), out a);
-                    en.ModifyBy = a;
-                    DateTime date;
-                    DateTime.TryParse(item["ModifyDate"].ToString(), out date);
-                    en.ModifyDate = date;
-                    lst.Add(en);
-                }
-                return View(lst);
+                Session["Url"] = Request.Url;
+                return RedirectToAction("DangNhap");
             }
+            if (!checkRules("2", "Xem"))
+                return RedirectToAction("Denied");
+            if (Session["TuNgay"] == null)
+                if (form.AllKeys.Contains("TuNgay"))
+                {
+                    Session["TuNgay"] = form["TuNgay"].ToString();
+                    Session["DenNgay"] = form["DenNgay"].ToString();
+                }
+                else
+                {
+                    Session["TuNgay"] = Session["DenNgay"] = DateTime.Now.ToString("dd/MM/yyyy");
+                }
+            string[] dateTus = Session["TuNgay"].ToString().Split('/');
+            string[] dateDens = Session["DenNgay"].ToString().Split('/');
+            List<MThiCong> lst = new List<MThiCong>();
+            string sql = "select CreateBy=(select Name from TLMD_User where TLMD_User.ID=thicong.CreateBy),ModifyBy=(select Name from TLMD_User where TLMD_User.ID=thicong.ModifyBy),thicong.*,DonViThiCong=donvithicong.Name,KetCau=ketcau.Name from TLMD_ThiCong thicong,TLMD_DonViThiCong donvithicong,TLMD_KetCau ketcau"
+            + " where thicong.IDDonViThiCong=donvithicong.ID and thicong.IDKetCau=ketcau.ID and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
+            if (bool.Parse(Session["Admin"].ToString()))
+                sql += "";
             else
-                return View();
+                if (bool.Parse(Session["TruongPhong"].ToString()))
+                sql += " and (select IDPhong from TLMD_User where TLMD_User.ID=thicong.CreateBy)=" + Session["IDPhong"];
+            else
+                sql += " and thicong.CreateBy=" + Session["ID"];
+            DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable(sql);
+            int STT = 1;
+            foreach (DataRow item in dt.Rows)
+            {
+                MThiCong en = new MThiCong();
+                en.STT = STT++;
+                en.ID = int.Parse(item["ID"].ToString());
+                en.Name = item["Name"].ToString();
+                en.DonViThiCong = item["DonViThiCong"].ToString();
+                en.KetCau = item["KetCau"].ToString();
+                en.DanhBo = item["DanhBo"].ToString();
+                en.DiemDau = item["DiemDau"].ToString();
+                en.DiemCuoi = item["DiemCuoi"].ToString();
+                en.TenDuong = item["TenDuong"].ToString();
+                en.CreateBy = item["CreateBy"].ToString();
+                en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
+                en.ModifyBy = item["ModifyBy"].ToString();
+                DateTime date;
+                DateTime.TryParse(item["ModifyDate"].ToString(), out date);
+                en.ModifyDate = date;
+                lst.Add(en);
+            }
+            return View(lst);
         }
 
         public ActionResult updateThiCong(string Loai, int? ID, FormCollection form)
         {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("DangNhap");
+            }
             ViewBag.KetCau = _cDAL_TTKH.ToSelectList(_cDAL_TTKH.ExecuteQuery_DataTable("select ID,Name from TLMD_KetCau"), "ID", "Name");
             ViewBag.DonViThiCong = _cDAL_TTKH.ToSelectList(_cDAL_TTKH.ExecuteQuery_DataTable("select ID,Name from TLMD_DonViThiCong"), "ID", "Name");
             if (Loai == "insert")
             {
-                _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,DanhBo,DiemDau,DiemCuoi,TenDuong)values("
+                if (!checkRules("2", "Them"))
+                    return RedirectToAction("Denied");
+                _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,DanhBo,DiemDau,DiemCuoi,TenDuong,CreateBy)values("
                     + "(select case when exists(select ID from TLMD_ThiCong) then (select MAX(ID)+1 from TLMD_ThiCong) else 1 end)"
                     + ",'" + form["inputName"].ToString() + "'"
                     + "," + form["IDDonViThiCong"].ToString() + ""
@@ -120,6 +151,7 @@ namespace WSTanHoa.Controllers
                     + ",'" + form["inputDiemDau"].ToString() + "'"
                     + ",'" + form["inputDiemCuoi"].ToString() + "'"
                     + ",'" + form["inputTenDuong"].ToString() + "'"
+                    + "," + Session["ID"]
                     + ")");
                 return RedirectToAction("ThiCong");
             }
@@ -127,7 +159,8 @@ namespace WSTanHoa.Controllers
             if (Loai == "viewUpdate")
             {
                 MThiCong en = new MThiCong();
-                DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_ThiCong where ID=" + ID);
+                DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateBy=(select Name from TLMD_User where TLMD_User.ID=TLMD_ThiCong.CreateBy),ModifyBy=(select Name from TLMD_User where TLMD_User.ID=TLMD_ThiCong.ModifyBy),*"
+                      + " from TLMD_ThiCong where ID=" + ID);
                 en.ID = int.Parse(dt.Rows[0]["ID"].ToString());
                 en.Name = dt.Rows[0]["Name"].ToString();
                 en.IDDonViThiCong = int.Parse(dt.Rows[0]["IDDonViThiCong"].ToString());
@@ -136,12 +169,9 @@ namespace WSTanHoa.Controllers
                 en.DiemDau = dt.Rows[0]["DiemDau"].ToString();
                 en.DiemCuoi = dt.Rows[0]["DiemCuoi"].ToString();
                 en.TenDuong = dt.Rows[0]["TenDuong"].ToString();
-                int a = -1;
-                int.TryParse(dt.Rows[0]["CreateBy"].ToString(), out a);
-                en.CreateBy = a;
+                en.CreateBy = dt.Rows[0]["CreateBy"].ToString();
                 en.CreateDate = DateTime.Parse(dt.Rows[0]["CreateDate"].ToString());
-                int.TryParse(dt.Rows[0]["ModifyBy"].ToString(), out a);
-                en.ModifyBy = a;
+                en.ModifyBy = dt.Rows[0]["ModifyBy"].ToString();
                 DateTime date;
                 DateTime.TryParse(dt.Rows[0]["ModifyDate"].ToString(), out date);
                 en.ModifyDate = date;
@@ -150,6 +180,8 @@ namespace WSTanHoa.Controllers
             else
             if (Loai == "update")
             {
+                if (!checkRules("2", "Sua"))
+                    return RedirectToAction("Denied");
                 _cDAL_TTKH.ExecuteNonQuery("update TLMD_ThiCong set"
                     + " Name='" + form["inputName"].ToString() + "'"
                     + ",IDDonViThiCong=" + form["IDDonViThiCong"].ToString() + ""
@@ -158,7 +190,7 @@ namespace WSTanHoa.Controllers
                     + ",DiemDau='" + form["inputDiemDau"].ToString() + "'"
                     + ",DiemCuoi='" + form["inputDiemCuoi"].ToString() + "'"
                     + ",TenDuong='" + form["inputTenDuong"].ToString() + "'"
-                    + ",ModifyBy=1"
+                    + ",ModifyBy=" + Session["ID"]
                     + ",ModifyDate=getdate()"
                     + " where ID=" + form["inputID"].ToString());
                 return RedirectToAction("ThiCong");
@@ -166,6 +198,8 @@ namespace WSTanHoa.Controllers
             else
             if (Loai == "delete")
             {
+                if (!checkRules("2", "Xoa"))
+                    return RedirectToAction("Denied");
                 _cDAL_TTKH.ExecuteQuery_DataTable("delete TLMD_ThiCong where ID=" + ID);
                 return RedirectToAction("ThiCong");
             }
@@ -175,11 +209,13 @@ namespace WSTanHoa.Controllers
 
         public ActionResult DonViThiCong()
         {
-            //if (Session["ID"] == null)
-            //{
-            //    Session["Url"] = Request.Url;
-            //    return RedirectToAction("DangNhap");
-            //}
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("DangNhap");
+            }
+            if (!checkRules("1", "Xem"))
+                return RedirectToAction("Denied");
             List<MDonViThiCong> lst = new List<MDonViThiCong>();
             DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_DonViThiCong");
             int STT = 1;
@@ -194,12 +230,9 @@ namespace WSTanHoa.Controllers
                 en.Username = item["Username"].ToString();
                 en.Password = item["Password"].ToString();
                 en.Active = bool.Parse(item["Active"].ToString());
-                int a = -1;
-                int.TryParse(item["CreateBy"].ToString(), out a);
-                en.CreateBy = a;
+                en.CreateBy = item["CreateBy"].ToString();
                 en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
-                int.TryParse(item["ModifyBy"].ToString(), out a);
-                en.ModifyBy = a;
+                en.ModifyBy = item["ModifyBy"].ToString();
                 DateTime date;
                 DateTime.TryParse(item["ModifyDate"].ToString(), out date);
                 en.ModifyDate = date;
@@ -210,15 +243,23 @@ namespace WSTanHoa.Controllers
 
         public ActionResult updateDonViThiCong(string Loai, int? ID, FormCollection form)
         {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("DangNhap");
+            }
             if (Loai == "insert")
             {
-                _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_DonViThiCong(ID,Name,DaiDien,DienThoai,Username,Password)values("
+                if (!checkRules("1", "Them"))
+                    return RedirectToAction("Denied");
+                _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_DonViThiCong(ID,Name,DaiDien,DienThoai,Username,Password,CreateBy)values("
                     + "(select case when exists(select ID from TLMD_DonViThiCong) then (select MAX(ID)+1 from TLMD_DonViThiCong) else 1 end)"
                     + ",'" + form["inputName"].ToString() + "'"
                     + ",'" + form["inputDaiDien"].ToString() + "'"
                     + ",'" + form["inputDienThoai"].ToString() + "'"
                     + ",'" + form["inputUsername"].ToString() + "'"
                     + ",'" + form["inputPassword"].ToString() + "'"
+                    + "," + Session["ID"]
                     + ")");
                 return RedirectToAction("DonViThiCong");
             }
@@ -226,7 +267,7 @@ namespace WSTanHoa.Controllers
             if (Loai == "viewUpdate")
             {
                 MDonViThiCong en = new MDonViThiCong();
-                DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_DonViThiCong where ID=" + ID);
+                DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateBy=(select ID from TLMD_User where ID=TLMD_DonViThiCong.CreateBy),ModifyBy=(select ID from TLMD_User where ID=TLMD_DonViThiCong.ModifyBy),* from TLMD_DonViThiCong where ID=" + ID);
                 en.ID = int.Parse(dt.Rows[0]["ID"].ToString());
                 en.Name = dt.Rows[0]["Name"].ToString();
                 en.DaiDien = dt.Rows[0]["DaiDien"].ToString();
@@ -234,12 +275,9 @@ namespace WSTanHoa.Controllers
                 en.Username = dt.Rows[0]["Username"].ToString();
                 en.Password = dt.Rows[0]["Password"].ToString();
                 en.Active = bool.Parse(dt.Rows[0]["Active"].ToString());
-                int a = -1;
-                int.TryParse(dt.Rows[0]["CreateBy"].ToString(), out a);
-                en.CreateBy = a;
+                en.CreateBy = dt.Rows[0]["CreateBy"].ToString();
                 en.CreateDate = DateTime.Parse(dt.Rows[0]["CreateDate"].ToString());
-                int.TryParse(dt.Rows[0]["ModifyBy"].ToString(), out a);
-                en.ModifyBy = a;
+                en.ModifyBy = dt.Rows[0]["ModifyBy"].ToString();
                 DateTime date;
                 DateTime.TryParse(dt.Rows[0]["ModifyDate"].ToString(), out date);
                 en.ModifyDate = date;
@@ -248,6 +286,8 @@ namespace WSTanHoa.Controllers
             else
             if (Loai == "update")
             {
+                if (!checkRules("1", "Sua"))
+                    return RedirectToAction("Denied");
                 string flag = "";
                 if (form.AllKeys.Contains("inputActive"))
                     flag = "1";
@@ -260,7 +300,7 @@ namespace WSTanHoa.Controllers
                     + ",Username='" + form["inputUsername"].ToString() + "'"
                     + ",Password='" + form["inputPassword"].ToString() + "'"
                     + ",Active='" + flag + "'"
-                    + ",ModifyBy=1"
+                    + ",ModifyBy=" + Session["ID"]
                     + ",ModifyDate=getdate()"
                     + " where ID=" + form["inputID"].ToString());
                 return RedirectToAction("DonViThiCong");
@@ -268,11 +308,18 @@ namespace WSTanHoa.Controllers
             else
             if (Loai == "delete")
             {
+                if (!checkRules("1", "Xoa"))
+                    return RedirectToAction("Denied");
                 _cDAL_TTKH.ExecuteQuery_DataTable("delete TLMD_DonViThiCong where ID=" + ID);
                 return RedirectToAction("DonViThiCong");
             }
             else
                 return View();
+        }
+
+        public ActionResult Denied()
+        {
+            return View();
         }
 
     }

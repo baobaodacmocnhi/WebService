@@ -2258,6 +2258,7 @@
     <Content Include="Views\TLMD\updateThiCong.cshtml" />
     <Content Include="Views\TLMD\DangNhap.cshtml" />
     <Content Include="Views\TLMD\DoiMatKhau.cshtml" />
+    <Content Include="Views\TLMD\Denied.cshtml" />
     <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

@@ -7,7 +7,7 @@
 @Scripts.Render("~/bundles/datepicker")
 
 <div class="row d-flex justify-content-center">
-    @using (Html.BeginForm("ThiCong", "TLMD", FormMethod.Get))
+    @using (Html.BeginForm("ThiCong", "TLMD", FormMethod.Post))
     {
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
@@ -41,6 +41,8 @@
                                 <th>Tên đường</th>
                                 <th>Đơn vị thi công</th>
                                 <th>Kết cấu</th>
+                                <th>Người tạo</th>
+                                <th>Ngày tạo</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -56,8 +58,10 @@
                                         <td>@item.DiemDau</td>
                                         <td>@item.DiemCuoi</td>
                                         <td>@item.TenDuong</td>
-                                        <td>@item.IDDonViThiCong</td>
-                                        <td>@item.IDKetCau</td>
+                                        <td>@item.DonViThiCong</td>
+                                        <td>@item.KetCau</td>
+                                        <td>@item.CreateBy</td>
+                                        <td>@item.CreateDate</td>
                                         <td>
                                             <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "viewUpdate", ID = @item.ID })" class="btn btn-warning">Sửa</a>
                                             <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID = @item.ID })" oncl onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>

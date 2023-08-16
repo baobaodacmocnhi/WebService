@@ -102,21 +102,20 @@ namespace WSTanHoa.Models
         public bool Active { get; set; }
 
         [Display(Name = "Người tạo")]
-        public int? CreateBy { get; set; }
+        public string CreateBy { get; set; }
 
         [Display(Name = "Ngày tạo")]
         public DateTime CreateDate { get; set; }
 
         [Display(Name = "Người sửa")]
-        public int? ModifyBy { get; set; }
+        public string ModifyBy { get; set; }
 
         [Display(Name = "Ngày sửa")]
         public DateTime? ModifyDate { get; set; }
         public MDonViThiCong()
         {
             STT = ID = 0;
-            Name = DaiDien = DienThoai = Username = Password = "";
-            CreateBy = ModifyBy = null;
+            Name = DaiDien = DienThoai = Username = Password = CreateBy = ModifyBy = "";
             ModifyDate = null;
         }
     }
@@ -135,8 +134,14 @@ namespace WSTanHoa.Models
         [Display(Name = "Đơn vị thi công")]
         public int IDDonViThiCong { get; set; }
 
+        [Display(Name = "Đơn vị thi công")]
+        public string DonViThiCong { get; set; }
+
         [Display(Name = "Kết cấu")]
         public int IDKetCau { get; set; }
+
+        [Display(Name = "Kết cấu")]
+        public string KetCau { get; set; }
 
         [Display(Name = "Danh bộ")]
         public string DanhBo { get; set; }
@@ -151,13 +156,13 @@ namespace WSTanHoa.Models
         public string TenDuong { get; set; }
 
         [Display(Name = "Người tạo")]
-        public int? CreateBy { get; set; }
+        public string CreateBy { get; set; }
 
         [Display(Name = "Ngày tạo")]
         public DateTime CreateDate { get; set; }
 
         [Display(Name = "Người sửa")]
-        public int? ModifyBy { get; set; }
+        public string ModifyBy { get; set; }
 
         [Display(Name = "Ngày sửa")]
         public DateTime? ModifyDate { get; set; }
@@ -165,8 +170,7 @@ namespace WSTanHoa.Models
         public MThiCong()
         {
             STT = ID = 0;
-            Name = DanhBo = DiemDau = DiemCuoi = TenDuong = "";
-            CreateBy = ModifyBy = null;
+            Name = DanhBo = DiemDau = DiemCuoi = TenDuong = CreateBy = ModifyBy = "";
             ModifyDate = null;
         }
     }
