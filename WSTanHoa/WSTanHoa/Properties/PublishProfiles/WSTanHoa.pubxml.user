@@ -9,7 +9,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>08/16/2023 15:13:35</publishTime>
+      <publishTime>08/17/2023 14:56:16</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>10/27/2021 08:10:09</publishTime>
@@ -6138,25 +6138,25 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/15/2022 15:00:53</publishTime>
     </File>
     <File Include="Views/TLMD/DangNhap.cshtml">
-      <publishTime>08/14/2023 10:44:55</publishTime>
+      <publishTime>08/17/2023 15:00:17</publishTime>
     </File>
     <File Include="Views/TLMD/Denied.cshtml">
-      <publishTime>08/16/2023 14:19:57</publishTime>
+      <publishTime>08/17/2023 15:00:19</publishTime>
     </File>
     <File Include="Views/TLMD/DoiMatKhau.cshtml">
-      <publishTime>08/14/2023 10:42:17</publishTime>
+      <publishTime>08/17/2023 15:00:19</publishTime>
     </File>
     <File Include="Views/TLMD/DonViThiCong.cshtml">
-      <publishTime>08/15/2023 10:40:07</publishTime>
+      <publishTime>08/17/2023 15:00:19</publishTime>
     </File>
     <File Include="Views/TLMD/ThiCong.cshtml">
-      <publishTime>08/16/2023 14:51:41</publishTime>
+      <publishTime>08/17/2023 14:59:03</publishTime>
     </File>
     <File Include="Views/TLMD/updateDonViThiCong.cshtml">
-      <publishTime>08/15/2023 14:27:05</publishTime>
+      <publishTime>08/17/2023 15:00:19</publishTime>
     </File>
     <File Include="Views/TLMD/updateThiCong.cshtml">
-      <publishTime>08/16/2023 14:53:41</publishTime>
+      <publishTime>08/17/2023 15:00:19</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>06/29/2023 14:17:37</publishTime>
