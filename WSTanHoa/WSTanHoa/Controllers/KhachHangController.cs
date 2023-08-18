@@ -339,6 +339,7 @@ namespace WSTanHoa.Controllers
         + " , NgayKTXM = (select top 1 CONVERT(char(10),NgayKTXM,103)+' '+CONVERT(char(5),NgayKTXM,108) from KTXM c, KTXM_ChiTiet d where c.MaKTXM = d.MaKTXM and c.MaDonMoi = a.MaDon and d.STT = b.STT order by NgayKTXM desc)"
         + " , NgayTTTL = (select top 1 CONVERT(char(10),d.CreateDate,103)+' '+CONVERT(char(5),d.CreateDate,108) from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"
         + " , IDTTTL = (select top 1 d.MaCTTTTL from ThuTraLoi c, ThuTraLoi_ChiTiet d where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT order by d.CreateDate desc)"
+        + " , IDTTTL_Hinh = (select top 1 h.IDTTTL_ChiTiet from ThuTraLoi c, ThuTraLoi_ChiTiet d, ThuTraLoi_ChiTiet_Hinh h where c.MaTTTL = d.MaTTTL and c.MaDonMoi = a.MaDon and d.STT = b.STT and d.MaCTTTTL=h.IDTTTL_ChiTiet order by d.CreateDate desc)"
         + " from DonTu a,DonTu_ChiTiet b where a.MaDon = b.MaDon and a.MaDon = " + id);
 
                     if (dt != null && dt.Rows.Count > 0)
@@ -372,7 +373,8 @@ namespace WSTanHoa.Controllers
                             en = new MView();
                             en.NoiDung = "Thư trả lời";
                             en.ThoiGian = dt.Rows[0]["NgayTTTL"].ToString();
-                            en.DanhBo = dt.Rows[0]["IDTTTL"].ToString();
+                            if (dt.Rows[0]["IDTTTL_Hinh"].ToString() != "")
+                                en.DanhBo = dt.Rows[0]["IDTTTL"].ToString();
                             enView.lst.Add(en);
                         }
                         ViewBag.DanhBo = dt.Rows[0]["DanhBo"].ToString().Insert(7, " ").Insert(4, " ");

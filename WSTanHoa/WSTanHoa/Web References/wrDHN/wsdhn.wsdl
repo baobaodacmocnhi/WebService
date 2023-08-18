@@ -302,18 +302,6 @@
             <s:element minOccurs="0" maxOccurs="1" name="ViTriHop" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="Gieng" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="KhoaTu" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="AmSau" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="XayDung" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="DutChiGoc" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="DutChiThan" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="NgapNuoc" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="KetTuong" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="LapKhoaGoc" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="BeHBV" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="BeNapMatNapHBV" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="GayTayVan" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="TroNgaiThay" type="s:string" />
-            <s:element minOccurs="0" maxOccurs="1" name="DauChungMayBom" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="MauSacChiGoc" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="GhiChu" type="s:string" />
             <s:element minOccurs="0" maxOccurs="1" name="KinhDoanh" type="s:string" />

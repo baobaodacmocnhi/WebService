@@ -989,31 +989,7 @@ namespace WSTanHoa.wrDHN {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/update_GhiChu", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string update_GhiChu(
-                    string DanhBo, 
-                    string SoNha, 
-                    string TenDuong, 
-                    string ViTri, 
-                    string ViTriNgoai, 
-                    string ViTriHop, 
-                    string Gieng, 
-                    string KhoaTu, 
-                    string AmSau, 
-                    string XayDung, 
-                    string DutChiGoc, 
-                    string DutChiThan, 
-                    string NgapNuoc, 
-                    string KetTuong, 
-                    string LapKhoaGoc, 
-                    string BeHBV, 
-                    string BeNapMatNapHBV, 
-                    string GayTayVan, 
-                    string TroNgaiThay, 
-                    string DauChungMayBom, 
-                    string MauSacChiGoc, 
-                    string GhiChu, 
-                    string KinhDoanh, 
-                    string MaNV) {
+        public string update_GhiChu(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string MauSacChiGoc, string GhiChu, string KinhDoanh, string MaNV) {
             object[] results = this.Invoke("update_GhiChu", new object[] {
                         DanhBo,
                         SoNha,
@@ -1023,18 +999,6 @@ namespace WSTanHoa.wrDHN {
                         ViTriHop,
                         Gieng,
                         KhoaTu,
-                        AmSau,
-                        XayDung,
-                        DutChiGoc,
-                        DutChiThan,
-                        NgapNuoc,
-                        KetTuong,
-                        LapKhoaGoc,
-                        BeHBV,
-                        BeNapMatNapHBV,
-                        GayTayVan,
-                        TroNgaiThay,
-                        DauChungMayBom,
                         MauSacChiGoc,
                         GhiChu,
                         KinhDoanh,
@@ -1043,61 +1007,12 @@ namespace WSTanHoa.wrDHN {
         }
         
         /// <remarks/>
-        public void update_GhiChuAsync(
-                    string DanhBo, 
-                    string SoNha, 
-                    string TenDuong, 
-                    string ViTri, 
-                    string ViTriNgoai, 
-                    string ViTriHop, 
-                    string Gieng, 
-                    string KhoaTu, 
-                    string AmSau, 
-                    string XayDung, 
-                    string DutChiGoc, 
-                    string DutChiThan, 
-                    string NgapNuoc, 
-                    string KetTuong, 
-                    string LapKhoaGoc, 
-                    string BeHBV, 
-                    string BeNapMatNapHBV, 
-                    string GayTayVan, 
-                    string TroNgaiThay, 
-                    string DauChungMayBom, 
-                    string MauSacChiGoc, 
-                    string GhiChu, 
-                    string KinhDoanh, 
-                    string MaNV) {
-            this.update_GhiChuAsync(DanhBo, SoNha, TenDuong, ViTri, ViTriNgoai, ViTriHop, Gieng, KhoaTu, AmSau, XayDung, DutChiGoc, DutChiThan, NgapNuoc, KetTuong, LapKhoaGoc, BeHBV, BeNapMatNapHBV, GayTayVan, TroNgaiThay, DauChungMayBom, MauSacChiGoc, GhiChu, KinhDoanh, MaNV, null);
+        public void update_GhiChuAsync(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string MauSacChiGoc, string GhiChu, string KinhDoanh, string MaNV) {
+            this.update_GhiChuAsync(DanhBo, SoNha, TenDuong, ViTri, ViTriNgoai, ViTriHop, Gieng, KhoaTu, MauSacChiGoc, GhiChu, KinhDoanh, MaNV, null);
         }
         
         /// <remarks/>
-        public void update_GhiChuAsync(
-                    string DanhBo, 
-                    string SoNha, 
-                    string TenDuong, 
-                    string ViTri, 
-                    string ViTriNgoai, 
-                    string ViTriHop, 
-                    string Gieng, 
-                    string KhoaTu, 
-                    string AmSau, 
-                    string XayDung, 
-                    string DutChiGoc, 
-                    string DutChiThan, 
-                    string NgapNuoc, 
-                    string KetTuong, 
-                    string LapKhoaGoc, 
-                    string BeHBV, 
-                    string BeNapMatNapHBV, 
-                    string GayTayVan, 
-                    string TroNgaiThay, 
-                    string DauChungMayBom, 
-                    string MauSacChiGoc, 
-                    string GhiChu, 
-                    string KinhDoanh, 
-                    string MaNV, 
-                    object userState) {
+        public void update_GhiChuAsync(string DanhBo, string SoNha, string TenDuong, string ViTri, string ViTriNgoai, string ViTriHop, string Gieng, string KhoaTu, string MauSacChiGoc, string GhiChu, string KinhDoanh, string MaNV, object userState) {
             if ((this.update_GhiChuOperationCompleted == null)) {
                 this.update_GhiChuOperationCompleted = new System.Threading.SendOrPostCallback(this.Onupdate_GhiChuOperationCompleted);
             }
@@ -1110,18 +1025,6 @@ namespace WSTanHoa.wrDHN {
                         ViTriHop,
                         Gieng,
                         KhoaTu,
-                        AmSau,
-                        XayDung,
-                        DutChiGoc,
-                        DutChiThan,
-                        NgapNuoc,
-                        KetTuong,
-                        LapKhoaGoc,
-                        BeHBV,
-                        BeNapMatNapHBV,
-                        GayTayVan,
-                        TroNgaiThay,
-                        DauChungMayBom,
                         MauSacChiGoc,
                         GhiChu,
                         KinhDoanh,
