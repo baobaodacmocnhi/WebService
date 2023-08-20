@@ -201,6 +201,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\apiDocSoController.cs" />
+    <Compile Include="Controllers\apiEContractController.cs" />
     <Compile Include="Controllers\apiThuHoController.cs" />
     <Compile Include="Controllers\apiThuongVuController.cs" />
     <Compile Include="Controllers\apiThuTienController.cs" />
