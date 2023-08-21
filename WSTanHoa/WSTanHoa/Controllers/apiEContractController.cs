@@ -31,8 +31,7 @@ namespace WSTanHoa.Controllers
                 if (checksum == CGlobalVariable.checksum)
                 {
                     ServicePointManager.Expect100Continue = true;
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                           | SecurityProtocolType.Ssl3;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "auth-service/oauth/token");
                     request.Method = "POST";
                     request.ContentType = "application/json";
