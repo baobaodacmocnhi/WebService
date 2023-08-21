@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Script.Serialization;
 
 namespace WSSmartPhone
 {
     public class CGlobalVariable
     {
-        public static string cheksum = "tanho@2022";
+        public static string checksum = "tanho@2022";
         public static string DHN = "Data Source=server9;Initial Catalog=CAPNUOCTANHOA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string DocSo = "Data Source=server9;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string DocSoWFH = "Data Source=113.161.88.180,1933;Initial Catalog=DocSoTH;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
@@ -20,6 +21,8 @@ namespace WSSmartPhone
         public static string pathHinhDHNMaHoa = @"\\rackstation\HinhDHN\MaHoa";
         public static string pathHinhTV = @"\\rackstation\HinhDHN\ThuongVu";
         public static string pathHinhTT = @"\\rackstation\HinhDHN\ThuTien";
+        public static JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+
     }
 
     public class CResult

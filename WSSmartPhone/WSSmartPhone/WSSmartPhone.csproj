@@ -64,12 +64,14 @@
     </Content>
     <Content Include="wsBilling.asmx" />
     <Content Include="wsDHN.asmx" />
+    <Content Include="wsEContract.asmx" />
     <Content Include="WSSmartPhone.Publish.xml" />
     <Content Include="wsThuongVu.asmx" />
     <Content Include="wsThuTien.asmx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CBaoBao.cs" />
+    <Compile Include="CEContract.cs" />
     <Compile Include="CGlobalVariable.cs" />
     <Compile Include="CThuTien.cs" />
     <Compile Include="CConnection.cs" />
@@ -94,6 +96,10 @@
     </Compile>
     <Compile Include="wsDHN.asmx.cs">
       <DependentUpon>wsDHN.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="wsEContract.asmx.cs">
+      <DependentUpon>wsEContract.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="wsThuongVu.asmx.cs">
