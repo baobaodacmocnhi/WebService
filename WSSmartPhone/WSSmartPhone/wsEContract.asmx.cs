@@ -24,10 +24,16 @@ namespace WSSmartPhone
             return _cEContract.getAccess_token(checksum);
         }
 
+        //[WebMethod]
+        //public string renderEContract(string checksum)
+        //{
+        //    return _cEContract.renderEContract(checksum);
+        //}
+
         [WebMethod]
-        public string renderEContract(string checksum)
+        public string createEContract(string checksum)
         {
-            return _cEContract.renderEContract(checksum);
+            return _cEContract.createEContract(checksum);
         }
 
     }
