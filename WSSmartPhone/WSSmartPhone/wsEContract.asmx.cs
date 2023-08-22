@@ -24,16 +24,26 @@ namespace WSSmartPhone
             return _cEContract.getAccess_token(checksum);
         }
 
-        //[WebMethod]
-        //public string renderEContract(string checksum)
-        //{
-        //    return _cEContract.renderEContract(checksum);
-        //}
+        [WebMethod]
+        public string renderEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
+            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string checksum)
+        {
+            return _cEContract.renderEContract(HopDong, DanhBo, CreateDate, HoTen, CCCD, NgayCap, DCThuongTru, DCHienNay
+            , DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, checksum);
+        }
 
         [WebMethod]
-        public string createEContract(string checksum)
+        public string createEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
+            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, bool GanMoi, bool CaNhan, string MaDon, string SHS, string checksum)
         {
-            return _cEContract.createEContract(checksum);
+            return _cEContract.createEContract(HopDong, DanhBo, CreateDate, HoTen, CCCD, NgayCap, DCThuongTru, DCHienNay
+            , DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, GanMoi, CaNhan, MaDon, SHS, checksum);
+        }
+
+        [WebMethod]
+        public string sendEContract(string MaDon, string SHS, string checksum)
+        {
+            return _cEContract.sendEContract(MaDon, SHS, checksum);
         }
 
     }
