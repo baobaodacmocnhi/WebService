@@ -155,6 +155,12 @@ namespace WSTanHoa.Models
         [Display(Name = "Tên đường")]
         public string TenDuong { get; set; }
 
+        [Display(Name = "Phường")]
+        public string IDPhuong { get; set; }
+
+        [Display(Name = "Quận")]
+        public string IDQuan { get; set; }
+
         [Display(Name = "Người tạo")]
         public string CreateBy { get; set; }
 

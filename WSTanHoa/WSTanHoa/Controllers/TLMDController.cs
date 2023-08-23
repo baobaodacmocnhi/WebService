@@ -73,6 +73,22 @@ namespace WSTanHoa.Controllers
             }
         }
 
+        public string getPhuong(string Quan)
+        {
+            try
+            {
+                DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT ID=[MAPHUONG],Name=[TENPHUONG] FROM[CAPNUOCTANHOA].[dbo].[PHUONG] where MaQuan=" + Quan);
+                MView en = new MView();
+                en.SoNha = dt.Rows[0]["SoNha"].ToString();
+                en.TenDuong = dt.Rows[0]["TenDuong"].ToString();
+                return CGlobalVariable.jsSerializer.Serialize(en);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         public ActionResult ThiCong(FormCollection form)
         {
             if (Session["ID"] == null)
@@ -138,19 +154,20 @@ namespace WSTanHoa.Controllers
             }
             ViewBag.KetCau = _cDAL_TTKH.ToSelectList(_cDAL_TTKH.ExecuteQuery_DataTable("select ID,Name from TLMD_KetCau"), "ID", "Name");
             ViewBag.DonViThiCong = _cDAL_TTKH.ToSelectList(_cDAL_TTKH.ExecuteQuery_DataTable("select ID,Name from TLMD_DonViThiCong"), "ID", "Name");
+            ViewBag.Quan = _cDAL_TTKH.ToSelectList(_cDAL_TTKH.ExecuteQuery_DataTable("SELECT ID=[MAQUAN],Name=[TENQUAN] FROM[CAPNUOCTANHOA].[dbo].[QUAN]"), "ID", "Name");
             if (Loai == "insert")
             {
                 if (!checkRules("2", "Them"))
                     return RedirectToAction("Denied");
                 _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,DanhBo,DiemDau,DiemCuoi,TenDuong,CreateBy)values("
                     + "(select case when exists(select ID from TLMD_ThiCong) then (select MAX(ID)+1 from TLMD_ThiCong) else 1 end)"
-                    + ",'" + form["inputName"].ToString() + "'"
+                    + ",N'" + form["inputName"].ToString() + "'"
                     + "," + form["IDDonViThiCong"].ToString() + ""
                     + "," + form["IDKetCau"].ToString() + ""
-                    + ",'" + form["inputDanhBo"].ToString() + "'"
-                    + ",'" + form["inputDiemDau"].ToString() + "'"
-                    + ",'" + form["inputDiemCuoi"].ToString() + "'"
-                    + ",'" + form["inputTenDuong"].ToString() + "'"
+                    + ",N'" + form["inputDanhBo"].ToString() + "'"
+                    + ",N'" + form["inputDiemDau"].ToString() + "'"
+                    + ",N'" + form["inputDiemCuoi"].ToString() + "'"
+                    + ",N'" + form["inputTenDuong"].ToString() + "'"
                     + "," + Session["ID"]
                     + ")");
                 return RedirectToAction("ThiCong");
@@ -187,9 +204,9 @@ namespace WSTanHoa.Controllers
                     + ",IDDonViThiCong=" + form["IDDonViThiCong"].ToString() + ""
                     + ",IDKetCau=" + form["IDKetCau"].ToString() + ""
                     + ",DanhBo='" + form["inputDanhBo"].ToString() + "'"
-                    + ",DiemDau='" + form["inputDiemDau"].ToString() + "'"
-                    + ",DiemCuoi='" + form["inputDiemCuoi"].ToString() + "'"
-                    + ",TenDuong='" + form["inputTenDuong"].ToString() + "'"
+                    + ",DiemDau=N'" + form["inputDiemDau"].ToString() + "'"
+                    + ",DiemCuoi=N'" + form["inputDiemCuoi"].ToString() + "'"
+                    + ",TenDuong=N'" + form["inputTenDuong"].ToString() + "'"
                     + ",ModifyBy=" + Session["ID"]
                     + ",ModifyDate=getdate()"
                     + " where ID=" + form["inputID"].ToString());
@@ -254,8 +271,8 @@ namespace WSTanHoa.Controllers
                     return RedirectToAction("Denied");
                 _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_DonViThiCong(ID,Name,DaiDien,DienThoai,Username,Password,CreateBy)values("
                     + "(select case when exists(select ID from TLMD_DonViThiCong) then (select MAX(ID)+1 from TLMD_DonViThiCong) else 1 end)"
-                    + ",'" + form["inputName"].ToString() + "'"
-                    + ",'" + form["inputDaiDien"].ToString() + "'"
+                    + ",N'" + form["inputName"].ToString() + "'"
+                    + ",N'" + form["inputDaiDien"].ToString() + "'"
                     + ",'" + form["inputDienThoai"].ToString() + "'"
                     + ",'" + form["inputUsername"].ToString() + "'"
                     + ",'" + form["inputPassword"].ToString() + "'"
@@ -294,8 +311,8 @@ namespace WSTanHoa.Controllers
                 else
                     flag = "0";
                 _cDAL_TTKH.ExecuteNonQuery("update TLMD_DonViThiCong set"
-                    + " Name='" + form["inputName"].ToString() + "'"
-                    + ",DaiDien='" + form["inputDaiDien"].ToString() + "'"
+                    + " Name=N'" + form["inputName"].ToString() + "'"
+                    + ",DaiDien=N'" + form["inputDaiDien"].ToString() + "'"
                     + ",DienThoai='" + form["inputDienThoai"].ToString() + "'"
                     + ",Username='" + form["inputUsername"].ToString() + "'"
                     + ",Password='" + form["inputPassword"].ToString() + "'"
