@@ -78,10 +78,15 @@ namespace WSTanHoa.Controllers
             try
             {
                 DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT ID=[MAPHUONG],Name=[TENPHUONG] FROM[CAPNUOCTANHOA].[dbo].[PHUONG] where MaQuan=" + Quan);
-                MView en = new MView();
-                en.SoNha = dt.Rows[0]["SoNha"].ToString();
-                en.TenDuong = dt.Rows[0]["TenDuong"].ToString();
-                return CGlobalVariable.jsSerializer.Serialize(en);
+                List<MView> lst = new List<MView>();
+                foreach (DataRow item in dt.Rows)
+                {
+                    MView en = new MView();
+                    en.SoNha = item["ID"].ToString();
+                    en.TenDuong = item["Name"].ToString();
+                    lst.Add(en);
+                }
+                return CGlobalVariable.jsSerializer.Serialize(lst);
             }
             catch
             {
