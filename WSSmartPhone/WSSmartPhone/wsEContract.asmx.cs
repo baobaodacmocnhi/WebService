@@ -25,19 +25,19 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string renderEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
-            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string checksum)
+        public byte[] renderEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
+            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, string checksum, out string strResponse)
         {
             return _cEContract.renderEContract(HopDong, DanhBo, CreateDate, HoTen, CCCD, NgayCap, DCThuongTru, DCHienNay
-            , DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, checksum);
+            , DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, NgayHieuLuc, checksum, out strResponse);
         }
 
         [WebMethod]
         public string createEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
-            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, bool GanMoi, bool CaNhan, string MaDon, string SHS, string checksum)
+            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, bool GanMoi, bool CaNhan, string MaDon, string SHS, string checksum)
         {
             return _cEContract.createEContract(HopDong, DanhBo, CreateDate, HoTen, CCCD, NgayCap, DCThuongTru, DCHienNay
-            , DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, GanMoi, CaNhan, MaDon, SHS, checksum);
+            , DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, NgayHieuLuc, GanMoi, CaNhan, MaDon, SHS, checksum);
         }
 
         [WebMethod]
