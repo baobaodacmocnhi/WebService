@@ -1918,49 +1918,53 @@ namespace WSTanHoa.Controllers
                                 var lst1 = obj["duLieu"];
                                 foreach (var itemC1 in lst1)
                                 {
-                                    int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
-                                    if (itemC1["pin_yeu"] == true)
-                                        flagCBPinYeu = 1;
-                                    if (itemC1["ro_ri"] == true)
-                                        flagCBRoRi = 1;
-                                    if (itemC1["qua_dong"] == true)
-                                        flagCBQuaDong = 1;
-                                    if (itemC1["chay_nguoc"] == true)
-                                        flagCBChayNguoc = 1;
-                                    if (itemC1["co_nam_cham"] == true)
-                                        flagCBNamCham = 1;
-                                    if (itemC1["kho_ong"] == true)
-                                        flagCBKhoOng = 1;
-                                    if (itemC1["mo_hop"] == true)
-                                        flagCBMoHop = 1;
-                                    string LuuLuong = "NULL";
-                                    //if (itemC2["Flow"] != null)
-                                    //    LuuLuong = ((int)itemC2["Flow"]).ToString();
-                                    string sql = "if not exists(select * from sDHN_LichSu_TCT where DanhBo='" + itemC1["danh_bo"] + "' and ThoiGianCapNhat=convert(datetime,'" + itemC1["thoi_gian_nhan"] + "'))"
-                                        + " insert into sDHN_LichSu_TCT(DanhBo,ChiSo,Diff,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
-                                        + ",Longitude,Latitude,Altitude,ChuKyGui"
-                                        + ",ThoiGianCapNhat,Loai)"
-                                                   + "values("
-                                                   + "'" + itemC1["danh_bo"] + "'"
-                                                   + "," + itemC1["chi_so_nuoc"]
-                                                   + "," + itemC1["tieu_thu"]
-                                                   + ",NULL" //+ item["Battery"]
-                                                   + ",N'" + itemC1["thoi_gian_con_lai"] + "'"
-                                                   + "," + LuuLuong
-                                                   + ",N'" + itemC1["chat_luong_song"] + "'"
-                                                   + "," + flagCBPinYeu
-                                                   + "," + flagCBRoRi
-                                                   + "," + flagCBQuaDong
-                                                   + "," + flagCBChayNguoc
-                                                   + "," + flagCBNamCham
-                                                   + "," + flagCBKhoOng
-                                                   + "," + flagCBMoHop
-                                                   + ",NULL" //+ item["Longitude"]
-                                                   + ",NULL" //+ item["Latitude"]
-                                                   + ",NULL"
-                                                   + ",NULL" //+ item["Interval"]
-                                                   + ",'" + itemC1["thoi_gian_nhan"] + "',N'All')";
-                                    _cDAL_sDHN.ExecuteNonQuery(sql);
+                                    var lst2 = CGlobalVariable.jsSerializer.Deserialize<dynamic>(itemC1["livedata"]);
+                                    foreach (var itemC2 in lst2)
+                                    {
+                                        int flagCBPinYeu = 0, flagCBRoRi = 0, flagCBQuaDong = 0, flagCBChayNguoc = 0, flagCBNamCham = 0, flagCBKhoOng = 0, flagCBMoHop = 0;
+                                        if (itemC2["pin_yeu"] == true)
+                                            flagCBPinYeu = 1;
+                                        if (itemC2["ro_ri"] == true)
+                                            flagCBRoRi = 1;
+                                        if (itemC2["qua_dong"] == true)
+                                            flagCBQuaDong = 1;
+                                        if (itemC2["chay_nguoc"] == true)
+                                            flagCBChayNguoc = 1;
+                                        if (itemC2["co_nam_cham"] == true)
+                                            flagCBNamCham = 1;
+                                        if (itemC2["kho_ong"] == true)
+                                            flagCBKhoOng = 1;
+                                        if (itemC2["mo_hop"] == true)
+                                            flagCBMoHop = 1;
+                                        string LuuLuong = "NULL";
+                                        //if (itemC2["Flow"] != null)
+                                        //    LuuLuong = ((int)itemC2["Flow"]).ToString();
+                                        string sql = "if not exists(select * from sDHN_LichSu_TCT where DanhBo='" + itemC2["danh_bo"] + "' and ThoiGianCapNhat=convert(datetime,'" + itemC2["thoi_gian_nhan"] + "'))"
+                                            + " insert into sDHN_LichSu_TCT(DanhBo,ChiSo,Diff,Pin,ThoiLuongPinConLai,LuuLuong,ChatLuongSong,CBPinYeu,CBRoRi,CBQuaDong,CBChayNguoc,CBNamCham,CBKhoOng,CBMoHop"
+                                            + ",Longitude,Latitude,Altitude,ChuKyGui"
+                                            + ",ThoiGianCapNhat,Loai)"
+                                                       + "values("
+                                                       + "'" + itemC2["danh_bo"] + "'"
+                                                       + "," + itemC2["chi_so_nuoc"]
+                                                       + "," + itemC2["tieu_thu"]
+                                                       + ",NULL" //+ item["Battery"]
+                                                       + ",N'" + itemC2["thoi_gian_con_lai"] + "'"
+                                                       + "," + LuuLuong
+                                                       + ",N'" + itemC2["chat_luong_song"] + "'"
+                                                       + "," + flagCBPinYeu
+                                                       + "," + flagCBRoRi
+                                                       + "," + flagCBQuaDong
+                                                       + "," + flagCBChayNguoc
+                                                       + "," + flagCBNamCham
+                                                       + "," + flagCBKhoOng
+                                                       + "," + flagCBMoHop
+                                                       + ",NULL" //+ item["Longitude"]
+                                                       + ",NULL" //+ item["Latitude"]
+                                                       + ",NULL"
+                                                       + ",NULL" //+ item["Interval"]
+                                                       + ",'" + itemC2["thoi_gian_nhan"] + "',N'All')";
+                                        _cDAL_sDHN.ExecuteNonQuery(sql);
+                                    }
                                 }
                             }
                         }
