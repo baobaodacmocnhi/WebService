@@ -1275,7 +1275,7 @@ namespace WSTanHoa.Controllers
                         read.Close();
                         respuesta.Close();
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                        bool flag = _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["token"] + "',expiration_date='" + obj["expiration"] + "',CreateDate=getdate() where ID='sdhn'");
+                        bool flag = _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["token"] + "',expires_in='7 days',expiration_date='" + obj["expiration"] + "',CreateDate=getdate() where ID='sdhn'");
                         strResponse = flag.ToString();
                     }
                     else
