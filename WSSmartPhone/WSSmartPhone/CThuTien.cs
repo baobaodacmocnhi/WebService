@@ -7307,7 +7307,7 @@ namespace WSSmartPhone
                     var obj = jss.Deserialize<dynamic>(result);
                     if (obj["ketQua"] == 1)
                     {
-                        bool flag = _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["duLieu"]["token"] + "',expires_in=" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + ",CreateDate=getdate() where ID='cskhapi'");
+                        bool flag = _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["duLieu"]["token"] + "',expires_in='" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + " days',CreateDate=getdate() where ID='cskhapi'");
                         strResponse = flag.ToString();
                     }
                     else

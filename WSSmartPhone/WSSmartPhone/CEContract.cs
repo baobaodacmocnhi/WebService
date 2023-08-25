@@ -16,7 +16,7 @@ namespace WSSmartPhone
         private string urlApi = "https://api-econtract.cskhtanhoa.com.vn:1443/";
         CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKHWFH);
 
-        public string getAccess_token(string checksum)
+        public bool getAccess_token(string checksum)
         {
             string strResponse = "";
             try
@@ -51,8 +51,7 @@ namespace WSSmartPhone
                         read.Close();
                         respuesta.Close();
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                        bool flag = _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',CreateDate=getdate() where ID='econtract'");
-                        strResponse = flag.ToString();
+                        return _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtract'");
                     }
                     else
                     {
@@ -66,7 +65,7 @@ namespace WSSmartPhone
             {
                 strResponse = ex.Message;
             }
-            return strResponse;
+            return false;
         }
 
         public string getAccess_token()
@@ -117,7 +116,8 @@ namespace WSSmartPhone
                     dataStream.Write(byteArray, 0, byteArray.Length);
                     dataStream.Close();
                     HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+
+                    if (respuesta.StatusCode == HttpStatusCode.OK)
                     {
                         Stream read = respuesta.GetResponseStream();
                         MemoryStream memoryStream = new MemoryStream();
@@ -129,7 +129,12 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        strResponse = respuesta.StatusCode.ToString();
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
                     }
                 }
                 else
@@ -142,10 +147,10 @@ namespace WSSmartPhone
             return null;
         }
 
-        public string createEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
-            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, bool GanMoi, bool CaNhan, string MaDon, string SHS, string checksum)
+        public bool createEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
+            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, bool GanMoi, bool CaNhan, string MaDon, string SHS, string checksum, out string strResponse)
         {
-            string strResponse = "";
+            strResponse = "";
             try
             {
                 if (checksum == CGlobalVariable.checksum)
@@ -173,16 +178,15 @@ namespace WSSmartPhone
                     content.Add(new StreamContent(File.OpenRead(AppDomain.CurrentDomain.BaseDirectory + @"\Images\cccd2.png")), "EKYC_MATSAU", AppDomain.CurrentDomain.BaseDirectory + @"\Images\cccd2.png");
                     request.Content = content;
                     var response = client.SendAsync(request);
-                    //response.Result.EnsureSuccessStatusCode();
+                    var result = response.Result.Content.ReadAsStringAsync();
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                     if (response.Result.IsSuccessStatusCode)
                     {
-                        var result = response.Result.Content.ReadAsStringAsync();
-                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                         _cDAL_TTKH.ExecuteNonQuery("insert into Zalo_EContract_ChiTiet(DienThoai,IDEContract,DanhBo,MaDon,SHS)values('" + DienThoai + "','" + obj["object"]["contractId"] + "','" + DanhBo + "'," + MaDon + ",'" + SHS + "')");
-                        sendEContract(MaDon, SHS, "tanho@2022");
+                        return true;
                     }
                     else
-                        strResponse = "Lỗi api " + response.Result.StatusCode + "\r\n" + response.Result.ToString()+ "\r\n"+response.Result.RequestMessage;
+                        strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
                 }
                 else
                     strResponse = "Sai checksum";
@@ -191,42 +195,37 @@ namespace WSSmartPhone
             {
                 strResponse = ex.Message;
             }
-            return strResponse;
+            return false;
         }
 
-        public string sendEContract(string MaDon, string SHS, string checksum)
+        public bool sendEContract(string MaDon, string SHS, string checksum, out string strResponse)
         {
-            string strResponse = "";
+            strResponse = "";
             try
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
                     DataTable dt;
                     if (MaDon != "")
-                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select IDEContract from Zalo_EContract_ChiTiet where MaDon=" + MaDon);
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select IDEContract from Zalo_EContract_ChiTiet where MaDon=" + MaDon + " order by CreateDate desc");
                     else
-                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "'");
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' order by CreateDate desc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-                        HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/submit-contract");
-                        request.Method = "POST";
-                        request.ContentType = "application/json";
-                        request.ContentLength = 0;
-                        request.Headers["Authorization"] = "Bearer " + getAccess_token();
-                        HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                        if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                        var client = new HttpClient();
+                        var request = new HttpRequestMessage(HttpMethod.Post, "https://api-econtract.cskhtanhoa.com.vn:1443/esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/submit-contract");
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        var response = client.SendAsync(request);
+                        var result = response.Result.Content.ReadAsStringAsync();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                        if (response.Result.IsSuccessStatusCode)
                         {
-                            StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                            string result = read.ReadToEnd();
-                            read.Close();
-                            respuesta.Close();
+                            return true;
                         }
                         else
-                        {
-                            strResponse = respuesta.StatusCode.ToString();
-                        }
+                            strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
                     }
                 }
                 else
@@ -236,7 +235,7 @@ namespace WSSmartPhone
             {
                 strResponse = ex.Message;
             }
-            return strResponse;
+            return false;
         }
 
         public byte[] ImageToByte(Bitmap image)
