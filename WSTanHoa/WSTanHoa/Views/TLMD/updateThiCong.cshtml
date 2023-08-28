@@ -92,12 +92,12 @@
                 @*<input type="text" class="form-control" name="inputIDKetCau" value="@Html.DisplayFor(model => model.IDKetCau)" />*@
                 @Html.DropDownListFor(model => model.IDKetCau, ViewBag.KetCau as SelectList, new { @class = "form-control" })
             </div>
-            <div class="col-5 mt-6">
+            <div class="col-6 mt-3">
                 <label for="inputIDDonViThiCong" class="form-label">@Html.DisplayNameFor(model => model.IDDonViThiCong)</label>
                 @*<input type="text" class="form-control" name="inputIDDonViThiCong" value="@Html.DisplayFor(model => model.IDDonViThiCong)" />*@
                 @Html.DropDownListFor(model => model.IDDonViThiCong, ViewBag.DonViThiCong as SelectList, new { @class = "form-control" })
             </div>
-            
+
             @if (Model == null || Model.ID <= 0)
             {
             }
@@ -125,5 +125,13 @@
                 }
             </div>
         </div>
+        <div class="row">
+            <div class="container bg-white mt-3 py-2 rounded-3 shadow-sm">
+                <h4>Kết quả tái lập</h4>
+            </div>
+
+
+        </div>
+
     }
 </div>

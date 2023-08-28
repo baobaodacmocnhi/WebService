@@ -152,5 +152,11 @@ namespace WSTanHoa.Controllers
             return View();
         }
 
+        public ActionResult countTime()
+        {
+
+            return View();
+        }
+
     }
 }

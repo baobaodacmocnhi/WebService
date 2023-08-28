@@ -173,11 +173,35 @@ namespace WSTanHoa.Models
         [Display(Name = "Ngày sửa")]
         public DateTime? ModifyDate { get; set; }
 
+        public List<MThiCongLichSu> lstLichSu { get; set; }
+
         public MThiCong()
         {
             STT = ID = 0;
             Name = DanhBo = DiemDau = DiemCuoi = TenDuong = CreateBy = ModifyBy = "";
             ModifyDate = null;
+            lstLichSu = new List<MThiCongLichSu>();
+        }
+    }
+
+    public class MThiCongLichSu
+    {
+        [Display(Name = "Lần thi công")]
+        public string Name { get; set; }
+
+        [Display(Name = "Ngày bắt đầu")]
+        public DateTime? NgayBatDau { get; set; }
+
+        [Display(Name = "Ngày kết thúc")]
+        public DateTime? NgayKetThuc { get; set; }
+
+        [Display(Name = "Ngày nghiệm thu")]
+        public DateTime? NgayNghiemThu { get; set; }
+
+        public MThiCongLichSu()
+        {
+            Name = "";
+            NgayBatDau = NgayKetThuc = NgayNghiemThu = null;
         }
     }
 

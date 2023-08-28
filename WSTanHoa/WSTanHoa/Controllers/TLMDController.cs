@@ -194,24 +194,45 @@ namespace WSTanHoa.Controllers
                 MThiCong en = new MThiCong();
                 DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateBy=(select Name from TLMD_User where TLMD_User.ID=TLMD_ThiCong.CreateBy),ModifyBy=(select Name from TLMD_User where TLMD_User.ID=TLMD_ThiCong.ModifyBy),*"
                       + " from TLMD_ThiCong where ID=" + ID);
-                en.ID = int.Parse(dt.Rows[0]["ID"].ToString());
-                en.Name = dt.Rows[0]["Name"].ToString();
-                en.IDDonViThiCong = int.Parse(dt.Rows[0]["IDDonViThiCong"].ToString());
-                en.IDKetCau = int.Parse(dt.Rows[0]["IDKetCau"].ToString());
-                en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
-                en.DiemDau = dt.Rows[0]["DiemDau"].ToString();
-                en.DiemCuoi = dt.Rows[0]["DiemCuoi"].ToString();
-                en.TenDuong = dt.Rows[0]["TenDuong"].ToString();
-                en.IDPhuong = dt.Rows[0]["Phuong"].ToString();
-                en.IDQuan = dt.Rows[0]["Quan"].ToString();
-                en.CreateBy = dt.Rows[0]["CreateBy"].ToString();
-                en.CreateDate = DateTime.Parse(dt.Rows[0]["CreateDate"].ToString());
-                en.ModifyBy = dt.Rows[0]["ModifyBy"].ToString();
-                DateTime date;
-                DateTime.TryParse(dt.Rows[0]["ModifyDate"].ToString(), out date);
-                en.ModifyDate = date;
-                ViewBag.Phuong = _cDAL_TTKH.ToSelectList(_cDAL_TTKH.ExecuteQuery_DataTable("SELECT ID=[MAPHUONG],Name=[TENPHUONG] FROM[CAPNUOCTANHOA].[dbo].[PHUONG] where MaQuan=" + en.IDQuan), "ID", "Name");
-                return View(en);
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    DataTable dtLichSu = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_ThiCong_LichSu where IDThiCong=" + ID);
+                    if (dtLichSu != null && dtLichSu.Rows.Count > 0)
+                    {
+                        foreach (DataRow item in dtLichSu.Rows)
+                        {
+                            MThiCongLichSu enLS = new MThiCongLichSu();
+                            enLS.Name = item["Name"].ToString();
+                            DateTime dateLS;
+                            DateTime.TryParse(item["NgayBatDau"].ToString(), out dateLS);
+                            enLS.NgayBatDau = dateLS;
+                            DateTime.TryParse(item["NgayKetThuc"].ToString(), out dateLS);
+                            enLS.NgayKetThuc = dateLS;
+                            DateTime.TryParse(item["NgayNghiemThu"].ToString(), out dateLS);
+                            enLS.NgayNghiemThu = dateLS;
+                            en.lstLichSu.Add(enLS);
+                        }
+                    }
+                    en.ID = int.Parse(dt.Rows[0]["ID"].ToString());
+                    en.Name = dt.Rows[0]["Name"].ToString();
+                    en.IDDonViThiCong = int.Parse(dt.Rows[0]["IDDonViThiCong"].ToString());
+                    en.IDKetCau = int.Parse(dt.Rows[0]["IDKetCau"].ToString());
+                    en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
+                    en.DiemDau = dt.Rows[0]["DiemDau"].ToString();
+                    en.DiemCuoi = dt.Rows[0]["DiemCuoi"].ToString();
+                    en.TenDuong = dt.Rows[0]["TenDuong"].ToString();
+                    en.IDPhuong = dt.Rows[0]["Phuong"].ToString();
+                    en.IDQuan = dt.Rows[0]["Quan"].ToString();
+                    en.CreateBy = dt.Rows[0]["CreateBy"].ToString();
+                    en.CreateDate = DateTime.Parse(dt.Rows[0]["CreateDate"].ToString());
+                    en.ModifyBy = dt.Rows[0]["ModifyBy"].ToString();
+                    DateTime date;
+                    DateTime.TryParse(dt.Rows[0]["ModifyDate"].ToString(), out date);
+                    en.ModifyDate = date;
+                    ViewBag.Phuong = _cDAL_TTKH.ToSelectList(_cDAL_TTKH.ExecuteQuery_DataTable("SELECT ID=[MAPHUONG],Name=[TENPHUONG] FROM[CAPNUOCTANHOA].[dbo].[PHUONG] where MaQuan=" + en.IDQuan), "ID", "Name");
+                    return View(en);
+                }
+                return View();
             }
             else
             if (Loai == "update")

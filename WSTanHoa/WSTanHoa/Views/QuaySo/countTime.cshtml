@@ -1,0 +1,150 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Đồng hồ đếm ngược bằng JS</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style>
+        span {
+            border: solid 1px #ACACAC;
+            padding: 2px;
+        }
+    </style>
+    <script language="javascript">
+
+        var h = null; // Giờ
+        var m = 00; // Phút
+        var s = 10; // Giây
+
+        var h2 = null; // Giờ
+        var m2 = 00; // Phút
+        var s2 = 00; // Giây
+
+        var timeout = null; // Timeout
+        var timeout2 = null; // Timeout
+
+        function start() {
+            /*BƯỚC 1: LẤY GIÁ TRỊ BAN ĐẦU*/
+            if (h === null) {
+                //h = parseInt(document.getElementById('h_val').value);
+                //m = parseInt(document.getElementById('m_val').value);
+                //s = parseInt(document.getElementById('s_val').value);
+            }
+
+            /*BƯỚC 1: CHUYỂN ĐỔI DỮ LIỆU*/
+            // Nếu số giây = -1 tức là đã chạy ngược hết số giây, lúc này:
+            //  - giảm số phút xuống 1 đơn vị
+            //  - thiết lập số giây lại 59
+            if (s === -1) {
+                m -= 1;
+                s = 59;
+            }
+
+            // Nếu số phút = -1 tức là đã chạy ngược hết số phút, lúc này:
+            //  - giảm số giờ xuống 1 đơn vị
+            //  - thiết lập số phút lại 59
+            if (m === -1) {
+                h -= 1;
+                m = 59;
+            }
+
+            // Nếu số giờ = -1 tức là đã hết giờ, lúc này:
+            //  - Dừng chương trình
+            if (h == -1) {
+                clearTimeout(timeout);
+                //alert('Hết giờ');
+                start2();
+                return false;
+            }
+
+            /*BƯỚC 1: HIỂN THỊ ĐỒNG HỒ*/
+            //document.getElementById('h').innerText = h.toString();
+            document.getElementById('m').innerText = m.toString();
+            document.getElementById('s').innerText = s.toString();
+
+            /*BƯỚC 1: GIẢM PHÚT XUỐNG 1 GIÂY VÀ GỌI LẠI SAU 1 GIÂY */
+            timeout = setTimeout(function () {
+                s--;
+                start();
+            }, 1000);
+        }
+
+        function stop() {
+            clearTimeout(timeout);
+            clearTimeout(timeout2);
+        }
+
+        function start2() {
+            /*BƯỚC 1: LẤY GIÁ TRỊ BAN ĐẦU*/
+            if (h2 === null) {
+                //h = parseInt(document.getElementById('h_val').value);
+                //m = parseInt(document.getElementById('m_val').value);
+                //s = parseInt(document.getElementById('s_val').value);
+            }
+
+            /*BƯỚC 1: CHUYỂN ĐỔI DỮ LIỆU*/
+            // Nếu số giây = -1 tức là đã chạy ngược hết số giây, lúc này:
+            //  - giảm số phút xuống 1 đơn vị
+            //  - thiết lập số giây lại 59
+            if (s2 === 59) {
+                m2 += 1;
+                s2 = 00;
+            }
+
+            // Nếu số phút = -1 tức là đã chạy ngược hết số phút, lúc này:
+            //  - giảm số giờ xuống 1 đơn vị
+            //  - thiết lập số phút lại 59
+            if (m2 === 59) {
+                h2 += 1;
+                m2 = 00;
+            }
+
+            // Nếu số giờ = -1 tức là đã hết giờ, lúc này:
+            //  - Dừng chương trình
+            //if (h == -1) {
+            //    clearTimeout(timeout);
+            //    alert('Hết giờ');
+            //    return false;
+            //}
+
+            /*BƯỚC 1: HIỂN THỊ ĐỒNG HỒ*/
+            //document.getElementById('h').innerText = h.toString();
+            document.getElementById('m2').innerText = m2.toString();
+            document.getElementById('s2').innerText = s2.toString();
+
+            /*BƯỚC 1: GIẢM PHÚT XUỐNG 1 GIÂY VÀ GỌI LẠI SAU 1 GIÂY */
+            timeout2 = setTimeout(function () {
+                s2++;
+                start2();
+            }, 1000);
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <input type="button" value="Start" onclick="start()" />
+        <input type="button" value="Stop" onclick="stop()" style="margin-left:50px" />
+        <input type="button" value="Reset" onClick="document.location.reload(true)" style="margin-left:50px" /> <br /> <br />
+    </div>
+
+    <div style="text-align:center">
+        <h1 style="color:green;font-size:50px">
+            <strong>
+                <span id="m">Phút</span> :
+                <span id="s">Giây</span>
+            </strong>
+        </h1>
+        <h1 style="color:red;font-size:50px">
+            <strong>
+                <span id="m2">Phút</span> :
+                <span id="s2">Giây</span>
+            </strong>
+        </h1>
+    </div>
+</body>
+</html>
