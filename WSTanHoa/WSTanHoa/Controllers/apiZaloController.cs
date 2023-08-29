@@ -1065,10 +1065,10 @@ namespace WSTanHoa.Controllers
                                 message += ""
                                 //+ "\nChỉ số cũ: " + item["CSC"]
                                 //+ "\nChỉ số mới: " + item["CSM"]
-                                + "\nTổng lượng nước tiêu thụ: " + item["TieuThu"];
+                                + "\n  + Lượng nước tiêu thụ: " + item["TieuThu"]+" m3";
                             }
                             else
-                                message += "\nTổng lượng nước tiêu thụ tạm tính: " + item["TieuThu"];
+                                message += "\n  + Lượng nước tiêu thụ tạm tính: " + item["TieuThu"];
 
                             dtTon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
                             TongCongNo = 0;
@@ -1079,7 +1079,7 @@ namespace WSTanHoa.Controllers
                                     hdTon += "\n  - Kỳ " + itemTon["Ky"] + "/" + itemTon["Nam"] + " : " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", decimal.Parse(itemTon["TongCong"].ToString())) + " đồng";
                                     TongCongNo += decimal.Parse(itemTon["TongCong"].ToString());
                                 }
-                            message += "\nTổng số tiền nước: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đồng";
+                            message += "\n  + Số tiền nước: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đồng";
                             if (TongCongNo > 0)
                                 message += "\nTổng số tiền nước còn nợ: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo) + " đồng"
                                         + hdTon;
@@ -1211,7 +1211,7 @@ namespace WSTanHoa.Controllers
                                             + "\nĐịa chỉ: " + dtTon.Rows[0]["DiaChi"]
                                             + "\nDanh bộ: " + dtTon.Rows[0]["DanhBo"]
                                             + "\n\nThông báo tạm ngưng cung cấp nước"
-                                            + "\nCông ty sẽ tạm ngưng cung cấp nước tại địa chỉ trên kề từ ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy")
+                                            + "\nCông ty sẽ tạm ngưng cung cấp nước tại địa chỉ trên kể từ ngày " + DateTime.Now.AddDays(1).ToString("dd/MM/yyyy")
                                             + "\nLý do: Quý khách chưa thanh toán tiền nước"
                                             + hdTon
                                             + "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong) + " đồng"

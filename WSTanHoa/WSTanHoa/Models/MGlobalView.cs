@@ -161,6 +161,9 @@ namespace WSTanHoa.Models
         [Display(Name = "Quận")]
         public string IDQuan { get; set; }
 
+        [Display(Name = "Ngày bắt đầu")]
+        public DateTime? NgayBatDau { get; set; }
+
         [Display(Name = "Người tạo")]
         public string CreateBy { get; set; }
 
@@ -173,24 +176,21 @@ namespace WSTanHoa.Models
         [Display(Name = "Ngày sửa")]
         public DateTime? ModifyDate { get; set; }
 
-        public List<MThiCongLichSu> lstLichSu { get; set; }
+        public List<MThiCong_LichSu> lstLichSu { get; set; }
 
         public MThiCong()
         {
             STT = ID = 0;
             Name = DanhBo = DiemDau = DiemCuoi = TenDuong = CreateBy = ModifyBy = "";
-            ModifyDate = null;
-            lstLichSu = new List<MThiCongLichSu>();
+            NgayBatDau = ModifyDate = null;
+            lstLichSu = new List<MThiCong_LichSu>();
         }
     }
 
-    public class MThiCongLichSu
+    public class MThiCong_LichSu
     {
         [Display(Name = "Lần thi công")]
         public string Name { get; set; }
-
-        [Display(Name = "Ngày bắt đầu")]
-        public DateTime? NgayBatDau { get; set; }
 
         [Display(Name = "Ngày kết thúc")]
         public DateTime? NgayKetThuc { get; set; }
@@ -198,10 +198,33 @@ namespace WSTanHoa.Models
         [Display(Name = "Ngày nghiệm thu")]
         public DateTime? NgayNghiemThu { get; set; }
 
-        public MThiCongLichSu()
+        [Display(Name = "Trở ngại thi công")]
+        public string TroNgaiThiCong { get; set; }
+
+        [Display(Name = "Trở ngại nghiệm thu")]
+        public string TroNgaiNghiemThu { get; set; }
+
+        public List<MThiCong_LichSu_Hinh> lstLichSu_Hinh { get; set; }
+
+        public MThiCong_LichSu()
         {
-            Name = "";
-            NgayBatDau = NgayKetThuc = NgayNghiemThu = null;
+            Name = TroNgaiThiCong = TroNgaiNghiemThu = "";
+            NgayKetThuc = NgayNghiemThu = null;
+            lstLichSu_Hinh = new List<MThiCong_LichSu_Hinh>();
+        }
+    }
+
+    public class MThiCong_LichSu_Hinh
+    {
+        [Display(Name = "ID")]
+        public string ID { get; set; }
+
+        [Display(Name = "Hình")]
+        public string image { get; set; }
+
+        public MThiCong_LichSu_Hinh()
+        {
+            ID = image = "";
         }
     }
 

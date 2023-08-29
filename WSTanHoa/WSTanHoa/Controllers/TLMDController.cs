@@ -12,6 +12,7 @@ namespace WSTanHoa.Controllers
     public class TLMDController : Controller
     {
         private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
+        private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: TLMD
         public ActionResult Index()
@@ -147,10 +148,12 @@ namespace WSTanHoa.Controllers
                 en.DiemDau = item["DiemDau"].ToString();
                 en.DiemCuoi = item["DiemCuoi"].ToString();
                 en.TenDuong = item["TenDuong"].ToString();
+                DateTime date;
+                DateTime.TryParse(item["NgayBatDau"].ToString(), out date);
+                en.NgayBatDau = date;
                 en.CreateBy = item["CreateBy"].ToString();
                 en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
                 en.ModifyBy = item["ModifyBy"].ToString();
-                DateTime date;
                 DateTime.TryParse(item["ModifyDate"].ToString(), out date);
                 en.ModifyDate = date;
                 lst.Add(en);
@@ -173,7 +176,8 @@ namespace WSTanHoa.Controllers
             {
                 if (!checkRules("2", "Them"))
                     return RedirectToAction("Denied");
-                _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,DanhBo,DiemDau,DiemCuoi,TenDuong,Phuong,Quan,CreateBy)values("
+                string[] NgayBatDaus = form["inputNgayBatDau"].ToString().Split('/');
+                _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,DanhBo,DiemDau,DiemCuoi,TenDuong,Phuong,Quan,NgayBatDau,CreateBy)values("
                     + "(select case when exists(select ID from TLMD_ThiCong) then (select MAX(ID)+1 from TLMD_ThiCong) else 1 end)"
                     + ",N'" + form["inputName"].ToString() + "'"
                     + "," + form["IDDonViThiCong"].ToString() + ""
@@ -184,6 +188,7 @@ namespace WSTanHoa.Controllers
                     + ",N'" + form["inputTenDuong"].ToString() + "'"
                     + ",N'" + form["IDPhuong"].ToString() + "'"
                     + ",N'" + form["IDQuan"].ToString() + "'"
+                    + ",'" + NgayBatDaus[2] + "-" + NgayBatDaus[1] + "-" + NgayBatDaus[0] + "'"
                     + "," + Session["ID"]
                     + ")");
                 return RedirectToAction("ThiCong");
@@ -199,17 +204,25 @@ namespace WSTanHoa.Controllers
                     DataTable dtLichSu = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_ThiCong_LichSu where IDThiCong=" + ID);
                     if (dtLichSu != null && dtLichSu.Rows.Count > 0)
                     {
-                        foreach (DataRow item in dtLichSu.Rows)
+                        foreach (DataRow itemLS in dtLichSu.Rows)
                         {
-                            MThiCongLichSu enLS = new MThiCongLichSu();
-                            enLS.Name = item["Name"].ToString();
+                            MThiCong_LichSu enLS = new MThiCong_LichSu();
+                            enLS.Name = itemLS["Name"].ToString();
                             DateTime dateLS;
-                            DateTime.TryParse(item["NgayBatDau"].ToString(), out dateLS);
-                            enLS.NgayBatDau = dateLS;
-                            DateTime.TryParse(item["NgayKetThuc"].ToString(), out dateLS);
+                            DateTime.TryParse(itemLS["NgayKetThuc"].ToString(), out dateLS);
                             enLS.NgayKetThuc = dateLS;
-                            DateTime.TryParse(item["NgayNghiemThu"].ToString(), out dateLS);
+                            DateTime.TryParse(itemLS["NgayNghiemThu"].ToString(), out dateLS);
                             enLS.NgayNghiemThu = dateLS;
+                            DataTable dtLichSu_Hinh = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_ThiCong_LichSu_Hinh where IDThiCongLichSu=" + itemLS["ID"].ToString());
+                            foreach (DataRow itemLSH in dtLichSu_Hinh.Rows)
+                            {
+                                MThiCong_LichSu_Hinh enLSH = new MThiCong_LichSu_Hinh();
+                                enLSH.ID = itemLSH["ID"].ToString();
+                                byte[] bytes = _wsThuongVu.get_Hinh_Root("TLMD", "", "", itemLSH["ID"].ToString() + ".jpg");
+                                if (bytes != null)
+                                    enLSH.image = "data:image/png;base64," + Convert.ToBase64String(bytes);
+                                enLS.lstLichSu_Hinh.Add(enLSH);
+                            }
                             en.lstLichSu.Add(enLS);
                         }
                     }
@@ -223,10 +236,12 @@ namespace WSTanHoa.Controllers
                     en.TenDuong = dt.Rows[0]["TenDuong"].ToString();
                     en.IDPhuong = dt.Rows[0]["Phuong"].ToString();
                     en.IDQuan = dt.Rows[0]["Quan"].ToString();
+                    DateTime date;
+                    DateTime.TryParse(dt.Rows[0]["NgayBatDau"].ToString(), out date);
+                    en.NgayBatDau = date;
                     en.CreateBy = dt.Rows[0]["CreateBy"].ToString();
                     en.CreateDate = DateTime.Parse(dt.Rows[0]["CreateDate"].ToString());
                     en.ModifyBy = dt.Rows[0]["ModifyBy"].ToString();
-                    DateTime date;
                     DateTime.TryParse(dt.Rows[0]["ModifyDate"].ToString(), out date);
                     en.ModifyDate = date;
                     ViewBag.Phuong = _cDAL_TTKH.ToSelectList(_cDAL_TTKH.ExecuteQuery_DataTable("SELECT ID=[MAPHUONG],Name=[TENPHUONG] FROM[CAPNUOCTANHOA].[dbo].[PHUONG] where MaQuan=" + en.IDQuan), "ID", "Name");
@@ -239,6 +254,7 @@ namespace WSTanHoa.Controllers
             {
                 if (!checkRules("2", "Sua"))
                     return RedirectToAction("Denied");
+                string[] NgayBatDaus = form["inputNgayBatDau"].ToString().Split('/');
                 _cDAL_TTKH.ExecuteNonQuery("update TLMD_ThiCong set"
                     + " Name=N'" + form["inputName"].ToString() + "'"
                     + ",IDDonViThiCong=" + form["IDDonViThiCong"].ToString() + ""
@@ -249,6 +265,7 @@ namespace WSTanHoa.Controllers
                     + ",TenDuong=N'" + form["inputTenDuong"].ToString() + "'"
                     + ",Phuong=N'" + form["IDPhuong"].ToString() + "'"
                     + ",Quan=N'" + form["IDQuan"].ToString() + "'"
+                    + ",NgayBatDau='" + NgayBatDaus[2] + "-" + NgayBatDaus[1] + "-" + NgayBatDaus[0] + "'"
                     + ",ModifyBy=" + Session["ID"]
                     + ",ModifyDate=getdate()"
                     + " where ID=" + form["inputID"].ToString());

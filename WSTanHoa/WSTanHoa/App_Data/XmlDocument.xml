@@ -3334,6 +3334,21 @@
         <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.xoa_CCCDCompleted">
             <remarks/>
         </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh_RootCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.ghi_Hinh_RootCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Hinh_RootCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_Hinh_RootCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_RootCompleted">
+            <remarks/>
+        </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh(System.String,System.String,System.String)">
             <remarks/>
         </member>
@@ -3431,6 +3446,51 @@
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_CCCDAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh_Root(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh_RootAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh_RootAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.ghi_Hinh_Root(System.String,System.String,System.String,System.String,System.Byte[])">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.ghi_Hinh_RootAsync(System.String,System.String,System.String,System.String,System.Byte[])">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.ghi_Hinh_RootAsync(System.String,System.String,System.String,System.String,System.Byte[],System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Hinh_Root(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Hinh_RootAsync(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Hinh_RootAsync(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_Hinh_Root(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_Hinh_RootAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.xoa_Folder_Hinh_RootAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_Root(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_RootAsync(System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_RootAsync(System.String,System.String,System.String,System.Object)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.CancelAsync(System.Object)">
@@ -3545,6 +3605,51 @@
             <remarks/>
         </member>
         <member name="P:WSTanHoa.wrThuongVu.xoa_CCCDCompletedEventArgs.result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_Hinh_RootCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_Hinh_RootCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.get_Hinh_RootCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.ghi_Hinh_RootCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.ghi_Hinh_RootCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.ghi_Hinh_RootCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.xoa_Hinh_RootCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.xoa_Hinh_RootCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.xoa_Hinh_RootCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.xoa_Folder_Hinh_RootCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.xoa_Folder_Hinh_RootCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.xoa_Folder_Hinh_RootCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_FileinFolder_RootCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_FileinFolder_RootCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.get_FileinFolder_RootCompletedEventArgs.Result">
             <remarks/>
         </member>
         <member name="T:WSTanHoa.wrThuTien.wsThuTien">
