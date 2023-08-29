@@ -4787,7 +4787,7 @@ namespace WSSmartPhone
                     + " ,ChuaDoc=COUNT(CASE WHEN CodeMoi like '' THEN 1 END)"
                     + " ,CodeF=COUNT(CASE WHEN CodeMoi like 'F%' THEN 1 END)"
                     + " from DocSo where Nam=" + Nam + " and Ky=" + Ky + " and Dot=" + Dot + " and (select TuMay from [To] where MaTo=" + MaTo + ")<=May and May<=(select DenMay from [To] where MaTo=" + MaTo + ")"
-                    + " group by May";
+                    + " group by May order by May asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 

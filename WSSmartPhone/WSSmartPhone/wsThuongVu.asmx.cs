@@ -85,6 +85,34 @@ namespace WSSmartPhone
             return _cThuTien.xoa_CCCD(DanhBo, CCCD, out result);
         }
 
+        [WebMethod]
+        public byte[] get_Hinh_Root(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName)
+        {
+            return _cThuTien.get_Hinh_241(CGlobalVariable.pathHinh + FolderRoot, FolderLoai, FolderIDCT, FileName);
+        }
 
+        [WebMethod]
+        public bool ghi_Hinh_Root(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName, byte[] HinhDHN)
+        {
+            return _cThuTien.ghi_Hinh_241(CGlobalVariable.pathHinh + FolderRoot, FolderLoai, FolderIDCT, FileName, HinhDHN);
+        }
+
+        [WebMethod]
+        public bool xoa_Hinh_Root(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName)
+        {
+            return _cThuTien.xoa_Hinh_241(CGlobalVariable.pathHinh + FolderRoot, FolderLoai, FolderIDCT, FileName);
+        }
+
+        [WebMethod]
+        public bool xoa_Folder_Hinh_Root(string FolderRoot, string FolderLoai, string FolderIDCT)
+        {
+            return _cThuTien.xoa_Folder_241(CGlobalVariable.pathHinh + FolderRoot, FolderLoai, FolderIDCT);
+        }
+
+        [WebMethod]
+        public string[] get_FileinFolder_Root(string FolderRoot, string FolderLoai, string FolderIDCT)
+        {
+            return _cThuTien.get_FileinFolder_241(CGlobalVariable.pathHinh + FolderRoot, FolderLoai, FolderIDCT);
+        }
     }
 }
