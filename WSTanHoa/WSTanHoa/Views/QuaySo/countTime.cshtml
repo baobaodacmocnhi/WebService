@@ -17,16 +17,66 @@
     </style>
     <script language="javascript">
 
+        var h0 = null; // Giờ
+        var m0 = 3; // Phút
+        var s0 = 00; // Giây
+
         var h = null; // Giờ
-        var m = 00; // Phút
-        var s = 10; // Giây
+        var m = 15; // Phút
+        var s = 00; // Giây
 
         var h2 = null; // Giờ
         var m2 = 00; // Phút
         var s2 = 00; // Giây
 
+        var timeout0 = null; // Timeout
         var timeout = null; // Timeout
         var timeout2 = null; // Timeout
+
+        function start0() {
+            /*BƯỚC 1: LẤY GIÁ TRỊ BAN ĐẦU*/
+            if (h0 === null) {
+                //h = parseInt(document.getElementById('h_val').value);
+                //m = parseInt(document.getElementById('m_val').value);
+                //s = parseInt(document.getElementById('s_val').value);
+            }
+
+            /*BƯỚC 1: CHUYỂN ĐỔI DỮ LIỆU*/
+            // Nếu số giây = -1 tức là đã chạy ngược hết số giây, lúc này:
+            //  - giảm số phút xuống 1 đơn vị
+            //  - thiết lập số giây lại 59
+            if (s0 === -1) {
+                m0 -= 1;
+                s0 = 59;
+            }
+
+            // Nếu số phút = -1 tức là đã chạy ngược hết số phút, lúc này:
+            //  - giảm số giờ xuống 1 đơn vị
+            //  - thiết lập số phút lại 59
+            if (m0 === -1) {
+                h0 -= 1;
+                m0 = 59;
+            }
+
+            // Nếu số giờ = -1 tức là đã hết giờ, lúc này:
+            //  - Dừng chương trình
+            if (h0 == -1) {
+                clearTimeout(timeout0);
+                alert('Hết thời gian chuẩn bị');
+                return false;
+            }
+
+            /*BƯỚC 1: HIỂN THỊ ĐỒNG HỒ*/
+            //document.getElementById('h').innerText = h.toString();
+            document.getElementById('m').innerText = m0.toString();
+            document.getElementById('s').innerText = s0.toString();
+
+            /*BƯỚC 1: GIẢM PHÚT XUỐNG 1 GIÂY VÀ GỌI LẠI SAU 1 GIÂY */
+            timeout = setTimeout(function () {
+                s0--;
+                start0();
+            }, 1000);
+        }
 
         function start() {
             /*BƯỚC 1: LẤY GIÁ TRỊ BAN ĐẦU*/
@@ -75,6 +125,7 @@
         }
 
         function stop() {
+            clearTimeout(timeout0);
             clearTimeout(timeout);
             clearTimeout(timeout2);
         }
@@ -127,7 +178,8 @@
 </head>
 <body>
     <div>
-        <input type="button" value="Start" onclick="start()" />
+        <input type="button" value="Chuẩn bị" onclick="start0()" />
+        <input type="button" value="Start" onclick="start()"  style="margin-left:50px"  />
         <input type="button" value="Stop" onclick="stop()" style="margin-left:50px" />
         <input type="button" value="Reset" onClick="document.location.reload(true)" style="margin-left:50px" /> <br /> <br />
     </div>
