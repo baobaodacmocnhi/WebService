@@ -238,48 +238,56 @@ namespace WSSmartPhone
             return false;
         }
 
-        //public bool editEContract(string MaDon, string SHS, string checksum, out string strResponse)
-        //{
-        //    strResponse = "";
-        //    try
-        //    {
-        //        if (checksum == CGlobalVariable.checksum)
-        //        {
-        //            DataTable dt;
-        //            if (MaDon != "")
-        //                dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' order by CreateDate desc");
-        //            else
-        //                dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' order by CreateDate desc");
-        //            if (dt != null && dt.Rows.Count > 0)
-        //            {
-        //                ServicePointManager.Expect100Continue = true;
-        //                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-        //                var client = new HttpClient();
-        //                var request = new HttpRequestMessage(HttpMethod.Post, "https://api-econtract.cskhtanhoa.com.vn:1443/esolution-service/contracts/create-draft-from-file-and-identification");
-        //                request.Headers.Add("Authorization", "Bearer " + getAccess_token());
-        //                var content = new StringContent("{\r\n    \"contractId\": \"bd38fbef-60c9-47a5-ad01-b1d28795d143\",\r\n    \"soDanhBa\": {\r\n        \"value\": \"15041908198\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    815,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"soHoSo\": {\r\n        \"value\": \"GV0021452\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    840,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"ngayKy\": {\r\n        \"value\": \"08/03/2036\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 3,\r\n                \"bboxSign\": [\r\n                    312,\r\n                    400,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"coDongHo\": {\r\n        \"value\": \"20\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 1,\r\n                \"bboxSign\": [\r\n                    190,\r\n                    890,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"QRcode\": {\r\n        \"value\": \"\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    0,\r\n                    0,\r\n                    0,\r\n                    0\r\n                ]\r\n            }\r\n        ]\r\n    }\r\n}", Encoding.UTF8, "application/json");
-        //                request.Content = content;
-        //                var response = client.SendAsync(request);
-        //                var result = response.Result.Content.ReadAsStringAsync();
-        //                var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
-        //                if (response.Result.IsSuccessStatusCode)
-        //                {
-        //                    _cDAL_TTKH.ExecuteNonQuery("insert into Zalo_EContract_ChiTiet(DienThoai,IDEContract,DanhBo,MaDon,SHS)values('" + DienThoai + "','" + obj["object"]["contractId"] + "','" + DanhBo + "'," + MaDon + ",'" + SHS + "')");
-        //                    return true;
-        //                }
-        //                else
-        //                    strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
-        //            }
-        //        }
-        //        else
-        //            strResponse = "Sai checksum";
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        strResponse = ex.Message;
-        //    }
-        //    return false;
-        //}
+        public bool editEContract(string MaDon, string SHS, string checksum, out string strResponse)
+        {
+            strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    DataTable dt;
+                    string DanhBo = "", HopDong = "", NgayHieuLuc = "";
+                    if (MaDon != "")
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' order by CreateDate desc");
+                        DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate=CONVERT(varchar(10),b.CreateDate,103) from KTKS_DonKH.dbo.DCBD a,KTKS_DonKH.dbo.DCBD_ChiTietBienDong b"
+                                                + " where a.MaDCBD=b.MaDCBD and a.MaDonMoi=" + MaDon + " and b.ThongTin like N'%địa chỉ%'");
+                        NgayHieuLuc =  dtThongTin.Rows[0]["CreateDate"].ToString();
+                    }
+                    else
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' order by CreateDate desc");
+                    }
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                        var client = new HttpClient();
+                        var request = new HttpRequestMessage(HttpMethod.Post, "https://api-econtract.cskhtanhoa.com.vn:1443/esolution-service/contracts/create-draft-from-file-and-identification");
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        var content = new StringContent("{\r\n    \"contractId\": \"" + dt.Rows[0]["IDEContract"].ToString() + "\",\r\n    \"soDanhBa\": {\r\n        \"value\": \"" + DanhBo + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    815,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"soHoSo\": {\r\n        \"value\": \"" + HopDong + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    840,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"ngayKy\": {\r\n        \"value\": \"" + NgayHieuLuc + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 3,\r\n                \"bboxSign\": [\r\n                    312,\r\n                    400,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"coDongHo\": {\r\n        \"value\": \"20\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 1,\r\n                \"bboxSign\": [\r\n                    190,\r\n                    890,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"QRcode\": {\r\n        \"value\": \"\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    0,\r\n                    0,\r\n                    0,\r\n                    0\r\n                ]\r\n            }\r\n        ]\r\n    }\r\n}", Encoding.UTF8, "application/json");
+                        request.Content = content;
+                        var response = client.SendAsync(request);
+                        var result = response.Result.Content.ReadAsStringAsync();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                        if (response.Result.IsSuccessStatusCode)
+                        {
+                            //_cDAL_TTKH.ExecuteNonQuery("insert into Zalo_EContract_ChiTiet(DienThoai,IDEContract,DanhBo,MaDon,SHS)values('" + DienThoai + "','" + obj["object"]["contractId"] + "','" + DanhBo + "'," + MaDon + ",'" + SHS + "')");
+                            return true;
+                        }
+                        else
+                            strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
+                    }
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return false;
+        }
 
         public byte[] ImageToByte(Bitmap image)
         {
