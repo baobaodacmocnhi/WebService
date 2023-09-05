@@ -227,6 +227,8 @@ namespace WSSmartPhone
                         else
                             strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
                     }
+                    else
+                        strResponse = "Không có dữ liệu từ mã đơn";
                 }
                 else
                     strResponse = "Sai checksum";
@@ -246,17 +248,32 @@ namespace WSSmartPhone
                 if (checksum == CGlobalVariable.checksum)
                 {
                     DataTable dt;
-                    string DanhBo = "", HopDong = "", NgayHieuLuc = "";
+                    string DanhBo = "", HopDong = "", Co = "", NgayHieuLuc = "";
                     if (MaDon != "")
                     {
                         dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' order by CreateDate desc");
                         DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate=CONVERT(varchar(10),b.CreateDate,103) from KTKS_DonKH.dbo.DCBD a,KTKS_DonKH.dbo.DCBD_ChiTietBienDong b"
                                                 + " where a.MaDCBD=b.MaDCBD and a.MaDonMoi=" + MaDon + " and b.ThongTin like N'%địa chỉ%'");
-                        NgayHieuLuc =  dtThongTin.Rows[0]["CreateDate"].ToString();
+                        if (dtThongTin == null || dtThongTin.Rows.Count == 0)
+                        {
+                            strResponse = "Mã đơn chưa có điều chỉnh";
+                            return false;
+                        }
+                        NgayHieuLuc = dtThongTin.Rows[0]["CreateDate"].ToString();
                     }
                     else
                     {
                         dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' order by CreateDate desc");
+                        DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT COTLK,DHN_SODANHBO,DHN_SOHOPDONG,DHN_NGAYCHOSODB=CONVERT(varchar(10),DHN_NGAYCHOSODB,103) FROM TANHOA_WATER.dbo.KH_HOSOKHACHHANG where shs='" + SHS + "' and DHN_SODANHBO is not null");
+                        if (dtThongTin == null || dtThongTin.Rows.Count == 0)
+                        {
+                            strResponse = "Mã đơn chưa có cho danh bộ";
+                            return false;
+                        }
+                        DanhBo = dtThongTin.Rows[0]["DHN_SODANHBO"].ToString();
+                        HopDong = dtThongTin.Rows[0]["DHN_SOHOPDONG"].ToString();
+                        Co = dtThongTin.Rows[0]["COTLK"].ToString();
+                        NgayHieuLuc = dtThongTin.Rows[0]["DHN_NGAYCHOSODB"].ToString();
                     }
                     if (dt != null && dt.Rows.Count > 0)
                     {
@@ -265,7 +282,7 @@ namespace WSSmartPhone
                         var client = new HttpClient();
                         var request = new HttpRequestMessage(HttpMethod.Post, "https://api-econtract.cskhtanhoa.com.vn:1443/esolution-service/contracts/create-draft-from-file-and-identification");
                         request.Headers.Add("Authorization", "Bearer " + getAccess_token());
-                        var content = new StringContent("{\r\n    \"contractId\": \"" + dt.Rows[0]["IDEContract"].ToString() + "\",\r\n    \"soDanhBa\": {\r\n        \"value\": \"" + DanhBo + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    815,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"soHoSo\": {\r\n        \"value\": \"" + HopDong + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    840,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"ngayKy\": {\r\n        \"value\": \"" + NgayHieuLuc + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 3,\r\n                \"bboxSign\": [\r\n                    312,\r\n                    400,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"coDongHo\": {\r\n        \"value\": \"20\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 1,\r\n                \"bboxSign\": [\r\n                    190,\r\n                    890,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"QRcode\": {\r\n        \"value\": \"\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    0,\r\n                    0,\r\n                    0,\r\n                    0\r\n                ]\r\n            }\r\n        ]\r\n    }\r\n}", Encoding.UTF8, "application/json");
+                        var content = new StringContent("{\r\n    \"contractId\": \"" + dt.Rows[0]["IDEContract"].ToString() + "\",\r\n    \"soDanhBa\": {\r\n        \"value\": \"" + DanhBo + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    815,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"soHoSo\": {\r\n        \"value\": \"" + HopDong + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    840,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"ngayKy\": {\r\n        \"value\": \"" + NgayHieuLuc + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 3,\r\n                \"bboxSign\": [\r\n                    312,\r\n                    400,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"coDongHo\": {\r\n        \"value\": \"" + Co + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 1,\r\n                \"bboxSign\": [\r\n                    190,\r\n                    890,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"QRcode\": {\r\n        \"value\": \"\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    0,\r\n                    0,\r\n                    0,\r\n                    0\r\n                ]\r\n            }\r\n        ]\r\n    }\r\n}", Encoding.UTF8, "application/json");
                         request.Content = content;
                         var response = client.SendAsync(request);
                         var result = response.Result.Content.ReadAsStringAsync();
@@ -278,6 +295,8 @@ namespace WSSmartPhone
                         else
                             strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
                     }
+                    else
+                        strResponse = "Không có dữ liệu từ mã đơn";
                 }
                 else
                     strResponse = "Sai checksum";
