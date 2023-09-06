@@ -1568,15 +1568,15 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
-                    DataTable dtsDHN = _cDAL_ThuTien.ExecuteQuery_DataTable("SELECT [DanhBo],[TableName] FROM[sDHN].[dbo].[sDHN_PMAC]");
+                    DataTable dtsDHN = _cDAL_ThuTien.ExecuteQuery_DataTable("SELECT [DanhBo],[TableName],[TableNameNguoc] FROM[sDHN].[dbo].[sDHN_PMAC]");
                     foreach (DataRow item in dtsDHN.Rows)
                     {
                         DataTable dtCS = _cDAL_TrungTam.ExecuteQuery_DataTable("declare @date date"
                                         + " set @date = getdate();"
                                         + " select t1.*,TieuThu = t1.CSM - t1.CSC from"
-                                        + " (select TuNgay = convert(varchar(10),DATEADD(DAY, -1, @date),103), CSC = (select value FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "]"
+                                        + " (select TuNgay = convert(varchar(10),DATEADD(DAY, -1, @date),103), CSC = (select cast(t0.value-(select t2.Value FROM [SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp=t0.TimeStamp) as decimal(10,0)) FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0"
                                         + " where CAST(TimeStamp as date) = DATEADD(DAY, -1, @date) and DATEPART(HOUR, TimeStamp) = 01 and DATEPART(MINUTE, TimeStamp) = 0)"
-                                        + " ,DenNgay = convert(varchar(10),@date,103),CSM = (select value FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "]"
+                                        + " ,DenNgay = convert(varchar(10),@date,103),CSM = (select cast(t0.value-(select t2.Value FROM [SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp=t0.TimeStamp) as decimal(10,0)) FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0"
                                         + " where CAST(TimeStamp as date)=@date and DATEPART(HOUR, TimeStamp)=01 and DATEPART(MINUTE, TimeStamp)=0))t1");
                         if (dtCS != null || dtCS.Rows.Count > 0)
                         {
