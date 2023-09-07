@@ -3972,7 +3972,7 @@ namespace WSSmartPhone
                                     DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable("select CodeCu,CSCu from DocSo where DocSoID=" + ID);
                                     if (dt != null && dt.Rows.Count > 0)
                                     {
-                                        if (Code.Substring(0, 1) == "4" && Code != "F5" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
+                                        if (Code.Substring(0, 1) == "4" && (dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "F" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "6" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "K" || dt.Rows[0]["CodeCu"].ToString().Substring(0, 1) == "N"))
                                         {
                                             Code = "5" + dt.Rows[0]["CodeCu"].ToString().Substring(0, 1);
                                         }
@@ -3987,7 +3987,7 @@ namespace WSSmartPhone
                                                     //ChiSo = "0"; 
                                                 }
                                                 else
-                                                    if (Code == "5N" || Code == "5F" || Code == "5K")
+                                                    if (Code == "5N" || Code == "5K")
                                                         hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
                                     }
                                     hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;

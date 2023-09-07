@@ -74,7 +74,7 @@ namespace WSSmartPhone
         }
 
         public byte[] renderEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
-            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, string checksum, out string strResponse)
+        , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, string checksum, out string strResponse)
         {
             strResponse = "";
             try
@@ -148,7 +148,7 @@ namespace WSSmartPhone
         }
 
         public bool createEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
-            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, bool GanMoi, bool CaNhan, string MaDon, string SHS, string checksum, out string strResponse)
+        , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, bool GanMoi, bool CaNhan, string MaDon, string SHS, string checksum, out string strResponse)
         {
             strResponse = "";
             try
@@ -254,7 +254,7 @@ namespace WSSmartPhone
                         dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' order by CreateDate desc");
                         DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate='08/09/2023'");
                         //DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate=CONVERT(varchar(10),b.CreateDate,103) from KTKS_DonKH.dbo.DCBD a,KTKS_DonKH.dbo.DCBD_ChiTietBienDong b"
-                        //                        + " where a.MaDCBD=b.MaDCBD and a.MaDonMoi=" + MaDon + " and b.ThongTin like N'%địa chỉ%'");
+                        //+ " where a.MaDCBD=b.MaDCBD and a.MaDonMoi=" + MaDon + " and b.ThongTin like N'%địa chỉ%'");
                         if (dtThongTin == null || dtThongTin.Rows.Count == 0)
                         {
                             strResponse = "Mã đơn chưa có điều chỉnh";
@@ -279,12 +279,80 @@ namespace WSSmartPhone
                     }
                     if (dt != null && dt.Rows.Count > 0)
                     {
+                        //ServicePointManager.Expect100Continue = true;
+                        //ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                        //HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api-econtract.cskhtanhoa.com.vn:1443/esolution-service/contracts/create-draft-from-file-and-identification");
+                        //request.Method = "POST";
+                        //request.ContentType = "application/json";
+                        //request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        //request.ContentType = "application/json";
+                        //request.MediaType = "application/json";
+                        //request.Accept = "application/json";
+                        //request.Method = "POST";
+                        //var posDanhBo = new
+                        //{
+                        //    pageSign = 0,
+                        //    bboxSign = "[290,815,320,230]"
+                        //};
+                        //var posHopDong = new
+                        //{
+                        //    pageSign = 0,
+                        //    bboxSign = "[290,840,320,230]"
+                        //};
+                        //var posNgayKy = new
+                        //{
+                        //    pageSign = 3,
+                        //    bboxSign = "[312,400,300,250]"
+                        //};
+                        //var posCo = new
+                        //{
+                        //    pageSign = 1,
+                        //    bboxSign = "[190,890,300,250]"
+                        //};
+                        //var posQR = new
+                        //{
+                        //    pageSign = 0,
+                        //    bboxSign = "[0,0,0,0]"
+                        //};
+                        //var data = new
+                        //{
+                        //    contractId = "" + dt.Rows[0]["IDEContract"].ToString() + "",
+                        //    soDanhBa = new { value = "" + DanhBo + "", signFrame = "[" + CGlobalVariable.jsSerializer.Serialize(posDanhBo) + "]" },
+                        //    soHoSo = new { value = "" + HopDong + "", signFrame = "[" + CGlobalVariable.jsSerializer.Serialize(posHopDong) + "]" },
+                        //    ngayKy = new { value = "" + NgayHieuLuc + "", signFrame = "[" + CGlobalVariable.jsSerializer.Serialize(posNgayKy) + "]" },
+                        //    coDongHo = new { value = "" + Co + "", signFrame = "[" + CGlobalVariable.jsSerializer.Serialize(posCo) + "]" },
+                        //    QRcode = new { value = "", signFrame = "[" + CGlobalVariable.jsSerializer.Serialize(posQR) + "]" },
+                        //};
+                        //var json = CGlobalVariable.jsSerializer.Serialize(data);
+                        //Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                        //request.ContentLength = byteArray.Length;
+                        ////gắn data post
+                        //Stream dataStream = request.GetRequestStream();
+                        //dataStream.Write(byteArray, 0, byteArray.Length);
+                        //dataStream.Close();
+                        //HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                        //if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                        //{
+                        //    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        //    string result = read.ReadToEnd();
+                        //    read.Close();
+                        //    respuesta.Close();
+                        //    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        //    return _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtract'");
+                        //}
+                        //else
+                        //{
+                        //    strResponse = "Error: " + respuesta.StatusCode;
+                        //}
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                         var client = new HttpClient();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                         var request = new HttpRequestMessage(HttpMethod.Post, "https://api-econtract.cskhtanhoa.com.vn:1443/esolution-service/contracts/create-draft-from-file-and-identification");
                         request.Headers.Add("Authorization", "Bearer " + getAccess_token());
-                        var content = new StringContent("{\r\n    \"contractId\": \"" + dt.Rows[0]["IDEContract"].ToString() + "\",\r\n    \"soDanhBa\": {\r\n        \"value\": \"" + DanhBo + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    815,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"soHoSo\": {\r\n        \"value\": \"" + HopDong + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    290,\r\n                    840,\r\n                    320,\r\n                    230\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"ngayKy\": {\r\n        \"value\": \"" + NgayHieuLuc + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 3,\r\n                \"bboxSign\": [\r\n                    312,\r\n                    400,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"coDongHo\": {\r\n        \"value\": \"" + Co + "\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 1,\r\n                \"bboxSign\": [\r\n                    190,\r\n                    890,\r\n                    300,\r\n                    250\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"QRcode\": {\r\n        \"value\": \"\",\r\n        \"signFrame\": [\r\n            {\r\n                \"pageSign\": 0,\r\n                \"bboxSign\": [\r\n                    0,\r\n                    0,\r\n                    0,\r\n                    0\r\n                ]\r\n            }\r\n        ]\r\n    }\r\n}", Encoding.UTF8, "application/json");
+                        var content = new MultipartFormDataContent();
+                        //string a = "{\"contractId\":\"" + dt.Rows[0]["IDEContract"].ToString() + "\",\"soDanhBa\":{\"value\":\"" + DanhBo + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,815,320,230]}]},\"soHoSo\":{\"value\":\"" + HopDong + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,840,320,230]}]},\"ngayKy\":{\"value\":\"" + NgayHieuLuc + "\",\"signFrame\":[{\"pageSign\":3,\"bboxSign\":[312,400,300,250]}]},\"coDongHo\":{\"value\":\"" + Co + "\",\"signFrame\":[{\"pageSign\":1,\"bboxSign\":[190,890,300,250]}]},\"QRcode\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[0,0,0,0]}]}}";
+                        content.Add(new StringContent("{\"contractId\":\"" + dt.Rows[0]["IDEContract"].ToString() + "\",\"soDanhBa\":{\"value\":\"" + DanhBo + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,815,320,230]}]},\"soHoSo\":{\"value\":\"" + HopDong + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,840,320,230]}]},\"ngayKy\":{\"value\":\"" + NgayHieuLuc + "\",\"signFrame\":[{\"pageSign\":3,\"bboxSign\":[312,400,300,250]}]},\"coDongHo\":{\"value\":\"" + Co + "\",\"signFrame\":[{\"pageSign\":1,\"bboxSign\":[190,890,300,250]}]},\"QRcode\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[0,0,0,0]}]}}"), "");
                         request.Content = content;
                         var response = client.SendAsync(request);
                         var result = response.Result.Content.ReadAsStringAsync();
