@@ -105,7 +105,7 @@ namespace WSSmartPhone
                     data.Add("${taiKhoanSo}", TaiKhoan);
                     data.Add("${taiNganHang}", Bank);
                     data.Add("${maSoThue}", MST);
-                    data.Add("${coDongHoNuoc}", CoDHN);
+                    data.Add("${coDongHoNuoc}", CoDHN + "     ");
                     data.Add("${dongHoNuocDatTai}", DCLapDat);
                     data.Add("${ngayThangNamThiHanh}", NgayHieuLuc);
                     var json = CGlobalVariable.jsSerializer.Serialize(data);
