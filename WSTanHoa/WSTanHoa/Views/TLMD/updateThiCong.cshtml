@@ -132,54 +132,57 @@
         <div class="row">
             <div class="container bg-white mt-3 py-2 rounded-3 shadow-sm">
                 <h4>Kết quả tái lập</h4>
-                @foreach (var item in Model.lstLichSu)
+                @if (Model != null && Model.lstLichSu.Count > 0)
                 {
-                    <div class="card shadow mb-4">
-                        <!-- Card Header - Dropdown -->
-                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                            <h6 class="m-0 font-weight-bold text-primary">@item.Name</h6>
-                        </div>
-                        <!-- Card Body -->
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-6 form-group">
-                                    <label for="inputNgayKetThuc" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].NgayKetThuc)</label>
-                                    <input type="text" class="form-control" name="inputNgayKetThuc" value="@item.NgayKetThuc" />
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="inputNgayNghiemThu" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].NgayNghiemThu)</label>
-                                    <input type="text" class="form-control" name="inputNgayNghiemThu" value="@item.NgayNghiemThu" />
-                                </div>
+                    foreach (var item in Model.lstLichSu)
+                    {
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">@item.Name</h6>
                             </div>
-                            <div class="row">
-                                <div class="col-6 form-group">
-                                    <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].TroNgaiThiCong)</label>
-                                    <input type="text" class="form-control" name="inputTroNgaiThiCong" value="@item.TroNgaiThiCong" />
-                                </div>
-                                <div class="col-6 form-group">
-                                    <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].TroNgaiNghiemThu)</label>
-                                    <input type="text" class="form-control" name="inputTroNgaiNghiemThu" value="@item.TroNgaiNghiemThu" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                @foreach (var itemHinh in item.lstLichSu_Hinh)
-                                {
-                                    <div class="col">
-                                        <img src="@itemHinh.image" height="100" width="100" data-bs-toggle="modal" data-bs-target="#exampleModal" />
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6 form-group">
+                                        <label for="inputNgayKetThuc" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].NgayKetThuc)</label>
+                                        <input type="text" class="form-control" name="inputNgayKetThuc" value="@item.NgayKetThuc" />
                                     </div>
-                                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-body">
-                                                    <img src="@itemHinh.image" height="1000" width="1000" />
+                                    <div class="col-6 form-group">
+                                        <label for="inputNgayNghiemThu" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].NgayNghiemThu)</label>
+                                        <input type="text" class="form-control" name="inputNgayNghiemThu" value="@item.NgayNghiemThu" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 form-group">
+                                        <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].TroNgaiThiCong)</label>
+                                        <input type="text" class="form-control" name="inputTroNgaiThiCong" value="@item.TroNgaiThiCong" />
+                                    </div>
+                                    <div class="col-6 form-group">
+                                        <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].TroNgaiNghiemThu)</label>
+                                        <input type="text" class="form-control" name="inputTroNgaiNghiemThu" value="@item.TroNgaiNghiemThu" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    @foreach (var itemHinh in item.lstLichSu_Hinh)
+                                    {
+                                        <div class="col">
+                                            <img src="@itemHinh.image" height="100" width="100" data-bs-toggle="modal" data-bs-target="#exampleModal" />
+                                        </div>
+                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-body">
+                                                        <img src="@itemHinh.image" height="1000" width="1000" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                }
+                                    }
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 }
             </div>
 
@@ -188,4 +191,3 @@
 
     }
 </div>
-

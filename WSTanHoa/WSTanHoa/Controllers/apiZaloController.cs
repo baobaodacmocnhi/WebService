@@ -1578,6 +1578,7 @@ namespace WSTanHoa.Controllers
                                         + " where CAST(TimeStamp as date) = DATEADD(DAY, -1, @date) and DATEPART(HOUR, TimeStamp) = 01 and DATEPART(MINUTE, TimeStamp) = 0)"
                                         + " ,DenNgay = convert(varchar(10),@date,103),CSM = (select cast(t0.value-(select t2.Value FROM [SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp=t0.TimeStamp) as decimal(10,0)) FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0"
                                         + " where CAST(TimeStamp as date)=@date and DATEPART(HOUR, TimeStamp)=01 and DATEPART(MINUTE, TimeStamp)=0))t1");
+
                         if (dtCS != null || dtCS.Rows.Count > 0)
                         {
                             string NoiDung = getTTKH(item["DanhBo"].ToString())
