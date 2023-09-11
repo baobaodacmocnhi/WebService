@@ -105,7 +105,7 @@ namespace WSSmartPhone
                     data.Add("${taiKhoanSo}", TaiKhoan);
                     data.Add("${taiNganHang}", Bank);
                     data.Add("${maSoThue}", MST);
-                    data.Add("${coDongHoNuoc}", CoDHN + "     ");
+                    data.Add("${coDongHoNuoc}", "     " + CoDHN);
                     data.Add("${dongHoNuocDatTai}", DCLapDat);
                     data.Add("${ngayThangNamThiHanh}", NgayHieuLuc);
                     var json = CGlobalVariable.jsSerializer.Serialize(data);
@@ -279,6 +279,11 @@ namespace WSSmartPhone
                     }
                     if (dt != null && dt.Rows.Count > 0)
                     {
+                        if (checkHieuLucEContract(dt.Rows[0]["IDEContract"].ToString()))
+                        {
+                            strResponse = "EContract đã có hiệu lực";
+                            return false;
+                        }
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                         var client = new HttpClient();
@@ -309,6 +314,14 @@ namespace WSSmartPhone
                 strResponse = ex.Message;
             }
             return false;
+        }
+
+        private bool checkHieuLucEContract(string IDEContract)
+        {
+            if (_cDAL_TTKH.ExecuteQuery_ReturnOneValue("select HieuLuc from Zalo_EContract_ChiTiet where IDEContract='" + IDEContract + "'").ToString() == "1")
+                return true;
+            else
+                return false;
         }
 
         public byte[] ImageToByte(Bitmap image)
