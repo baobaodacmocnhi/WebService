@@ -13,8 +13,13 @@ namespace WSSmartPhone
 {
     public class CEContract
     {
-        private string urlApi = "https://api-econtract.cskhtanhoa.com.vn:1443/";
+        private string urlApi = "https://api-econtract.cskhtanhoa.com.vn:1443";
         CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKHWFH);
+
+        private string getAccess_token()
+        {
+            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='econtract'").ToString();
+        }
 
         public bool getAccess_token(string checksum)
         {
@@ -25,7 +30,7 @@ namespace WSSmartPhone
                 {
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "auth-service/oauth/token");
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/auth-service/oauth/token");
                     request.Method = "POST";
                     request.ContentType = "application/json";
                     var data = new
@@ -68,11 +73,6 @@ namespace WSSmartPhone
             return false;
         }
 
-        public string getAccess_token()
-        {
-            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='econtract'").ToString();
-        }
-
         public byte[] renderEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
         , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, string checksum, out string strResponse)
         {
@@ -83,7 +83,7 @@ namespace WSSmartPhone
                 {
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
-                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "template-service/api/templates/64d3625c22ab89b8111134ad/render");
+                    HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/template-service/api/templates/64d3625c22ab89b8111134ad/render");
                     request.Method = "POST";
                     request.ContentType = "application/json";
                     //request.ContentLength = 0;
@@ -160,7 +160,7 @@ namespace WSSmartPhone
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                     var client = new HttpClient();
-                    var request = new HttpRequestMessage(HttpMethod.Post, "https://api-econtract.cskhtanhoa.com.vn:1443/esolution-service/contracts/create-draft-from-file-and-identification");
+                    var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/create-draft-from-file-and-identification");
                     request.Headers.Add("Authorization", "Bearer " + getAccess_token());
                     var content = new MultipartFormDataContent();
                     content.Add(new StringContent("{}"), "fields");
@@ -207,15 +207,15 @@ namespace WSSmartPhone
                 {
                     DataTable dt;
                     if (MaDon != "")
-                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' order by CreateDate desc");
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' and Huy=0 order by CreateDate desc");
                     else
-                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' order by CreateDate desc");
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' and Huy=0 order by CreateDate desc");
                     if (dt != null && dt.Rows.Count > 0)
                     {
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                         var client = new HttpClient();
-                        var request = new HttpRequestMessage(HttpMethod.Post, "https://api-econtract.cskhtanhoa.com.vn:1443/esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/submit-contract");
+                        var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/submit-contract");
                         request.Headers.Add("Authorization", "Bearer " + getAccess_token());
                         var response = client.SendAsync(request);
                         var result = response.Result.Content.ReadAsStringAsync();
@@ -251,7 +251,7 @@ namespace WSSmartPhone
                     string DanhBo = "", HopDong = "", Co = "", NgayHieuLuc = "";
                     if (MaDon != "")
                     {
-                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' order by CreateDate desc");
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' and Huy=0 order by CreateDate desc");
                         //DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate='08/09/2023'");
                         DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate=CONVERT(varchar(10),b.CreateDate,103) from KTKS_DonKH.dbo.DCBD a,KTKS_DonKH.dbo.DCBD_ChiTietBienDong b"
                         + " where a.MaDCBD=b.MaDCBD and a.MaDonMoi=" + MaDon + " and b.ThongTin like N'%địa chỉ%'");
@@ -264,7 +264,7 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' order by CreateDate desc");
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' and Huy=0 order by CreateDate desc");
                         //DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT COTLK='15',DHN_SODANHBO='13130000000',DHN_SOHOPDONG='TP123456',DHN_NGAYCHOSODB='08/09/2023'");
                         DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT COTLK,DHN_SODANHBO,DHN_SOHOPDONG,DHN_NGAYCHOSODB=CONVERT(varchar(10),DHN_NGAYCHOSODB,103) FROM TANHOA_WATER.dbo.KH_HOSOKHACHHANG where shs='" + SHS + "' and DHN_SODANHBO is not null");
                         if (dtThongTin == null || dtThongTin.Rows.Count == 0)
@@ -288,7 +288,7 @@ namespace WSSmartPhone
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                         var client = new HttpClient();
                         client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                        var request = new HttpRequestMessage(HttpMethod.Post, "https://api-econtract.cskhtanhoa.com.vn:1443/esignature-service/dsign/attach-tawaco-information");
+                        var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esignature-service/dsign/attach-tawaco-information");
                         request.Headers.Add("Authorization", "Bearer " + getAccess_token());
                         var content = new StringContent("{\"contractId\":\"" + dt.Rows[0]["IDEContract"].ToString() + "\",\"soDanhBa\":{\"value\":\"" + DanhBo + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,815,320,230]}]},\"soHoSo\":{\"value\":\"" + HopDong + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,840,320,230]}]},\"ngayKy\":{\"value\":\"" + NgayHieuLuc + "\",\"signFrame\":[{\"pageSign\":3,\"bboxSign\":[312,400,300,250]}]},\"coDongHo\":{\"value\":\"" + Co + "\",\"signFrame\":[{\"pageSign\":1,\"bboxSign\":[190,890,300,250]}]},\"QRcode\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[0,0,0,0]}]}}", null, "application/json");
                         request.Content = content;
@@ -314,6 +314,120 @@ namespace WSSmartPhone
                 strResponse = ex.Message;
             }
             return false;
+        }
+
+        public bool cancelEContract(string MaDon, string SHS, string checksum, out string strResponse)
+        {
+            strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    DataTable dt;
+                    if (MaDon != "")
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' and Huy=0 order by CreateDate desc");
+                    }
+                    else
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' and Huy=0 order by CreateDate desc");
+                    }
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        if (checkHieuLucEContract(dt.Rows[0]["IDEContract"].ToString()))
+                        {
+                            strResponse = "EContract đã có hiệu lực";
+                            return false;
+                        }
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                        var client = new HttpClient();
+                        var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/cancel-draft");
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        var content = new StringContent("{\"cancelReason\":\"api hủy\"}", null, "application/json");
+                        request.Content = content;
+                        var response = client.SendAsync(request);
+                        var result = response.Result.Content.ReadAsStringAsync();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                        if (response.Result.IsSuccessStatusCode)
+                        {
+                            _cDAL_TTKH.ExecuteNonQuery("update Zalo_EContract_ChiTiet set Huy=1 where IDEContract='" + dt.Rows[0]["IDEContract"].ToString() + "'");
+                            return true;
+                        }
+                        else
+                            strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
+                    }
+                    else
+                        strResponse = "Không có dữ liệu từ mã đơn";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return false;
+        }
+
+        public bool deleteEContract(string MaDon, string SHS, string checksum, out string strResponse)
+        {
+            strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    DataTable dt;
+                    if (MaDon != "")
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' and Huy=1 order by CreateDate desc");
+                    }
+                    else
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' and Huy=1 order by CreateDate desc");
+                    }
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        if (checkHieuLucEContract(dt.Rows[0]["IDEContract"].ToString()))
+                        {
+                            strResponse = "EContract đã có hiệu lực";
+                            return false;
+                        }
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                        var client = new HttpClient();
+                        var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/delete-draft");
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        var response = client.SendAsync(request);
+                        var result = response.Result.Content.ReadAsStringAsync();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                        if (response.Result.IsSuccessStatusCode)
+                        {
+                            _cDAL_TTKH.ExecuteNonQuery("delete Zalo_EContract_ChiTiet where IDEContract='" + dt.Rows[0]["IDEContract"].ToString() + "'");
+                            return true;
+                        }
+                        else
+                            strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
+                    }
+                    else
+                        strResponse = "Không có dữ liệu từ mã đơn";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return false;
+        }
+
+        private bool checkHieuLucEContract(string IDEContract)
+        {
+            if (_cDAL_TTKH.ExecuteQuery_ReturnOneValue("select HieuLuc from Zalo_EContract_ChiTiet where IDEContract='" + IDEContract + "'").ToString() == "1")
+                return true;
+            else
+                return false;
         }
 
         public byte[] ImageToByte(Bitmap image)
