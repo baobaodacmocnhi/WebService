@@ -316,14 +316,6 @@ namespace WSSmartPhone
             return false;
         }
 
-        private bool checkHieuLucEContract(string IDEContract)
-        {
-            if (_cDAL_TTKH.ExecuteQuery_ReturnOneValue("select HieuLuc from Zalo_EContract_ChiTiet where IDEContract='" + IDEContract + "'").ToString() == "1")
-                return true;
-            else
-                return false;
-        }
-
         public byte[] ImageToByte(Bitmap image)
         {
             ImageConverter converter = new ImageConverter();
