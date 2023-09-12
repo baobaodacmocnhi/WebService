@@ -650,10 +650,25 @@ namespace WSTanHoa.Controllers
                 if (str.Contains("DK ECONTRACT"))
                 {
                     string[] strs = str.Split(' ');
-                    if (_cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_EContract(DienThoai,IDZalo)values('" + strs[2] + "','" + IDZalo + "')"))
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công eContract");
+                    if (strs[2].Length != 10)
+                    {
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai số điện thoại");
+                    }
                     else
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thất bại eContract");
+                    {
+                        DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + strs[2] + "' and IDZalo='" + IDZalo + "'");
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSố điện thoại và tài khoản Zalo đã tồn tại");
+                        }
+                        else
+                        {
+                            if (_cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_EContract(DienThoai,IDZalo)values('" + strs[2] + "','" + IDZalo + "')"))
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công eContract");
+                            else
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thất bại eContract");
+                        }
+                    }
                 }
                 else
                     switch (str)
@@ -1065,7 +1080,7 @@ namespace WSTanHoa.Controllers
                                 message += ""
                                 //+ "\nChỉ số cũ: " + item["CSC"]
                                 //+ "\nChỉ số mới: " + item["CSM"]
-                                + "\n  + Lượng nước tiêu thụ: " + item["TieuThu"]+" m3";
+                                + "\n  + Lượng nước tiêu thụ: " + item["TieuThu"] + " m3";
                             }
                             else
                                 message += "\n  + Lượng nước tiêu thụ tạm tính: " + item["TieuThu"];
@@ -1540,7 +1555,11 @@ namespace WSTanHoa.Controllers
                     if (checksum == CGlobalVariable.checksum)
                     {
                         DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + DienThoai + "'");
-                        sendMessage(dt.Rows[0]["IDZalo"].ToString(), NoiDung);
+                        foreach (DataRow item in dt.Rows)
+                        {
+                            string strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);
+                            _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + DienThoai + "',N'econtract',N'" + NoiDung + "',N'" + strResponse + "')");
+                        }
                         result.success = true;
                     }
                     else
