@@ -650,20 +650,20 @@ namespace WSTanHoa.Controllers
                 if (str.Contains("DK ECONTRACT"))
                 {
                     string[] strs = str.Split(' ');
-                    if (strs[2].Length != 10)
+                    if (strs[2].Trim().Length != 10)
                     {
                         sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai số điện thoại");
                     }
                     else
                     {
-                        DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + strs[2] + "' and IDZalo='" + IDZalo + "'");
+                        DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + strs[2].Trim() + "' and IDZalo='" + IDZalo + "'");
                         if (dt != null && dt.Rows.Count > 0)
                         {
                             sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSố điện thoại và tài khoản Zalo đã tồn tại");
                         }
                         else
                         {
-                            if (_cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_EContract(DienThoai,IDZalo)values('" + strs[2] + "','" + IDZalo + "')"))
+                            if (_cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_EContract(DienThoai,IDZalo)values('" + strs[2].Trim() + "','" + IDZalo + "')"))
                                 sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công eContract");
                             else
                                 sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thất bại eContract");
