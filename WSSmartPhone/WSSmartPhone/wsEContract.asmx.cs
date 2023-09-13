@@ -52,5 +52,19 @@ namespace WSSmartPhone
             return _cEContract.editEContract(MaDon, SHS, checksum, out strResponse);
         }
 
+        [WebMethod]
+        public bool cancelEContract(string MaDon, string SHS, string checksum)
+        {
+            string strResponse;
+            return _cEContract.cancelEContract(MaDon, SHS, checksum, out strResponse);
+        }
+
+        [WebMethod]
+        public bool deleteEContract(string MaDon, string SHS, string checksum)
+        {
+            string strResponse;
+            return _cEContract.deleteEContract(MaDon, SHS, checksum, out strResponse);
+        }
+
     }
 }
