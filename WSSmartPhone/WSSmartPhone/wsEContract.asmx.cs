@@ -47,8 +47,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool editEContract(string MaDon, string SHS, string checksum, out string strResponse)
+        public bool editEContract(string MaDon, string SHS, string checksum)
         {
+            string strResponse;
             return _cEContract.editEContract(MaDon, SHS, checksum, out strResponse);
         }
 
