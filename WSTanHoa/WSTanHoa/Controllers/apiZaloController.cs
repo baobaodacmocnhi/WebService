@@ -269,36 +269,7 @@ namespace WSTanHoa.Controllers
                                     string sql = "insert into Zalo_Chat(IDZalo,NguoiGui,NoiDung)values(" + IDZalo + ",'User',N'" + message + "')";
                                     _cDAL_TrungTam.ExecuteNonQuery(sql);
                                 }
-                                //
-                                string[] messagesCSN = null;
-                                if (message.ToUpper().Contains("CSN_") == true)
-                                    messagesCSN = message.Split('_');
-                                else
-                                    if (message.ToUpper().Contains("CSN-") == true)
-                                    messagesCSN = message.Split('-');
-                                else
-                                    if (message.ToUpper().Contains("CSN ") == true)
-                                    messagesCSN = message.Split(' ');
-
-                                string[] messagesKyHD = message.Split('/');
-
-                                if (messagesCSN != null && messagesCSN.Count() > 1)
-                                {
-                                    if (messagesCSN[0].Trim().ToUpper() == "CSN")
-                                    {
-                                        //baochisonuoc(IDZalo, messagesCSN, ref strResponse);
-                                        strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nTHẤT BẠI\nCú pháp: CSN_danhbo_chisonuoc đã dừng hoạt động\nVui lòng truy cập website để cung cấp chỉ số nước: https://service.cskhtanhoa.com.vn/QLDHN/BaoChiSoNuoc");
-                                    }
-                                }
-                                else
-                                    if (messagesKyHD != null && messagesKyHD.Count() > 1)
-                                {
-                                    getkyhoadon(IDZalo, messagesKyHD[1], messagesKyHD[0], ref strResponse);
-                                }
-                                else
-                                {
-                                    tinnhankhac(IDZalo, message, ref strResponse);
-                                }
+                                tinnhankhac(IDZalo, message, ref strResponse);
                                 break;
                         }
                     }
@@ -646,74 +617,88 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                string str = message.ToUpper();
-                if (str.Contains("DK ECONTRACT"))
+                string str = message.Trim().ToUpper();
+                string[] messagesKyHD = message.Split('/');
+                if (messagesKyHD != null && messagesKyHD.Count() > 1)
                 {
-                    string[] strs = str.Split(' ');
-                    if (strs[2].Trim().Length != 10)
+                    getkyhoadon(IDZalo, messagesKyHD[1], messagesKyHD[0], ref strResponse);
+                }
+                else
+                    if (str.Contains("DK ECONTRACT"))
                     {
-                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai số điện thoại");
-                    }
-                    else
-                    {
-                        DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + strs[2].Trim() + "' and IDZalo='" + IDZalo + "'");
-                        if (dt != null && dt.Rows.Count > 0)
+                        string[] strs = str.Split(' ');
+                        if (strs[2].Trim().Length != 10)
                         {
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSố điện thoại và tài khoản Zalo đã tồn tại");
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai số điện thoại");
                         }
                         else
                         {
-                            if (_cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_EContract(DienThoai,IDZalo)values('" + strs[2].Trim() + "','" + IDZalo + "')"))
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công eContract");
+                            DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + strs[2].Trim() + "' and IDZalo='" + IDZalo + "'");
+                            if (dt != null && dt.Rows.Count > 0)
+                            {
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSố điện thoại và tài khoản Zalo đã tồn tại");
+                            }
                             else
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thất bại eContract");
+                            {
+                                if (_cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_EContract(DienThoai,IDZalo)values('" + strs[2].Trim() + "','" + IDZalo + "')"))
+                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công eContract");
+                                else
+                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thất bại eContract");
+                            }
                         }
                     }
-                }
-                else
-                    switch (str)
-                    {
-                        //cảnh báo
-                        case "DK CLN":
-                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=1 where IDZalo=" + IDZalo);
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group Chất Lượng Nước");
-                            break;
-                        case "DK DMA":
-                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group DMA");
-                            break;
-                        case "DK SDHN":
-                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
-                            break;
-                        case "HUY CLN":
-                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
-                            break;
-                        case "HUY DMA":
-                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group DMA");
-                            break;
-                        case "HUY SDHN":
-                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
-                            break;
-                        default:
-                            DateTime date = DateTime.Now;
-                            if (date.Date.DayOfWeek == DayOfWeek.Saturday || date.Date.DayOfWeek == DayOfWeek.Sunday)
-                            {
-                                strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Trường hợp Quý khách báo sự cố cung cấp nước vui lòng liên hệ Tổng đài 19006489. Trân trọng cảm ơn!");
-                            }
-                            else
-                            if ((date.Hour == 17 && date.Minute > 0)
-                            || date.Hour > 17
-                            || date.Hour < 7
-                            || (date.Hour == 7 && date.Minute < 30))
-                            {
-                                strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Trường hợp Quý khách báo sự cố cung cấp nước vui lòng liên hệ Tổng đài 19006489. Trân trọng cảm ơn!");
-                            }
-                            break;
-                    }
+                    else
+                        switch (str)
+                        {
+                            //cảnh báo
+                            case "DK CLN":
+                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=1 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group Chất Lượng Nước");
+                                break;
+                            case "DK DMA":
+                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group DMA");
+                                break;
+                            case "DK SDHN":
+                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
+                                break;
+                            case "HUY CLN":
+                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
+                                break;
+                            case "HUY DMA":
+                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group DMA");
+                                break;
+                            case "HUY SDHN":
+                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
+                                break;
+                            case "DK DHNDT":
+                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DHNDT=1 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN điện từ");
+                                break;
+                            case "HUY DHNDT":
+                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DHNDT=0 where IDZalo=" + IDZalo);
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN điện từ");
+                                break;
+                            default:
+                                DateTime date = DateTime.Now;
+                                if (date.Date.DayOfWeek == DayOfWeek.Saturday || date.Date.DayOfWeek == DayOfWeek.Sunday)
+                                {
+                                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Trường hợp Quý khách báo sự cố cung cấp nước vui lòng liên hệ Tổng đài 19006489. Trân trọng cảm ơn!");
+                                }
+                                else
+                                if ((date.Hour == 17 && date.Minute > 0)
+                                || date.Hour > 17
+                                || date.Hour < 7
+                                || (date.Hour == 7 && date.Minute < 30))
+                                {
+                                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Trường hợp Quý khách báo sự cố cung cấp nước vui lòng liên hệ Tổng đài 19006489. Trân trọng cảm ơn!");
+                                }
+                                break;
+                        }
             }
             catch (Exception ex)
             {
@@ -1522,6 +1507,9 @@ namespace WSTanHoa.Controllers
                         else
                                 if (str == "SDHN")
                             dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
+                        else
+                                if (str == "DHNDT")
+                            dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where DHNDT=1");
                         foreach (DataRow item in dt.Rows)
                         {
                             strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);

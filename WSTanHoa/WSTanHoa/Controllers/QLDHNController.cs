@@ -1184,6 +1184,13 @@ namespace WSTanHoa.Controllers
 
         //-------------------------
 
+        public ActionResult DHNDT()
+        {
+
+            return View();
+        }
+
+
         public ActionResult TaiApp()
         {
             return Redirect("http://113.161.88.180:81/app/docso.apk");
