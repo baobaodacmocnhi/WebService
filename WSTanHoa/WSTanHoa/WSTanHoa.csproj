@@ -2260,6 +2260,7 @@
     <Content Include="Views\TLMD\DoiMatKhau.cshtml" />
     <Content Include="Views\TLMD\Denied.cshtml" />
     <Content Include="Views\QuaySo\countTime.cshtml" />
+    <Content Include="Views\QLDHN\DHNDT.cshtml" />
     <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

@@ -20,7 +20,7 @@ namespace WSTanHoa.Controllers
     {
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
         private apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
         private wrDHN.wsDHN _wsDHN = new wrDHN.wsDHN();
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
@@ -1186,7 +1186,8 @@ namespace WSTanHoa.Controllers
 
         public ActionResult DHNDT()
         {
-
+            DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from sDHN_PMAC");
+            ViewBag.SoLuong = dt.Rows.Count;
             return View();
         }
 
