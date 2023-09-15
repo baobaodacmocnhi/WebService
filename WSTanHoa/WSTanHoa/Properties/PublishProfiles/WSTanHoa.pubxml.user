@@ -9,7 +9,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>09/12/2023 08:52:27</publishTime>
+      <publishTime>09/15/2023 09:33:57</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>10/27/2021 08:10:09</publishTime>
@@ -180,10 +180,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:55</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>09/14/2023 11:17:49</publishTime>
+      <publishTime>09/15/2023 09:35:29</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>09/14/2023 11:17:50</publishTime>
+      <publishTime>09/15/2023 09:35:30</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>10/27/2021 08:10:10</publishTime>
@@ -6101,6 +6101,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/QLDHN/BaoChiSoNuoc.cshtml">
       <publishTime>04/07/2022 09:30:12</publishTime>
     </File>
+    <File Include="Views/QLDHN/DHNDT.cshtml">
+      <publishTime>09/15/2023 07:54:16</publishTime>
+    </File>
     <File Include="Views/QLDHN/sDHN.cshtml">
       <publishTime>06/12/2023 15:47:31</publishTime>
     </File>
@@ -6108,7 +6111,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/20/2022 10:45:44</publishTime>
     </File>
     <File Include="Views/QLDHNTCT/sDHN.cshtml">
-      <publishTime>12/07/2022 09:03:30</publishTime>
+      <publishTime>07/12/2022 09:03:30</publishTime>
     </File>
     <File Include="Views/QuaySo/countTime.cshtml">
       <publishTime>08/30/2023 14:55:57</publishTime>
@@ -6126,7 +6129,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:12</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>08/29/2023 09:27:15</publishTime>
+      <publishTime>09/15/2023 07:54:16</publishTime>
     </File>
     <File Include="Views/Test/Index.cshtml">
       <publishTime>10/27/2021 08:10:12</publishTime>
@@ -6180,13 +6183,13 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>10/27/2021 08:10:13</publishTime>
     </File>
     <File Include="Web References/wrDHN/Reference.map">
-      <publishTime>04/18/2023 08:32:07</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Web References/wrThuongVu/Reference.map">
-      <publishTime>04/18/2023 08:31:45</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Web References/wrThuTien/Reference.map">
-      <publishTime>04/18/2023 08:30:38</publishTime>
+      <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Web.config">
       <publishTime>08/24/2023 13:53:59</publishTime>

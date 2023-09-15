@@ -117,13 +117,16 @@ namespace WSTanHoa.Controllers
                 return RedirectToAction("Denied");
             if (form.AllKeys.Contains("TuNgay"))
             {
-                ViewBag.TuNgay = form["TuNgay"].ToString();
-                ViewBag.DenNgay = form["DenNgay"].ToString();
+                Session["TuNgay"] = form["TuNgay"].ToString();
+                Session["DenNgay"] = form["DenNgay"].ToString();
             }
             else
-                ViewBag.TuNgay = ViewBag.DenNgay = DateTime.Now.ToString("dd/MM/yyyy");
-            string[] dateTus = ViewBag.TuNgay.ToString().Split('/');
-            string[] dateDens = ViewBag.DenNgay.ToString().Split('/');
+                if (Session["TuNgay"] == null)
+                    Session["TuNgay"] = Session["DenNgay"] = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.TuNgay = Session["TuNgay"];
+            ViewBag.DenNgay = Session["DenNgay"];
+            string[] dateTus = Session["TuNgay"].ToString().Split('/');
+            string[] dateDens = Session["DenNgay"].ToString().Split('/');
             List<MThiCong> lst = new List<MThiCong>();
             string sql = "select CreateBy=(select Name from TLMD_User where TLMD_User.ID=thicong.CreateBy),ModifyBy=(select Name from TLMD_User where TLMD_User.ID=thicong.ModifyBy),thicong.*,DonViThiCong=donvithicong.Name,KetCau=ketcau.Name from TLMD_ThiCong thicong,TLMD_DonViThiCong donvithicong,TLMD_KetCau ketcau"
             + " where thicong.IDDonViThiCong=donvithicong.ID and thicong.IDKetCau=ketcau.ID and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
@@ -254,7 +257,8 @@ namespace WSTanHoa.Controllers
             {
                 if (!checkRules("2", "Sua"))
                     return RedirectToAction("Denied");
-                string[] NgayBatDaus = form["inputNgayBatDau"].ToString().Split('/');
+                string[] date = form["inputNgayBatDau"].ToString().Split(' ');
+                string[] NgayBatDaus = date[0].Split('/');
                 _cDAL_TTKH.ExecuteNonQuery("update TLMD_ThiCong set"
                     + " Name=N'" + form["inputName"].ToString() + "'"
                     + ",IDDonViThiCong=" + form["IDDonViThiCong"].ToString() + ""

@@ -20,7 +20,7 @@ namespace WSTanHoa.Controllers
     {
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
         private apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
         private wrDHN.wsDHN _wsDHN = new wrDHN.wsDHN();
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
@@ -85,7 +85,7 @@ namespace WSTanHoa.Controllers
                         return View();
                     }
                     Image image = Image.FromStream(Hinh.InputStream);
-                    Bitmap resizedImage =CGlobalVariable.resizeImage(image, 0.5m);
+                    Bitmap resizedImage = CGlobalVariable.resizeImage(image, 0.5m);
                     SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ")");
                     //SqlCommand command = new SqlCommand("insert into DocSo_Web(DanhBo,Nam,Ky,Dot,ChiSo,Hinh)values('" + dt.Rows[0]["DanhBo"].ToString() + "'," + drLich["Nam"].ToString() + "," + drLich["Ky"].ToString() + "," + drLich["Dot"].ToString() + "," + ChiSo + ",@Hinh)");
                     //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = ImageToByte(resizedImage);
@@ -1188,7 +1188,28 @@ namespace WSTanHoa.Controllers
         {
             DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from sDHN_PMAC");
             ViewBag.SoLuong = dt.Rows.Count;
-            return View();
+            List<MView> lst = new List<MView>();
+            foreach (DataRow item in dt.Rows)
+            {
+                DataTable dtCS = _cDAL_sDHN.ExecuteQuery_DataTable("  declare @date date=DATEADD(DAY, -1, getdate())"
+                        + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                        + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = CAST(DATEADD(DAY, -1, @date) as date) and DATEPART(HOUR, TimeStamp) = 23 and DATEPART(MINUTE, TimeStamp) = 0"
+                        + " union"
+                        + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                        + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = CAST(getdate() as date) and DATEPART(MINUTE, TimeStamp) = 0");
+                for (int i = 1; i < dtCS.Rows.Count; i++)
+                {
+                    dtCS.Rows[i]["TieuThu"] = int.Parse(dtCS.Rows[i]["TieuThu"].ToString()) - int.Parse(dtCS.Rows[i - 1]["TieuThu"].ToString());
+                }
+                int count0 = 0;
+                int count=0
+                for (int i = 1; i < dtCS.Rows.Count; i++)
+                {
+                    if (int.Parse(dtCS.Rows[i]["TieuThu"].ToString()) == 0)
+                        count0++;
+                }
+            }
+            return View(lst);
         }
 
 
