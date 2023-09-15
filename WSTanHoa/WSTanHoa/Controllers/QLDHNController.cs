@@ -1202,7 +1202,7 @@ namespace WSTanHoa.Controllers
                     dtCS.Rows[i]["TieuThu"] = int.Parse(dtCS.Rows[i]["TieuThu"].ToString()) - int.Parse(dtCS.Rows[i - 1]["TieuThu"].ToString());
                 }
                 int count0 = 0;
-                int count=0
+                int count = 0;
                 for (int i = 1; i < dtCS.Rows.Count; i++)
                 {
                     if (int.Parse(dtCS.Rows[i]["TieuThu"].ToString()) == 0)

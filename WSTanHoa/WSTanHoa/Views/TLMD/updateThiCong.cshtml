@@ -54,6 +54,10 @@
     @using (Html.BeginForm("updateThiCong", "TLMD", FormMethod.Post))
     {
         <div class="row">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.AntiForgeryToken()
+        </div>
+        <div class="row">
             <div class="col-2">
                 <label for="inputID" class="form-label">@Html.DisplayNameFor(model => model.ID)</label>
                 <input type="number" class="form-control" name="inputID" value="@Html.DisplayFor(model => model.ID)" hidden="">
