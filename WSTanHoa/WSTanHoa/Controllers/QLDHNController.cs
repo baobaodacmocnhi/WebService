@@ -20,7 +20,7 @@ namespace WSTanHoa.Controllers
     {
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
         private apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
         private wrDHN.wsDHN _wsDHN = new wrDHN.wsDHN();
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
@@ -1184,31 +1184,86 @@ namespace WSTanHoa.Controllers
 
         //-------------------------
 
-        public ActionResult DHNDT()
+        public ActionResult DHNDT(FormCollection collection)
         {
             DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from sDHN_PMAC");
             ViewBag.SoLuong = dt.Rows.Count;
             List<MView> lst = new List<MView>();
+            MView enBT = new MView();
+            enBT.TieuDe = "Bình Thường";
+            enBT.SoLuong = "0";
+            MView enTT0 = new MView();
+            enTT0.TieuDe = "Tiêu Thụ 0m3";
+            enTT0.SoLuong = "0";
+            MView enTHY = new MView();
+            enTHY.TieuDe = "Tín Hiệu Yếu";
+            enTHY.SoLuong = "0";
+            MView enKTH = new MView();
+            enKTH.TieuDe = "Không Tín Hiệu";
+            enKTH.SoLuong = "0";
+            string[] ngayxems = DateTime.Now.ToString("dd/MM/yyyy").Split('/');
+            if (collection != null && collection.AllKeys.Contains("NgayXem"))
+            {
+                ngayxems = collection["NgayXem"].ToString().Split('/');
+            }
+            ViewBag.NgayXem = ngayxems[0] + "/" + ngayxems[1] + "/" + ngayxems[2];
             foreach (DataRow item in dt.Rows)
             {
-                DataTable dtCS = _cDAL_sDHN.ExecuteQuery_DataTable("  declare @date date=DATEADD(DAY, -1, getdate())"
+                DataTable dtCS = _cDAL_sDHN.ExecuteQuery_DataTable("  declare @date date='" + ngayxems[2] + "-" + ngayxems[1] + "-" + ngayxems[0] + "'"
                         + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
                         + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = CAST(DATEADD(DAY, -1, @date) as date) and DATEPART(HOUR, TimeStamp) = 23 and DATEPART(MINUTE, TimeStamp) = 0"
                         + " union"
                         + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
-                        + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = CAST(getdate() as date) and DATEPART(MINUTE, TimeStamp) = 0");
+                        + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = @date and DATEPART(MINUTE, TimeStamp) = 0");
                 for (int i = 1; i < dtCS.Rows.Count; i++)
                 {
-                    dtCS.Rows[i]["TieuThu"] = int.Parse(dtCS.Rows[i]["TieuThu"].ToString()) - int.Parse(dtCS.Rows[i - 1]["TieuThu"].ToString());
+                    dtCS.Rows[i]["TieuThu"] = int.Parse(dtCS.Rows[i]["ChiSo"].ToString()) - int.Parse(dtCS.Rows[i - 1]["ChiSo"].ToString());
                 }
-                int count0 = 0;
-                int count = 0;
-                for (int i = 1; i < dtCS.Rows.Count; i++)
+
+                if (dtCS.Rows.Count == 0)
                 {
-                    if (int.Parse(dtCS.Rows[i]["TieuThu"].ToString()) == 0)
-                        count0++;
+                    enKTH.SoLuong = (int.Parse(enKTH.SoLuong) + 1).ToString();
+                    MView en = new MView();
+                    en.DanhBo = item["DanhBo"].ToString();
+                    enKTH.lst.Add(en);
                 }
+                else
+                if (dtCS.Rows.Count != 25)
+                {
+                    enTHY.SoLuong = (int.Parse(enTHY.SoLuong) + 1).ToString();
+                    MView en = new MView();
+                    en.DanhBo = item["DanhBo"].ToString();
+                    enTHY.lst.Add(en);
+                }
+                else
+                {
+                    int countTT0 = 0;
+                    for (int i = 1; i < dtCS.Rows.Count; i++)
+                    {
+                        if (int.Parse(dtCS.Rows[i]["TieuThu"].ToString()) == 0)
+                            countTT0++;
+                    }
+                    if (countTT0 == 24)
+                    {
+                        enTT0.SoLuong = (int.Parse(enTT0.SoLuong) + 1).ToString();
+                        MView en = new MView();
+                        en.DanhBo = item["DanhBo"].ToString();
+                        enTT0.lst.Add(en);
+                    }
+                    else
+                    {
+                        enBT.SoLuong = (int.Parse(enBT.SoLuong) + 1).ToString();
+                        MView en = new MView();
+                        en.DanhBo = item["DanhBo"].ToString();
+                        enBT.lst.Add(en);
+                    }
+                }
+
             }
+            lst.Add(enKTH);
+            lst.Add(enTHY);
+            lst.Add(enTT0);
+            lst.Add(enBT);
             return View(lst);
         }
 

@@ -182,21 +182,21 @@ namespace WSTanHoa.Controllers
                     if (!checkRules("2", "Them"))
                         return RedirectToAction("Denied");
                     string[] NgayBatDaus = form["inputNgayBatDau"].ToString().Split('/');
-                    _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,DanhBo,DiemDau,DiemCuoi,TenDuong,Phuong,Quan,NgayBatDau,CreateBy)values("
-                        + "(select case when exists(select ID from TLMD_ThiCong) then (select MAX(ID)+1 from TLMD_ThiCong) else 1 end)"
-                        + ",N'" + form["inputName"].ToString() + "'"
-                        + "," + form["IDDonViThiCong"].ToString() + ""
-                        + "," + form["IDKetCau"].ToString() + ""
-                        + ",N'" + form["inputDanhBo"].ToString() + "'"
-                        + ",N'" + form["inputDiemDau"].ToString() + "'"
-                        + ",N'" + form["inputDiemCuoi"].ToString() + "'"
-                        + ",N'" + form["inputTenDuong"].ToString() + "'"
-                        + ",N'" + form["IDPhuong"].ToString() + "'"
-                        + ",N'" + form["IDQuan"].ToString() + "'"
-                        + ",'" + NgayBatDaus[2] + "-" + NgayBatDaus[1] + "-" + NgayBatDaus[0] + "'"
-                        + "," + Session["ID"]
-                        + ")");
-                    return RedirectToAction("ThiCong");
+                    if (_cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,DanhBo,DiemDau,DiemCuoi,TenDuong,Phuong,Quan,NgayBatDau,CreateBy)values("
+                          + "(select case when exists(select ID from TLMD_ThiCong) then (select MAX(ID)+1 from TLMD_ThiCong) else 1 end)"
+                          + ",N'" + form["inputName"].ToString() + "'"
+                          + "," + form["IDDonViThiCong"].ToString() + ""
+                          + "," + form["IDKetCau"].ToString() + ""
+                          + ",N'" + form["inputDanhBo"].ToString() + "'"
+                          + ",N'" + form["inputDiemDau"].ToString() + "'"
+                          + ",N'" + form["inputDiemCuoi"].ToString() + "'"
+                          + ",N'" + form["inputTenDuong"].ToString() + "'"
+                          + ",N'" + form["IDPhuong"].ToString() + "'"
+                          + ",N'" + form["IDQuan"].ToString() + "'"
+                          + ",'" + NgayBatDaus[2] + "-" + NgayBatDaus[1] + "-" + NgayBatDaus[0] + "'"
+                          + "," + Session["ID"]
+                          + ")"))
+                        return RedirectToAction("ThiCong");
                 }
                 else
                 if (Loai == "viewUpdate")
@@ -260,7 +260,7 @@ namespace WSTanHoa.Controllers
                         return RedirectToAction("Denied");
                     string[] date = form["inputNgayBatDau"].ToString().Split(' ');
                     string[] NgayBatDaus = date[0].Split('/');
-                    _cDAL_TTKH.ExecuteNonQuery("update TLMD_ThiCong set"
+                    if (_cDAL_TTKH.ExecuteNonQuery("update TLMD_ThiCong set"
                         + " Name=N'" + form["inputName"].ToString() + "'"
                         + ",IDDonViThiCong=" + form["IDDonViThiCong"].ToString() + ""
                         + ",IDKetCau=" + form["IDKetCau"].ToString() + ""
@@ -273,21 +273,21 @@ namespace WSTanHoa.Controllers
                         + ",NgayBatDau='" + NgayBatDaus[2] + "-" + NgayBatDaus[1] + "-" + NgayBatDaus[0] + "'"
                         + ",ModifyBy=" + Session["ID"]
                         + ",ModifyDate=getdate()"
-                        + " where ID=" + form["inputID"].ToString());
-                    return RedirectToAction("ThiCong");
+                        + " where ID=" + form["inputID"].ToString()))
+                        return RedirectToAction("ThiCong");
                 }
                 else
                 if (Loai == "delete")
                 {
                     if (!checkRules("2", "Xoa"))
                         return RedirectToAction("Denied");
-                    _cDAL_TTKH.ExecuteQuery_DataTable("delete TLMD_ThiCong where ID=" + ID);
-                    return RedirectToAction("ThiCong");
+                    if (_cDAL_TTKH.ExecuteNonQuery("delete TLMD_ThiCong where ID=" + ID))
+                        return RedirectToAction("ThiCong");
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError(ex.Message, "Thất bại");
+                CGlobalVariable.log.Error("updateThiCong (ID=" + form["inputID"].ToString() + ") " + ex.Message);
             }
             return View();
         }
@@ -337,16 +337,16 @@ namespace WSTanHoa.Controllers
             {
                 if (!checkRules("1", "Them"))
                     return RedirectToAction("Denied");
-                _cDAL_TTKH.ExecuteNonQuery("insert into TLMD_DonViThiCong(ID,Name,DaiDien,DienThoai,Username,Password,CreateBy)values("
-                    + "(select case when exists(select ID from TLMD_DonViThiCong) then (select MAX(ID)+1 from TLMD_DonViThiCong) else 1 end)"
-                    + ",N'" + form["inputName"].ToString() + "'"
-                    + ",N'" + form["inputDaiDien"].ToString() + "'"
-                    + ",'" + form["inputDienThoai"].ToString() + "'"
-                    + ",'" + form["inputUsername"].ToString() + "'"
-                    + ",'" + form["inputPassword"].ToString() + "'"
-                    + "," + Session["ID"]
-                    + ")");
-                return RedirectToAction("DonViThiCong");
+                if (_cDAL_TTKH.ExecuteNonQuery("insert into TLMD_DonViThiCong(ID,Name,DaiDien,DienThoai,Username,Password,CreateBy)values("
+                      + "(select case when exists(select ID from TLMD_DonViThiCong) then (select MAX(ID)+1 from TLMD_DonViThiCong) else 1 end)"
+                      + ",N'" + form["inputName"].ToString() + "'"
+                      + ",N'" + form["inputDaiDien"].ToString() + "'"
+                      + ",'" + form["inputDienThoai"].ToString() + "'"
+                      + ",'" + form["inputUsername"].ToString() + "'"
+                      + ",'" + form["inputPassword"].ToString() + "'"
+                      + "," + Session["ID"]
+                      + ")"))
+                    return RedirectToAction("DonViThiCong");
             }
             else
             if (Loai == "viewUpdate")
@@ -378,28 +378,28 @@ namespace WSTanHoa.Controllers
                     flag = "1";
                 else
                     flag = "0";
-                _cDAL_TTKH.ExecuteNonQuery("update TLMD_DonViThiCong set"
-                    + " Name=N'" + form["inputName"].ToString() + "'"
-                    + ",DaiDien=N'" + form["inputDaiDien"].ToString() + "'"
-                    + ",DienThoai='" + form["inputDienThoai"].ToString() + "'"
-                    + ",Username='" + form["inputUsername"].ToString() + "'"
-                    + ",Password='" + form["inputPassword"].ToString() + "'"
-                    + ",Active='" + flag + "'"
-                    + ",ModifyBy=" + Session["ID"]
-                    + ",ModifyDate=getdate()"
-                    + " where ID=" + form["inputID"].ToString());
-                return RedirectToAction("DonViThiCong");
+                if (_cDAL_TTKH.ExecuteNonQuery("update TLMD_DonViThiCong set"
+                      + " Name=N'" + form["inputName"].ToString() + "'"
+                      + ",DaiDien=N'" + form["inputDaiDien"].ToString() + "'"
+                      + ",DienThoai='" + form["inputDienThoai"].ToString() + "'"
+                      + ",Username='" + form["inputUsername"].ToString() + "'"
+                      + ",Password='" + form["inputPassword"].ToString() + "'"
+                      + ",Active='" + flag + "'"
+                      + ",ModifyBy=" + Session["ID"]
+                      + ",ModifyDate=getdate()"
+                      + " where ID=" + form["inputID"].ToString()))
+                    return RedirectToAction("DonViThiCong");
             }
             else
             if (Loai == "delete")
             {
                 if (!checkRules("1", "Xoa"))
                     return RedirectToAction("Denied");
-                _cDAL_TTKH.ExecuteQuery_DataTable("delete TLMD_DonViThiCong where ID=" + ID);
-                return RedirectToAction("DonViThiCong");
+                if (_cDAL_TTKH.ExecuteNonQuery("delete TLMD_DonViThiCong where ID=" + ID))
+                    return RedirectToAction("DonViThiCong");
             }
-            else
-                return View();
+
+            return View();
         }
 
         public ActionResult Denied()

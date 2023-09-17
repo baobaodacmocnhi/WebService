@@ -1,56 +1,46 @@
-﻿
+﻿@model List<WSTanHoa.Models.MView>
 @{
     ViewBag.Title = "ĐHN Điện Từ";
 }
 @Scripts.Render("~/bundles/datepicker")
-<div class="container py-2 rounded-3 shadow-sm">
-    <div class="row py-2">
-        <h3 class="text-primary">@ViewBag.Title : <span class="text-danger">@ViewBag.SoLuong</span> </h3><span></span>
-    </div>
-    <div class="col-3">
-        <input class="datepicker form-control" type="text" id="ThoiGian" name="ThoiGian" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem >
-        
-    </div>
-    <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">khong tin hiu</h6>
+@using (Html.BeginForm("DHNDT", "QLDHN", FormMethod.Post))
+{
+    <div class="container py-2 rounded-3 shadow-sm">
+        <div class="row py-2">
+            <h3 class="text-primary">@ViewBag.Title : <span class="text-danger">@ViewBag.SoLuong</span> </h3>
         </div>
-        <!-- Card Body -->
-        <div class="card-body">
-            <div class="row">
-
+        <div class="col-3 pb-3">
+            <input class="datepicker form-control" type="text" id="NgayXem" name="NgayXem" placeholder="Ngày Xem" autocomplete="off" value=@ViewBag.NgayXem onchange="this.form.submit()">
+        </div>
+        @foreach (var item in Model)
+        {
+            <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">@item.TieuDe : <span class="text-danger">@item.SoLuong</span></h6>
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                    <div class="table-responsive mt-2">
+                        <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
+                            <thead>
+                                <tr>
+                                    <th>Danh bộ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var itemDB in item.lst)
+                                {
+                                    <tr>
+                                        <td>@itemDB.DanhBo</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        </div>
+        }
     </div>
-    <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">0m3</h6>
-        </div>
-        <!-- Card Body -->
-        <div class="card-body">
-            <div class="row">
-
-            </div>
-        </div>
-    </div>
-    <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
-        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-            <h6 class="m-0 font-weight-bold text-primary">bình thường</h6>
-        </div>
-        <!-- Card Body -->
-        <div class="card-body">
-            <div class="row">
-
-            </div>
-        </div>
-    </div>
-
-
-</div>
-
-
-</div>
+}
 
