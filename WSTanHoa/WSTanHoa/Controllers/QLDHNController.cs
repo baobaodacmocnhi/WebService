@@ -1201,7 +1201,7 @@ namespace WSTanHoa.Controllers
             MView enKTH = new MView();
             enKTH.TieuDe = "Không Tín Hiệu";
             enKTH.SoLuong = "0";
-            string[] ngayxems = DateTime.Now.ToString("dd/MM/yyyy").Split('/');
+            string[] ngayxems = DateTime.Now.AddDays(-1).ToString("dd/MM/yyyy").Split('/');
             if (collection != null && collection.AllKeys.Contains("NgayXem"))
             {
                 ngayxems = collection["NgayXem"].ToString().Split('/');
