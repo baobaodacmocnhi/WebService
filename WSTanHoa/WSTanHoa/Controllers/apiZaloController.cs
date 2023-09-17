@@ -21,6 +21,7 @@ namespace WSTanHoa.Controllers
     {
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
         apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
@@ -625,80 +626,80 @@ namespace WSTanHoa.Controllers
                 }
                 else
                     if (str.Contains("DK ECONTRACT"))
+                {
+                    string[] strs = str.Split(' ');
+                    if (strs[2].Trim().Length != 10)
                     {
-                        string[] strs = str.Split(' ');
-                        if (strs[2].Trim().Length != 10)
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai số điện thoại");
+                    }
+                    else
+                    {
+                        DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + strs[2].Trim() + "' and IDZalo='" + IDZalo + "'");
+                        if (dt != null && dt.Rows.Count > 0)
                         {
-                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai số điện thoại");
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSố điện thoại và tài khoản Zalo đã tồn tại");
                         }
                         else
                         {
-                            DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select * from Zalo_EContract where DienThoai='" + strs[2].Trim() + "' and IDZalo='" + IDZalo + "'");
-                            if (dt != null && dt.Rows.Count > 0)
-                            {
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSố điện thoại và tài khoản Zalo đã tồn tại");
-                            }
+                            if (_cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_EContract(DienThoai,IDZalo)values('" + strs[2].Trim() + "','" + IDZalo + "')"))
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công eContract");
                             else
-                            {
-                                if (_cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_EContract(DienThoai,IDZalo)values('" + strs[2].Trim() + "','" + IDZalo + "')"))
-                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công eContract");
-                                else
-                                    sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thất bại eContract");
-                            }
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thất bại eContract");
                         }
                     }
-                    else
-                        switch (str)
-                        {
-                            //cảnh báo
-                            case "DK CLN":
-                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=1 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group Chất Lượng Nước");
-                                break;
-                            case "DK DMA":
-                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group DMA");
-                                break;
-                            case "DK SDHN":
-                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
-                                break;
-                            case "HUY CLN":
-                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
-                                break;
-                            case "HUY DMA":
-                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group DMA");
-                                break;
-                            case "HUY SDHN":
-                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
-                                break;
-                            case "DK DHNDT":
-                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DHNDT=1 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN điện từ");
-                                break;
-                            case "HUY DHNDT":
-                                _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DHNDT=0 where IDZalo=" + IDZalo);
-                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN điện từ");
-                                break;
-                            default:
-                                DateTime date = DateTime.Now;
-                                if (date.Date.DayOfWeek == DayOfWeek.Saturday || date.Date.DayOfWeek == DayOfWeek.Sunday)
-                                {
-                                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Trường hợp Quý khách báo sự cố cung cấp nước vui lòng liên hệ Tổng đài 19006489. Trân trọng cảm ơn!");
-                                }
-                                else
-                                if ((date.Hour == 17 && date.Minute > 0)
-                                || date.Hour > 17
-                                || date.Hour < 7
-                                || (date.Hour == 7 && date.Minute < 30))
-                                {
-                                    strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Trường hợp Quý khách báo sự cố cung cấp nước vui lòng liên hệ Tổng đài 19006489. Trân trọng cảm ơn!");
-                                }
-                                break;
-                        }
+                }
+                else
+                    switch (str)
+                    {
+                        //cảnh báo
+                        case "DK CLN":
+                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=1 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group Chất Lượng Nước");
+                            break;
+                        case "DK DMA":
+                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=1 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group DMA");
+                            break;
+                        case "DK SDHN":
+                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=1 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN Thông Minh");
+                            break;
+                        case "HUY CLN":
+                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set CLN=0 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group Chất Lượng Nước");
+                            break;
+                        case "HUY DMA":
+                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DMA=0 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group DMA");
+                            break;
+                        case "HUY SDHN":
+                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set sDHN=0 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN Thông Minh");
+                            break;
+                        case "DK DHNDT":
+                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DHNDT=1 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã ĐĂNG KÝ thành công group ĐHN điện từ");
+                            break;
+                        case "HUY DHNDT":
+                            _cDAL_TrungTam.ExecuteNonQuery("update Zalo_QuanTam set DHNDT=0 where IDZalo=" + IDZalo);
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nBạn đã HỦY thành công group ĐHN điện từ");
+                            break;
+                        default:
+                            DateTime date = DateTime.Now;
+                            if (date.Date.DayOfWeek == DayOfWeek.Saturday || date.Date.DayOfWeek == DayOfWeek.Sunday)
+                            {
+                                strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Trường hợp Quý khách báo sự cố cung cấp nước vui lòng liên hệ Tổng đài 19006489. Trân trọng cảm ơn!");
+                            }
+                            else
+                            if ((date.Hour == 17 && date.Minute > 0)
+                            || date.Hour > 17
+                            || date.Hour < 7
+                            || (date.Hour == 7 && date.Minute < 30))
+                            {
+                                strResponse = sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nXin cám ơn Quý khách đã liên hệ Công ty Cổ phần Cấp nước Tân Hòa. Hiện đã hết giờ làm việc xin Quý khách liên hệ lại vào giờ hành chính (từ thứ hai đến thứ sáu). Trường hợp Quý khách báo sự cố cung cấp nước vui lòng liên hệ Tổng đài 19006489. Trân trọng cảm ơn!");
+                            }
+                            break;
+                    }
             }
             catch (Exception ex)
             {
@@ -1509,7 +1510,96 @@ namespace WSTanHoa.Controllers
                             dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where sDHN=1");
                         else
                                 if (str == "DHNDT")
+                        {
                             dt = _cDAL_TrungTam.ExecuteQuery_DataTable("select IDZalo from Zalo_QuanTam where DHNDT=1");
+                            DataTable dtDHN = _cDAL_sDHN.ExecuteQuery_DataTable("select * from sDHN_PMAC");
+                            string[] ngayxems = jsonContent["NgayXem"].ToString().Split('/');
+                            MView enBT = new MView();
+                            enBT.TieuDe = "Bình Thường";
+                            enBT.SoLuong = "0";
+                            MView enTT0 = new MView();
+                            enTT0.TieuDe = "Tiêu Thụ 0m3";
+                            enTT0.SoLuong = "0";
+                            MView enTHY = new MView();
+                            enTHY.TieuDe = "Tín Hiệu Yếu";
+                            enTHY.SoLuong = "0";
+                            MView enKTH = new MView();
+                            enKTH.TieuDe = "Không Tín Hiệu";
+                            enKTH.SoLuong = "0";
+                            foreach (DataRow item in dtDHN.Rows)
+                            {
+                                DataTable dtCS = _cDAL_sDHN.ExecuteQuery_DataTable("  declare @date date='" + ngayxems[2] + "-" + ngayxems[1] + "-" + ngayxems[0] + "'"
+                                        + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                                        + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = CAST(DATEADD(DAY, -1, @date) as date) and DATEPART(HOUR, TimeStamp) = 23 and DATEPART(MINUTE, TimeStamp) = 0"
+                                        + " union"
+                                        + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                                        + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = @date and DATEPART(MINUTE, TimeStamp) = 0");
+                                for (int i = 1; i < dtCS.Rows.Count; i++)
+                                {
+                                    dtCS.Rows[i]["TieuThu"] = int.Parse(dtCS.Rows[i]["ChiSo"].ToString()) - int.Parse(dtCS.Rows[i - 1]["ChiSo"].ToString());
+                                }
+
+                                if (dtCS.Rows.Count == 0)
+                                {
+                                    enKTH.SoLuong = (int.Parse(enKTH.SoLuong) + 1).ToString();
+                                    MView en = new MView();
+                                    en.DanhBo = item["DanhBo"].ToString();
+                                    enKTH.lst.Add(en);
+                                }
+                                else
+                                if (dtCS.Rows.Count != 25)
+                                {
+                                    enTHY.SoLuong = (int.Parse(enTHY.SoLuong) + 1).ToString();
+                                    MView en = new MView();
+                                    en.DanhBo = item["DanhBo"].ToString();
+                                    enTHY.lst.Add(en);
+                                }
+                                else
+                                {
+                                    int countTT0 = 0;
+                                    for (int i = 1; i < dtCS.Rows.Count; i++)
+                                    {
+                                        if (int.Parse(dtCS.Rows[i]["TieuThu"].ToString()) == 0)
+                                            countTT0++;
+                                    }
+                                    if (countTT0 == 24)
+                                    {
+                                        enTT0.SoLuong = (int.Parse(enTT0.SoLuong) + 1).ToString();
+                                        MView en = new MView();
+                                        en.DanhBo = item["DanhBo"].ToString();
+                                        enTT0.lst.Add(en);
+                                    }
+                                    else
+                                    {
+                                        enBT.SoLuong = (int.Parse(enBT.SoLuong) + 1).ToString();
+                                        MView en = new MView();
+                                        en.DanhBo = item["DanhBo"].ToString();
+                                        enBT.lst.Add(en);
+                                    }
+                                }
+                            }
+                            NoiDung = "ĐHN điện từ\r\n" + jsonContent["NgayXem"].ToString();
+                            if (int.Parse(enKTH.SoLuong) != 0)
+                            {
+                                @NoiDung += "\n   + Có " + enKTH.SoLuong + " ĐHN không tín hiệu";
+                            }
+                            else
+                                 if (int.Parse(enTHY.SoLuong) != 0)
+                            {
+                                @NoiDung += "\n   + Có " + enTHY.SoLuong + " ĐHN tín hiệu yếu";
+                            }
+                            else
+                                 if (int.Parse(enTT0.SoLuong) != 0)
+                            {
+                                @NoiDung += "\n   + Có " + enTT0.SoLuong + " ĐHN tiêu thụ 0m3";
+                            }
+                            else
+                                 if (int.Parse(enBT.SoLuong) != 0)
+                            {
+                                @NoiDung += "\n   + Có " + enBT.SoLuong + " ĐHN bình thường";
+                            }
+                            NoiDung += "\r\nTruy cập https://service.cskhtanhoa.com.vn/QLDHN/DHNDT để biết thêm chi tiết";
+                        }
                         foreach (DataRow item in dt.Rows)
                         {
                             strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);

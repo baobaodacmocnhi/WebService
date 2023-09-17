@@ -20,7 +20,7 @@ namespace WSTanHoa.Controllers
     {
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
         private apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
         private wrDHN.wsDHN _wsDHN = new wrDHN.wsDHN();
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
@@ -1183,7 +1183,7 @@ namespace WSTanHoa.Controllers
         }
 
         //-------------------------
-
+        //website đhn điện từ
         public ActionResult DHNDT(FormCollection collection)
         {
             DataTable dt = _cDAL_sDHN.ExecuteQuery_DataTable("select * from sDHN_PMAC");
@@ -1258,7 +1258,6 @@ namespace WSTanHoa.Controllers
                         enBT.lst.Add(en);
                     }
                 }
-
             }
             lst.Add(enKTH);
             lst.Add(enTHY);
@@ -1266,7 +1265,6 @@ namespace WSTanHoa.Controllers
             lst.Add(enBT);
             return View(lst);
         }
-
 
         public ActionResult TaiApp()
         {
