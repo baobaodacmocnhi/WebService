@@ -20,6 +20,32 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-auto">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radLoai" value="radAll" checked="checked">
+                            <label class="form-check-label" for="radAll">
+                                Tất Cả
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radLoai" value="radDaXuLy">
+                            <label class="form-check-label" for="radDaXuLy">
+                                Đã Xử Lý
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="radLoai" value="radTon">
+                            <label class="form-check-label" for="radTon">
+                                Tồn (Không cần thời gian)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-auto">
                         <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" value="@ViewBag.TuNgay" autocomplete="off" onchange="">
                     </div>
                     <div class="col-auto">

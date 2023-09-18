@@ -129,7 +129,21 @@ namespace WSTanHoa.Controllers
             string[] dateDens = Session["DenNgay"].ToString().Split('/');
             List<MThiCong> lst = new List<MThiCong>();
             string sql = "select CreateBy=(select Name from TLMD_User where TLMD_User.ID=thicong.CreateBy),ModifyBy=(select Name from TLMD_User where TLMD_User.ID=thicong.ModifyBy),thicong.*,DonViThiCong=donvithicong.Name,KetCau=ketcau.Name from TLMD_ThiCong thicong,TLMD_DonViThiCong donvithicong,TLMD_KetCau ketcau"
-            + " where thicong.IDDonViThiCong=donvithicong.ID and thicong.IDKetCau=ketcau.ID and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
+            + " where thicong.IDDonViThiCong=donvithicong.ID and thicong.IDKetCau=ketcau.ID";
+            if (form["radLoai"].ToString() == "radAll")
+            {
+                sql += " and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
+            }
+            else
+            if (form["radLoai"].ToString() == "radDaXuLy")
+            {
+                sql += " and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
+            }
+            else
+            if (form["radLoai"].ToString() == "radTon")
+            {
+                sql += " and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
+            }
             if (bool.Parse(Session["Admin"].ToString()))
                 sql += "";
             else

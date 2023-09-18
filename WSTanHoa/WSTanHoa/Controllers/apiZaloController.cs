@@ -1596,7 +1596,7 @@ namespace WSTanHoa.Controllers
                             else
                                  if (int.Parse(enBT.SoLuong) != 0)
                             {
-                                @NoiDung += "\n   + Có " + enBT.SoLuong + " ĐHN bình thường";
+                                @NoiDung += "\n   + Có " + enBT.SoLuong + " ĐHN hoạt động bình thường";
                             }
                             NoiDung += "\r\nTruy cập https://service.cskhtanhoa.com.vn/QLDHN/DHNDT để biết thêm chi tiết";
                         }
