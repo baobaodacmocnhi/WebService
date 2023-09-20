@@ -5,17 +5,55 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>@ViewBag.Title</title>
+<script src="~/Scripts/jquery-3.6.0.js"></script>
 @Scripts.Render("~/bundles/datepicker")
-
+<script>
+    function TimKiem() {
+        $("#tblDanhSach tbody tr").remove();
+        $.ajax({
+            type: 'GET',
+            url: '/TLMD/getTimKiemThiCong/',
+            dataType: 'json',
+            data: { NoiDungTimKiem: $("#NoiDungTimKiem").val() },
+            success: function (data) {
+                var items = '';
+                $.each(data, function (i, item) {
+                    var rows = "<tr>"
+                                        +"<td>"+item.STT+"</td>"
+                                        +"<td>"+item.Name+"</td>"
+                                        +"<td>"+item.DanhBo+"</td>"
+                                        +"<td>"+item.DiemDau+"</td>"
+                                        +"<td>"+item.DiemCuoi+"</td>"
+                                        +"<td>"+item.TenDuong+"</td>"
+                                        +"<td>"+item.DonViThiCong+"</td>"
+                                        +"<td>"+item.KetCau+"</td>"
+                                        +"<td>"+item.CreateBy+"</td>"
+                                        +"<td>"+item.CreateDate+"</td>"
+                                        @*+"<td>"
+                                        +    "<a href='@Url.Action("updateThiCong", "TLMD", new { Loai = "viewUpdate", ID ="item.ID" })' class='btn btn-warning'>Sửa</a>"
+                                        +    "<a href='@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID =" item.ID" })' oncl onclick="return confirm('Bạn có chắc chắn?');' class='tn btn-danger'>Xóa</a>"
+                                        +"</td>"*@
+                                    +"</tr>";
+                    $("#tblDanhSach tbody").append(rows);
+                });
+            },
+            error: function (ex) {
+                alert("Error: " + ex.statusText);
+            }
+        });
+    }
+</script>
 <div class="">
     @using (Html.BeginForm("ThiCong", "TLMD", FormMethod.Post))
     {
         <div class="card shadow mb-4">
             <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">Danh Sách Thi Công</h6>
-                <a href="@Url.Action("updateThiCong","TLMD")" class="btn btn-primary">Thêm mới</a>
+            <div class="card-header py-3 d-flex justify-content-between align-items-center">
+                <div class=""><h6 class="m-0 font-weight-bold text-primary">Danh Sách Thi Công</h6></div>
+                <div class=""><input class="form-control" type="text" id="NoiDungTimKiem" name="NoiDungTimKiem" placeholder="Nội dung tìm kiếm" onkeyup="TimKiem()"></div>
+                <a href="@Url.Action("updateThiCong","TLMD")" class="btn btn-primary text-end">Thêm mới</a>
             </div>
+
             <!-- Card Body -->
             <div class="card-body">
                 <div class="row">
@@ -57,7 +95,7 @@
                     </div>
                 </div>
                 <div class="table-responsive mt-2">
-                    <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
+                    <table id="tblDanhSach" class="table table-bordered text-dark h6 text-center">
                         <thead>
                             <tr>
                                 <th>STT</th>

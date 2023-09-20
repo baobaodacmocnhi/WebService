@@ -168,6 +168,7 @@ namespace WSTanHoa.Models
         public string CreateBy { get; set; }
 
         [Display(Name = "Ngày tạo")]
+        [DataType(DataType.Date)]
         public DateTime CreateDate { get; set; }
 
         [Display(Name = "Người sửa")]

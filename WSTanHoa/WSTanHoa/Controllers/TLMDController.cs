@@ -130,19 +130,20 @@ namespace WSTanHoa.Controllers
             List<MThiCong> lst = new List<MThiCong>();
             string sql = "select CreateBy=(select Name from TLMD_User where TLMD_User.ID=thicong.CreateBy),ModifyBy=(select Name from TLMD_User where TLMD_User.ID=thicong.ModifyBy),thicong.*,DonViThiCong=donvithicong.Name,KetCau=ketcau.Name from TLMD_ThiCong thicong,TLMD_DonViThiCong donvithicong,TLMD_KetCau ketcau"
             + " where thicong.IDDonViThiCong=donvithicong.ID and thicong.IDKetCau=ketcau.ID";
-            if (form["radLoai"].ToString() == "radAll")
+            if (!form.AllKeys.Contains("radLoai") || form["radLoai"].ToString() == "radAll")
             {
                 sql += " and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
             }
             else
             if (form["radLoai"].ToString() == "radDaXuLy")
             {
-                sql += " and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
+                sql += " and cast((select top 1 CreateDate from TLMD_ThiCong_LichSu where IDThiCong=thicong.ID order by CreateDate desc) as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast((select top 1 CreateDate from TLMD_ThiCong_LichSu where IDThiCong=thicong.ID  order by CreateDate desc) as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'"
+                    + " and (select COUNT(*) from TLMD_ThiCong_LichSu where IDThiCong=thicong.ID)>0";
             }
             else
             if (form["radLoai"].ToString() == "radTon")
             {
-                sql += " and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
+                sql += " and (select COUNT(*) from TLMD_ThiCong_LichSu where IDThiCong=thicong.ID)=0";
             }
             if (bool.Parse(Session["Admin"].ToString()))
                 sql += "";
@@ -304,6 +305,38 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.log.Error("updateThiCong (ID=" + form["inputID"].ToString() + ") " + ex.Message);
             }
             return View();
+        }
+
+        public string getTimKiemThiCong(string NoiDungTimKiem)
+        {
+            List<MThiCong> lst = new List<MThiCong>();
+            string sql = "select CreateBy=(select Name from TLMD_User where TLMD_User.ID=thicong.CreateBy),ModifyBy=(select Name from TLMD_User where TLMD_User.ID=thicong.ModifyBy),thicong.*,DonViThiCong=donvithicong.Name,KetCau=ketcau.Name from TLMD_ThiCong thicong,TLMD_DonViThiCong donvithicong,TLMD_KetCau ketcau"
+            + " where thicong.IDDonViThiCong=donvithicong.ID and thicong.IDKetCau=ketcau.ID and (thicong.Name like N'%" + NoiDungTimKiem + "%' or thicong.DanhBo like N'%" + NoiDungTimKiem + "%' or thicong.DiemDau like N'%" + NoiDungTimKiem + "%' or thicong.DiemCuoi like N'%" + NoiDungTimKiem + "%' or thicong.TenDuong like N'%" + NoiDungTimKiem + "%')";
+            DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable(sql);
+            int STT = 1;
+            foreach (DataRow item in dt.Rows)
+            {
+                MThiCong en = new MThiCong();
+                en.STT = STT++;
+                en.ID = int.Parse(item["ID"].ToString());
+                en.Name = item["Name"].ToString();
+                en.DonViThiCong = item["DonViThiCong"].ToString();
+                en.KetCau = item["KetCau"].ToString();
+                en.DanhBo = item["DanhBo"].ToString();
+                en.DiemDau = item["DiemDau"].ToString();
+                en.DiemCuoi = item["DiemCuoi"].ToString();
+                en.TenDuong = item["TenDuong"].ToString();
+                DateTime date;
+                DateTime.TryParse(item["NgayBatDau"].ToString(), out date);
+                en.NgayBatDau = date;
+                en.CreateBy = item["CreateBy"].ToString();
+                en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
+                en.ModifyBy = item["ModifyBy"].ToString();
+                DateTime.TryParse(item["ModifyDate"].ToString(), out date);
+                en.ModifyDate = date;
+                lst.Add(en);
+            }
+            return CGlobalVariable.jsSerializer.Serialize(lst);
         }
 
         public ActionResult DonViThiCong()
