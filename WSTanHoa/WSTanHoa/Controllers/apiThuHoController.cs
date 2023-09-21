@@ -325,7 +325,7 @@ namespace WSTanHoa.Controllers
             try
             {
                 var transactionOptions = new TransactionOptions();
-                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadCommitted;
+                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                 using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                 {
                     int ID = (int)_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from TT_DichVuThuTong");

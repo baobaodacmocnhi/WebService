@@ -170,6 +170,7 @@ namespace WSTanHoa.Models
         [Display(Name = "Ngày tạo")]
         [DataType(DataType.Date)]
         public DateTime CreateDate { get; set; }
+        public string CreateDateW { get; set; }
 
         [Display(Name = "Người sửa")]
         public string ModifyBy { get; set; }
@@ -182,7 +183,7 @@ namespace WSTanHoa.Models
         public MThiCong()
         {
             STT = ID = 0;
-            Name = DanhBo = DiemDau = DiemCuoi = TenDuong = CreateBy = ModifyBy = "";
+            Name = DanhBo = DiemDau = DiemCuoi = TenDuong = CreateBy = CreateDateW = ModifyBy = "";
             NgayBatDau = ModifyDate = null;
             lstLichSu = new List<MThiCong_LichSu>();
         }

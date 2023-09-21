@@ -19,21 +19,21 @@
                 var items = '';
                 $.each(data, function (i, item) {
                     var rows = "<tr>"
-                                        +"<td>"+item.STT+"</td>"
-                                        +"<td>"+item.Name+"</td>"
-                                        +"<td>"+item.DanhBo+"</td>"
-                                        +"<td>"+item.DiemDau+"</td>"
-                                        +"<td>"+item.DiemCuoi+"</td>"
-                                        +"<td>"+item.TenDuong+"</td>"
-                                        +"<td>"+item.DonViThiCong+"</td>"
-                                        +"<td>"+item.KetCau+"</td>"
-                                        +"<td>"+item.CreateBy+"</td>"
-                                        +"<td>"+item.CreateDate+"</td>"
-                                        @*+"<td>"
-                                        +    "<a href='@Url.Action("updateThiCong", "TLMD", new { Loai = "viewUpdate", ID ="item.ID" })' class='btn btn-warning'>Sửa</a>"
-                                        +    "<a href='@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID =" item.ID" })' oncl onclick="return confirm('Bạn có chắc chắn?');' class='tn btn-danger'>Xóa</a>"
-                                        +"</td>"*@
-                                    +"</tr>";
+                                        + "<td>" + item.STT + "</td>"
+                                        + "<td>" + item.Name + "</td>"
+                                        + "<td>" + item.DanhBo + "</td>"
+                                        + "<td>" + item.DiemDau + "</td>"
+                                        + "<td>" + item.DiemCuoi + "</td>"
+                                        + "<td>" + item.TenDuong + "</td>"
+                                        + "<td>" + item.DonViThiCong + "</td>"
+                                        + "<td>" + item.KetCau + "</td>"
+                                        + "<td>" + item.CreateBy + "</td>"
+                                        + "<td>" + item.CreateDateW + "</td>"
+                                        + "<td>"
+                                        + "<a href='https://service.cskhtanhoa.com.vn/TLMD/updateThiCong/" + item.ID + "?Loai=viewUpdate' class='btn btn-warning'>Sửa</a>"
+                                        + "<a href='https://service.cskhtanhoa.com.vn/TLMD/updateThiCong/" + item.ID + "?Loai=delete' onclick='return confirm('Bạn có chắc chắn?');' class='btn btn-danger'>Xóa</a>"
+                                        + "</td>"
+                                    + "</tr>";
                     $("#tblDanhSach tbody").append(rows);
                 });
             },
@@ -129,7 +129,7 @@
                                         <td>@item.CreateDate</td>
                                         <td>
                                             <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "viewUpdate", ID = @item.ID })" class="btn btn-warning">Sửa</a>
-                                            <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID = @item.ID })" oncl onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>
+                                            <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID = @item.ID })" onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>
                                         </td>
                                     </tr>
                                 }

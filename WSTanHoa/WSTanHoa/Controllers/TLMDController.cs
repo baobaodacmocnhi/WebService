@@ -69,6 +69,28 @@ namespace WSTanHoa.Controllers
             return bool.Parse(dr[0][action].ToString());
         }
 
+        public bool checkUsersThiCong(string IDUser, string IDThiCong)
+        {
+            try
+            {
+                DataTable dtUser = _cDAL_TTKH.ExecuteQuery_DataTable("select ID,Admin,TruongPhong,IDPhong from TLMD_User where ID=" + IDUser);
+                DataTable dtUserCreateBy = _cDAL_TTKH.ExecuteQuery_DataTable("select ID,Admin,TruongPhong,IDPhong from TLMD_User where ID=(select CreateBy from TLMD_ThiCong where ID=" + IDThiCong + ")");
+                if (dtUser.Rows[0]["ID"].ToString() == dtUserCreateBy.Rows[0]["ID"].ToString())
+                    return true;
+                else
+                    if (dtUser.Rows[0]["IDPhong"].ToString() == dtUserCreateBy.Rows[0]["IDPhong"].ToString() && (bool.Parse(dtUser.Rows[0]["Admin"].ToString()) || bool.Parse(dtUser.Rows[0]["TruongPhong"].ToString())))
+                    return true;
+                else
+                    if (dtUser.Rows[0]["IDPhong"].ToString() != dtUserCreateBy.Rows[0]["IDPhong"].ToString() && bool.Parse(dtUser.Rows[0]["Admin"].ToString()))
+                    return true;
+                else
+                    return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         public string getTTKH(string DanhBo)
         {
             try
@@ -273,6 +295,8 @@ namespace WSTanHoa.Controllers
                 {
                     if (!checkRules("2", "Sua"))
                         return RedirectToAction("Denied");
+                    if (!checkUsersThiCong(Session["ID"].ToString(), form["inputID"].ToString()))
+                        return RedirectToAction("Denied");
                     string[] date = form["inputNgayBatDau"].ToString().Split(' ');
                     string[] NgayBatDaus = date[0].Split('/');
                     if (_cDAL_TTKH.ExecuteNonQuery("update TLMD_ThiCong set"
@@ -295,6 +319,8 @@ namespace WSTanHoa.Controllers
                 if (Loai == "delete")
                 {
                     if (!checkRules("2", "Xoa"))
+                        return RedirectToAction("Denied");
+                    if (!checkUsersThiCong(Session["ID"].ToString(), ID.Value.ToString()))
                         return RedirectToAction("Denied");
                     if (_cDAL_TTKH.ExecuteNonQuery("delete TLMD_ThiCong where ID=" + ID))
                         return RedirectToAction("ThiCong");
@@ -330,7 +356,7 @@ namespace WSTanHoa.Controllers
                 DateTime.TryParse(item["NgayBatDau"].ToString(), out date);
                 en.NgayBatDau = date;
                 en.CreateBy = item["CreateBy"].ToString();
-                en.CreateDate = DateTime.Parse(item["CreateDate"].ToString());
+                en.CreateDateW = DateTime.Parse(item["CreateDate"].ToString()).ToString("dd/MM/yyyy");
                 en.ModifyBy = item["ModifyBy"].ToString();
                 DateTime.TryParse(item["ModifyDate"].ToString(), out date);
                 en.ModifyDate = date;
