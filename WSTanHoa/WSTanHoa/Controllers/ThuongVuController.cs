@@ -47,7 +47,7 @@ namespace WSTanHoa.Controllers
             {
                 string NoiDung = "";
                 //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent + " order by CreateDate desc");
+                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent + " order by CreateDate desc");
                 if (dt != null && dt.Rows.Count > 0)
                     foreach (DataRow item in dt.Rows)
                     {
@@ -72,9 +72,9 @@ namespace WSTanHoa.Controllers
 
         private byte[] getFile(string TableName, string IDFileName, string IDFileContent)
         {
-            int count = (int)_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select count(*) from " + TableName + " where " + IDFileName + "=" + IDFileContent);
+            int count = (int)_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select count(*) from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent);
             if (count > 0)
-                return (byte[])_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select Hinh from " + TableName + " where " + IDFileName + "=" + IDFileContent);
+                return (byte[])_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select Hinh from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent);
             else
                 return null;
         }
