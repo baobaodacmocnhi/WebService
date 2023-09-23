@@ -47,14 +47,14 @@ namespace WSTanHoa.Controllers
             {
                 string NoiDung = "";
                 //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent + " order by CreateDate desc");
+                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent + " order by CreateDate asc");
                 if (dt != null && dt.Rows.Count > 0)
                     foreach (DataRow item in dt.Rows)
                     {
                         byte[] FileContent = _wsThuongVu.get_Hinh(TableName, IDFileContent, item["filename"].ToString());
                         if (item["filename"].ToString().ToLower().Contains(".pdf"))
                         {
-                            return viewFilePDF(FileContent);
+                          return  viewFilePDF(FileContent);
                         }
                         else
                         {
@@ -79,7 +79,7 @@ namespace WSTanHoa.Controllers
                 return null;
         }
 
-        public ActionResult viewFilePDF(byte[] File)
+        public FileContentResult viewFilePDF(byte[] File)
         {
             if (File != null && File.Length > 0)
             {

@@ -36,7 +36,7 @@ namespace WSTanHoa.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://server5:81/wsthuongvu.asmx")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://113.161.88.180:81/wsthuongvu.asmx")]
         public string WSTanHoa_wrThuongVu_wsThuongVu {
             get {
                 return ((string)(this["WSTanHoa_wrThuongVu_wsThuongVu"]));
