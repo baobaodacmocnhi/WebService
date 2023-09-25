@@ -1082,11 +1082,18 @@ namespace WSTanHoa.Controllers
                                 }
                             message += "\n  + Số tiền nước: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", int.Parse(item["TongCong"].ToString())) + " đồng";
                             if (TongCongNo > 0)
+                            {
                                 message += "\nTổng số tiền nước còn nợ: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo) + " đồng"
-                                        + hdTon;
-                            message += "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo + int.Parse(item["TongCong"].ToString())) + " đồng"
-                                    + "\n\nGhi chú: Quý khách thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này."
-                                    + getThongTinThanhToan();
+                                          + hdTon;
+                                message += "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo + int.Parse(item["TongCong"].ToString())) + " đồng"
+                                    + "\n\nGhi chú: Quý khách thanh toán gấp tiền nước, do nợ quá hạn. Nếu đã thanh toán vui lòng bỏ qua thông báo này.";
+                            }
+                            else
+                            {
+                                message += "\nTổng số tiền phải thanh toán: " + String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCongNo + int.Parse(item["TongCong"].ToString())) + " đồng"
+                                    + "\n\nGhi chú: Quý khách thanh toán trước ngày " + DateTime.Now.AddDays(3).ToString("dd/MM/yyyy") + ". Nếu đã thanh toán vui lòng bỏ qua thông báo này.";
+                            }
+                            message += getThongTinThanhToan();
                             strResponse = sendMessage(item["IDZalo"].ToString(), message);
                         }
                         catch (Exception ex)
