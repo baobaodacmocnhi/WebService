@@ -454,6 +454,7 @@ namespace WSSmartPhone
             _cThuTien.TinhTienNuoc(KhongApGiaGiam, ApGiaNuocCu, DieuChinhGia, GiaDieuChinh, DanhBo, Ky, Nam, TuNgay, DenNgay, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, ref  TienNuocNamCu, ref  ChiTietNamCu, ref  TienNuocNamMoi, ref  ChiTietNamMoi, ref  TieuThu_DieuChinhGia, ref  PhiBVMTNamCu, ref  ChiTietPhiBVMTNamCu, ref  PhiBVMTNamMoi, ref  ChiTietPhiBVMTNamMoi, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
         }
 
+        
 
     }
 }

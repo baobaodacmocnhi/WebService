@@ -114,5 +114,17 @@ namespace WSSmartPhone
         {
             return _cThuTien.get_FileinFolder_241(CGlobalVariable.pathHinh + FolderRoot, FolderLoai, FolderIDCT);
         }
+
+        //[WebMethod]
+        //public void testAdmin()
+        //{
+        //    CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        //    System.Data.DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select ID,MAKQDN,Hinh from [HOADON_TA].[dbo].[TT_KQDongNuoc_Hinh] where xuly=0 and Hinh is not null");
+        //    foreach (System.Data.DataRow item in dt.Rows)
+        //    {
+        //        if (_cThuTien.ghi_Hinh_241(CGlobalVariable.pathHinhTT, "DongNuoc", item["MAKQDN"].ToString(), item["ID"].ToString() + ".jpg", (byte[])item["Hinh"]))
+        //            _cDAL_DHN.ExecuteNonQuery("update [HOADON_TA].[dbo].[TT_KQDongNuoc_Hinh] set xuly=1 where id=" + item["ID"].ToString());
+        //    }
+        //}
     }
 }
