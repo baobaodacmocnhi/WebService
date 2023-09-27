@@ -273,6 +273,12 @@ namespace WSSmartPhone
             return _cThuTien.xoa_Folder_241(CGlobalVariable.pathHinhTT, FolderLoai, FolderIDCT);
         }
 
+        [WebMethod]
+        public string[] get_FileinFolder_ThuTien(string FolderLoai, string FolderIDCT)
+        {
+            return _cThuTien.get_FileinFolder_241(CGlobalVariable.pathHinhTT, FolderLoai, FolderIDCT);
+        }
+
         //tìm kiếm
         [WebMethod]
         public string GetDSTimKiem(string DanhBo)

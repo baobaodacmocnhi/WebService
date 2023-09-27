@@ -172,8 +172,8 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        a = "{\"username\":\"" + MST + "\",\"cmnd\":\"\",\"email\":\"" + Email + "\",\"mst\":\"" + MST + "\",\"sdt\":\"" + DienThoai + "\",\"signFrame\":[{\"x\":160,\"y\":180,\"w\":80,\"h\":70,\"page\":4}],\"ten\":\"" + HoTen + "\",\"tenToChuc\":\"\",\"userType\":\"BUSINESS\"}";
-                        content.Add(new StringContent("{\"username\":\"" + MST + "\",\"cmnd\":\"\",\"email\":\"" + Email + "\",\"mst\":\"" + MST + "\",\"sdt\":\"" + DienThoai + "\",\"signFrame\":[{\"x\":160,\"y\":180,\"w\":80,\"h\":70,\"page\":4}],\"ten\":\"" + HoTen + "\",\"tenToChuc\":\"\",\"userType\":\"BUSINESS\"}"), "customer");
+                        a = "{\"username\":\"" + MST + "\",\"cmnd\":\"\",\"email\":\"" + Email + "\",\"mst\":\"" + MST + "\",\"sdt\":\"" + DienThoai + "\",\"signFrame\":[{\"x\":160,\"y\":180,\"w\":80,\"h\":70,\"page\":4}],\"ten\":\"\",\"tenToChuc\":\"" + HoTen + "\",\"userType\":\"BUSINESS\"}";
+                        content.Add(new StringContent("{\"username\":\"" + MST + "\",\"cmnd\":\"\",\"email\":\"" + Email + "\",\"mst\":\"" + MST + "\",\"sdt\":\"" + DienThoai + "\",\"signFrame\":[{\"x\":160,\"y\":180,\"w\":80,\"h\":70,\"page\":4}],\"ten\":\"\",\"tenToChuc\":\"" + HoTen + "\",\"userType\":\"BUSINESS\"}"), "customer");
                     }
                     if (GanMoi)
                     {
@@ -440,6 +440,54 @@ namespace WSSmartPhone
                     }
                     else
                         strResponse = "Không có dữ liệu từ mã đơn";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return false;
+        }
+
+        public bool updateDoiTac(string CCCD, string Email, string DienThoai, string HoTen, string MST, string checksum, out string strResponse)
+        {
+            strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                    var client = new HttpClient();
+                    var request = new HttpRequestMessage();
+                    request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                    var content = new MultipartFormDataContent();
+                    if (MST == "")
+                    {
+                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "esolution-service/trusted-partners/consumer/");
+                        content.Add(new StringContent(CCCD), "username");
+                        content.Add(new StringContent(DienThoai), "sdt");
+                        content.Add(new StringContent(Email), "email");
+                        content.Add(new StringContent("{\"ten\":\"" + HoTen + "\",\"cmnd\":\"056186000169\",\"ngaySinh\":\"\",\"noiSinh\":\"\",\"gioiTinhId\":\"\",\"ngayCap\":\"\",\"noiCap\":\"\",\"dkhktt\":\"\",\"expiryDate\":\"\"}"), "info");
+                    }
+                    else
+                    {
+                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "esolution-service/trusted-partners/business/");
+                        content.Add(new StringContent("{\"username\":\"0310730359\",\"ten\":\"CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ NAVITECH\",\"sdt\":\"0918414848\",\"ngaySinh\":null,\"gioiTinhId\":null}"), "daiDien");
+                        content.Add(new StringContent("{\"maSoThue\":\"0310730359\",\"tenToChuc\":\"\",\"tenRutGon\":\"\",\"email\":\"thuhang@navitech.co\",\"tinhId\":null,\"huyenId\":null,\"xaId\":null,\"duong\":\"\",\"soNha\":\"\"}"), "toChuc");
+                    }
+                    request.Content = content;
+                    var response = client.SendAsync(request);
+                    var result = response.Result.Content.ReadAsStringAsync();
+                    var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    else
+                        strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
                 }
                 else
                     strResponse = "Sai checksum";
