@@ -1366,6 +1366,11 @@ namespace WSTanHoa.Controllers
                         + " union all"
                         + " select NoiDung=N'Thương Vụ bấm chì: '+CONVERT(varchar(10),NgayBC,103)+' '+CONVERT(varchar(10),NgayBC,108)"
                         + " ,NiemChi,MauSac,KhoaTu='false',KhoaKhac='false',NgayLap=NgayBC from KTKS_DonKH.dbo.BamChi_ChiTiet where DanhBo = '" + DanhBo + "'"
+                        + " union all"
+                        + " SELECT NoiDung = N'Thay ĐHN định kỳ: ' + CONVERT(varchar(10),[HCT_NGAYGAN], 103) + ' ' + CONVERT(varchar(10),[HCT_NGAYGAN], 108)"
+                        + " ,NiemChi =[HCT_CHIGOC],[HCT_MAUCHIGOC],KhoaTu='false',KhoaKhac='false',NgayLap=[HCT_NGAYGAN]"
+                        + " FROM[CAPNUOCTANHOA].[dbo].[TB_THAYDHN]"
+                        + " where DHN_DANHBO = '" + DanhBo + "'"
                         + " order by NgayLap desc";
             return _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
         }
