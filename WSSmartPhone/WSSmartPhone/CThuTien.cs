@@ -1340,7 +1340,7 @@ namespace WSSmartPhone
                             {
                                 string id = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end").ToString();
                                 string maqkdn = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN).ToString();
-                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values((),(),1,@Hinh," + CreateBy + ",getDate())";
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values(" + id + "," + maqkdn + ",1,@Hinh," + CreateBy + ",getDate())";
                                 command = new SqlCommand(sql_Hinh);
                                 command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMNs[i]);
                                 _cDAL_ThuTien.ExecuteNonQuery(command);
