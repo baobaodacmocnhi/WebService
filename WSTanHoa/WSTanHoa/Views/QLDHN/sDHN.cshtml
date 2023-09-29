@@ -346,14 +346,15 @@
                                 <input class="mt-2 form-control" type="text" id="Hour" name="Hour" placeholder="Giờ" autocomplete="off">không nhập giờ sẽ là đếm record
                             </div>
                             <div class="col-auto">
-                                <div class="row invisible">
+                                @*<div class="row invisible">
                                     <button type="submit" class="btn btn-success" onclick="updateDS_sDHN()">Get DS ĐHN</button>
                                 </div>
                                 <div class="row invisible">
                                     <button type="submit" class="btn btn-success mt-3" onclick="getChiSo_sDHN_Day_Back()">Get Chỉ Số</button>
-                                </div>
+                                </div>*@
                                 <div class="row">
-                                    <button type="submit" class="btn btn-primary mt-4" name="function" value="Excel">Excel</button>
+                                    <button type="submit" class="btn btn-primary mt-5" name="function" value="Excel">Excel</button>
+                                    <button type="submit" class="btn btn-primary mt-5 mx-4 invisible" name="function" value="ExcelGNKDT">Excel GNKDT</button>
                                 </div>
                             </div>
                         </div>

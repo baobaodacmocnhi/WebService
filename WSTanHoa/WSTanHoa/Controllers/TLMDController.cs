@@ -329,6 +329,7 @@ namespace WSTanHoa.Controllers
             catch (Exception ex)
             {
                 CGlobalVariable.log.Error("updateThiCong (ID=" + form["inputID"].ToString() + ") " + ex.Message);
+                ModelState.AddModelError("", "Lỗi updateThiCong (ID=" + form["inputID"].ToString() + ") " + ex.Message);
             }
             return View();
         }

@@ -272,12 +272,20 @@ namespace WSTanHoa.Controllers
                             + ",ThoiGiansDHN=(select ThoiGianCapNhat from"
                             + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) * -1 else datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) end"
                             + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DanhBo=ttkh.DanhBo order by diff)t1)"
+                            + " ,SignalCot19=''"
+                            + " ,SLMauTBCot20=(select count(*) from sDHN_LichSu_TCT where"
+                            + " sDHN_LichSu_TCT.ThoiGianCapNhat >= (select DATEADD(MONTH, -1, ThoiGianCapNhat) from"
+                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = 09), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) *-1 else datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) end"
+                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + ") and DanhBo = ttkh.DanhBo order by diff)t1) and"
+                            + " sDHN_LichSu_TCT.ThoiGianCapNhat <= (select ThoiGianCapNhat from"
+                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = 09), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) *-1 else datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) end"
+                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + ") and DanhBo = ttkh.DanhBo order by diff)t1) and DanhBo = ttkh.DanhBo)"
                             + " ,CanhBaosDHN=(select top 1"
                             + " + case when sum(CAST(CBNamCham AS INT)) > 0 then ' ; NC' + convert(varchar(1000), sum(CAST(CBNamCham AS INT)) / 24) + 'd' else '' end"
                             + " + case when sum(CAST(CBMoHop AS INT)) > 0 then ' ; PH' else '' end"
                             + " + case when sum(CAST(CBChayNguoc AS INT)) > 0 then ' ; CN' else '' end"
                             + " + case when sum(CAST(CBRoRi AS INT)) > 0 then ' ; RR' + convert(varchar(1000), sum(CAST(CBRoRi AS INT)) / 24) + 'd' else '' end"
-                            + " from sDHN_LichSu_TCT where YEAR(sDHN_LichSu_TCT.ThoiGianCapNhat) = 2023 and MONTH(sDHN_LichSu_TCT.ThoiGianCapNhat) = 2 and sDHN_LichSu_TCT.DanhBo = ttkh.DanhBo)";
+                            + " from sDHN_LichSu_TCT where YEAR(sDHN_LichSu_TCT.ThoiGianCapNhat) = " + KyHD[1] + " and MONTH(sDHN_LichSu_TCT.ThoiGianCapNhat) = " + KyHD[0] + " and sDHN_LichSu_TCT.DanhBo = ttkh.DanhBo)";
                     }
                 }
                 sql += " from sDHN_TCT sdhn,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
@@ -343,6 +351,67 @@ namespace WSTanHoa.Controllers
                 }
                 else
                     dt = _cDAL_sDHN.ExecuteQuery_DataTable(sql);
+                dt.TableName = "Sheet1";
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(dt);
+                    wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    wb.Style.Font.Bold = true;
+
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.ContentType = "application/vnd.ms-excel";
+                    Response.AddHeader("content-disposition", "attachment;filename= TanHoa.sDHN." + filename + ".xlsx");
+
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+                }
+            }
+            else
+                if (function == "ExcelGNKDT")
+            {
+                string filename = "";
+                string sql = "select ttkh.DanhBo,DiaChi=SoNha+' '+TenDuong,HoTen,MaDMA,CoDHN=CoDH,Hieu_DHTM,Loai_DHTM,SoThanDH,KieuPhatSong,IDLogger"
+                    + ",DVLAPDAT,NHA_CCDHN,NHA_TICHHOP,XUATXU,NGAYKIEMDINH = CONVERT(varchar(10), NGAYKIEMDINH, 103),NGAYTHAY = CONVERT(varchar(10), NGAYTHAY, 103),NamLapDat=year(ttkh.NgayThay)";
+                {
+                    string[] KyHDs = collection["KyHD"].ToString().Split(';');
+                    foreach (string item in KyHDs)
+                    {
+                        string[] KyHD = item.Split('/');
+                        sql += ",CSDocSo=(select CSMoi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
+                            + ",ThoiGianDocSo=(select GioGhi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
+                            + ",CSsDHN=(select ChiSo from"
+                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) * -1 else datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) end"
+                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DanhBo=ttkh.DanhBo order by diff)t1)"
+                            + ",ThoiGiansDHN=(select ThoiGianCapNhat from"
+                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) * -1 else datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) end"
+                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DanhBo=ttkh.DanhBo order by diff)t1)"
+                            + " ,SignalCot19=''"
+                            + " ,SLMauTBCot20=(select count(*) from sDHN_LichSu_TCT where"
+                            + " sDHN_LichSu_TCT.ThoiGianCapNhat >= (select DATEADD(MONTH, -1, ThoiGianCapNhat) from"
+                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = 09), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) *-1 else datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) end"
+                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + ") and DanhBo = ttkh.DanhBo order by diff)t1) and"
+                            + " sDHN_LichSu_TCT.ThoiGianCapNhat <= (select ThoiGianCapNhat from"
+                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = 09), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) *-1 else datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) end"
+                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + ") and DanhBo = ttkh.DanhBo order by diff)t1) and DanhBo = ttkh.DanhBo)"
+                            + " ,CanhBaosDHN=(select top 1"
+                            + " + case when sum(CAST(CBNamCham AS INT)) > 0 then ' ; NC' + convert(varchar(1000), sum(CAST(CBNamCham AS INT)) / 24) + 'd' else '' end"
+                            + " + case when sum(CAST(CBMoHop AS INT)) > 0 then ' ; PH' else '' end"
+                            + " + case when sum(CAST(CBChayNguoc AS INT)) > 0 then ' ; CN' else '' end"
+                            + " + case when sum(CAST(CBRoRi AS INT)) > 0 then ' ; RR' + convert(varchar(1000), sum(CAST(CBRoRi AS INT)) / 24) + 'd' else '' end"
+                            + " from sDHN_LichSu_TCT where YEAR(sDHN_LichSu_TCT.ThoiGianCapNhat) = " + KyHD[1] + " and MONTH(sDHN_LichSu_TCT.ThoiGianCapNhat) = " + KyHD[0] + " and sDHN_LichSu_TCT.DanhBo = ttkh.DanhBo)";
+                    }
+                }
+                sql += " from sDHN_TCT sdhn,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+                    + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo=ttkh.DANHBO";
+                dt = _cDAL_sDHN.ExecuteQuery_DataTable(sql);
                 dt.TableName = "Sheet1";
                 using (XLWorkbook wb = new XLWorkbook())
                 {
