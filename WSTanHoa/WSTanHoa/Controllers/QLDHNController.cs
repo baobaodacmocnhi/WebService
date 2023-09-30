@@ -18,9 +18,9 @@ namespace WSTanHoa.Controllers
 {
     public class QLDHNController : Controller
     {
-        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
-        private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
+        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
+        private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
         private apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
         private wrDHN.wsDHN _wsDHN = new wrDHN.wsDHN();
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
@@ -378,39 +378,28 @@ namespace WSTanHoa.Controllers
                 if (function == "ExcelGNKDT")
             {
                 string filename = "";
-                string sql = "select ttkh.DanhBo,DiaChi=SoNha+' '+TenDuong,HoTen,MaDMA,CoDHN=CoDH,Hieu_DHTM,Loai_DHTM,SoThanDH,KieuPhatSong,IDLogger"
-                    + ",DVLAPDAT,NHA_CCDHN,NHA_TICHHOP,XUATXU,NGAYKIEMDINH = CONVERT(varchar(10), NGAYKIEMDINH, 103),NGAYTHAY = CONVERT(varchar(10), NGAYTHAY, 103),NamLapDat=year(ttkh.NgayThay)";
-                {
-                    string[] KyHDs = collection["KyHD"].ToString().Split(';');
-                    foreach (string item in KyHDs)
-                    {
-                        string[] KyHD = item.Split('/');
-                        sql += ",CSDocSo=(select CSMoi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
-                            + ",ThoiGianDocSo=(select GioGhi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
-                            + ",CSsDHN=(select ChiSo from"
-                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) * -1 else datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) end"
-                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DanhBo=ttkh.DanhBo order by diff)t1)"
-                            + ",ThoiGiansDHN=(select ThoiGianCapNhat from"
-                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) * -1 else datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) end"
-                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ") and DanhBo=ttkh.DanhBo order by diff)t1)"
-                            + " ,SignalCot19=''"
-                            + " ,SLMauTBCot20=(select count(*) from sDHN_LichSu_TCT where"
-                            + " sDHN_LichSu_TCT.ThoiGianCapNhat >= (select DATEADD(MONTH, -1, ThoiGianCapNhat) from"
-                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = 09), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) *-1 else datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) end"
-                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + ") and DanhBo = ttkh.DanhBo order by diff)t1) and"
-                            + " sDHN_LichSu_TCT.ThoiGianCapNhat <= (select ThoiGianCapNhat from"
-                            + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = 09), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) *-1 else datediff(SECOND, (select convert(varchar(20), GioGhi, 120) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + "), ThoiGianCapNhat) end"
-                            + " , ChiSo, ThoiGianCapNhat from sDHN_LichSu_TCT where CAST(ThoiGianCapNhat as date) = (select cast(GioGhi as date) from DocSoTH.dbo.DocSo where danhba = sdhn.DanhBo and nam = " + KyHD[1] + " and ky = " + KyHD[0] + ") and DanhBo = ttkh.DanhBo order by diff)t1) and DanhBo = ttkh.DanhBo)"
-                            + " ,CanhBaosDHN=(select top 1"
-                            + " + case when sum(CAST(CBNamCham AS INT)) > 0 then ' ; NC' + convert(varchar(1000), sum(CAST(CBNamCham AS INT)) / 24) + 'd' else '' end"
-                            + " + case when sum(CAST(CBMoHop AS INT)) > 0 then ' ; PH' else '' end"
-                            + " + case when sum(CAST(CBChayNguoc AS INT)) > 0 then ' ; CN' else '' end"
-                            + " + case when sum(CAST(CBRoRi AS INT)) > 0 then ' ; RR' + convert(varchar(1000), sum(CAST(CBRoRi AS INT)) / 24) + 'd' else '' end"
-                            + " from sDHN_LichSu_TCT where YEAR(sDHN_LichSu_TCT.ThoiGianCapNhat) = " + KyHD[1] + " and MONTH(sDHN_LichSu_TCT.ThoiGianCapNhat) = " + KyHD[0] + " and sDHN_LichSu_TCT.DanhBo = ttkh.DanhBo)";
-                    }
-                }
-                sql += " from sDHN_TCT sdhn,[DHTM_THONGTIN] ttdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
-                    + " where Valid=1 and sdhn.IDNCC=ttdhn.ID and sdhn.DanhBo=ttkh.DANHBO";
+                string sql = "";
+                string[] fromdatestr = collection["TuNgay"].ToString().Split('/');
+                DateTime fromdate = new DateTime(int.Parse(fromdatestr[2]), int.Parse(fromdatestr[1]), int.Parse(fromdatestr[0]));
+                string[] todatestr = collection["DenNgay"].ToString().Split('/');
+//                select t1.*from
+//(select ttkh.MADMA, ttkh.DANHBO
+//, CSC = (select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo = ttkh.DanhBo and cast(ThoiGianCapNhat as date) = '20230928' order by ThoiGianCapNhat asc)
+//,CSM = (select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo = ttkh.DanhBo and cast(ThoiGianCapNhat as date) = '20230929' order by ThoiGianCapNhat desc)
+//from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG]
+//        ttkh where Valid=1 and sdhn.DanhBo=ttkh.DANHBO and ttkh.MADMA= 'TH-11-08')t1
+//where CSM<CSC
+//--group by t1.MADMA
+//--order by t1.MADMA
+
+
+//select ttkh.MADMA
+//, CSC=(select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)='20230928' order by ThoiGianCapNhat asc)
+//, CSM = (select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)='20230929' order by ThoiGianCapNhat desc)
+//from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG]
+//        ttkh where Valid=1 and sdhn.DanhBo=ttkh.DANHBO
+
+//select * from sDHN_LichSu_TCT where DanhBo = '13222899754' and cast(ThoiGianCapNhat as date)>='20230928' and cast(ThoiGianCapNhat as date)<='20230929'
                 dt = _cDAL_sDHN.ExecuteQuery_DataTable(sql);
                 dt.TableName = "Sheet1";
                 using (XLWorkbook wb = new XLWorkbook())
