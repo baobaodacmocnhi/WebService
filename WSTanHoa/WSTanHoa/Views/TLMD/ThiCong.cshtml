@@ -1,6 +1,6 @@
 ﻿@model List<WSTanHoa.Models.MThiCong>
 @{
-    ViewBag.Title = "Thi Công";
+    ViewBag.Title = "Điểm Tái Lập";
 }
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -43,101 +43,99 @@
         });
     }
 </script>
-<div class="">
-    @using (Html.BeginForm("ThiCong", "TLMD", FormMethod.Post))
-    {
-        <div class="card shadow mb-4">
-            <!-- Card Header - Dropdown -->
-            <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <div class=""><h6 class="m-0 font-weight-bold text-primary">Danh Sách Thi Công</h6></div>
-                <div class=""><input class="form-control" type="text" id="NoiDungTimKiem" name="NoiDungTimKiem" placeholder="Nội dung tìm kiếm" onkeyup="TimKiem()"></div>
-                <a href="@Url.Action("updateThiCong","TLMD")" class="btn btn-primary text-end">Thêm mới</a>
-            </div>
+@using (Html.BeginForm("ThiCong", "TLMD", FormMethod.Post))
+{
+    <div class="card shadow mb-4">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <div class=""><h6 class="m-0 font-weight-bold text-primary">Danh Sách Thi Công</h6></div>
+            <div class=""><input class="form-control" type="text" id="NoiDungTimKiem" name="NoiDungTimKiem" placeholder="Nội dung tìm kiếm" onkeyup="TimKiem()"></div>
+            <a href="@Url.Action("updateThiCong","TLMD")" class="btn btn-primary text-end">Thêm mới</a>
+        </div>
 
-            <!-- Card Body -->
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-auto">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radLoai" value="radAll" checked="checked">
-                            <label class="form-check-label" for="radAll">
-                                Tất Cả
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radLoai" value="radDaXuLy">
-                            <label class="form-check-label" for="radDaXuLy">
-                                Đã Xử Lý
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="radLoai" value="radTon">
-                            <label class="form-check-label" for="radTon">
-                                Tồn (Không cần thời gian)
-                            </label>
-                        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+            <div class="row">
+                <div class="col-auto">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radLoai" value="radAll" checked="checked">
+                        <label class="form-check-label" for="radAll">
+                            Tất Cả
+                        </label>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-auto">
-                        <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" value="@ViewBag.TuNgay" autocomplete="off" onchange="">
-                    </div>
-                    <div class="col-auto">
-                        <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" value="@ViewBag.DenNgay" autocomplete="off">
-                    </div>
-                    <div class="col-auto">
-                        @*<a href="@Url.Action("ThiCong","TLMD")" class="btn btn-primary">Xem</a>*@
-                        <button type="submit" name="action" value="login" class="btn btn-primary">Xem</button>
+                <div class="col-auto">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radLoai" value="radDaXuLy">
+                        <label class="form-check-label" for="radDaXuLy">
+                            Đã Xử Lý
+                        </label>
                     </div>
                 </div>
-                <div class="table-responsive mt-2">
-                    <table id="tblDanhSach" class="table table-bordered text-dark h6 text-center">
-                        <thead>
-                            <tr>
-                                <th>STT</th>
-                                <th>Dự án/Điểm bể</th>
-                                <th>Danh bộ</th>
-                                <th>Điểm đầu</th>
-                                <th>Điểm cuối</th>
-                                <th>Tên đường</th>
-                                <th>Đơn vị thi công</th>
-                                <th>Kết cấu</th>
-                                <th>Người tạo</th>
-                                <th>Ngày tạo</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model != null)
+                <div class="col-auto">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radLoai" value="radTon">
+                        <label class="form-check-label" for="radTon">
+                            Tồn (Không cần thời gian)
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-auto">
+                    <input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" value="@ViewBag.TuNgay" autocomplete="off">
+                </div>
+                <div class="col-auto">
+                    <input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" value="@ViewBag.DenNgay" autocomplete="off">
+                </div>
+                <div class="col-auto">
+                    @*<a href="@Url.Action("ThiCong","TLMD")" class="btn btn-primary">Xem</a>*@
+                    <button type="submit" name="action" value="login" class="btn btn-primary">Xem</button>
+                </div>
+            </div>
+            <div class="table-responsive mt-2">
+                <table id="tblDanhSach" class="table table-bordered text-dark h6 text-center">
+                    <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th>Dự án/Điểm bể</th>
+                            <th>Danh bộ</th>
+                            <th>Điểm đầu</th>
+                            <th>Điểm cuối</th>
+                            <th>Tên đường</th>
+                            <th>Đơn vị thi công</th>
+                            <th>Kết cấu</th>
+                            <th>Người tạo</th>
+                            <th>Ngày tạo</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
                             {
-                                foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>@item.STT</td>
-                                        <td>@item.Name</td>
-                                        <td>@item.DanhBo</td>
-                                        <td>@item.DiemDau</td>
-                                        <td>@item.DiemCuoi</td>
-                                        <td>@item.TenDuong</td>
-                                        <td>@item.DonViThiCong</td>
-                                        <td>@item.KetCau</td>
-                                        <td>@item.CreateBy</td>
-                                        <td>@item.CreateDate</td>
-                                        <td>
-                                            <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "viewUpdate", ID = @item.ID })" class="btn btn-warning">Sửa</a>
-                                            <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID = @item.ID })" onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>
-                                        </td>
-                                    </tr>
-                                }
+                                <tr>
+                                    <td>@item.STT</td>
+                                    <td>@item.Name</td>
+                                    <td>@item.DanhBo</td>
+                                    <td>@item.DiemDau</td>
+                                    <td>@item.DiemCuoi</td>
+                                    <td>@item.TenDuong</td>
+                                    <td>@item.DonViThiCong</td>
+                                    <td>@item.KetCau</td>
+                                    <td>@item.CreateBy</td>
+                                    <td>@item.CreateDate</td>
+                                    <td>
+                                        <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "viewUpdate", ID = @item.ID })" class="btn btn-warning">Sửa</a>
+                                        <a href="@Url.Action("updateThiCong", "TLMD", new { Loai = "delete", ID = @item.ID })" onclick="return confirm('Bạn có chắc chắn?');" class="btn btn-danger">Xóa</a>
+                                    </td>
+                                </tr>
                             }
-                        </tbody>
-                    </table>
-                </div>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-    }
-</div>
+    </div>
+}

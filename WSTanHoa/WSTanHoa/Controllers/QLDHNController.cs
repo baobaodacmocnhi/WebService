@@ -18,9 +18,9 @@ namespace WSTanHoa.Controllers
 {
     public class QLDHNController : Controller
     {
-        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
-        private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSoWFH);
-        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
+        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
         private apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
         private wrDHN.wsDHN _wsDHN = new wrDHN.wsDHN();
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();

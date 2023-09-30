@@ -11,7 +11,7 @@ namespace WSTanHoa.Controllers
 {
     public class TLMDController : Controller
     {
-        private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
+        private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHangWFH);
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: TLMD
@@ -479,6 +479,65 @@ namespace WSTanHoa.Controllers
         public ActionResult Denied()
         {
             return View();
+        }
+
+        public ActionResult BaoCao(FormCollection form)
+        {
+            if (Session["ID"] == null)
+            {
+                Session["Url"] = Request.Url;
+                return RedirectToAction("DangNhap");
+            }
+            if (!checkRules("2", "Xem"))
+                return RedirectToAction("Denied");
+            if (form.AllKeys.Contains("TuNgay"))
+            {
+                Session["TuNgay"] = form["TuNgay"].ToString();
+                Session["DenNgay"] = form["DenNgay"].ToString();
+            }
+            else
+                if (Session["TuNgay"] == null)
+                Session["TuNgay"] = Session["DenNgay"] = DateTime.Now.ToString("dd/MM/yyyy");
+            ViewBag.TuNgay = Session["TuNgay"];
+            ViewBag.DenNgay = Session["DenNgay"];
+            string[] dateTus = Session["TuNgay"].ToString().Split('/');
+            string[] dateDens = Session["DenNgay"].ToString().Split('/');
+            List<MView> lst = new List<MView>();
+            string sql = "declare @TuNgay date='" + dateTus[2] + dateTus[1] + dateTus[0] + "', @DenNgay date='" + dateDens[2] + dateDens[1] + dateDens[0] + "'"
+                + " select STT=1,TieuDe=N'Phát sinh',SoLuong=COUNT(ID) from TLMD_ThiCong where CAST(CreateDate as date)>=@TuNgay and CAST(CreateDate as date)<=@DenNgay"
++ " union all"
++ " select STT = 2, TieuDe = N'Đã tái lập đúng hạn',SoLuong = COUNT(a.ID) from TLMD_ThiCong a,TLMD_ThiCong_LichSu b"
++ " where CAST(a.CreateDate as date) >= @TuNgay and CAST(a.CreateDate as date) <= @DenNgay and a.ID = b.IDThiCong"
++ " and CAST(a.NgayBatDau as date) >= CAST(DATEADD(DAY, -1, b.CreateDate) as date) and b.TroNgaiThiCong like ''"
++ " union all"
++ " select STT = 3, TieuDe = N'Đã tái lập quá hạn', SoLuong = COUNT(a.ID) from TLMD_ThiCong a, TLMD_ThiCong_LichSu b"
++ " where CAST(a.CreateDate as date) >= @TuNgay and CAST(a.CreateDate as date) <= @DenNgay and a.ID = b.IDThiCong"
++ " and CAST(a.NgayBatDau as date) < CAST(DATEADD(DAY, -1, b.CreateDate) as date) and b.TroNgaiThiCong like ''"
++ " union all"
++ " select STT = 4, TieuDe = N'Trở ngại tái lập', SoLuong = COUNT(a.ID) from TLMD_ThiCong a, TLMD_ThiCong_LichSu b"
++ " where CAST(a.CreateDate as date) >= @TuNgay and CAST(a.CreateDate as date) <= @DenNgay and a.ID = b.IDThiCong"
++ " and b.TroNgaiThiCong not like ''"
++ " union all"
++ " select STT = 5, TieuDe = N'Đã nghiệm thu', SoLuong = COUNT(a.ID) from TLMD_ThiCong a, TLMD_ThiCong_LichSu b"
++ " where CAST(a.CreateDate as date) >= @TuNgay and CAST(a.CreateDate as date) <= @DenNgay and a.ID = b.IDThiCong"
++ " and b.NgayNghiemThu is not null and b.TroNgaiNghiemThu like ''"
++ " union all"
++ " select STT = 6, TieuDe = N'Trở ngại nghiệm thu', SoLuong = COUNT(a.ID) from TLMD_ThiCong a, TLMD_ThiCong_LichSu b"
++ " where CAST(a.CreateDate as date) >= @TuNgay and CAST(a.CreateDate as date) <= @DenNgay and a.ID = b.IDThiCong"
++ " and b.NgayNghiemThu is null and b.TroNgaiNghiemThu not like ''"
++ " union all"
++ " select STT = 7, TieuDe = N'Tồn', SoLuong = COUNT(a.ID) from TLMD_ThiCong a"
++ " where CAST(a.CreateDate as date) >= @TuNgay and CAST(a.CreateDate as date) <= @DenNgay"
++ " and a.ID not in (select IDThiCong from TLMD_ThiCong_LichSu)";
+            DataTable dt = _cDAL_TTKH.ExecuteQuery_DataTable(sql);
+            foreach (DataRow item in dt.Rows)
+            {
+                MView en = new MView();
+                en.TieuDe = item["TieuDe"].ToString();
+                en.SoLuong = item["SoLuong"].ToString();
+                lst.Add(en);
+            }
+            return View(lst);
         }
 
     }
