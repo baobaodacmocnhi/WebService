@@ -378,28 +378,16 @@ namespace WSTanHoa.Controllers
                 if (function == "ExcelGNKDT")
             {
                 string filename = "";
-                string sql = "";
                 string[] fromdatestr = collection["TuNgay"].ToString().Split('/');
                 DateTime fromdate = new DateTime(int.Parse(fromdatestr[2]), int.Parse(fromdatestr[1]), int.Parse(fromdatestr[0]));
                 string[] todatestr = collection["DenNgay"].ToString().Split('/');
-//                select t1.*from
-//(select ttkh.MADMA, ttkh.DANHBO
-//, CSC = (select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo = ttkh.DanhBo and cast(ThoiGianCapNhat as date) = '20230928' order by ThoiGianCapNhat asc)
-//,CSM = (select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo = ttkh.DanhBo and cast(ThoiGianCapNhat as date) = '20230929' order by ThoiGianCapNhat desc)
-//from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG]
-//        ttkh where Valid=1 and sdhn.DanhBo=ttkh.DANHBO and ttkh.MADMA= 'TH-11-08')t1
-//where CSM<CSC
-//--group by t1.MADMA
-//--order by t1.MADMA
-
-
-//select ttkh.MADMA
-//, CSC=(select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)='20230928' order by ThoiGianCapNhat asc)
-//, CSM = (select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo=ttkh.DanhBo and cast(ThoiGianCapNhat as date)='20230929' order by ThoiGianCapNhat desc)
-//from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG]
-//        ttkh where Valid=1 and sdhn.DanhBo=ttkh.DANHBO
-
-//select * from sDHN_LichSu_TCT where DanhBo = '13222899754' and cast(ThoiGianCapNhat as date)>='20230928' and cast(ThoiGianCapNhat as date)<='20230929'
+                DateTime todate = new DateTime(int.Parse(todatestr[2]), int.Parse(todatestr[1]), int.Parse(todatestr[0]));
+                string sql = "select t1.MADMA,t1.DANHBO,'" + collection["TuNgay"].ToString() + "'=t1.CSC,'" + collection["DenNgay"].ToString() + "'=t1.CSM,TieuThu=t1.CSM-t1.CSC from"
+                        + " (select ttkh.MADMA, ttkh.DANHBO"
+                        + " , CSC = (select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo = ttkh.DanhBo and cast(ThoiGianCapNhat as date) = '" + fromdate.ToString("yyyyMMdd") + "' order by ThoiGianCapNhat asc)"
+                        + " , CSM = (select top 1 ChiSo from sDHN_LichSu_TCT where DanhBo = ttkh.DanhBo and cast(ThoiGianCapNhat as date) = '" + todate.ToString("yyyyMMdd") + "' order by ThoiGianCapNhat desc)"
+                        + " from sDHN_TCT sdhn,[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG]"
+                        + " ttkh where Valid=1 and sdhn.DanhBo=ttkh.DANHBO) t1 order by t1.MADMA";
                 dt = _cDAL_sDHN.ExecuteQuery_DataTable(sql);
                 dt.TableName = "Sheet1";
                 using (XLWorkbook wb = new XLWorkbook())
