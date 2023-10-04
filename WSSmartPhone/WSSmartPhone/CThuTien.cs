@@ -3999,7 +3999,7 @@ namespace WSSmartPhone
                                                         hd.CSC = (int.Parse(ChiSo) - hd.TieuThu).ToString();
                                     }
                                     hd.TongCong = hd.TienNuoc + hd.ThueGTGT + hd.PhiBVMT + hd.PhiBVMT_Thue;
-                                    string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
+                                    string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN2023 where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + hd.TieuThu
                                         + ",TienNuoc=" + hd.TienNuoc + ",Thue=" + hd.ThueGTGT + ",BVMT=" + hd.PhiBVMT + ",BVMT_Thue=" + hd.PhiBVMT_Thue + ",TongTien=" + hd.TongCong
                                         + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi=getdate(),Latitude='" + Latitude + "',Longitude='" + Longitude + "' where DocSoID='" + ID + "'";
                                     success = _cDAL_DocSo.ExecuteNonQuery(sql);
@@ -4081,7 +4081,7 @@ namespace WSSmartPhone
                             }
                             IFormatProvider culture = new CultureInfo("en-US", true);
                             DateTime date = DateTime.ParseExact(NgayDS, "dd/MM/yyyy HH:mm:ss", culture);
-                            string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
+                            string sql = "update DocSo set CodeMoi=N'" + Code + "',TTDHNMoi=(select TTDHN from TTDHN2023 where Code='" + Code + "'),CSMoi=" + ChiSo + ",TieuThuMoi=" + TieuThu
                                 + ",TienNuoc=" + TienNuoc + ",Thue=" + ThueGTGT + ",BVMT=" + PhiBVMT + ",BVMT_Thue=" + PhiBVMT_Thue + ",TongTien=" + TongCong
                                 + ",NVCapNhat=N'" + MaNV + "',NgayCapNhat=getdate(),GioGhi='" + date.ToString("yyyyMMdd HH:mm:ss") + "',Latitude='" + Latitude + "',Longitude='" + Longitude + "' where DocSoID='" + ID + "'";
                             result.success = _cDAL_DocSo.ExecuteNonQuery(sql);
