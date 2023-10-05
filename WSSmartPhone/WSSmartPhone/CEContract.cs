@@ -211,7 +211,14 @@ namespace WSSmartPhone
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                     if (response.Result.IsSuccessStatusCode)
                     {
-                        _cDAL_TTKH.ExecuteNonQuery("insert into Zalo_EContract_ChiTiet(DienThoai,IDEContract,DanhBo,MaDon,SHS)values('" + DienThoai + "','" + obj["object"]["contractId"] + "','" + DanhBo + "','" + MaDon + "','" + SHS + "')");
+                        string username = "";
+                        if (CaNhan)
+                            username = CCCD;
+                        else
+                            username = MST;
+                        _cDAL_TTKH.ExecuteNonQuery("insert into Zalo_EContract_ChiTiet(DienThoai,IDEContract,DanhBo,MaDon,SHS)values('" + DienThoai + "','" + obj["object"]["contractId"] + "','" + DanhBo + "','" + MaDon + "','" + SHS + "')"
+                            + " if not exists (select * from Zalo_EContract_User where Username='" + username + "' and UserID='" + obj["object"]["partnerId"] + "') insert into Zalo_EContract_User(Username,UserID)values('" + username + "','" + obj["object"]["partnerId"] + "')");
+
                         return true;
                     }
                     else
