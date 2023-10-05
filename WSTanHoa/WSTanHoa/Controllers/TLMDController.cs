@@ -11,7 +11,7 @@ namespace WSTanHoa.Controllers
 {
     public class TLMDController : Controller
     {
-        private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHangWFH);
+        private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: TLMD

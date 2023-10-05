@@ -35,7 +35,15 @@
             </div>
             <div class="form-check mt-3">
                 <label for="inputActive" class="form-label">@Html.DisplayNameFor(model => model.Active)</label>
-                <input type="checkbox" class="form-control" name="inputActive" checked="@Model.Active" />
+                @if (Model == null || Model.ID <= 0)
+                {
+                    <input type="checkbox" class="form-control" name="inputActive" value="true" checked/>
+                }
+                else
+                {
+                    <input type="checkbox" class="form-control" name="inputActive" value="true" @(Model.Active ? "checked=\"checked\"" : "") />
+                }
+                
             </div>
         </div>
         <div class="row">

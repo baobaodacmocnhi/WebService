@@ -117,6 +117,7 @@ namespace WSTanHoa.Models
             STT = ID = 0;
             Name = DaiDien = DienThoai = Username = Password = CreateBy = ModifyBy = "";
             ModifyDate = null;
+            Active = true;
         }
     }
 
