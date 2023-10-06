@@ -14,7 +14,7 @@ namespace WSSmartPhone
     public class CEContract
     {
         private string urlApi = "https://api-econtract.cskhtanhoa.com.vn:1443";
-        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKHWFH);
+        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
 
         private string getAccess_token()
         {
@@ -41,6 +41,15 @@ namespace WSSmartPhone
                         client_id = "tanhoa.client@econtract.vnpt.vn",
                         client_secret = "C29XWd2bDhsz9jB9h8lq5WOPmw3kS2O0"
                     };
+                    //var data = new
+                    //{
+                    //    domain = "econtract.cskhtanhoa.com.vn",
+                    //    username = "admintanhoa",
+                    //    password = "Abc@12345",
+                    //    grant_type = "password",
+                    //    client_id = "tanhoa.client@econtract.vnpt.vn",
+                    //    client_secret = "C29XWd2bDhsz9jB9h8lq5WOPmw3kS2O0"
+                    //};
                     var json = CGlobalVariable.jsSerializer.Serialize(data);
                     Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                     request.ContentLength = byteArray.Length;
