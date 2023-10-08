@@ -482,17 +482,19 @@ namespace WSSmartPhone
                     var content = new MultipartFormDataContent();
                     if (MST == "")
                     {
-                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "esolution-service/trusted-partners/consumer/");
+                        string UserID = _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select UserID from Zalo_EContract_User where Username='" + CCCD + "'").ToString();
+                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "esolution-service/trusted-partners/consumer/" + UserID);
                         content.Add(new StringContent(CCCD), "username");
                         content.Add(new StringContent(DienThoai), "sdt");
                         content.Add(new StringContent(Email), "email");
-                        content.Add(new StringContent("{\"ten\":\"" + HoTen + "\",\"cmnd\":\"056186000169\",\"ngaySinh\":\"\",\"noiSinh\":\"\",\"gioiTinhId\":\"\",\"ngayCap\":\"\",\"noiCap\":\"\",\"dkhktt\":\"\",\"expiryDate\":\"\"}"), "info");
+                        content.Add(new StringContent("{\"ten\":\"" + HoTen + "\",\"cmnd\":\"" + CCCD + "\",\"ngaySinh\":\"\",\"noiSinh\":\"\",\"gioiTinhId\":\"\",\"ngayCap\":\"\",\"noiCap\":\"\",\"dkhktt\":\"\",\"expiryDate\":\"\"}"), "info");
                     }
                     else
                     {
-                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "esolution-service/trusted-partners/business/");
-                        content.Add(new StringContent("{\"username\":\"0310730359\",\"ten\":\"CÔNG TY TNHH THƯƠNG MẠI DỊCH VỤ NAVITECH\",\"sdt\":\"0918414848\",\"ngaySinh\":null,\"gioiTinhId\":null}"), "daiDien");
-                        content.Add(new StringContent("{\"maSoThue\":\"0310730359\",\"tenToChuc\":\"\",\"tenRutGon\":\"\",\"email\":\"thuhang@navitech.co\",\"tinhId\":null,\"huyenId\":null,\"xaId\":null,\"duong\":\"\",\"soNha\":\"\"}"), "toChuc");
+                        string UserID = _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select UserID from Zalo_EContract_User where Username='" + MST + "'").ToString();
+                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "esolution-service/trusted-partners/business/" + UserID);
+                        content.Add(new StringContent("{\"username\":\"" + MST + "\",\"ten\":\"\",\"sdt\":\"" + DienThoai + "\",\"ngaySinh\":null,\"gioiTinhId\":null}"), "daiDien");
+                        content.Add(new StringContent("{\"maSoThue\":\"" + MST + "\",\"tenToChuc\":\"" + HoTen + "\",\"tenRutGon\":\"\",\"email\":\"" + Email + "\",\"tinhId\":null,\"huyenId\":null,\"xaId\":null,\"duong\":\"\",\"soNha\":\"\"}"), "toChuc");
                     }
                     request.Content = content;
                     var response = client.SendAsync(request);
