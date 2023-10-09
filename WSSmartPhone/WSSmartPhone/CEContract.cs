@@ -16,9 +16,14 @@ namespace WSSmartPhone
         private string urlApi = "https://api-econtract.cskhtanhoa.com.vn:1443";
         CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
 
-        private string getAccess_token()
+        private string getAccess_tokenClient()
         {
-            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='econtract'").ToString();
+            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='econtractclient'").ToString();
+        }
+
+        private string getAccess_tokenUser()
+        {
+            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='econtractuser'").ToString();
         }
 
         public bool getAccess_token(string checksum)
@@ -28,6 +33,7 @@ namespace WSSmartPhone
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
+                    //client
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                     HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlApi + "/auth-service/oauth/token");
@@ -41,15 +47,6 @@ namespace WSSmartPhone
                         client_id = "tanhoa.client@econtract.vnpt.vn",
                         client_secret = "C29XWd2bDhsz9jB9h8lq5WOPmw3kS2O0"
                     };
-                    //var data = new
-                    //{
-                    //    domain = "econtract.cskhtanhoa.com.vn",
-                    //    username = "admintanhoa",
-                    //    password = "Abc@12345",
-                    //    grant_type = "password",
-                    //    client_id = "tanhoa.client@econtract.vnpt.vn",
-                    //    client_secret = "C29XWd2bDhsz9jB9h8lq5WOPmw3kS2O0"
-                    //};
                     var json = CGlobalVariable.jsSerializer.Serialize(data);
                     Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                     request.ContentLength = byteArray.Length;
@@ -65,7 +62,43 @@ namespace WSSmartPhone
                         read.Close();
                         respuesta.Close();
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                        return _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtract'");
+                        return _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtractclient'");
+                    }
+                    else
+                    {
+                        strResponse = "Error: " + respuesta.StatusCode;
+                    }
+                    //user
+                    ServicePointManager.Expect100Continue = true;
+                    ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                    HttpWebRequest request2 = (HttpWebRequest)WebRequest.Create(urlApi + "/auth-service/oauth/token");
+                    request2.Method = "POST";
+                    request2.ContentType = "application/json";
+                    var data2 = new
+                    {
+                        domain = "econtract.cskhtanhoa.com.vn",
+                        username = "admintanhoa",
+                        password = "Abc@12345",
+                        grant_type = "password",
+                        client_id = "tanhoa.client@econtract.vnpt.vn",
+                        client_secret = "C29XWd2bDhsz9jB9h8lq5WOPmw3kS2O0"
+                    };
+                    var json2 = CGlobalVariable.jsSerializer.Serialize(data2);
+                    Byte[] byteArray2 = Encoding.UTF8.GetBytes(json2);
+                    request2.ContentLength = byteArray2.Length;
+                    //gắn data post
+                    Stream dataStream2 = request2.GetRequestStream();
+                    dataStream2.Write(byteArray2, 0, byteArray2.Length);
+                    dataStream2.Close();
+                    HttpWebResponse respuesta2 = (HttpWebResponse)request2.GetResponse();
+                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    {
+                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        string result = read.ReadToEnd();
+                        read.Close();
+                        respuesta.Close();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
+                        return _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtractuser'");
                     }
                     else
                     {
@@ -96,7 +129,7 @@ namespace WSSmartPhone
                     request.Method = "POST";
                     request.ContentType = "application/json";
                     //request.ContentLength = 0;
-                    request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                    request.Headers["Authorization"] = "Bearer " + getAccess_tokenUser();
                     var data = new Dictionary<string, string>();
                     data.Add("${soHopDong}", HopDong);
                     data.Add("${soDanhBo}", DanhBo);
@@ -170,7 +203,7 @@ namespace WSSmartPhone
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                     var client = new HttpClient();
                     var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/create-draft-from-file-and-identification");
-                    request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                    request.Headers.Add("Authorization", "Bearer " + getAccess_tokenClient());
                     var content = new MultipartFormDataContent();
                     content.Add(new StringContent("{}"), "fields");
                     string a = "";
@@ -261,7 +294,7 @@ namespace WSSmartPhone
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                         var client = new HttpClient();
                         var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/submit-contract");
-                        request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_tokenUser());
                         var response = client.SendAsync(request);
                         var result = response.Result.Content.ReadAsStringAsync();
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
@@ -334,7 +367,7 @@ namespace WSSmartPhone
                         var client = new HttpClient();
                         client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
                         var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esignature-service/dsign/attach-tawaco-information");
-                        request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_tokenUser());
                         var content = new StringContent("{\"contractId\":\"" + dt.Rows[0]["IDEContract"].ToString() + "\",\"soDanhBa\":{\"value\":\"" + DanhBo + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,815,320,230]}]},\"soHoSo\":{\"value\":\"" + HopDong + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,840,320,230]}]},\"ngayKy\":{\"value\":\"" + NgayHieuLuc + "\",\"signFrame\":[{\"pageSign\":3,\"bboxSign\":[312,400,300,250]}]},\"coDongHo\":{\"value\":\"" + Co + "\",\"signFrame\":[{\"pageSign\":1,\"bboxSign\":[190,890,300,250]}]},\"QRcode\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[0,0,0,0]}]}}", null, "application/json");
                         request.Content = content;
                         var response = client.SendAsync(request);
@@ -388,7 +421,7 @@ namespace WSSmartPhone
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                         var client = new HttpClient();
                         var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/cancel-draft");
-                        request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_tokenUser());
                         var content = new StringContent("{\"cancelReason\":\"api hủy\"}", null, "application/json");
                         request.Content = content;
                         var response = client.SendAsync(request);
@@ -442,7 +475,7 @@ namespace WSSmartPhone
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                         var client = new HttpClient();
                         var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/" + dt.Rows[0]["IDEContract"].ToString() + "/delete-draft");
-                        request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_tokenUser());
                         var response = client.SendAsync(request);
                         var result = response.Result.Content.ReadAsStringAsync();
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
@@ -478,7 +511,7 @@ namespace WSSmartPhone
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                     var client = new HttpClient();
                     var request = new HttpRequestMessage();
-                    request.Headers.Add("Authorization", "Bearer " + getAccess_token());
+                    request.Headers.Add("Authorization", "Bearer " + getAccess_tokenUser());
                     var content = new MultipartFormDataContent();
                     if (MST == "")
                     {
