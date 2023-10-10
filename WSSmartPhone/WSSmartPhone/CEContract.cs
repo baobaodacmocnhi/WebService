@@ -23,7 +23,7 @@ namespace WSSmartPhone
 
         private string getAccess_tokenUser()
         {
-            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='econtractuser'").ToString();
+            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='econtractclient'").ToString();
         }
 
         public bool getAccess_token(string checksum)
@@ -62,7 +62,7 @@ namespace WSSmartPhone
                         read.Close();
                         respuesta.Close();
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                        return _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtractclient'");
+                        _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtractclient'");
                     }
                     else
                     {
@@ -91,14 +91,14 @@ namespace WSSmartPhone
                     dataStream2.Write(byteArray2, 0, byteArray2.Length);
                     dataStream2.Close();
                     HttpWebResponse respuesta2 = (HttpWebResponse)request2.GetResponse();
-                    if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                    if (respuesta2.StatusCode == HttpStatusCode.Accepted || respuesta2.StatusCode == HttpStatusCode.OK || respuesta2.StatusCode == HttpStatusCode.Created)
                     {
-                        StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                        StreamReader read = new StreamReader(respuesta2.GetResponseStream());
                         string result = read.ReadToEnd();
                         read.Close();
                         respuesta.Close();
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
-                        return _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtractuser'");
+                        _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',expires_in='" + obj["expires_in"] + " seconds',CreateDate=getdate() where ID='econtractuser'");
                     }
                     else
                     {
@@ -107,6 +107,7 @@ namespace WSSmartPhone
                 }
                 else
                     strResponse = "Sai checksum";
+                return true;
             }
             catch (Exception ex)
             {
