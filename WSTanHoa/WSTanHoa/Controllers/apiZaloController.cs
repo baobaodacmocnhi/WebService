@@ -25,6 +25,7 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
         apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
+        string _IDZalo = "4276209776391262580";
         string _url = "https://service.cskhtanhoa.com.vn";
         string _urlImage = "https://service.cskhtanhoa.com.vn/Images";
         //string _url = "http://service.capnuoctanhoa.com.vn:1010";
@@ -1346,6 +1347,44 @@ namespace WSTanHoa.Controllers
             {
                 strResponse = ex.Message;
             }
+            return strResponse;
+        }
+
+        [Route("ThongBaoDangKyCCCD")]
+        [HttpGet]
+        public string ThongBaoDangKyCCCD(string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    string sql = "select b.DanhBo,b.IDZalo from Zalo_QuanTam a,Zalo_DangKy b,HOADON_TA.dbo.HOADON hd where a.IDZalo=b.IDZalo and a.Follow=1"
+                                + " and DanhBo not in (select t1.DanhBo from (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0) t1,HOADON_TA.dbo.HOADON hd"
+                                + " where hd.NAM = 2023 and hd.ky = 9 and t1.DanhBo = hd.DANHBA and hd.DM >= 40)"
+                                + " and hd.NAM = 2023 and hd.ky = 9 and b.DanhBo = hd.DANHBA and hd.DM >= 40";
+                    //string sql = "select IDZalo='" + IDZalo + "'";
+                    DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    string message;
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        message = "    Công ty Cổ phần Cấp nước Tân Hòa (Công ty) trân trọng thông báo đến Quý khách hàng việc cấp định mức nước theo số định danh cá nhân."
+                                    + "\n    Kính đề nghị Quý khách hàng khi nhận được thông báo này, khẩn trương liên hệ Công ty qua số điện thoại: 1900 6489 để được hướng dẫn."
+                                    + "\n    Trường hợp hết ngày 31/10/2023, khách hàng vẫn không liên hệ, Công ty buộc lòng điều chỉnh định mức nước = 0m3/tháng."
+                                    + "\n    Trân trọng kính báo./.";
+                        strResponse = sendMessage(item["IDZalo"].ToString(), message);
+                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + item["DanhBo"].ToString() + "',N'thongbaocccd',N'" + message + "',N'" + strResponse + "')");
+                    }
+                    strResponse = "Đã xử lý";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('0',N'',N'thongbaocccd',N'',N'" + strResponse + "')");
             return strResponse;
         }
 
