@@ -25,6 +25,24 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public bool getAccess_token_Client(string checksum)
+        {
+            return _cEContract.getAccess_token_Client(checksum);
+        }
+
+        [WebMethod]
+        public bool getAccess_token_User(string checksum)
+        {
+            return _cEContract.getAccess_token_User(checksum);
+        }
+
+        [WebMethod]
+        public bool getAccess_token_Duyet(string checksum)
+        {
+            return _cEContract.getAccess_token_Duyet(checksum);
+        }
+
+        [WebMethod]
         public byte[] renderEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
             , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, string checksum, out string strResponse)
         {
@@ -64,5 +82,11 @@ namespace WSSmartPhone
             return _cEContract.deleteEContract(MaDon, SHS, checksum, out strResponse);
         }
 
+        [WebMethod]
+        public bool updateDoiTac(string CCCD, string Email, string DienThoai, string HoTen, string MST, string checksum)
+        {
+            string strResponse = "";
+            return _cEContract.updateDoiTac(CCCD, Email, DienThoai, HoTen, MST, checksum, out  strResponse);
+        }
     }
 }
