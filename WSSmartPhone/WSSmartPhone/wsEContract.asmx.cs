@@ -88,5 +88,13 @@ namespace WSSmartPhone
             string strResponse = "";
             return _cEContract.updateDoiTac(CCCD, Email, DienThoai, HoTen, MST, checksum, out  strResponse);
         }
+
+        [WebMethod]
+        public bool duyetKhongKy(string IDEContract)
+        {
+            string strResponse = "";
+            return _cEContract.duyetKhongKy(IDEContract, out  strResponse);
+        }
+
     }
 }
