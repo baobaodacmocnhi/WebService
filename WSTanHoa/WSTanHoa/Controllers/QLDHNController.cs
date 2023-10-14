@@ -1257,10 +1257,10 @@ namespace WSTanHoa.Controllers
             {
                 DataTable dtCS = _cDAL_sDHN.ExecuteQuery_DataTable("  declare @date date='" + ngayxems[2] + "-" + ngayxems[1] + "-" + ngayxems[0] + "'"
                         + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
-                        + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = CAST(DATEADD(DAY, -1, @date) as date) and DATEPART(HOUR, TimeStamp) = 23 and DATEPART(MINUTE, TimeStamp) = 0"
+                        + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = CAST(DATEADD(DAY, -1, @date) as date) and DATEPART(HOUR, TimeStamp) = 23 and DATEPART(MINUTE, TimeStamp) = 0"
                         + " union"
                         + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
-                        + " FROM[SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = @date and DATEPART(MINUTE, TimeStamp) = 0");
+                        + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = @date and DATEPART(MINUTE, TimeStamp) = 0");
                 for (int i = 1; i < dtCS.Rows.Count; i++)
                 {
                     dtCS.Rows[i]["TieuThu"] = int.Parse(dtCS.Rows[i]["ChiSo"].ToString()) - int.Parse(dtCS.Rows[i - 1]["ChiSo"].ToString());
@@ -1271,6 +1271,19 @@ namespace WSTanHoa.Controllers
                     enKTH.SoLuong = (int.Parse(enKTH.SoLuong) + 1).ToString();
                     MView en = new MView();
                     en.DanhBo = item["DanhBo"].ToString();
+                    ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), "tanho@2022");
+                    if(ttkh!=null)
+                    {
+                        en.HoTen = ttkh.HoTen;
+                        en.DiaChi = ttkh.DiaChi;
+                    }
+                    DataTable dtCT = _cDAL_sDHN.ExecuteQuery_DataTable(" select top 1 ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                        + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 order by TimeStamp desc");
+                    if (dtCT != null && dtCT.Rows.Count > 0)
+                    {
+                        en.ThoiGian = dtCT.Rows[0]["ThoiGian"].ToString();
+                        en.ChiSo = dtCT.Rows[0]["ChiSo"].ToString();
+                    }
                     enKTH.lst.Add(en);
                 }
                 else
@@ -1279,6 +1292,19 @@ namespace WSTanHoa.Controllers
                     enTHY.SoLuong = (int.Parse(enTHY.SoLuong) + 1).ToString();
                     MView en = new MView();
                     en.DanhBo = item["DanhBo"].ToString();
+                    ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), "tanho@2022");
+                    if (ttkh != null)
+                    {
+                        en.HoTen = ttkh.HoTen;
+                        en.DiaChi = ttkh.DiaChi;
+                    }
+                    DataTable dtCT = _cDAL_sDHN.ExecuteQuery_DataTable(" select top 1 ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                     + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 order by TimeStamp desc");
+                    if (dtCT != null && dtCT.Rows.Count > 0)
+                    {
+                        en.ThoiGian = dtCT.Rows[0]["ThoiGian"].ToString();
+                        en.ChiSo = dtCT.Rows[0]["ChiSo"].ToString();
+                    }
                     enTHY.lst.Add(en);
                 }
                 else
@@ -1294,6 +1320,19 @@ namespace WSTanHoa.Controllers
                         enTT0.SoLuong = (int.Parse(enTT0.SoLuong) + 1).ToString();
                         MView en = new MView();
                         en.DanhBo = item["DanhBo"].ToString();
+                        ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), "tanho@2022");
+                        if (ttkh != null)
+                        {
+                            en.HoTen = ttkh.HoTen;
+                            en.DiaChi = ttkh.DiaChi;
+                        }
+                        DataTable dtCT = _cDAL_sDHN.ExecuteQuery_DataTable(" select top 1 ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                     + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 order by TimeStamp desc");
+                        if (dtCT != null && dtCT.Rows.Count > 0)
+                        {
+                            en.ThoiGian = dtCT.Rows[0]["ThoiGian"].ToString();
+                            en.ChiSo = dtCT.Rows[0]["ChiSo"].ToString();
+                        }
                         enTT0.lst.Add(en);
                     }
                     else
@@ -1301,6 +1340,19 @@ namespace WSTanHoa.Controllers
                         enBT.SoLuong = (int.Parse(enBT.SoLuong) + 1).ToString();
                         MView en = new MView();
                         en.DanhBo = item["DanhBo"].ToString();
+                        ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), "tanho@2022");
+                        if (ttkh != null)
+                        {
+                            en.HoTen = ttkh.HoTen;
+                            en.DiaChi = ttkh.DiaChi;
+                        }
+                        DataTable dtCT = _cDAL_sDHN.ExecuteQuery_DataTable(" select top 1 ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                     + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 order by TimeStamp desc");
+                        if (dtCT != null && dtCT.Rows.Count > 0)
+                        {
+                            en.ThoiGian = dtCT.Rows[0]["ThoiGian"].ToString();
+                            en.ChiSo = dtCT.Rows[0]["ChiSo"].ToString();
+                        }
                         enBT.lst.Add(en);
                     }
                 }
