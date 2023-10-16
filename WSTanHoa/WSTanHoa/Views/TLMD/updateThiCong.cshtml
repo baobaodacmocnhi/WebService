@@ -8,6 +8,7 @@
 <title>@ViewBag.Title</title>
 <script src="~/Scripts/jquery-3.6.0.min.js"></script>
 @Scripts.Render("~/bundles/datepicker")
+@Scripts.Render("~/bundles/lightbox")
 <script>
     $(document).ready(function () {
         $("#IDQuan").change(function () {
@@ -170,18 +171,21 @@
                                 <div class="row">
                                     @foreach (var itemHinh in item.lstLichSu_Hinh)
                                     {
-                                        <div class="col">
-                                            <img src="@itemHinh.image" height="100" width="100" data-bs-toggle="modal" data-bs-target="#exampleModal" />
-                                        </div>
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-body">
-                                                        <img src="@itemHinh.image" height="1000" width="1000" />
+                                        @*<div class="col">
+                                                <img src="@itemHinh.image" height="100" width="100" data-bs-toggle="modal" data-bs-target="#exampleModal" />
+                                            </div>
+                                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <img src="@itemHinh.image" height="1000" width="1000" />
+                                                        </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
+                                            </div>*@
+                                        <a class="example-image-link" href="@itemHinh.image" data-lightbox="example-set" data-title="Click the right half of the image to move forward.">
+                                            <img class="example-image rounded mx-auto d-block" src="@itemHinh.image" alt="" width="200" height="200" />
+                                        </a>
                                     }
                                 </div>
                             </div>

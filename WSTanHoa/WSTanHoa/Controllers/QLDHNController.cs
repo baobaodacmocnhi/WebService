@@ -1271,8 +1271,8 @@ namespace WSTanHoa.Controllers
                     enKTH.SoLuong = (int.Parse(enKTH.SoLuong) + 1).ToString();
                     MView en = new MView();
                     en.DanhBo = item["DanhBo"].ToString();
-                    ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), "tanho@2022");
-                    if(ttkh!=null)
+                    ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), CGlobalVariable.getSHA256(item["DanhBo"].ToString() + CGlobalVariable.salaPass));
+                    if (ttkh != null)
                     {
                         en.HoTen = ttkh.HoTen;
                         en.DiaChi = ttkh.DiaChi;
@@ -1292,7 +1292,7 @@ namespace WSTanHoa.Controllers
                     enTHY.SoLuong = (int.Parse(enTHY.SoLuong) + 1).ToString();
                     MView en = new MView();
                     en.DanhBo = item["DanhBo"].ToString();
-                    ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), "tanho@2022");
+                    ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), CGlobalVariable.getSHA256(item["DanhBo"].ToString() + CGlobalVariable.salaPass));
                     if (ttkh != null)
                     {
                         en.HoTen = ttkh.HoTen;
@@ -1320,7 +1320,7 @@ namespace WSTanHoa.Controllers
                         enTT0.SoLuong = (int.Parse(enTT0.SoLuong) + 1).ToString();
                         MView en = new MView();
                         en.DanhBo = item["DanhBo"].ToString();
-                        ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), "tanho@2022");
+                        ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), CGlobalVariable.getSHA256(item["DanhBo"].ToString() + CGlobalVariable.salaPass));
                         if (ttkh != null)
                         {
                             en.HoTen = ttkh.HoTen;
@@ -1340,7 +1340,7 @@ namespace WSTanHoa.Controllers
                         enBT.SoLuong = (int.Parse(enBT.SoLuong) + 1).ToString();
                         MView en = new MView();
                         en.DanhBo = item["DanhBo"].ToString();
-                        ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), "tanho@2022");
+                        ThongTinKhachHang ttkh = _apiTTKH.getThongTinKhachHang(item["DanhBo"].ToString(), CGlobalVariable.getSHA256(item["DanhBo"].ToString() + CGlobalVariable.salaPass));
                         if (ttkh != null)
                         {
                             en.HoTen = ttkh.HoTen;

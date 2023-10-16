@@ -17,7 +17,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/TrungTamKhachHang")]
     public class apiTrungTamKhachHangController : ApiController
     {
-        string _pass = "s@l@2019";
+        //string _pass = "s@l@2019";
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
@@ -67,7 +67,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -238,7 +238,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -316,7 +316,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -413,7 +413,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -522,7 +522,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -643,7 +643,7 @@ namespace WSTanHoa.Controllers
         [Route("getDonKinhDoanh")]
         public DonKinhDoanh getDonKinhDoanh(string DanhBo, string checksum)
         {
-            if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+            if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
             {
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1065,7 +1065,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                //if (CConstantVariable.getSHA256(DanhBo + _pass) != checksum)
+                //if (CConstantVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
                 //{
                 //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                 //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1128,7 +1128,7 @@ namespace WSTanHoa.Controllers
                     checkSoNha = SoNha;
                 if (TenDuong != null)
                     checkTenDuong = TenDuong;
-                if (CGlobalVariable.getSHA256(checkSoThan + checkHoTen + checkSoNha + checkTenDuong + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(checkSoThan + checkHoTen + checkSoNha + checkTenDuong + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1207,7 +1207,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DienThoai + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(DienThoai + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1257,7 +1257,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(SoHoSo + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(SoHoSo + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1387,7 +1387,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1441,7 +1441,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1481,7 +1481,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(Nam + Thang + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(Nam + Thang + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1543,7 +1543,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(Nam + Thang + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(Nam + Thang + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1606,7 +1606,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(ID + _pass) != checksum)
+                if (CGlobalVariable.getSHA256(ID + CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
@@ -1701,7 +1701,7 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(_pass) != checksum)
+                if (CGlobalVariable.getSHA256(CGlobalVariable.salaPass) != checksum)
                 {
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));

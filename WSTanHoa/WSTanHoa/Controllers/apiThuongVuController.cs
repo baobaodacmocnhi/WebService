@@ -19,7 +19,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.checksum == checksum)
                 {
-                    DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from ChungTu_ChiTiet where len(MaCT)=12 and malct=15 and Cat=0 and mact not in(select CCCD from CCCD_Temp)");
+                    DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from ChungTu_ChiTiet where len(MaCT)=12 and malct=15 and Cat=0 and mact not in(select CCCD from CCCD_Temp) and DanhBo not like ''");
                     foreach (DataRow item in dt.Rows)
                     {
                         try
