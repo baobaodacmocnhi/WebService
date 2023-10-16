@@ -3888,7 +3888,7 @@ namespace WSSmartPhone
                         + "                             else ''"
                         + "                             end)"
                         + "                          ,CuaHangThuHo=(select CuaHangThuHo1+CHAR(10)+case when CuaHangThuHo2 is null or CuaHangThuHo2=CuaHangThuHo1 then '' else CuaHangThuHo2 end from HOADON_TA.dbo.TT_DichVuThu_DanhBo_CuaHang where DanhBo=ds.DanhBa)"
-                        + " ,ThayDK=case when cast(DATEADD(MONTH,54,NGAYKIEMDINH) as date)<=cast(GETDATE() as date) then 'true' else 'false' end"                         
+                        + " ,ThayDK=case when cast(DATEADD(MONTH,54,NGAYKIEMDINH) as date)<=cast(GETDATE() as date) then 'true' else 'false' end"
                         + " from DocSo ds left join CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG kh on ds.DanhBa=kh.DANHBO"
                         + "                          left join BienDong bd on ds.DocSoID=bd.BienDongID"
                         + "                          left join #ChiSo cs on ds.DanhBa=cs.DanhBa"
@@ -7460,7 +7460,7 @@ namespace WSSmartPhone
                         try
                         {
                             if (obj["duLieuTrung"][0]["id"].ToString() != "")
-                                result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " " + obj["duLieuTrung"][0]["createdDate"].ToString();
+                                result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " - " + obj["duLieuTrung"][0]["danhbo"].ToString() + " - " + obj["duLieuTrung"][0]["createdDate"].ToString();
                         }
                         catch
                         {
