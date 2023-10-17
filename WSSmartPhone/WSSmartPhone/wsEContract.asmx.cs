@@ -83,16 +83,14 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool updateDoiTac(string CCCD, string Email, string DienThoai, string HoTen, string MST, string checksum)
+        public bool updateDoiTac(string CCCD, string Email, string DienThoai, string HoTen, string MST, string checksum, out string strResponse)
         {
-            string strResponse = "";
             return _cEContract.updateDoiTac(CCCD, Email, DienThoai, HoTen, MST, checksum, out  strResponse);
         }
 
         [WebMethod]
-        public bool duyetKhongKy(string IDEContract)
+        public bool duyetKhongKy(string IDEContract, out string strResponse)
         {
-            string strResponse = "";
             return _cEContract.duyetKhongKy(IDEContract, out  strResponse);
         }
 

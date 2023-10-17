@@ -618,7 +618,7 @@ namespace WSSmartPhone
                     {
                         string UserID = _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select UserID from Zalo_EContract_User where Username='" + CCCD + "'").ToString();
                         request = new HttpRequestMessage(HttpMethod.Put, urlApi + "/esolution-service/trusted-partners/consumer/" + UserID);
-                        request.Headers.Add("Authorization", "Bearer " + getAccess_token_Client());
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_token_User());
                         content.Add(new StringContent(CCCD), "username");
                         content.Add(new StringContent(DienThoai), "sdt");
                         content.Add(new StringContent(Email), "email");
@@ -628,7 +628,7 @@ namespace WSSmartPhone
                     {
                         string UserID = _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select UserID from Zalo_EContract_User where Username='" + MST + "'").ToString();
                         request = new HttpRequestMessage(HttpMethod.Put, urlApi + "/esolution-service/trusted-partners/business/" + UserID);
-                        request.Headers.Add("Authorization", "Bearer " + getAccess_token_Client());
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_token_User());
                         content.Add(new StringContent("{\"username\":\"" + MST + "\",\"ten\":\"\",\"sdt\":\"" + DienThoai + "\",\"ngaySinh\":null,\"gioiTinhId\":null}"), "daiDien");
                         content.Add(new StringContent("{\"maSoThue\":\"" + MST + "\",\"tenToChuc\":\"" + HoTen + "\",\"tenRutGon\":\"\",\"email\":\"" + Email + "\",\"tinhId\":null,\"huyenId\":null,\"xaId\":null,\"duong\":\"\",\"soNha\":\"\"}"), "toChuc");
                     }
