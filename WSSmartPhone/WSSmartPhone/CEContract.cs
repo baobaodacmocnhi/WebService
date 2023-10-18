@@ -14,7 +14,7 @@ namespace WSSmartPhone
     public class CEContract
     {
         private string urlApi = "https://api-econtract.cskhtanhoa.com.vn:1443";
-        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
+        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKHWFH);
 
         private string getAccess_token_Client()
         {
@@ -617,7 +617,7 @@ namespace WSSmartPhone
                     if (MST == "")
                     {
                         string UserID = _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select UserID from Zalo_EContract_User where Username='" + CCCD + "'").ToString();
-                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "/esolution-service/trusted-partners/consumer/" + UserID);
+                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "/esolution-service/trusted-partners/consumer/v1/" + UserID);
                         request.Headers.Add("Authorization", "Bearer " + getAccess_token_User());
                         content.Add(new StringContent(CCCD), "username");
                         content.Add(new StringContent(DienThoai), "sdt");
@@ -627,7 +627,7 @@ namespace WSSmartPhone
                     else
                     {
                         string UserID = _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select UserID from Zalo_EContract_User where Username='" + MST + "'").ToString();
-                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "/esolution-service/trusted-partners/business/" + UserID);
+                        request = new HttpRequestMessage(HttpMethod.Put, urlApi + "/esolution-service/trusted-partners/business/v1/" + UserID);
                         request.Headers.Add("Authorization", "Bearer " + getAccess_token_User());
                         content.Add(new StringContent("{\"username\":\"" + MST + "\",\"ten\":\"\",\"sdt\":\"" + DienThoai + "\",\"ngaySinh\":null,\"gioiTinhId\":null}"), "daiDien");
                         content.Add(new StringContent("{\"maSoThue\":\"" + MST + "\",\"tenToChuc\":\"" + HoTen + "\",\"tenRutGon\":\"\",\"email\":\"" + Email + "\",\"tinhId\":null,\"huyenId\":null,\"xaId\":null,\"duong\":\"\",\"soNha\":\"\"}"), "toChuc");
