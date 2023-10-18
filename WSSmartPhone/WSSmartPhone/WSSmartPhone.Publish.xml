@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="C:\Users\baobao\Desktop\WSSmartPhone" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="Web.config" publishTime="10/17/2023 13:34:15" />
+    <file relUrl="Images/cccd2.png" publishTime="08/22/2023 08:21:23" />
     <file relUrl="Images/face.png" publishTime="08/22/2023 08:21:23" />
     <file relUrl="Images/cccd1.png" publishTime="08/22/2023 08:21:23" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="10/17/2023 13:33:47" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="10/18/2023 14:07:18" />
     <file relUrl="bin/System.Net.Http.dll" publishTime="08/22/2023 08:21:24" />
-    <file relUrl="wsThuongVu.asmx" publishTime="03/14/2022 07:53:53" />
     <file relUrl="Service.asmx" publishTime="12/22/2017 09:29:04" />
     <file relUrl="wsBilling.asmx" publishTime="12/30/2021 09:14:39" />
-    <file relUrl="Images/cccd2.png" publishTime="08/22/2023 08:21:23" />
-    <file relUrl="WSSmartPhone.Publish.xml" publishTime="10/17/2023 13:33:06" />
+    <file relUrl="wsThuongVu.asmx" publishTime="03/14/2022 07:53:53" />
+    <file relUrl="WSSmartPhone.Publish.xml" publishTime="10/18/2023 14:07:19" />
     <file relUrl="wsDHN.asmx" publishTime="12/28/2021 09:14:31" />
     <file relUrl="wsThuTien.asmx" publishTime="06/27/2018 08:17:45" />
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="10/17/2023 13:33:47" />
+    <file relUrl="Web.config" publishTime="10/17/2023 13:34:15" />
     <file relUrl="wsEContract.asmx" publishTime="08/21/2023 13:42:12" />
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="10/18/2023 14:07:18" />
     <file relUrl="Library/System.Net.Http.dll" publishTime="08/22/2023 08:21:24" />
   </publishProfile>
 </publishData>
