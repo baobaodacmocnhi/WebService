@@ -154,19 +154,23 @@ namespace WSTanHoa.Controllers
             + " where thicong.IDDonViThiCong=donvithicong.ID and thicong.IDKetCau=ketcau.ID";
             if (!form.AllKeys.Contains("radLoai") || form["radLoai"].ToString() == "radAll")
             {
+                ViewBag.radLoai = "radAll";
                 sql += " and cast(thicong.createdate as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast(thicong.createdate as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'";
             }
             else
             if (form["radLoai"].ToString() == "radDaXuLy")
             {
+                ViewBag.radLoai = form["radLoai"].ToString();
                 sql += " and cast((select top 1 CreateDate from TLMD_ThiCong_LichSu where IDThiCong=thicong.ID order by CreateDate desc) as date)>='" + dateTus[2] + dateTus[1] + dateTus[0] + "' and cast((select top 1 CreateDate from TLMD_ThiCong_LichSu where IDThiCong=thicong.ID  order by CreateDate desc) as date)<='" + dateDens[2] + dateDens[1] + dateDens[0] + "'"
                     + " and (select COUNT(*) from TLMD_ThiCong_LichSu where IDThiCong=thicong.ID)>0";
             }
             else
             if (form["radLoai"].ToString() == "radTon")
             {
+                ViewBag.radLoai = form["radLoai"].ToString();
                 sql += " and (select COUNT(*) from TLMD_ThiCong_LichSu where IDThiCong=thicong.ID)=0";
             }
+
             if (bool.Parse(Session["Admin"].ToString()))
                 sql += "";
             else
@@ -219,11 +223,12 @@ namespace WSTanHoa.Controllers
                     if (!checkRules("2", "Them"))
                         return RedirectToAction("Denied");
                     string[] NgayBatDaus = form["inputNgayBatDau"].ToString().Split('/');
-                    if (_cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,DanhBo,DiemDau,DiemCuoi,TenDuong,Phuong,Quan,NgayBatDau,CreateBy)values("
+                    if (_cDAL_TTKH.ExecuteNonQuery("insert into TLMD_ThiCong(ID,Name,IDDonViThiCong,IDKetCau,IDKetCau2,DanhBo,DiemDau,DiemCuoi,TenDuong,Phuong,Quan,NgayBatDau,CreateBy)values("
                           + "(select case when exists(select ID from TLMD_ThiCong) then (select MAX(ID)+1 from TLMD_ThiCong) else 1 end)"
                           + ",N'" + form["inputName"].ToString() + "'"
                           + "," + form["IDDonViThiCong"].ToString() + ""
                           + "," + form["IDKetCau"].ToString() + ""
+                          + "," + form["IDKetCau2"].ToString() + ""
                           + ",N'" + form["inputDanhBo"].ToString() + "'"
                           + ",N'" + form["inputDiemDau"].ToString() + "'"
                           + ",N'" + form["inputDiemCuoi"].ToString() + "'"
@@ -249,12 +254,19 @@ namespace WSTanHoa.Controllers
                             foreach (DataRow itemLS in dtLichSu.Rows)
                             {
                                 MThiCong_LichSu enLS = new MThiCong_LichSu();
+                                enLS.ID = itemLS["ID"].ToString();
                                 enLS.Name = itemLS["Name"].ToString();
                                 DateTime dateLS;
-                                DateTime.TryParse(itemLS["NgayKetThuc"].ToString(), out dateLS);
-                                enLS.NgayKetThuc = dateLS;
-                                DateTime.TryParse(itemLS["NgayNghiemThu"].ToString(), out dateLS);
-                                enLS.NgayNghiemThu = dateLS;
+                                if (itemLS["NgayKetThuc"].ToString() != "")
+                                {
+                                    DateTime.TryParse(itemLS["NgayKetThuc"].ToString(), out dateLS);
+                                    enLS.NgayKetThuc = dateLS;
+                                }
+                                if (itemLS["NgayNghiemThu"].ToString() != "")
+                                {
+                                    DateTime.TryParse(itemLS["NgayNghiemThu"].ToString(), out dateLS);
+                                    enLS.NgayNghiemThu = dateLS;
+                                }
                                 DataTable dtLichSu_Hinh = _cDAL_TTKH.ExecuteQuery_DataTable("select * from TLMD_ThiCong_LichSu_Hinh where IDThiCongLichSu=" + itemLS["ID"].ToString());
                                 foreach (DataRow itemLSH in dtLichSu_Hinh.Rows)
                                 {
@@ -272,6 +284,7 @@ namespace WSTanHoa.Controllers
                         en.Name = dt.Rows[0]["Name"].ToString();
                         en.IDDonViThiCong = int.Parse(dt.Rows[0]["IDDonViThiCong"].ToString());
                         en.IDKetCau = int.Parse(dt.Rows[0]["IDKetCau"].ToString());
+                        en.IDKetCau2 = int.Parse(dt.Rows[0]["IDKetCau2"].ToString());
                         en.DanhBo = dt.Rows[0]["DanhBo"].ToString();
                         en.DiemDau = dt.Rows[0]["DiemDau"].ToString();
                         en.DiemCuoi = dt.Rows[0]["DiemCuoi"].ToString();
@@ -303,6 +316,7 @@ namespace WSTanHoa.Controllers
                         + " Name=N'" + form["inputName"].ToString() + "'"
                         + ",IDDonViThiCong=" + form["IDDonViThiCong"].ToString() + ""
                         + ",IDKetCau=" + form["IDKetCau"].ToString() + ""
+                        + ",IDKetCau2=" + form["IDKetCau2"].ToString() + ""
                         + ",DanhBo='" + form["inputDanhBo"].ToString() + "'"
                         + ",DiemDau=N'" + form["inputDiemDau"].ToString() + "'"
                         + ",DiemCuoi=N'" + form["inputDiemCuoi"].ToString() + "'"
@@ -313,6 +327,23 @@ namespace WSTanHoa.Controllers
                         + ",ModifyBy=" + Session["ID"]
                         + ",ModifyDate=getdate()"
                         + " where ID=" + form["inputID"].ToString()))
+                        return RedirectToAction("ThiCong");
+                }
+                else
+                if (Loai == "updateNghiemThu")
+                {
+                    if (!checkRules("2", "Sua"))
+                        return RedirectToAction("Denied");
+                    if (!checkUsersThiCong(Session["ID"].ToString(), form["inputID"].ToString()))
+                        return RedirectToAction("Denied");
+                    string[] date = form["inputNgayNghiemThu"].ToString().Split(' ');
+                    string[] NgayNghiemThus = date[0].Split('/');
+                    if (_cDAL_TTKH.ExecuteNonQuery("update TLMD_ThiCong_LichSu set"
+                        + " NgayNghiemThu='" + NgayNghiemThus[2] + "-" + NgayNghiemThus[1] + "-" + NgayNghiemThus[0] + "'"
+                        + ",TroNgaiNghiemThu=N'" + form["inputTroNgaiNghiemThu"].ToString() + "'"
+                        + ",ModifyBy=" + Session["ID"]
+                        + ",ModifyDate=getdate()"
+                        + " where ID=" + form["inputIDNghiemThu"].ToString()))
                         return RedirectToAction("ThiCong");
                 }
                 else

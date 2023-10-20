@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="col-auto">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="radLoai" value="radAll" checked="checked">
+                        <input class="form-check-input" type="radio" name="radLoai" value="radAll" @(ViewBag.radLoai == "radAll" ? "checked='true'" : "")>
                         <label class="form-check-label" for="radAll">
                             Tất Cả
                         </label>
@@ -66,7 +66,7 @@
                 </div>
                 <div class="col-auto">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="radLoai" value="radDaXuLy">
+                        <input class="form-check-input" type="radio" name="radLoai" value="radDaXuLy" @(ViewBag.radLoai == "radDaXuLy" ? "checked='true'" : "")>
                         <label class="form-check-label" for="radDaXuLy">
                             Đã Xử Lý
                         </label>
@@ -74,7 +74,7 @@
                 </div>
                 <div class="col-auto">
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="radLoai" value="radTon">
+                        <input class="form-check-input" type="radio" name="radLoai" value="radTon" @(ViewBag.radLoai == "radTon" ? "checked='true'" : "")>
                         <label class="form-check-label" for="radTon">
                             Tồn (Không cần thời gian)
                         </label>

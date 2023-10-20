@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>@ViewBag.Title</title>
 <script src="~/Scripts/jquery-3.6.0.min.js"></script>
-@Scripts.Render("~/bundles/datepicker")
 @Scripts.Render("~/bundles/lightbox")
+@Scripts.Render("~/bundles/datepicker")
 <script>
     $(document).ready(function () {
         $("#IDQuan").change(function () {
@@ -83,20 +83,25 @@
                 <label for="inputTenDuong" class="form-label">@Html.DisplayNameFor(model => model.TenDuong)</label>
                 <input type="text" class="form-control" id="inputTenDuong" name="inputTenDuong" value="@Html.DisplayFor(model => model.TenDuong)" />
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-3 mt-3">
                 <label for="inputIDQuan" class="form-label">@Html.DisplayNameFor(model => model.IDQuan)</label>
                 @Html.DropDownListFor(model => model.IDQuan, ViewBag.Quan as SelectList, new { @class = "form-control", @onchange = "" })
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-3 mt-3">
                 <label for="inputIDPhuong" class="form-label">@Html.DisplayNameFor(model => model.IDPhuong)</label>
                 @Html.DropDownListFor(model => model.IDPhuong, ViewBag.Phuong as SelectList, new { @class = "form-control" })
                 @*<select class="form-control" id="IDPhuong" name="IDPhuong"></select>*@
                 <input type="text" class="form-control" id="IDPhuongHide" name="IDPhuongHide" value="@Html.DisplayFor(model => model.IDPhuong)" hidden="hidden" />
             </div>
-            <div class="col-4 mt-3">
+            <div class="col-3 mt-3">
                 <label for="inputIDKetCau" class="form-label">@Html.DisplayNameFor(model => model.IDKetCau)</label>
                 @*<input type="text" class="form-control" name="inputIDKetCau" value="@Html.DisplayFor(model => model.IDKetCau)" />*@
                 @Html.DropDownListFor(model => model.IDKetCau, ViewBag.KetCau as SelectList, new { @class = "form-control" })
+            </div>
+            <div class="col-3 mt-3">
+                <label for="inputIDKetCau2" class="form-label">@Html.DisplayNameFor(model => model.IDKetCau2)</label>
+                @*<input type="text" class="form-control" name="inputIDKetCau" value="@Html.DisplayFor(model => model.IDKetCau)" />*@
+                @Html.DropDownListFor(model => model.IDKetCau2, ViewBag.KetCau as SelectList, new { @class = "form-control" })
             </div>
             <div class="col-6 mt-3">
                 <label for="inputIDDonViThiCong" class="form-label">@Html.DisplayNameFor(model => model.IDDonViThiCong)</label>
@@ -134,13 +139,18 @@
                 }
             </div>
         </div>
-        <div class="row">
-            <div class="container bg-white mt-3 py-2 rounded-3 shadow-sm">
-                <h4>Kết quả tái lập</h4>
-                @if (Model != null && Model.lstLichSu.Count > 0)
+    }
+
+    <div class="row">
+        <div class="container bg-white mt-3 py-2 rounded-3 shadow-sm">
+            <h4>Kết quả tái lập</h4>
+            @if (Model != null && Model.lstLichSu.Count > 0)
+            {
+                foreach (var item in Model.lstLichSu)
                 {
-                    foreach (var item in Model.lstLichSu)
+                    using (Html.BeginForm("updateThiCong", "TLMD", FormMethod.Post))
                     {
+                        <input type="number" class="form-control" name="inputID" value="@Html.DisplayFor(model => model.ID)" hidden="">
                         <div class="card shadow mb-4">
                             <!-- Card Header - Dropdown -->
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -148,24 +158,40 @@
                             </div>
                             <!-- Card Body -->
                             <div class="card-body">
+                                <input type="number" class="form-control" name="inputIDNghiemThu" value="@item.ID" hidden="">
                                 <div class="row">
                                     <div class="col-6 form-group">
                                         <label for="inputNgayKetThuc" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].NgayKetThuc)</label>
-                                        <input type="text" class="form-control" name="inputNgayKetThuc" value="@item.NgayKetThuc" />
+                                        <input type="text" class="form-control" name="inputNgayKetThuc" value="@item.NgayKetThuc" readonly />
                                     </div>
                                     <div class="col-6 form-group">
-                                        <label for="inputNgayNghiemThu" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].NgayNghiemThu)</label>
-                                        <input type="text" class="form-control" name="inputNgayNghiemThu" value="@item.NgayNghiemThu" />
+                                        <div class="row">
+                                            <div class="col">
+                                                <label for="inputNgayNghiemThu" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].NgayNghiemThu)</label>
+                                                <input type="text" class="datepicker form-control" id="inputNgayNghiemThu" name="inputNgayNghiemThu" value="@item.NgayNghiemThu" />
+                                            </div>
+                                            <div class="col mt-4">
+                                                @if (Model == null || Model.ID <= 0)
+                                                {
+                                                }
+                                                else
+                                                {
+                                                    <button type="submit" name="Loai" value="updateNghiemThu" class="btn btn-primary">Cập nhật</button>
+                                                }
+                                            </div>
+                                        </div>
+                                        
+                                        
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-6 form-group">
                                         <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].TroNgaiThiCong)</label>
-                                        <input type="text" class="form-control" name="inputTroNgaiThiCong" value="@item.TroNgaiThiCong" />
+                                        <input type="text" class="form-control" name="inputTroNgaiThiCong" value="@item.TroNgaiThiCong" readonly />
                                     </div>
                                     <div class="col-6 form-group">
                                         <label for="inputName" class="form-label">@Html.DisplayNameFor(model => model.lstLichSu[0].TroNgaiNghiemThu)</label>
-                                        <input type="text" class="form-control" name="inputTroNgaiNghiemThu" value="@item.TroNgaiNghiemThu" />
+                                        <input type="text" class="form-control" id="inputTroNgaiNghiemThu" name="inputTroNgaiNghiemThu" value="@item.TroNgaiNghiemThu" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -192,10 +218,8 @@
                         </div>
                     }
                 }
-            </div>
-
-
+            }
         </div>
+    </div>
 
-    }
 </div>

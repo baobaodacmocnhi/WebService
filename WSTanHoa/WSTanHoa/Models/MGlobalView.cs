@@ -138,8 +138,11 @@ namespace WSTanHoa.Models
         [Display(Name = "Đơn vị thi công")]
         public string DonViThiCong { get; set; }
 
-        [Display(Name = "Kết cấu")]
+        [Display(Name = "Kết cấu 1")]
         public int IDKetCau { get; set; }
+
+        [Display(Name = "Kết cấu 2")]
+        public int IDKetCau2 { get; set; }
 
         [Display(Name = "Kết cấu")]
         public string KetCau { get; set; }
@@ -192,6 +195,8 @@ namespace WSTanHoa.Models
 
     public class MThiCong_LichSu
     {
+        public string ID { get; set; }
+
         [Display(Name = "Lần thi công")]
         public string Name { get; set; }
 
@@ -211,7 +216,7 @@ namespace WSTanHoa.Models
 
         public MThiCong_LichSu()
         {
-            Name = TroNgaiThiCong = TroNgaiNghiemThu = "";
+            ID=Name = TroNgaiThiCong = TroNgaiNghiemThu = "";
             NgayKetThuc = NgayNghiemThu = null;
             lstLichSu_Hinh = new List<MThiCong_LichSu_Hinh>();
         }
