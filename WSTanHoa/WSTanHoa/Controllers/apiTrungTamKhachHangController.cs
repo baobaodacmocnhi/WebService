@@ -443,14 +443,18 @@ namespace WSTanHoa.Controllers
                         DataTable dtHDDC = _cDAL_ThuTien.ExecuteQuery_DataTable("select [GIABAN_DC],[THUE_DC],[PHI_DC],[PHI_Thue_DC],[TONGCONG_DC] from DIEUCHINH_HD where FK_HOADON=" + item["MaHD"].ToString());
                         if (dtHDDC != null && dtHDDC.Rows.Count > 0)
                         {
-                            enCT.GiaBan = (int.Parse(item["GiaBan"].ToString()) - int.Parse(dtHDDC.Rows[0]["GIABAN_DC"].ToString())).ToString();
-                            enCT.ThueGTGT = (int.Parse(item["ThueGTGT"].ToString()) - int.Parse(dtHDDC.Rows[0]["THUE_DC"].ToString())).ToString();
-                            enCT.PhiBVMT = (int.Parse(item["PhiBVMT"].ToString()) - int.Parse(dtHDDC.Rows[0]["PHI_DC"].ToString())).ToString();
+                            if (dtHDDC.Rows[0]["GIABAN_DC"].ToString() != "")
+                                enCT.GiaBan = (int.Parse(item["GiaBan"].ToString()) - int.Parse(dtHDDC.Rows[0]["GIABAN_DC"].ToString())).ToString();
+                            if (dtHDDC.Rows[0]["THUE_DC"].ToString() != "")
+                                enCT.ThueGTGT = (int.Parse(item["ThueGTGT"].ToString()) - int.Parse(dtHDDC.Rows[0]["THUE_DC"].ToString())).ToString();
+                            if (dtHDDC.Rows[0]["PHI_DC"].ToString() != "")
+                                enCT.PhiBVMT = (int.Parse(item["PhiBVMT"].ToString()) - int.Parse(dtHDDC.Rows[0]["PHI_DC"].ToString())).ToString();
                             if (dtHDDC.Rows[0]["PHI_Thue_DC"].ToString() != "")
                                 enCT.PhiBVMT_Thue = (int.Parse(item["PhiBVMT_Thue"].ToString()) - int.Parse(dtHDDC.Rows[0]["PHI_Thue_DC"].ToString())).ToString();
                             else
                                 enCT.PhiBVMT_Thue = item["PhiBVMT_Thue"].ToString();
-                            enCT.TongCong = (int.Parse(item["TongCong"].ToString()) - int.Parse(dtHDDC.Rows[0]["TONGCONG_DC"].ToString())).ToString();
+                            if (dtHDDC.Rows[0]["TONGCONG_DC"].ToString() != "")
+                                enCT.TongCong = (int.Parse(item["TongCong"].ToString()) - int.Parse(dtHDDC.Rows[0]["TONGCONG_DC"].ToString())).ToString();
                         }
                         else
                         {
