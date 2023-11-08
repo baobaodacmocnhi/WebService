@@ -1359,10 +1359,12 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
-                    string sql = "select b.DanhBo,b.IDZalo from Zalo_QuanTam a,Zalo_DangKy b,HOADON_TA.dbo.HOADON hd where a.IDZalo=b.IDZalo and a.Follow=1"
-                                + " and DanhBo not in (select t1.DanhBo from (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0) t1,HOADON_TA.dbo.HOADON hd"
-                                + " where hd.NAM = 2023 and hd.ky = 9 and t1.DanhBo = hd.DANHBA and hd.DM >= 40)"
-                                + " and hd.NAM = 2023 and hd.ky = 9 and b.DanhBo = hd.DANHBA and hd.DM >= 40";
+                    string sql = "select b.DanhBo,b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b, HOADON_TA.dbo.HOADON hd where a.IDZalo = b.IDZalo and a.Follow = 1"
+                                 + " and DanhBo not in (select t1.DanhBo from (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0) t1,HOADON_TA.dbo.HOADON hd"
+                                 + " where hd.NAM = 2023 and hd.ky = 10 and t1.DanhBo = hd.DANHBA and hd.DM >= 40)"
+                                 + " and hd.NAM = 2023 and hd.ky = 10 and b.DanhBo = hd.DANHBA and hd.DM >= 40"
+                                 + " and DANHBA not in (select distinct DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where Loai like '%cccd%' and DanhBo in (select distinct ct.danhbo from KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet ct"
+                                 + " where dt.MaDon = ct.MaDon  and CAST(ct.CreateDate as date) >= '20231012' and Name_NhomDon like N'%định mức%'))";
                     //string sql = "select IDZalo='" + IDZalo + "'";
                     DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     string message;
@@ -1370,7 +1372,7 @@ namespace WSTanHoa.Controllers
                     {
                         message = "    Công ty Cổ phần Cấp nước Tân Hòa (Công ty) trân trọng thông báo đến Quý khách hàng việc cấp định mức nước theo số định danh cá nhân."
                                     + "\n    Kính đề nghị Quý khách hàng khi nhận được thông báo này, khẩn trương liên hệ Công ty qua số điện thoại: 1900 6489 để được hướng dẫn."
-                                    + "\n    Trường hợp hết ngày 31/10/2023, khách hàng vẫn không liên hệ, Công ty buộc lòng điều chỉnh định mức nước = 0m3/tháng."
+                                    + "\n    Trường hợp hết ngày 11/11/2023, khách hàng vẫn không liên hệ, Công ty buộc lòng điều chỉnh định mức nước = 0m3/tháng."
                                     + "\n    Trân trọng kính báo./.";
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);
                         _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + item["DanhBo"].ToString() + "',N'thongbaocccd',N'" + message + "',N'" + strResponse + "')");
