@@ -352,7 +352,8 @@ namespace WSSmartPhone
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                     if (response.Result.IsSuccessStatusCode)
                     {
-                        string username = "";
+            
+                        ring username = "";
                         if (CaNhan)
                             username = CCCD;
                         else
