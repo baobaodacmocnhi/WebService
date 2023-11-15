@@ -352,8 +352,8 @@ namespace WSSmartPhone
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                     if (response.Result.IsSuccessStatusCode)
                     {
-            
-                        ring username = "";
+
+                        string username = "";
                         if (CaNhan)
                             username = CCCD;
                         else
@@ -450,8 +450,11 @@ namespace WSSmartPhone
                             strResponse = "Mã đơn chưa có cho danh bộ";
                             return false;
                         }
-                        DanhBo = dtThongTin.Rows[0]["DHN_SODANHBO"].ToString();
-                        HopDong = dtThongTin.Rows[0]["DHN_SOHOPDONG"].ToString();
+                        if (!SHS.Contains("TL"))
+                        {
+                            DanhBo = dtThongTin.Rows[0]["DHN_SODANHBO"].ToString();
+                            HopDong = dtThongTin.Rows[0]["DHN_SOHOPDONG"].ToString();
+                        }
                         Co = dtThongTin.Rows[0]["COTLK"].ToString();
                         NgayHieuLuc = dtThongTin.Rows[0]["DHN_NGAYCHOSODB"].ToString();
                     }
