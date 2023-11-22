@@ -3989,7 +3989,10 @@ namespace WSSmartPhone
                                             ChiSo = (int.Parse(dt.Rows[0]["CSCu"].ToString()) + int.Parse(TBTT)).ToString();
                                         else
                                             if (Code == "F5")
-                                                ChiSo = dt.Rows[0]["CSCu"].ToString();
+                                            {
+                                                if (ChiSo == "0")
+                                                    ChiSo = dt.Rows[0]["CSCu"].ToString();
+                                            }
                                             else
                                                 if (Code.Substring(0, 1) == "N")
                                                 {
