@@ -30,7 +30,7 @@
                     data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ChartData))
                     },
                 title: {
-                    text: "Biểu đồ sử dụng nước"
+                    text: "Biểu đồ sử dụng nước 12 kỳ gần nhất"
                 },
                 legend: {
                     position: "top"
@@ -90,6 +90,73 @@
                     visible: true,
                     shared: true,
                     format: "N0"
+                }
+            });
+            $("#chartsDHN").kendoChart({
+                dataSource: {
+                    data: @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.ChartDatasDHN))
+                    },
+                title: {
+                    text: "Biểu đồ sử dụng nước 7 ngày gần nhất"
+                },
+                legend: {
+                    position: "top"
+                },
+                series: [{
+                    type: "area",
+                    field: "TieuThu",
+                    categoryField: "Ky",
+                    name: "Tiêu thụ (m³)",
+                    axis: "TieuThu",
+                    color: "#ec5e0a"
+                },
+                {
+                    type: "line",
+                    field: "ThanhTien",
+                    categoryField: "Ky",
+                    name: "",
+                    axis: "ThanhTien",
+                    color: "#73c100"
+                }],
+                valueAxis: [{
+                    name: "ThanhTien",
+                    title: { text: "" },
+                    labels: {
+                        format: "N2"
+                    },
+                    line: {
+                        visible: true
+                    },
+                    color: "#ec5e0a"
+                },
+                {
+                    name: "TieuThu",
+                    title: { text: "Tiêu thụ (m³)" },
+                    labels: {
+                        format: "N2"
+                    },
+                    line: {
+                        visible: true
+                    },
+                    min: 0,
+                    color: "#73c100"
+                }],
+                categoryAxis: {
+                    majorGridLines: {
+                        visible: true
+                    },
+                    labels: {
+                        rotation: -90
+                    },
+                    crosshair: {
+                        visible: true
+                    },
+                    axisCrossingValues: [15, 0]
+                },
+                tooltip: {
+                    visible: true,
+                    shared: true,
+                    format: "N2"
                 }
             });
         });
@@ -312,6 +379,9 @@
                 </div>
             </div>
             <div id="chart"></div>
+            @if (Model.ChartDatasDHN.Count > 0)
+            {<div id="chartsDHN"></div> }
+
         </div>
 
         <div class="card mt-3 rounded-3 shadow-sm">

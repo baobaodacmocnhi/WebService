@@ -650,6 +650,55 @@ namespace WSTanHoa.Controllers
                     }
                 }
                 else
+                    if (str.Contains("CSN"))
+                {
+                    string[] strs = str.Split(' ');
+                    if (strs[1].Trim().Length != 11)
+                    {
+                        sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai số Danh Bộ");
+                    }
+                    else
+                    {
+                        DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select ttkh.* from [sDHN].[dbo].[sDHN_TCT] sdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                                                                + " where sdhn.DanhBo = ttkh.DANHBO and sdhn.Valid = 1 and sdhn.DanhBo = '" + strs[1].Trim() + "'");
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            DataTable dtCS = null;
+                            if (strs.Count() == 3)
+                            {
+                                string[] dates = strs[2].Trim().Split('/');
+                                dtCS = _cDAL_DHN.ExecuteQuery_DataTable("declare @date date"
+                               + " set @date = '" + dates[2] + "-" + dates[1] + "-" + dates[0] + "';"
+                               + " select t1.*,TieuThu = t1.CSM - t1.CSC from"
+                               + " (select TuNgay = convert(varchar(10), DATEADD(DAY, -1, @date), 103), CSC = (select ChiSo from[sDHN].[dbo].[sDHN_LichSu_TCT] where CAST(ThoiGianCapNhat as date) = DATEADD(DAY, -1, @date) and DATEPART(HOUR, ThoiGianCapNhat) = 01 and DATEPART(MINUTE, ThoiGianCapNhat) = 0 and DanhBo = '" + strs[1].Trim() + "')"
+                               + " , DenNgay = convert(varchar(10), @date, 103),CSM = (select ChiSo from[sDHN].[dbo].[sDHN_LichSu_TCT] where CAST(ThoiGianCapNhat as date)=@date and DATEPART(HOUR, ThoiGianCapNhat)=01 and DATEPART(MINUTE, ThoiGianCapNhat)=0  and DanhBo = '" + strs[1].Trim() + "'))t1");
+                            }
+                            else
+                                dtCS = _cDAL_DHN.ExecuteQuery_DataTable("declare @date date"
+                                   + " set @date = DATEADD(DAY, -1, getdate());"
+                                   + " select t1.*,TieuThu = t1.CSM - t1.CSC from"
+                                   + " (select TuNgay = convert(varchar(10), DATEADD(DAY, -1, @date), 103), CSC = (select ChiSo from[sDHN].[dbo].[sDHN_LichSu_TCT] where CAST(ThoiGianCapNhat as date) = DATEADD(DAY, -1, @date) and DATEPART(HOUR, ThoiGianCapNhat) = 01 and DATEPART(MINUTE, ThoiGianCapNhat) = 0 and DanhBo = '" + strs[1].Trim() + "')"
+                                   + " , DenNgay = convert(varchar(10), @date, 103),CSM = (select ChiSo from[sDHN].[dbo].[sDHN_LichSu_TCT] where CAST(ThoiGianCapNhat as date)=@date and DATEPART(HOUR, ThoiGianCapNhat)=01 and DATEPART(MINUTE, ThoiGianCapNhat)=0  and DanhBo = '" + strs[1].Trim() + "'))t1");
+                            if (dtCS != null && dtCS.Rows.Count > 0)
+                            {
+                                string NoiDung = getTTKH(strs[1].Trim())
+                                    + "Chỉ số đồng hồ nước thông minh tính từ 01g00 ngày " + dtCS.Rows[0]["TuNgay"].ToString() + " đến 01g00 ngày " + dtCS.Rows[0]["DenNgay"].ToString() + "\n"
+                                    + "CSC: " + float.Parse(dtCS.Rows[0]["CSC"].ToString()).ToString("0.00") + "    CSM: " + float.Parse(dtCS.Rows[0]["CSM"].ToString()).ToString("0.00") + "    TT: " + float.Parse(dtCS.Rows[0]["TieuThu"].ToString()).ToString("0.00") + " m3";
+                                //DataTable dtZalo = _cDAL_TrungTam.ExecuteQuery_DataTable("select a.IDZalo from Zalo_QuanTam a,Zalo_DangKy b where a.IDZalo=b.IDZalo and Follow=1 and DanhBo='" + item["DanhBo"].ToString() + "'");
+                                //foreach (DataRow itemZalo in dtZalo.Rows)
+                                {
+                                    strResponse = sendMessage(IDZalo, NoiDung);
+                                    _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,Loai,NoiDung,Result)values(" + IDZalo + ",N'CSNsDHN',N'" + NoiDung + "',N'" + strResponse + "')");
+                                }
+                            }
+                            else
+                                sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nKhông có dữ liệu");
+                        }
+                        else
+                            sendMessage(IDZalo, "Hệ thống trả lời tự động\n\nSai số Danh Bộ");
+                    }
+                }
+                else
                     switch (str)
                     {
                         //cảnh báo
@@ -704,6 +753,7 @@ namespace WSTanHoa.Controllers
             }
             catch (Exception ex)
             {
+                _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,Loai,NoiDung,Result)values(" + IDZalo + ",N'CSNsDHN',N'',N'" + ex.Message + "')");
                 throw ex;
             }
         }
@@ -1728,7 +1778,7 @@ namespace WSTanHoa.Controllers
                         {
                             string NoiDung = getTTKH(item["DanhBo"].ToString())
                                 + "Chỉ số đồng hồ nước điện từ tính từ 01g00 ngày " + dtCS.Rows[0]["TuNgay"].ToString() + " đến 01g00 ngày " + dtCS.Rows[0]["DenNgay"].ToString() + "\n"
-                                + "CSC: " + dtCS.Rows[0]["CSC"].ToString() + "    CSM: " + dtCS.Rows[0]["CSM"].ToString() + "    TT: " + dtCS.Rows[0]["TieuThu"].ToString();
+                                + "CSC: " + float.Parse(dtCS.Rows[0]["CSC"].ToString()).ToString("0.00") + "    CSM: " + float.Parse(dtCS.Rows[0]["CSM"].ToString()).ToString("0.00") + "    TT: " + float.Parse(dtCS.Rows[0]["TieuThu"].ToString()).ToString("0.00") + " m3";
                             DataTable dtZalo = _cDAL_TrungTam.ExecuteQuery_DataTable("select a.IDZalo from Zalo_QuanTam a,Zalo_DangKy b where a.IDZalo=b.IDZalo and Follow=1 and DanhBo='" + item["DanhBo"].ToString() + "'");
                             foreach (DataRow itemZalo in dtZalo.Rows)
                             {

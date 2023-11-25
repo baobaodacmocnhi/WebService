@@ -20,7 +20,7 @@ namespace WSTanHoa.Controllers
         //string _pass = "s@l@2019";
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
+        //private CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
         private CConnection _cDAL_GanMoi = new CConnection(CGlobalVariable.GanMoi);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_KinhDoanh = new CConnection(CGlobalVariable.ThuongVu);

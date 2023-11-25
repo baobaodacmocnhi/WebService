@@ -127,6 +127,8 @@ namespace WSTanHoa.Models
 
         public List<ChartData> ChartData { get; set; }
 
+        public List<ChartData> ChartDatasDHN { get; set; }
+
         public ThongTinKhachHang()
         {
             DanhBo = "";
@@ -155,6 +157,7 @@ namespace WSTanHoa.Models
             NVThuTien = "";
             lstHoaDon = new List<HoaDonThuTien>();
             ChartData = new List<ChartData>();
+            ChartDatasDHN = new List<ChartData>();
         }
     }
 
@@ -412,8 +415,8 @@ namespace WSTanHoa.Models
     public class ChartData
     {
         public string Ky { get; set; }
-        public int TieuThu { get; set; }
-        public decimal ThanhTien { get; set; }
+        public double TieuThu { get; set; }
+        public double ThanhTien { get; set; }
 
         public ChartData()
         {

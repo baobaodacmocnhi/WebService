@@ -130,14 +130,49 @@ namespace WSTanHoa.Controllers
                         }
 
                         en.lstHoaDon.Add(enCT);
-                        //
+                        //chart 12 kỳ hóa đơn
                         ChartData enChartData = new ChartData();
                         enChartData.Ky = enCT.Ky;
                         enChartData.TieuThu = int.Parse(enCT.TieuThu);
-                        enChartData.ThanhTien = decimal.Parse(item["TongCong"].ToString());
+                        enChartData.ThanhTien = double.Parse(item["TongCong"].ToString());
                         en.ChartData.Add(enChartData);
                     }
                 }
+                //chart 7 ngày sử dụng nước sĐHN
+                try
+                {
+                    DataTable dtsDHN = _cDAL_DHN.ExecuteQuery_DataTable("select ttkh.* from [sDHN].[dbo].[sDHN_TCT] sdhn, CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                                                        + " where sdhn.DanhBo = ttkh.DANHBO and sdhn.Valid = 1 and sdhn.DanhBo = '" + en.DanhBo + "'");
+                    if (dtsDHN != null && dtsDHN.Rows.Count > 0)
+                    {
+                        DataTable dtCS = new DataTable();
+                        for (int i = 0; i < 7; i++)
+                        {
+                            dtCS.Merge(_cDAL_DHN.ExecuteQuery_DataTable("declare @date date"
+                               + " set @date = DATEADD(DAY, " + (-1 * i).ToString() + ", getdate());"
+                               + " select t1.*,TieuThu = t1.CSM - t1.CSC from"
+                               + " (select TuNgay = convert(varchar(10), DATEADD(DAY, -1, @date), 103), CSC = (select ChiSo from[sDHN].[dbo].[sDHN_LichSu_TCT] where CAST(ThoiGianCapNhat as date) = DATEADD(DAY, -1, @date) and DATEPART(HOUR, ThoiGianCapNhat) = 01 and DATEPART(MINUTE, ThoiGianCapNhat) = 0 and DanhBo = '" + en.DanhBo + "')"
+                               + " , DenNgay = convert(varchar(10), @date, 103),CSM = (select ChiSo from[sDHN].[dbo].[sDHN_LichSu_TCT] where CAST(ThoiGianCapNhat as date)=@date and DATEPART(HOUR, ThoiGianCapNhat)=01 and DATEPART(MINUTE, ThoiGianCapNhat)=0  and DanhBo = '" + en.DanhBo + "'))t1"));
+                        }
+
+                        if (dtCS != null && dtCS.Rows.Count > 0)
+                            foreach (DataRow item in dtCS.Rows)
+                            {
+                                ChartData enChartData = new ChartData();
+                                enChartData.Ky = item["DenNgay"].ToString();
+                                if (item["TieuThu"].ToString() != "")
+                                    enChartData.TieuThu = double.Parse(item["TieuThu"].ToString());
+                                else
+                                    enChartData.TieuThu = 0;
+                                if (item["TieuThu"].ToString() != "")
+                                    enChartData.ThanhTien = double.Parse(item["TieuThu"].ToString());
+                                else
+                                    enChartData.ThanhTien = 0;
+                                en.ChartDatasDHN.Add(enChartData);
+                            }
+                    }
+                }
+                catch { }
                 //
                 en.ThongTin = "Đã thanh toán hết";
                 if (TongNo > 0)
