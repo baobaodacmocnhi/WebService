@@ -103,32 +103,15 @@
                     position: "top"
                 },
                 series: [{
-                    type: "area",
+                    type: "column",
                     field: "TieuThu",
                     categoryField: "Ky",
                     name: "Tiêu thụ (m³)",
                     axis: "TieuThu",
-                    color: "#ec5e0a"
-                },
-                {
-                    type: "line",
-                    field: "ThanhTien",
-                    categoryField: "Ky",
-                    name: "",
-                    axis: "ThanhTien",
-                    color: "#73c100"
+                    color: "#73c100",
+                    labels:{visible:true,format: "N2"},
                 }],
-                valueAxis: [{
-                    name: "ThanhTien",
-                    title: { text: "" },
-                    labels: {
-                        format: "N2"
-                    },
-                    line: {
-                        visible: true
-                    },
-                    color: "#ec5e0a"
-                },
+                valueAxis: [
                 {
                     name: "TieuThu",
                     title: { text: "Tiêu thụ (m³)" },
