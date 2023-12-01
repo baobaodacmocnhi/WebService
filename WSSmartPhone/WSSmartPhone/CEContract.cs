@@ -14,7 +14,7 @@ namespace WSSmartPhone
     public class CEContract
     {
         private string urlApi = "https://api-econtract.cskhtanhoa.com.vn:1443";
-        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKHWFH);
+        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
 
         private string getAccess_token_Client()
         {
@@ -419,6 +419,87 @@ namespace WSSmartPhone
         }
 
         public bool editEContract(string MaDon, string SHS, string checksum, out string strResponse)
+        {
+            strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    DataTable dt;
+                    string DanhBo = "", HopDong = "", Co = "", NgayHieuLuc = "";
+                    if (MaDon != "")
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' and Huy=0 and HieuLuc=0 order by CreateDate desc");
+                        //DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate='08/09/2023'");
+                        DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate=CONVERT(varchar(10),b.CreateDate,103) from KTKS_DonKH.dbo.DCBD a,KTKS_DonKH.dbo.DCBD_ChiTietBienDong b"
+                        + " where a.MaDCBD=b.MaDCBD and a.MaDonMoi=" + MaDon + " and b.ThongTin like N'%tên%'");
+                        if (dtThongTin == null || dtThongTin.Rows.Count == 0)
+                        {
+                            strResponse = "Mã đơn chưa có điều chỉnh";
+                            return false;
+                        }
+                        NgayHieuLuc = dtThongTin.Rows[0]["CreateDate"].ToString();
+                    }
+                    else
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' and Huy=0 and HieuLuc=0 order by CreateDate desc");
+                        //DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT COTLK='15',DHN_SODANHBO='13130000000',DHN_SOHOPDONG='TP123456',DHN_NGAYCHOSODB='08/09/2023'");
+                        DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT COTLK,DHN_SODANHBO,DHN_SOHOPDONG,DHN_NGAYCHOSODB=CONVERT(varchar(10),DHN_NGAYCHOSODB,103) FROM TANHOA_WATER.dbo.KH_HOSOKHACHHANG where shs='" + SHS + "' and DHN_SODANHBO is not null");
+                        if (dtThongTin == null || dtThongTin.Rows.Count == 0)
+                        {
+                            strResponse = "Mã đơn chưa có cho danh bộ";
+                            return false;
+                        }
+                        if (!SHS.Contains("TL"))
+                        {
+                            DanhBo = dtThongTin.Rows[0]["DHN_SODANHBO"].ToString();
+                            HopDong = dtThongTin.Rows[0]["DHN_SOHOPDONG"].ToString();
+                        }
+                        Co = dtThongTin.Rows[0]["COTLK"].ToString();
+                        NgayHieuLuc = dtThongTin.Rows[0]["DHN_NGAYCHOSODB"].ToString();
+                    }
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        if (checkHieuLucEContract(dt.Rows[0]["IDEContract"].ToString()))
+                        {
+                            strResponse = "EContract đã có hiệu lực";
+                            return false;
+                        }
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                        var client = new HttpClient();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                        var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esignature-service/dsign/attach-tawaco-information");
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_token_Client());
+                        var content = new StringContent("{\"contractId\":\"" + dt.Rows[0]["IDEContract"].ToString() + "\",\"soDanhBa\":{\"value\":\"" + DanhBo + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,815,320,230]}]},\"soHoSo\":{\"value\":\"" + HopDong + "\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,840,320,230]}]},\"ngayKy\":{\"value\":\"" + NgayHieuLuc + "\",\"signFrame\":[{\"pageSign\":3,\"bboxSign\":[320,400,300,250]}]},\"coDongHo\":{\"value\":\"" + Co + "\",\"signFrame\":[{\"pageSign\":1,\"bboxSign\":[190,890,300,250]}]},\"QRcode\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[0,0,0,0]}]}}", null, "application/json");
+                        request.Content = content;
+                        var response = client.SendAsync(request);
+                        var result = response.Result.Content.ReadAsStringAsync();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                        if (response.Result.IsSuccessStatusCode)
+                        {
+                            _cDAL_TTKH.ExecuteNonQuery("update Zalo_EContract_ChiTiet set HieuLuc=1 where IDEContract='" + dt.Rows[0]["IDEContract"].ToString() + "'"
+                                + " update [KTKS_DonKH].[dbo].[ChungTu_ChiTiet] set DanhBo='" + DanhBo + "' where SHS='" + SHS + "' and DanhBo like ''");
+                            duyetKhongKy(dt.Rows[0]["IDEContract"].ToString(), out strResponse);
+                            return true;
+                        }
+                        else
+                            strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
+                    }
+                    else
+                        strResponse = "Không có dữ liệu từ mã đơn";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return false;
+        }
+
+        public bool editEContract2(string MaDon, string SHS, string checksum, out string strResponse)
         {
             strResponse = "";
             try
