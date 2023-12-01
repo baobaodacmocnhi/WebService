@@ -681,9 +681,16 @@ namespace WSTanHoa.Controllers
                                    + " , DenNgay = convert(varchar(10), @date, 103),CSM = (select ChiSo from[sDHN].[dbo].[sDHN_LichSu_TCT] where CAST(ThoiGianCapNhat as date)=@date and DATEPART(HOUR, ThoiGianCapNhat)=01 and DATEPART(MINUTE, ThoiGianCapNhat)=0  and DanhBo = '" + strs[1].Trim() + "'))t1");
                             if (dtCS != null && dtCS.Rows.Count > 0)
                             {
+                                string CSC = "", CSM = "", TieuThu = "";
+                                if (dtCS.Rows[0]["CSC"].ToString() != "")
+                                    CSC = float.Parse(dtCS.Rows[0]["CSC"].ToString()).ToString("0.00");
+                                if (dtCS.Rows[0]["CSM"].ToString() != "")
+                                    CSM = float.Parse(dtCS.Rows[0]["CSM"].ToString()).ToString("0.00");
+                                if (dtCS.Rows[0]["CSC"].ToString() != "" && dtCS.Rows[0]["CSM"].ToString() != "")
+                                    TieuThu = float.Parse(dtCS.Rows[0]["TieuThu"].ToString()).ToString("0.00");
                                 string NoiDung = getTTKH(strs[1].Trim())
                                     + "Chỉ số đồng hồ nước thông minh tính từ 01g00 ngày " + dtCS.Rows[0]["TuNgay"].ToString() + " đến 01g00 ngày " + dtCS.Rows[0]["DenNgay"].ToString() + "\n"
-                                    + "CSC: " + float.Parse(dtCS.Rows[0]["CSC"].ToString()).ToString("0.00") + "    CSM: " + float.Parse(dtCS.Rows[0]["CSM"].ToString()).ToString("0.00") + "    TT: " + float.Parse(dtCS.Rows[0]["TieuThu"].ToString()).ToString("0.00") + " m3";
+                                    + "CSC: " + CSC + "    CSM: " + CSM + "    TT: " + TieuThu + " m3";
                                 //DataTable dtZalo = _cDAL_TrungTam.ExecuteQuery_DataTable("select a.IDZalo from Zalo_QuanTam a,Zalo_DangKy b where a.IDZalo=b.IDZalo and Follow=1 and DanhBo='" + item["DanhBo"].ToString() + "'");
                                 //foreach (DataRow itemZalo in dtZalo.Rows)
                                 {

@@ -15,9 +15,9 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/DocSo")]
     public class apiDocSoController : ApiController
     {
-        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHNWFH);
+        private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
-        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHNWFH);
+        private CConnection _cDAL_sDHN = new CConnection(CGlobalVariable.sDHN);
         private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TrungTamKhachHang);

@@ -17,7 +17,6 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/TrungTamKhachHang")]
     public class apiTrungTamKhachHangController : ApiController
     {
-        //string _pass = "s@l@2019";
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         //private CConnection _cDAL_DocSo12 = new CConnection(CGlobalVariable.DocSo12);
@@ -35,7 +34,7 @@ namespace WSTanHoa.Controllers
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Ssl3;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://old.cskhtanhoa.com.vn:1803/api/thuongvu/checkhosogoc/" + DanhBo);
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://192.168.1.5:84/api/thuongvu/checkhosogoc/" + DanhBo);
                 request.Method = "GET";
                 request.ContentType = "application/json";
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
