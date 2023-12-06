@@ -42,5 +42,9 @@ namespace WSTanHoa.Controllers
                 return false;
             }
         }
+
+        string[] ViTriDHN1 = new string[] { };
+        string[] ViTriDHN2 = new string[] { };
+
     }
 }

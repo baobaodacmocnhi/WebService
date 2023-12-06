@@ -12,13 +12,12 @@ namespace WSTanHoa.Models
         public string alert { set; get; }
         public string message { set; get; }
         public string hoadonton { set; get; }
-
+        public string data { set; get; }
         public MResult()
         {
             success = false;
-            error = message = alert = hoadonton = "";
+            error = message = alert = hoadonton = data = "";
         }
-
 
         public class Logger
         {
