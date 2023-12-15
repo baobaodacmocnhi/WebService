@@ -12,7 +12,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuongVu")]
     public class apiThuongVuController : ApiController
     {
-        private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVuWFH);
+        private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         [Route("insertCCCDtoTCT")]
@@ -690,16 +690,19 @@ namespace WSTanHoa.Controllers
                            + " ," + jsonContent["IDUser"].ToString() + ")"))
                             {
                                 var lstHinhAnh = CGlobalVariable.jsSerializer.Deserialize<dynamic>(jsonContent["lstHinhAnh"].ToString());
+                                List<HinhAnh> lstHinhAnhReturn = new List<HinhAnh>();
                                 foreach (var item in lstHinhAnh)
                                 {
-                                    string name = DateTime.Now.ToString("dd.MM.yyyy HH.mm.ss");
+                                    HinhAnh enHinhAnhReturn = new HinhAnh();
+                                    enHinhAnhReturn.Name = DateTime.Now.ToString("dd.MM.yyyy HH.mm.ss");
                                     byte[] hinh = System.Convert.FromBase64String(item["Value"]);
-                                    if (_wsThuongVu.ghi_Hinh("KTXM_ChiTiet_Hinh", MaCTKTXM, name + item["Type"], hinh) == true)
+                                    if (_wsThuongVu.ghi_Hinh("KTXM_ChiTiet_Hinh", MaCTKTXM, enHinhAnhReturn.Name + item["Type"], hinh) == true)
                                     {
                                         _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh(ID,IDKTXM_ChiTiet,Name,Loai,CreateBy,CreateDate)"
                                             + "values((if exists (select top 1 * from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh else select 1)"
-                                            + "," + MaCTKTXM + ",'" + name + "','" + item["Type"] + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
+                                            + "," + MaCTKTXM + ",'" + enHinhAnhReturn.Name + "','" + item["Type"] + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
                                     }
+                                    lstHinhAnhReturn.Add(enHinhAnhReturn);
                                 }
                                 result.success = _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.DonTu_LichSu(ID,NgayChuyen,ID_NoiChuyen,NoiChuyen,NoiDung,TableName,IDCT,MaDon,STT,CreateBy,CreateDate)"
                                     + "values((if exists (select top 1 * from KTKS_DonKH.dbo.DonTu_LichSu) select MAX(ID)+1 from KTKS_DonKH.dbo.DonTu_LichSu else select 1),'" + NgayKTXM + "',5,N'Kiểm Tra',N'Đã Kiểm Tra, "
@@ -708,7 +711,8 @@ namespace WSTanHoa.Controllers
                                 scope.Dispose();
                                 var data = new
                                 {
-                                    ID = MaCTKTXM
+                                    ID = MaCTKTXM,
+                                    lstHinhAnh = lstHinhAnhReturn
                                 };
                                 result.data = CGlobalVariable.jsSerializer.Serialize(data);
                             }
@@ -967,16 +971,19 @@ namespace WSTanHoa.Controllers
                              + " ," + jsonContent["IDUser"].ToString() + ")"))
                             {
                                 var lstHinhAnh = CGlobalVariable.jsSerializer.Deserialize<dynamic>(jsonContent["lstHinhAnh"].ToString());
+                                List<HinhAnh> lstHinhAnhReturn = new List<HinhAnh>();
                                 foreach (var item in lstHinhAnh)
                                 {
-                                    string name = DateTime.Now.ToString("dd.MM.yyyy HH.mm.ss");
+                                    HinhAnh enHinhAnhReturn = new HinhAnh();
+                                    enHinhAnhReturn.Name = DateTime.Now.ToString("dd.MM.yyyy HH.mm.ss");
                                     byte[] hinh = System.Convert.FromBase64String(item["Value"]);
-                                    if (_wsThuongVu.ghi_Hinh("BamChi_ChiTiet_Hinh", MaCTBC, name + item["Type"], hinh) == true)
+                                    if (_wsThuongVu.ghi_Hinh("BamChi_ChiTiet_Hinh", MaCTBC, enHinhAnhReturn.Name + item["Type"], hinh) == true)
                                     {
                                         _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh(ID,IDBamChi_ChiTiet,Name,Loai,CreateBy,CreateDate)"
                                             + "values((if exists (select top 1 * from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh else select 1)"
-                                            + "," + MaCTBC + ",'" + name + "','" + item["Type"] + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
+                                            + "," + MaCTBC + ",'" + enHinhAnhReturn.Name + "','" + item["Type"] + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
                                     }
+                                    lstHinhAnhReturn.Add(enHinhAnhReturn);
                                 }
                                 result.success = _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.DonTu_LichSu(ID,NgayChuyen,ID_NoiChuyen,NoiChuyen,NoiDung,TableName,IDCT,MaDon,STT,CreateBy,CreateDate)"
                                                             + "values((if exists (select top 1 * from KTKS_DonKH.dbo.DonTu_LichSu) select MAX(ID)+1 from KTKS_DonKH.dbo.DonTu_LichSu else select 1),'" + NgayBC + "',5,N'Kiểm Tra',N'Đã Bấm Chì, "
@@ -985,7 +992,8 @@ namespace WSTanHoa.Controllers
                                 scope.Dispose();
                                 var data = new
                                 {
-                                    ID = MaCTBC
+                                    ID = MaCTBC,
+                                    lstHinhAnh = lstHinhAnhReturn
                                 };
                                 result.data = CGlobalVariable.jsSerializer.Serialize(data);
                             }
@@ -1090,6 +1098,96 @@ namespace WSTanHoa.Controllers
         [Route("donkh_deleteBBBC")]
         [HttpPost]
         public MResult donkh_deleteBBBC()
+        {
+            MResult result = new MResult();
+            try
+            {
+                string jsonResult = Request.Content.ReadAsStringAsync().Result;
+                if (jsonResult != null)
+                {
+                    var jsonContent = JObject.Parse(jsonResult);
+                    if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
+                    {
+                        var transactionOptions = new TransactionOptions();
+                        transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                        using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
+                        {
+                            _cDAL_ThuongVu.ExecuteNonQuery("delete KTKS_DonKH.dbo.DonTu_LichSu where TableName='BamChi_ChiTiet' and IDCT=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
+                            _cDAL_ThuongVu.ExecuteNonQuery("delete KTKS_DonKH.dbo.BamChi_ChiTiet WHERE MaCTBC=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
+                            _wsThuongVu.xoa_Folder_Hinh("BamChi_ChiTiet_Hinh", jsonContent["ID"].ToString());
+                            scope.Complete();
+                            scope.Dispose();
+                            result.success = true;
+                        }
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.error = "Sai checksum";
+                    }
+                }
+                else
+                {
+                    result.success = false;
+                    result.error = "Thiếu parameter";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return result;
+        }
+
+        [Route("donkh_insertHinhAnh")]
+        [HttpPost]
+        public MResult donkh_insertHinhAnh()
+        {
+            MResult result = new MResult();
+            try
+            {
+                string jsonResult = Request.Content.ReadAsStringAsync().Result;
+                if (jsonResult != null)
+                {
+                    var jsonContent = JObject.Parse(jsonResult);
+                    if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
+                    {
+                        var transactionOptions = new TransactionOptions();
+                        transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                        using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
+                        {
+                            _cDAL_ThuongVu.ExecuteNonQuery("delete KTKS_DonKH.dbo.DonTu_LichSu where TableName='BamChi_ChiTiet' and IDCT=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
+                            _cDAL_ThuongVu.ExecuteNonQuery("delete KTKS_DonKH.dbo.BamChi_ChiTiet WHERE MaCTBC=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
+                            _wsThuongVu.xoa_Folder_Hinh("BamChi_ChiTiet_Hinh", jsonContent["ID"].ToString());
+                            scope.Complete();
+                            scope.Dispose();
+                            result.success = true;
+                        }
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.error = "Sai checksum";
+                    }
+                }
+                else
+                {
+                    result.success = false;
+                    result.error = "Thiếu parameter";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return result;
+        }
+
+        [Route("donkh_deletetHinhAnh")]
+        [HttpPost]
+        public MResult donkh_deletetHinhAnh()
         {
             MResult result = new MResult();
             try
