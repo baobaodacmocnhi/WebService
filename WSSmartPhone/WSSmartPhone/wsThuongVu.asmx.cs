@@ -73,6 +73,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public int them_CCCD_BoSung2023(string DanhBo, string CCCD, out  string result)
+        {
+            return _cThuTien.them_CCCD_BoSung2023(DanhBo, CCCD, out result);
+        }
+
+        [WebMethod]
         public int sua_CCCD(string DanhBo, string CCCD, out string result)
         {
             return _cThuTien.sua_CCCD(DanhBo, CCCD, out result);

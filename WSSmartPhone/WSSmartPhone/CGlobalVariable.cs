@@ -16,6 +16,7 @@ namespace WSSmartPhone
         public static string ThuTien = "Data Source=server9;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string ThuTienWFH = "Data Source=113.161.88.180,1933;Initial Catalog=HOADON_TA;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string KinhDoanh = "Data Source=server9;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
+        public static string KinhDoanhWFH = "Data Source=113.161.88.180,1933;Initial Catalog=KTKS_DonKH;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string TTKH = "Data Source=server9;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string TTKHWFH = "Data Source=113.161.88.180,1933;Initial Catalog=TRUNGTAMKHACHHANG;Persist Security Info=True;User ID=sa;Password=db9@tanhoa";
         public static string pathHinh = @"\\rackstation\HinhDHN\";

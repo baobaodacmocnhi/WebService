@@ -47,6 +47,8 @@ namespace WSTanHoa.wrThuongVu {
         
         private System.Threading.SendOrPostCallback them_CCCDOperationCompleted;
         
+        private System.Threading.SendOrPostCallback them_CCCD_BoSung2023OperationCompleted;
+        
         private System.Threading.SendOrPostCallback sua_CCCDOperationCompleted;
         
         private System.Threading.SendOrPostCallback xoa_CCCDOperationCompleted;
@@ -125,6 +127,9 @@ namespace WSTanHoa.wrThuongVu {
         
         /// <remarks/>
         public event them_CCCDCompletedEventHandler them_CCCDCompleted;
+        
+        /// <remarks/>
+        public event them_CCCD_BoSung2023CompletedEventHandler them_CCCD_BoSung2023Completed;
         
         /// <remarks/>
         public event sua_CCCDCompletedEventHandler sua_CCCDCompleted;
@@ -432,6 +437,38 @@ namespace WSTanHoa.wrThuongVu {
             if ((this.them_CCCDCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.them_CCCDCompleted(this, new them_CCCDCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/them_CCCD_BoSung2023", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public int them_CCCD_BoSung2023(string DanhBo, string CCCD, out string result) {
+            object[] results = this.Invoke("them_CCCD_BoSung2023", new object[] {
+                        DanhBo,
+                        CCCD});
+            result = ((string)(results[1]));
+            return ((int)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void them_CCCD_BoSung2023Async(string DanhBo, string CCCD) {
+            this.them_CCCD_BoSung2023Async(DanhBo, CCCD, null);
+        }
+        
+        /// <remarks/>
+        public void them_CCCD_BoSung2023Async(string DanhBo, string CCCD, object userState) {
+            if ((this.them_CCCD_BoSung2023OperationCompleted == null)) {
+                this.them_CCCD_BoSung2023OperationCompleted = new System.Threading.SendOrPostCallback(this.Onthem_CCCD_BoSung2023OperationCompleted);
+            }
+            this.InvokeAsync("them_CCCD_BoSung2023", new object[] {
+                        DanhBo,
+                        CCCD}, this.them_CCCD_BoSung2023OperationCompleted, userState);
+        }
+        
+        private void Onthem_CCCD_BoSung2023OperationCompleted(object arg) {
+            if ((this.them_CCCD_BoSung2023Completed != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.them_CCCD_BoSung2023Completed(this, new them_CCCD_BoSung2023CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -921,6 +958,40 @@ namespace WSTanHoa.wrThuongVu {
         private object[] results;
         
         internal them_CCCDCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public int Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((int)(this.results[0]));
+            }
+        }
+        
+        /// <remarks/>
+        public string result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[1]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void them_CCCD_BoSung2023CompletedEventHandler(object sender, them_CCCD_BoSung2023CompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class them_CCCD_BoSung2023CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal them_CCCD_BoSung2023CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }

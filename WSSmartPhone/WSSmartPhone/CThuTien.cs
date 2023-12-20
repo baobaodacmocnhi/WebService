@@ -7485,6 +7485,102 @@ namespace WSSmartPhone
             }
         }
 
+        public int them_CCCD_BoSung2023(string DanhBo, string CCCD, out string result)
+        {
+            result = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/ThemDinhDanh";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select LoaiCapDM='1',NgayHetHan=NULL,HoTen"
+                + " from CCCD_BoSung2023 where DanhBo='" + DanhBo + "' and MaCT='" + CCCD + "'");
+                if (dt != null && dt.Rows.Count > 0)
+                {
+                    var data = new
+                    {
+                        branch_code = "TH",
+                        branch_name = "",
+                        sodinhdanh = CCCD,
+                        tenkh_codau = dt.Rows[0]["HoTen"],
+                        tenkh_khongdau = "",
+                        cmndcu = "",
+                        danhbo = DanhBo,
+                        sohokhau_stt = "",
+                        hongheo = "0",
+                        loaicapdm = dt.Rows[0]["LoaiCapDM"],
+                        thoihantt = dt.Rows[0]["NgayHetHan"],
+                        danhbo_tt = "",
+                        diachikhachhang = "",
+                        diachiemail = "",
+                        sodienthoai = "",
+                        ghichu = "",
+                        dinhmuc = "",
+                    };
+                    var serializer = new JavaScriptSerializer();
+                    var json = serializer.Serialize(data);
+                    json = "[" + json + "]";
+                    Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                    request.ContentLength = byteArray.Length;
+                    //gắn data post
+                    Stream dataStream = request.GetRequestStream();
+                    dataStream.Write(byteArray, 0, byteArray.Length);
+                    dataStream.Close();
+                }
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result1 = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result1);
+                    if (obj["ketQua"] != null && obj["ketQua"] == 1)
+                    {
+                        result = "Thành Công";
+                        return 1;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            if (obj["duLieuKhongHopLe"][0]["ghichu"].ToString() != "")
+                                result = obj["duLieuKhongHopLe"][0]["ghichu"];
+                        }
+                        catch
+                        {
+
+                        }
+                        try
+                        {
+                            if (obj["duLieuTrung"][0]["id"].ToString() != "")
+                                result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " - " + obj["duLieuTrung"][0]["danhbo"].ToString() + " - " + obj["duLieuTrung"][0]["createdDate"].ToString();
+                        }
+                        catch
+                        {
+
+                        }
+                        return 0;
+                    }
+                }
+                else
+                {
+                    result = "Lỗi kết nối";
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return -1;
+            }
+        }
+
         public int sua_CCCD(string DanhBo, string CCCD, out string result)
         {
             result = "";

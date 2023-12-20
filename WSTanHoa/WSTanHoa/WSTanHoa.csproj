@@ -2334,10 +2334,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>WSTanHoa_wrDHN_wsDHN</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://server5:81/wsthuongvu.asmx">
+    <WebReferenceUrl Include="http://113.161.88.180:81/wsthuongvu.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\wrThuongVu\</RelPath>
-      <UpdateFromURL>http://server5:81/wsthuongvu.asmx</UpdateFromURL>
+      <UpdateFromURL>http://113.161.88.180:81/wsthuongvu.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

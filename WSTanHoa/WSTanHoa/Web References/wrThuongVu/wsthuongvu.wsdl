@@ -144,6 +144,22 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="them_CCCD_BoSung2023">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="DanhBo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="CCCD" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="them_CCCD_BoSung2023Response">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="them_CCCD_BoSung2023Result" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="result" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
       <s:element name="sua_CCCD">
         <s:complexType>
           <s:sequence>
@@ -316,6 +332,12 @@
   <wsdl:message name="them_CCCDSoapOut">
     <wsdl:part name="parameters" element="tns:them_CCCDResponse" />
   </wsdl:message>
+  <wsdl:message name="them_CCCD_BoSung2023SoapIn">
+    <wsdl:part name="parameters" element="tns:them_CCCD_BoSung2023" />
+  </wsdl:message>
+  <wsdl:message name="them_CCCD_BoSung2023SoapOut">
+    <wsdl:part name="parameters" element="tns:them_CCCD_BoSung2023Response" />
+  </wsdl:message>
   <wsdl:message name="sua_CCCDSoapIn">
     <wsdl:part name="parameters" element="tns:sua_CCCD" />
   </wsdl:message>
@@ -394,6 +416,10 @@
     <wsdl:operation name="them_CCCD">
       <wsdl:input message="tns:them_CCCDSoapIn" />
       <wsdl:output message="tns:them_CCCDSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="them_CCCD_BoSung2023">
+      <wsdl:input message="tns:them_CCCD_BoSung2023SoapIn" />
+      <wsdl:output message="tns:them_CCCD_BoSung2023SoapOut" />
     </wsdl:operation>
     <wsdl:operation name="sua_CCCD">
       <wsdl:input message="tns:sua_CCCDSoapIn" />
@@ -500,6 +526,15 @@
     </wsdl:operation>
     <wsdl:operation name="them_CCCD">
       <soap:operation soapAction="http://tempuri.org/them_CCCD" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="them_CCCD_BoSung2023">
+      <soap:operation soapAction="http://tempuri.org/them_CCCD_BoSung2023" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -647,6 +682,15 @@
     </wsdl:operation>
     <wsdl:operation name="them_CCCD">
       <soap12:operation soapAction="http://tempuri.org/them_CCCD" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="them_CCCD_BoSung2023">
+      <soap12:operation soapAction="http://tempuri.org/them_CCCD_BoSung2023" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
