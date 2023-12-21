@@ -351,14 +351,21 @@ namespace WSTanHoa.Controllers
         [ApiExplorerSettings(IgnoreApi = true)]
         public DataTable getLichDocSo_Func_SQL(string DanhBo, string MLT)
         {
+            //string sql_Lich = "WITH temp AS(select top 2 KY, NAM from DocSo where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
+            //                       + " select distinct NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103)"
+            //                       + " ,NgayDoc,NgayChuyenListing,NgayThuTien,a.Ky,a.Nam,Dot=b.IDDot"
+            //                       + " from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c,temp where a.ID=b.IDDocSo and c.ID=b.IDDot and ((a.Nam>temp.Nam) or (a.Nam=temp.Nam and a.Ky>=temp.Ky))"
+            //                       + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
+            //                       + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
+            //                       + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
+            //                       + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))"
+            //                       + " order by NgayDoc desc";
             string sql_Lich = "WITH temp AS(select top 2 KY, NAM from DocSo where DANHBA = '" + DanhBo + "' order by DocSoID desc)"
                                    + " select distinct NoiDung=N'Kỳ '+CONVERT(varchar(2),a.Ky)+'/'+CONVERT(varchar(4),a.Nam)+N' dự kiến sẽ được ghi chỉ số vào ngày '+CONVERT(varchar(10),b.NgayDoc,103)"
                                    + " ,NgayDoc,NgayChuyenListing,NgayThuTien,a.Ky,a.Nam,Dot=b.IDDot"
                                    + " from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c,temp where a.ID=b.IDDocSo and c.ID=b.IDDot and ((a.Nam>temp.Nam) or (a.Nam=temp.Nam and a.Ky>=temp.Ky))"
-                                   + " and((c.TB1_From <= " + MLT + " and c.TB1_To >= " + MLT + ")"
-                                   + " or (c.TB2_From <= " + MLT + " and c.TB2_To >= " + MLT + ")"
-                                   + " or (c.TP1_From <= " + MLT + " and c.TP1_To >= " + MLT + ")"
-                                   + " or (c.TP2_From <= " + MLT + " and c.TP2_To >= " + MLT + "))"
+                                   + " and((c.To1_From <= " + MLT + " and c.To1_To >= " + MLT + ")"
+                                   + " or (c.To2_From <= " + MLT + " and c.To2_To >= " + MLT + "))"
                                    + " order by NgayDoc desc";
             return _cDAL_DocSo.ExecuteQuery_DataTable(sql_Lich);
         }
