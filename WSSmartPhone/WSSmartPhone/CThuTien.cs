@@ -115,9 +115,9 @@ namespace WSSmartPhone
                     return "false;Sai mật khẩu hoặc IDMobile";
 
                 //xóa máy đăng nhập MaNV khác
-                object MaNV_UID_Old = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
-                if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
-                    _cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                //object MaNV_UID_Old = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                //if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
+                //    _cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
 
                 //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                 //{
@@ -129,12 +129,12 @@ namespace WSSmartPhone
                 //    }
                 //}
 
-                object MaNV_UID = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
-                if (MaNV_UID != null)
-                    if ((int)MaNV_UID == 0)
-                        _cDAL_ThuTien.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
-                    else
-                        _cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+                //object MaNV_UID = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from TT_DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                //if (MaNV_UID != null)
+                //    if ((int)MaNV_UID == 0)
+                //        _cDAL_ThuTien.ExecuteNonQuery("insert TT_DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                //    else
+                //        _cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 _cDAL_ThuTien.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
@@ -209,8 +209,8 @@ namespace WSSmartPhone
             {
                 object MaNV = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
 
-                if (MaNV != null)
-                    _cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+                //if (MaNV != null)
+                //    _cDAL_ThuTien.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 return _cDAL_ThuTien.ExecuteNonQuery("update TT_NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
             }
@@ -3677,9 +3677,9 @@ namespace WSSmartPhone
                     return "false;Sai mật khẩu hoặc IDMobile";
 
                 //xóa máy đăng nhập MaNV khác
-                object MaNV_UID_Old = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
-                if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
-                    _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                //object MaNV_UID_Old = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
+                //if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
+                //    _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
 
                 //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                 //{
@@ -3691,12 +3691,12 @@ namespace WSSmartPhone
                 //    }
                 //}
 
-                object MaNV_UID = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
-                if (MaNV_UID != null)
-                    if ((int)MaNV_UID == 0)
-                        _cDAL_DocSo.ExecuteNonQuery("insert DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
-                    else
-                        _cDAL_DocSo.ExecuteNonQuery("update DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
+                //object MaNV_UID = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
+                //if (MaNV_UID != null)
+                //    if ((int)MaNV_UID == 0)
+                //        _cDAL_DocSo.ExecuteNonQuery("insert DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
+                //    else
+                //        _cDAL_DocSo.ExecuteNonQuery("update DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
@@ -3730,8 +3730,8 @@ namespace WSSmartPhone
             {
                 object MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
 
-                if (MaNV != null)
-                    _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
+                //if (MaNV != null)
+                //    _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
 
                 return _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
             }
@@ -3750,25 +3750,26 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_To_DHN()
+        public string getDS_To_DHN(string MaTo)
         {
-            string sql = "select MaTo,TenTo,HanhThu from [To] where HanhThu=1";
+            string sql = "select MaTo,TenTo,HanhThu from [To] where HanhThu=1 and IDPhong=(select IDPhong from [To] where MaTo=" + MaTo + ")";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_NhanVien_HanhThu_DHN()
+        public string getDS_NhanVien_HanhThu_DHN(string MaTo)
         {
-            string sql = "select MaND,HoTen,May,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from NguoiDung where MaND!=0 and May is not null and An=0 and ActiveMobile=1 order by STT asc";
-            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
-        }
-
-        public string getDS_May_DHN()
-        {
-            string sql = "select May,MaTo from MayDS order by May asc";
+            string sql = "select MaND,HoTen,May,HanhThu,DongNuoc,MaTo,DienThoai from NguoiDung where MaND!=0 and May is not null and An=0 and ActiveMobile=1"
+            + " and MaTo in (select MaTo from [To] where IDPhong=(select IDPhong from [To] where MaTo=" + MaTo + ")) order by STT asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
         public string getDS_May_DHN(string MaTo)
+        {
+            string sql = "select May,MaTo from MayDS where MaTo in (select MaTo from [To] where IDPhong=(select IDPhong from [To] where MaTo=" + MaTo + ")) order by May asc";
+            return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
+        }
+
+        public string getDS_May_To_DHN(string MaTo)
         {
             string sql = "select May,MaTo from MayDS where MaTo=" + MaTo + " order by May asc";
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
@@ -4864,9 +4865,9 @@ namespace WSSmartPhone
             return DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_SoLieu_SanLuong_DHN(string Nam, string Ky, string Dot)
+        public string getDS_SoLieu_SanLuong_DHN(string MaTo, string Nam, string Ky, string Dot)
         {
-            DataTable dtTo = _cDAL_DocSo.ExecuteQuery_DataTable("select MaTo,TenTo from [To] where HanhThu=1");
+            DataTable dtTo = _cDAL_DocSo.ExecuteQuery_DataTable("select MaTo,TenTo from [To] where HanhThu=1 and MaTo in (select MaTo from [To] where IDPhong=(select IDPhong from [To] where MaTo=" + MaTo + "))");
             DataTable dt = new DataTable();
             foreach (DataRow item in dtTo.Rows)
             {
@@ -4893,9 +4894,9 @@ namespace WSSmartPhone
             return DataTableToJSON(dt);
         }
 
-        public string getDS_SoLieu_HD0_DHN(string Nam, string Ky, string Dot)
+        public string getDS_SoLieu_HD0_DHN(string MaTo, string Nam, string Ky, string Dot)
         {
-            DataTable dtTo = _cDAL_DocSo.ExecuteQuery_DataTable("select MaTo,TenTo from [To] where HanhThu=1");
+            DataTable dtTo = _cDAL_DocSo.ExecuteQuery_DataTable("select MaTo,TenTo from [To] where HanhThu=1 and MaTo in (select MaTo from [To] where IDPhong=(select IDPhong from [To] where MaTo=" + MaTo + "))");
             DataTable dt = new DataTable();
             foreach (DataRow item in dtTo.Rows)
             {

@@ -58,27 +58,27 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetDSTo()
+        public string GetDSTo(string MaTo)
         {
-            return _cThuTien.getDS_To_DHN();
+            return _cThuTien.getDS_To_DHN(MaTo);
         }
 
         [WebMethod]
-        public string getDS_NhanVien_HanhThu()
+        public string getDS_NhanVien_HanhThu(string MaTo)
         {
-            return _cThuTien.getDS_NhanVien_HanhThu_DHN();
+            return _cThuTien.getDS_NhanVien_HanhThu_DHN(MaTo);
         }
 
         [WebMethod]
-        public string GetDS_May_To(string MaTo)
+        public string getDS_May(string MaTo)
         {
             return _cThuTien.getDS_May_DHN(MaTo);
         }
 
         [WebMethod]
-        public string getDS_May()
+        public string getDS_May_To(string MaTo)
         {
-            return _cThuTien.getDS_May_DHN();
+            return _cThuTien.getDS_May_To_DHN(MaTo);
         }
 
         [WebMethod]
@@ -371,15 +371,15 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string getDS_SoLieu_SanLuong(string Nam, string Ky, string Dot)
+        public string getDS_SoLieu_SanLuong(string MaTo, string Nam, string Ky, string Dot)
         {
-            return _cThuTien.getDS_SoLieu_SanLuong_DHN(Nam, Ky, Dot);
+            return _cThuTien.getDS_SoLieu_SanLuong_DHN(MaTo,Nam, Ky, Dot);
         }
 
         [WebMethod]
-        public string getDS_SoLieu_HD0(string Nam, string Ky, string Dot)
+        public string getDS_SoLieu_HD0(string MaTo, string Nam, string Ky, string Dot)
         {
-            return _cThuTien.getDS_SoLieu_HD0_DHN(Nam, Ky, Dot);
+            return _cThuTien.getDS_SoLieu_HD0_DHN(MaTo,Nam, Ky, Dot);
         }
 
     }
