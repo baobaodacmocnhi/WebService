@@ -138,7 +138,7 @@ namespace WSSmartPhone
 
                 _cDAL_ThuTien.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,Zalo,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,Zalo,InPhieuBao,TestApp,SyncNopTien,IDPhong=(select IDPhong from [TT_To] where [TT_To].MaTo=TT_NguoiDung.MaTo) from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -179,7 +179,7 @@ namespace WSSmartPhone
 
                 //_cDAL.ExecuteNonQuery("update TT_NguoiDung set UID='" + UID + "' where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,Zalo,InPhieuBao,TestApp,SyncNopTien from TT_NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,Admin,HanhThu,DongNuoc,Doi,ToTruong,MaTo,DienThoai,Zalo,InPhieuBao,TestApp,SyncNopTien,IDPhong=(select IDPhong from [TT_To] where [TT_To].MaTo=TT_NguoiDung.MaTo) from TT_NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {
@@ -247,25 +247,25 @@ namespace WSSmartPhone
             return _cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where UID='" + UID + "' and MaNV=" + MaNV);
         }
 
-        public string getDS_To()
+        public string getDS_To(string MaTo)
         {
-            string sql = "select MaTo,TenTo,HanhThu,DongNuoc from TT_To where An=0";
+            string sql = "select MaTo,TenTo,HanhThu,DongNuoc from TT_To where IDPhong=(select IDPhong from [TT_To] where MaTo=" + MaTo + ") and An=0";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_NhanVien_HanhThu()
+        public string getDS_NhanVien_HanhThu_Doi(string MaTo)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 and ActiveMobile=1 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaTo in (select MaTo from [TT_To] where IDPhong=(select IDPhong from [TT_To] where MaTo=" + MaTo + ")) and MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_NhanVien()
+        public string getDS_NhanVien_Doi(string MaTo)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and An=0 and ActiveMobile=1 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaTo in (select MaTo from [TT_To] where IDPhong=(select IDPhong from [TT_To] where MaTo=" + MaTo + ")) and MaND!=0 and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_NhanVien(string MaTo)
+        public string getDS_NhanVien_To(string MaTo)
         {
             string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaND!=0 and MaTo=" + MaTo + " and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
@@ -3700,7 +3700,7 @@ namespace WSSmartPhone
 
                 _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
 
-                return "true;" + DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,Doi,ToTruong,MaTo,DienThoai from NguoiDung where MaND=" + MaNV));
+                return "true;" + DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,Doi,ToTruong,MaTo,DienThoai,IDPhong=(select IDPhong from [To] where [To].MaTo=NguoiDung.MaTo) from NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
             {

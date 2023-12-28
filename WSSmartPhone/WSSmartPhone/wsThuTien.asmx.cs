@@ -69,27 +69,27 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string GetDSTo()
+        public string getDS_To(string MaTo)
         {
-            return _cThuTien.getDS_To();
+            return _cThuTien.getDS_To(MaTo);
         }
 
         [WebMethod]
-        public string getDS_NhanVien_HanhThu()
+        public string getDS_NhanVien_HanhThu_Doi(string MaTo)
         {
-            return _cThuTien.getDS_NhanVien_HanhThu();
+            return _cThuTien.getDS_NhanVien_HanhThu_Doi(MaTo);
         }
 
         [WebMethod]
-        public string GetDSNhanVienTo(string MaTo)
+        public string getDS_NhanVien_Doi(string MaTo)
         {
-            return _cThuTien.getDS_NhanVien(MaTo);
+            return _cThuTien.getDS_NhanVien_Doi(MaTo);
         }
 
         [WebMethod]
-        public string getDS_NhanVien()
+        public string getDS_NhanVien_To(string MaTo)
         {
-            return _cThuTien.getDS_NhanVien();
+            return _cThuTien.getDS_NhanVien_To(MaTo);
         }
 
         [WebMethod]
@@ -460,7 +460,7 @@ namespace WSSmartPhone
             _cThuTien.TinhTienNuoc(KhongApGiaGiam, ApGiaNuocCu, DieuChinhGia, GiaDieuChinh, DanhBo, Ky, Nam, TuNgay, DenNgay, GiaBieu, TyLeSH, TyLeSX, TyLeDV, TyLeHCSN, TongDinhMuc, DinhMucHN, TieuThu, ref  TienNuocNamCu, ref  ChiTietNamCu, ref  TienNuocNamMoi, ref  ChiTietNamMoi, ref  TieuThu_DieuChinhGia, ref  PhiBVMTNamCu, ref  ChiTietPhiBVMTNamCu, ref  PhiBVMTNamMoi, ref  ChiTietPhiBVMTNamMoi, ref TienNuoc, ref ThueGTGT, ref TDVTN, ref ThueTDVTN);
         }
 
-        
+
 
     }
 }
