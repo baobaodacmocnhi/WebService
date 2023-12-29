@@ -247,21 +247,21 @@ namespace WSSmartPhone
             return _cDAL_ThuTien.ExecuteNonQuery("update TT_DeviceSigned set ModifyDate=getdate() where UID='" + UID + "' and MaNV=" + MaNV);
         }
 
-        public string getDS_To(string MaTo)
+        public string getDS_To(string IDPhong)
         {
-            string sql = "select MaTo,TenTo,HanhThu,DongNuoc from TT_To where IDPhong=(select IDPhong from [TT_To] where MaTo=" + MaTo + ") and An=0";
+            string sql = "select MaTo,TenTo,HanhThu,DongNuoc from TT_To where IDPhong=" + IDPhong + " and An=0";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_NhanVien_HanhThu_Doi(string MaTo)
+        public string getDS_NhanVien_HanhThu_Doi(string IDPhong)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaTo in (select MaTo from [TT_To] where IDPhong=(select IDPhong from [TT_To] where MaTo=" + MaTo + ")) and MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 and ActiveMobile=1 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaTo in (select MaTo from [TT_To] where IDPhong=" + IDPhong + ") and MaND!=0 and HanhThu=1 and DongNuoc=0 and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 
-        public string getDS_NhanVien_Doi(string MaTo)
+        public string getDS_NhanVien_Doi(string IDPhong)
         {
-            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaTo in (select MaTo from [TT_To] where IDPhong=(select IDPhong from [TT_To] where MaTo=" + MaTo + ")) and MaND!=0 and An=0 and ActiveMobile=1 order by STT asc";
+            string sql = "select MaND,HoTen,HanhThu,DongNuoc,MaTo,DienThoai,Zalo from TT_NguoiDung where MaTo in (select MaTo from [TT_To] where IDPhong=" + IDPhong + ") and MaND!=0 and An=0 and ActiveMobile=1 order by STT asc";
             return DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable(sql));
         }
 

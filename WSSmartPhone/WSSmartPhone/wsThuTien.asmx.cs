@@ -69,21 +69,21 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string getDS_To(string MaTo)
+        public string getDS_To(string IDPhong)
         {
-            return _cThuTien.getDS_To(MaTo);
+            return _cThuTien.getDS_To(IDPhong);
         }
 
         [WebMethod]
-        public string getDS_NhanVien_HanhThu_Doi(string MaTo)
+        public string getDS_NhanVien_HanhThu_Doi(string IDPhong)
         {
-            return _cThuTien.getDS_NhanVien_HanhThu_Doi(MaTo);
+            return _cThuTien.getDS_NhanVien_HanhThu_Doi(IDPhong);
         }
 
         [WebMethod]
-        public string getDS_NhanVien_Doi(string MaTo)
+        public string getDS_NhanVien_Doi(string IDPhong)
         {
-            return _cThuTien.getDS_NhanVien_Doi(MaTo);
+            return _cThuTien.getDS_NhanVien_Doi(IDPhong);
         }
 
         [WebMethod]
