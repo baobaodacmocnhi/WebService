@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <publishData>
   <publishProfile publishUrl="C:\Users\admin\Desktop\WSSmartPhone" deleteExistingFiles="True" ftpAnonymousLogin="False" ftpPassiveMode="True" msdeploySite="" msdeploySiteID="" msdeployRemoteSitePhysicalPath="" msdeployAllowUntrustedCertificate="False" msdeploySkipExtraFilesOnServer="True" msdeployMarkAsApp="False" profileName="Profile1" publishMethod="FileSystem" replaceMatchingFiles="False" userName="" savePWD="False" userPWD="" SelectedForPublish="True">
-    <file relUrl="Web.config" publishTime="12/24/2023 02:30:26" />
+    <file relUrl="Images/cccd2.png" publishTime="12/08/2023 19:35:59" />
     <file relUrl="Images/face.png" publishTime="12/08/2023 19:35:59" />
     <file relUrl="Images/cccd1.png" publishTime="12/08/2023 19:35:59" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="12/24/2023 02:55:15" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="12/29/2023 20:21:55" />
+    <file relUrl="wsEContract.asmx" publishTime="12/08/2023 19:35:59" />
+    <file relUrl="wsDHN.asmx" publishTime="12/08/2023 19:35:59" />
     <file relUrl="bin/System.Net.Http.dll" publishTime="12/08/2023 19:35:59" />
-    <file relUrl="wsThuongVu.asmx" publishTime="12/08/2023 19:35:59" />
     <file relUrl="Service.asmx" publishTime="12/08/2023 19:35:59" />
     <file relUrl="wsBilling.asmx" publishTime="12/08/2023 19:35:59" />
-    <file relUrl="Images/cccd2.png" publishTime="12/08/2023 19:35:59" />
-    <file relUrl="WSSmartPhone.Publish.xml" publishTime="12/24/2023 02:45:35" />
-    <file relUrl="wsDHN.asmx" publishTime="12/08/2023 19:35:59" />
+    <file relUrl="wsThuongVu.asmx" publishTime="12/08/2023 19:35:59" />
+    <file relUrl="WSSmartPhone.Publish.xml" publishTime="12/24/2023 02:55:16" />
     <file relUrl="wsThuTien.asmx" publishTime="12/08/2023 19:35:59" />
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="12/24/2023 02:55:15" />
-    <file relUrl="wsEContract.asmx" publishTime="12/08/2023 19:35:59" />
+    <file relUrl="Web.config" publishTime="12/29/2023 20:21:55" />
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="12/29/2023 20:21:55" />
     <file relUrl="Library/System.Net.Http.dll" publishTime="12/08/2023 19:35:59" />
   </publishProfile>
 </publishData>

@@ -3328,6 +3328,9 @@
         <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCDCompleted">
             <remarks/>
         </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCD_BoSung2023Completed">
+            <remarks/>
+        </member>
         <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.sua_CCCDCompleted">
             <remarks/>
         </member>
@@ -3428,6 +3431,15 @@
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCDAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCD_BoSung2023(System.String,System.String,System.String@)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCD_BoSung2023Async(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.them_CCCD_BoSung2023Async(System.String,System.String,System.Object)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.sua_CCCD(System.String,System.String,System.String@)">
@@ -3581,6 +3593,18 @@
             <remarks/>
         </member>
         <member name="P:WSTanHoa.wrThuongVu.them_CCCDCompletedEventArgs.result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.them_CCCD_BoSung2023CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.them_CCCD_BoSung2023CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.them_CCCD_BoSung2023CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.them_CCCD_BoSung2023CompletedEventArgs.result">
             <remarks/>
         </member>
         <member name="T:WSTanHoa.wrThuongVu.sua_CCCDCompletedEventHandler">

@@ -315,12 +315,13 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
-                {
-                    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
-                    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
-                }
-                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                //if (CGlobalVariable.getSHA256(DanhBo + CGlobalVariable.salaPass) != checksum)
+                //{
+                //    ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
+                //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
+                //}
+                //DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,HoTen,DiaChi=(SONHA+' '+TENDUONG),GiaBieu,DinhMuc,MLT=LOTRINH from CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG where DANHBO='" + DanhBo + "'");
                 if (dt_ThongTin != null && dt_ThongTin.Rows.Count > 0)
                 {
                     ThongTinKhachHang en = new ThongTinKhachHang();
@@ -431,11 +432,12 @@ namespace WSTanHoa.Controllers
 
                 string sql = "select * from fnTimKiem('" + DanhBo + "','') order by MaHD desc";
                 dt = _cDAL_ThuTien.ExecuteQuery_DataTable(sql);
+                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,HoTen,DiaChi=(SONHA+' '+TENDUONG),GiaBieu,DinhMuc,MLT=LOTRINH from CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG where DANHBO='" + DanhBo + "'");
                 //
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     en.NhanVien = "Nhân viên thu tiền: " + dt.Rows[0]["NhanVien"].ToString();
-                    en.NhanVien += " ; " + getLichThuTien_Func_String(DanhBo, dt.Rows[0]["MLT"].ToString());
+                    en.NhanVien += " ; " + getLichThuTien_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
 
                     foreach (DataRow item in dt.Rows)
                     {
@@ -537,7 +539,8 @@ namespace WSTanHoa.Controllers
                     ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorPassword, ErrorResponse.ErrorCodePassword);
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
-                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                //DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,HoTen,DiaChi=(SONHA+' '+TENDUONG),GiaBieu,DinhMuc,MLT=LOTRINH from CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG where DANHBO='" + DanhBo + "'");
                 if (dt_ThongTin != null && dt_ThongTin.Rows.Count > 0)
                 {
                     ThongTinKhachHang en = new ThongTinKhachHang();
