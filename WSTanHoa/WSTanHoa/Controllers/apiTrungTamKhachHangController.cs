@@ -438,7 +438,7 @@ namespace WSTanHoa.Controllers
                     //en.NhanVien = "Nhân viên thu tiền: " + dt.Rows[0]["NhanVien"].ToString();
                     //en.NhanVien += " ; " + getLichThuTien_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
                     string result_Lich = getLichThuTien_Func_String(DanhBo, dt_ThongTin.Rows[0]["MLT"].ToString());
-                    string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from TT_NguoiDung where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
+                    string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên nhắc nợ: '+HoTen+' : '+DienThoai from TT_NguoiDung where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
                     en.NhanVien = result_NhanVien + " ; " + result_Lich;
                     foreach (DataRow item in dt.Rows)
                     {

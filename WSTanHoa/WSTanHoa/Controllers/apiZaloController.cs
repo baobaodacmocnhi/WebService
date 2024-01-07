@@ -475,7 +475,8 @@ namespace WSTanHoa.Controllers
                     }
                     else
                     {
-                        DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                        //DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                        DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,HoTen,DiaChi=(SONHA+' '+TENDUONG),GiaBieu,DinhMuc,MLT=LOTRINH from CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG where DANHBO='" + item["DanhBo"].ToString() + "'");
                         string result_Lich = _apiTTKH.getLichDocSo_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
                         string result_NhanVien = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select NhanVien=N'Nhân viên ghi chỉ số: '+HoTen+' : '+DienThoai from NguoiDung where ActiveMobile=1 and May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
                         content += result_NhanVien + "\n"
@@ -511,9 +512,11 @@ namespace WSTanHoa.Controllers
                     }
                     else
                     {
-                        DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                        //DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=(SO+' '+DUONG),GiaBieu=GB,DinhMuc=DM,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"].ToString() + "' order by ID_HOADON desc");
+                        DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,HoTen,DiaChi=(SONHA+' '+TENDUONG),GiaBieu,DinhMuc,MLT=LOTRINH from CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG where DANHBO='" + item["DanhBo"].ToString() + "'");
                         string result_Lich = _apiTTKH.getLichThuTien_Func_String(item["DanhBo"].ToString(), dt_ThongTin.Rows[0]["MLT"].ToString()).ToString();
-                        string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên nhắc nợ: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+                        //string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên nhắc nợ: '+HoTen+' : '+DienThoai from HOADON a,TT_NguoiDung b where DANHBA='" + dt_ThongTin.Rows[0]["DanhBo"].ToString() + "' and a.MaNV_HanhThu=b.MaND order by ID_HOADON desc").ToString();
+                        string result_NhanVien = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select top 1 NhanVien=N'Nhân viên nhắc nợ: '+HoTen+' : '+DienThoai from TT_NguoiDung where May=" + dt_ThongTin.Rows[0]["MLT"].ToString().Substring(2, 2)).ToString();
                         content += result_NhanVien + "\n"
                                      + result_Lich;
                         strResponse = sendMessage(IDZalo, content);
@@ -1041,12 +1044,19 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
+                    //string sql = "select a.Nam, a.Ky, NgayDoc = CONVERT(varchar(10), NgayDoc, 103), z.IDZalo, ttkh.DanhBo, ttkh.HoTen, DiaChi = SONHA + ' ' + TENDUONG,DienThoai = (select DienThoai from [DocSoTH].[dbo].[NguoiDung]"
+                    //            + " where ActiveMobile=1 and May = SUBSTRING(ttkh.LOTRINH, 3, 2))"
+                    //            + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, [TRUNGTAMKHACHHANG].[dbo].Zalo_DangKy z, [TRUNGTAMKHACHHANG].[dbo].Zalo_QuanTam zq, [CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
+                    //            + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
+                    //            + " and CAST(DATEADD(DAY, -1, NgayDoc) as date)=CAST(GETDATE() as date)"
+                    //            + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
+                    //            + " and z.IDZalo=zq.IDZalo and zq.Follow= 1 and ttkh.ViTriDHN_Ngoai=0 order by ttkh.DANHBO asc";
                     string sql = "select a.Nam, a.Ky, NgayDoc = CONVERT(varchar(10), NgayDoc, 103), z.IDZalo, ttkh.DanhBo, ttkh.HoTen, DiaChi = SONHA + ' ' + TENDUONG,DienThoai = (select DienThoai from [DocSoTH].[dbo].[NguoiDung]"
                                 + " where ActiveMobile=1 and May = SUBSTRING(ttkh.LOTRINH, 3, 2))"
                                 + " from Lich_DocSo a, Lich_DocSo_ChiTiet b, Lich_Dot c, [TRUNGTAMKHACHHANG].[dbo].Zalo_DangKy z, [TRUNGTAMKHACHHANG].[dbo].Zalo_QuanTam zq, [CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh"
                                 + " where a.ID = b.IDDocSo and c.ID = b.IDDot and z.DanhBo=ttkh.DanhBo"
                                 + " and CAST(DATEADD(DAY, -1, NgayDoc) as date)=CAST(GETDATE() as date)"
-                                + " and((TB1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB1_To)or(TB2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TB2_To)or(TP1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP1_To)or(TP2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= TP2_To))"
+                                + " and((To1_From <= ttkh.LOTRINH and ttkh.LOTRINH <= To1_To)or(To2_From <= ttkh.LOTRINH and ttkh.LOTRINH <= To2_To))"
                                 + " and z.IDZalo=zq.IDZalo and zq.Follow= 1 and ttkh.ViTriDHN_Ngoai=0 order by ttkh.DANHBO asc";
                     DataTable dt = _cDAL_DocSo.ExecuteQuery_DataTable(sql);
                     string message = "";
@@ -1055,7 +1065,8 @@ namespace WSTanHoa.Controllers
                         try
                         {
                             DanhBo = item["DanhBo"].ToString();
-                            DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"] + "' order by ID_HOADON desc");
+                            //DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 DanhBo=DANHBA,HoTen=TENKH,DiaChi=case when SO is null then DUONG else case when DUONG is null then SO else SO + ' ' + DUONG end end,GiaBieu=GB,DinhMuc=DM,DinhMucHN,MLT=MALOTRINH from HOADON where DANHBA='" + item["DanhBo"] + "' order by ID_HOADON desc");
+                            DataTable dt_ThongTin = _cDAL_ThuTien.ExecuteQuery_DataTable("select DanhBo,HoTen,DiaChi=(SONHA+' '+TENDUONG),GiaBieu,DinhMuc,MLT=LOTRINH from CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG where DANHBO='" + DanhBo + "'");
                             message = "Công ty Cổ phần Cấp nước Tân Hòa xin trân trọng thông báo đến Quý khách hàng: " + item["HoTen"]
                                         + "\nĐịa chỉ: " + dt_ThongTin.Rows[0]["DiaChi"].ToString()
                                         + "\nDanh bộ: " + item["DanhBo"].ToString()
