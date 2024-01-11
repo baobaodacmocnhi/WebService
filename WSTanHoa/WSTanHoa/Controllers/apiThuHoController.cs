@@ -191,7 +191,7 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
-            if (TenDichVu != "VNPAY"&& TenDichVu != "PAYOO")
+            if (TenDichVu != "VNPAY"&& TenDichVu != "PAYOO" && TenDichVu != "MOMO" && TenDichVu != "AIRPAY")
             {
                 ErrorResponse error2 = new ErrorResponse("value is not null", ErrorResponse.ErrorCodeSQL);
                 CGlobalVariable.log.Error("insertThuHo " + error2.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
