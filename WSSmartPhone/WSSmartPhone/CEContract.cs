@@ -531,11 +531,11 @@ namespace WSSmartPhone
                             strResponse = "Mã đơn chưa có cho danh bộ";
                             return false;
                         }
-                        if (!SHS.Contains("TL"))
-                        {
-                            DanhBo = dtThongTin.Rows[0]["DHN_SODANHBO"].ToString();
-                            HopDong = dtThongTin.Rows[0]["DHN_SOHOPDONG"].ToString();
-                        }
+                        //if (!SHS.Contains("TL"))
+                        //{
+                        DanhBo = dtThongTin.Rows[0]["DHN_SODANHBO"].ToString();
+                        HopDong = dtThongTin.Rows[0]["DHN_SOHOPDONG"].ToString();
+                        //}
                         Co = dtThongTin.Rows[0]["COTLK"].ToString();
                         NgayHieuLuc = dtThongTin.Rows[0]["DHN_NGAYCHOSODB"].ToString();
                     }
