@@ -210,6 +210,7 @@
     <Compile Include="Controllers\HDSDController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\KhachHangController.cs" />
+    <Compile Include="Controllers\KhachMoiController.cs" />
     <Compile Include="Controllers\KhieuNaiController.cs" />
     <Compile Include="Controllers\QLDHNController.cs" />
     <Compile Include="Controllers\QuaySoController.cs" />
@@ -2262,6 +2263,7 @@
     <Content Include="Views\QuaySo\countTime.cshtml" />
     <Content Include="Views\QLDHN\DHNDT.cshtml" />
     <Content Include="Views\TLMD\BaoCao.cshtml" />
+    <Content Include="Views\KhachMoi\Index.cshtml" />
     <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

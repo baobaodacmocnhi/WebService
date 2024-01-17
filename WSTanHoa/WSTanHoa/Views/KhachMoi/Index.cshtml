@@ -1,0 +1,61 @@
+﻿@model WSTanHoa.Models.MView
+@{
+    Layout = null;
+    ViewBag.Title = "Khách Mời";
+}
+
+<head>
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/cssNOTMASTER2")
+    @Styles.Render("~/bundles/bootstrap")
+</head>
+
+@*<body style="background-color:#c8f1fb">*@
+<body style="background-color:#a7e9fb" class="mt-2">
+    <div class="text-center">
+        <img src="~/Images/logoctycp.png" width="100" height="98" />
+        <div class="container mt-2">
+            @if (@ViewBag.count == 0)
+            {
+                <h2>Xác nhận không thành công. Vui lòng thử lại</h2>
+            }
+            else
+    if (@ViewBag.count == 1)
+            {
+                <h2>Xác nhận thành công. Trân trọng cảm ơn!</h2>
+            }
+            else
+            {
+                using (Html.BeginForm("Index", "KhachMoi", FormMethod.Post))
+                {
+
+                    <div class="row visually-hidden">
+                        <div class="col">
+                            @Model.TieuDe
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h3 class="text-danger">@Model.HoTen</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <h5>@Model.DiaChi</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary mt-5" name="function" value="DangKy">Xác nhận tham dự</button>
+                        </div>
+                    </div>
+
+                }
+            }
+        </div>
+    </div>
+</body>
+

@@ -772,6 +772,20 @@
             <param name="number">1 lần chạy</param>
             <returns></returns>
         </member>
+        <member name="M:WSTanHoa.Controllers.KhachMoiController.Encrypt(System.String)">
+            <summary>
+            Mã hóa chuỗi có mật khẩu
+            </summary>
+            <param name="toEncrypt">Chuỗi cần mã hóa</param>
+            <returns>Chuỗi đã mã hóa</returns>
+        </member>
+        <member name="M:WSTanHoa.Controllers.KhachMoiController.Decrypt(System.String)">
+            <summary>
+            Giản mã
+            </summary>
+            <param name="toDecrypt">Chuỗi đã mã hóa</param>
+            <returns>Chuỗi giản mã</returns>
+        </member>
         <member name="F:WSTanHoa.info.form1">
             <summary>
             form1 control.
