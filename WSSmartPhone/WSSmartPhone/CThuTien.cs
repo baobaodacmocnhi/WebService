@@ -1093,10 +1093,13 @@ namespace WSSmartPhone
                             for (int i = 0; i < HinhDNs.Count(); i++)
                             {
                                 string id = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end").ToString();
-                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)"
-                                    + " values(" + id + "," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
+                                //string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,Hinh,CreateBy,CreateDate)"
+                                //    + " values(" + id + "," + MaKQDN + ",1,@Hinh," + CreateBy + ",getDate())";
+                                //command = new SqlCommand(sql_Hinh);
+                                //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDNs[i]);
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc,CreateBy,CreateDate)"
+                                    + " values(" + id + "," + MaKQDN + ",1," + CreateBy + ",getDate())";
                                 command = new SqlCommand(sql_Hinh);
-                                command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDNs[i]);
                                 _cDAL_ThuTien.ExecuteNonQuery(command);
                                 ghi_Hinh_241(CGlobalVariable.pathHinhTT, "DongNuoc", MaKQDN.ToString(), id + ".jpg", HinhDNs[i]);
                             }
@@ -1234,10 +1237,13 @@ namespace WSSmartPhone
                             {
                                 string id = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end").ToString();
                                 string maqkdn = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN).ToString();
-                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)"
-                                    + " values(" + id + "," + maqkdn + ",1,@Hinh," + CreateBy + ",getDate())";
+                                //string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,Hinh,CreateBy,CreateDate)"
+                                //    + " values(" + id + "," + maqkdn + ",1,@Hinh," + CreateBy + ",getDate())";
+                                //command = new SqlCommand(sql_Hinh);
+                                //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDNs[i]);
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,DongNuoc2,CreateBy,CreateDate)"
+                                    + " values(" + id + "," + maqkdn + ",1," + CreateBy + ",getDate())";
                                 command = new SqlCommand(sql_Hinh);
-                                command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhDNs[i]);
                                 _cDAL_ThuTien.ExecuteNonQuery(command);
                                 ghi_Hinh_241(CGlobalVariable.pathHinhTT, "DongNuoc", maqkdn, id + ".jpg", HinhDNs[i]);
                             }
@@ -1340,9 +1346,11 @@ namespace WSSmartPhone
                             {
                                 string id = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select case when (select COUNT(ID) from TT_KQDongNuoc_Hinh)=0 then 1 else (select MAX(ID) from TT_KQDongNuoc_Hinh)+1 end").ToString();
                                 string maqkdn = _cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select MaKQDN from TT_KQDongNuoc where MaDN=" + MaDN).ToString();
-                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values(" + id + "," + maqkdn + ",1,@Hinh," + CreateBy + ",getDate())";
+                                //string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,Hinh,CreateBy,CreateDate)values(" + id + "," + maqkdn + ",1,@Hinh," + CreateBy + ",getDate())";
+                                //command = new SqlCommand(sql_Hinh);
+                                //command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMNs[i]);
+                                string sql_Hinh = "insert into TT_KQDongNuoc_Hinh(ID,MaKQDN,MoNuoc,CreateBy,CreateDate)values(" + id + "," + maqkdn + ",1," + CreateBy + ",getDate())";
                                 command = new SqlCommand(sql_Hinh);
-                                command.Parameters.Add("@Hinh", SqlDbType.Image).Value = System.Convert.FromBase64String(HinhMNs[i]);
                                 _cDAL_ThuTien.ExecuteNonQuery(command);
                                 ghi_Hinh_241(CGlobalVariable.pathHinhTT, "DongNuoc", maqkdn, id + ".jpg", HinhMNs[i]);
                             }
