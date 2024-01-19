@@ -17,8 +17,10 @@ namespace WSTanHoa.Controllers
         // GET: KhachMoi
         public ActionResult Index(string id, FormCollection collection)
         {
+            if (id != null && id != "")
+                id = id.Replace(" ", "+");
             ViewBag.count = -1;
-               MView view = new MView();
+            MView view = new MView();
             if (id != null && id != "")
             {
                 DataTable dt = _cDAL.ExecuteQuery_DataTable("select * from ThuMoi_QR where STT=" + Decrypt(id));
@@ -28,10 +30,11 @@ namespace WSTanHoa.Controllers
             }
             if (collection.AllKeys.Contains("function") && collection["function"].ToString() == "DangKy")
             {
-                if (_cDAL.ExecuteNonQuery("update ThuMoi_QR set ThamDu=1,ThamDu_Ngay=getdate() where STT=" + Decrypt("Q5OcGNxZsug=")))
+                id = collection["DanhBo"].ToString();
+                if (_cDAL.ExecuteNonQuery("update ThuMoi_QR set ThamDu=1,ThamDu_Ngay=getdate() where STT=" + Decrypt(id)))
                     ViewBag.count = 1;
                 else
-                    ViewBag.count=0;
+                    ViewBag.count = 0;
             }
             return View(view);
         }
