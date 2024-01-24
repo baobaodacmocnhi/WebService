@@ -16,7 +16,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuHo")]
     public class apiThuHoController : ApiController
     {
-        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
+        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien_test);
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
@@ -191,12 +191,12 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
-            if (TenDichVu != "VNPAY"&& TenDichVu != "PAYOO" && TenDichVu != "MOMO" && TenDichVu != "AIRPAY")
-            {
-                ErrorResponse error2 = new ErrorResponse("value is not null", ErrorResponse.ErrorCodeSQL);
-                CGlobalVariable.log.Error("insertThuHo " + error2.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
-                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error2));
-            }
+            //if (TenDichVu != "VNPAY"&& TenDichVu != "PAYOO" && TenDichVu != "MOMO" && TenDichVu != "AIRPAY")
+            //{
+            //    ErrorResponse error2 = new ErrorResponse("value is not null", ErrorResponse.ErrorCodeSQL);
+            //    CGlobalVariable.log.Error("insertThuHo " + error2.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
+            //    throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error2));
+            //}
             //kiểm tra TenDichVu & IDGiaoDich
             if (TenDichVu == "" || IDGiaoDich == "")
             {
@@ -204,7 +204,6 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
-
             int checkExist = 0;
             try
             {
@@ -222,7 +221,6 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
-
             //kiểm tra mã hóa đơn
             string[] arrayMaHD;
             try
@@ -268,7 +266,6 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.log.Error("getHoaDonTon " + error.ToString() + " (" + DanhBo + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
-
             //kiểm tra số hóa đơn thanh toán vs số hóa đơn tồn
             if (lstHD.Count != arrayMaHD.Count())
             {
@@ -311,13 +308,11 @@ namespace WSTanHoa.Controllers
                     CGlobalVariable.log.Error("insertThuHo " + error1.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error1));
                 }
-
                 //return error không thanh toán đủ hóa đơn tồn
                 ErrorResponse error = new ErrorResponse(ErrorResponse.ErrorHoaDon, ErrorResponse.ErrorCodeHoaDon);
                 CGlobalVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
-
             //kiểm tra số tiền phải thu
             if ((lstHD.Sum(item => item.TongCong) + lstHD[0].PhiMoNuoc - lstHD[0].TienDu) != (SoTien + PhiMoNuoc - TienDu) || (SoTien + PhiMoNuoc - TienDu) != TongCong)
             {
@@ -325,7 +320,6 @@ namespace WSTanHoa.Controllers
                 CGlobalVariable.log.Error("insertThuHo " + error.ToString() + " (DanhBo=" + DanhBo + " ; TenDichVu=" + TenDichVu + " ; IDGiaoDich=" + IDGiaoDich + ")");
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
             }
-
             //insert Database
             try
             {
