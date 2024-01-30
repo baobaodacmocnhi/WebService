@@ -2214,10 +2214,10 @@
         <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThuCompleted">
             <remarks/>
         </member>
-        <member name="E:WSTanHoa.wrDHN.wsDHN.GetDS_May_ToCompleted">
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_MayCompleted">
             <remarks/>
         </member>
-        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_MayCompleted">
+        <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_May_ToCompleted">
             <remarks/>
         </member>
         <member name="E:WSTanHoa.wrDHN.wsDHN.getDS_CodeCompleted">
@@ -2400,40 +2400,40 @@
         <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NamAsync(System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSTo">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSTo(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSToAsync">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSToAsync(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSToAsync(System.Object)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDSToAsync(System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThu">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThu(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThuAsync">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThuAsync(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThuAsync(System.Object)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_NhanVien_HanhThuAsync(System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDS_May_To(System.String)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_May(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDS_May_ToAsync(System.String)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_MayAsync(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.GetDS_May_ToAsync(System.String,System.Object)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_MayAsync(System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_May">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_May_To(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_MayAsync">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_May_ToAsync(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_MayAsync(System.Object)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_May_ToAsync(System.String,System.Object)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_Code">
@@ -2796,22 +2796,22 @@
         <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_BatThuongAsync(System.String,System.String,System.String,System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_SanLuong(System.String,System.String,System.String)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_SanLuong(System.String,System.String,System.String,System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_SanLuongAsync(System.String,System.String,System.String)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_SanLuongAsync(System.String,System.String,System.String,System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_SanLuongAsync(System.String,System.String,System.String,System.Object)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_SanLuongAsync(System.String,System.String,System.String,System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_HD0(System.String,System.String,System.String)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_HD0(System.String,System.String,System.String,System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_HD0Async(System.String,System.String,System.String)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_HD0Async(System.String,System.String,System.String,System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_HD0Async(System.String,System.String,System.String,System.Object)">
+        <member name="M:WSTanHoa.wrDHN.wsDHN.getDS_SoLieu_HD0Async(System.String,System.String,System.String,System.String,System.Object)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrDHN.wsDHN.CancelAsync(System.Object)">
@@ -2889,15 +2889,6 @@
         <member name="P:WSTanHoa.wrDHN.getDS_NhanVien_HanhThuCompletedEventArgs.Result">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrDHN.GetDS_May_ToCompletedEventHandler">
-            <remarks/>
-        </member>
-        <member name="T:WSTanHoa.wrDHN.GetDS_May_ToCompletedEventArgs">
-            <remarks/>
-        </member>
-        <member name="P:WSTanHoa.wrDHN.GetDS_May_ToCompletedEventArgs.Result">
-            <remarks/>
-        </member>
         <member name="T:WSTanHoa.wrDHN.getDS_MayCompletedEventHandler">
             <remarks/>
         </member>
@@ -2905,6 +2896,15 @@
             <remarks/>
         </member>
         <member name="P:WSTanHoa.wrDHN.getDS_MayCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_May_ToCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrDHN.getDS_May_ToCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrDHN.getDS_May_ToCompletedEventArgs.Result">
             <remarks/>
         </member>
         <member name="T:WSTanHoa.wrDHN.getDS_CodeCompletedEventHandler">
@@ -3366,6 +3366,15 @@
         <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_RootCompleted">
             <remarks/>
         </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh_241Completed">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_241Completed">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuongVu.wsThuongVu.get_FileInfo_CreateDate_241Completed">
+            <remarks/>
+        </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh(System.String,System.String,System.String)">
             <remarks/>
         </member>
@@ -3517,6 +3526,33 @@
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_RootAsync(System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh_241(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh_241Async(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_Hinh_241Async(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_241(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_241Async(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileinFolder_241Async(System.String,System.String,System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileInfo_CreateDate_241(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileInfo_CreateDate_241Async(System.String,System.String,System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.get_FileInfo_CreateDate_241Async(System.String,System.String,System.String,System.String,System.Object)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuongVu.wsThuongVu.CancelAsync(System.Object)">
@@ -3690,6 +3726,33 @@
         <member name="P:WSTanHoa.wrThuongVu.get_FileinFolder_RootCompletedEventArgs.Result">
             <remarks/>
         </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_Hinh_241CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_Hinh_241CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.get_Hinh_241CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_FileinFolder_241CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_FileinFolder_241CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.get_FileinFolder_241CompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_FileInfo_CreateDate_241CompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuongVu.get_FileInfo_CreateDate_241CompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuongVu.get_FileInfo_CreateDate_241CompletedEventArgs.Result">
+            <remarks/>
+        </member>
         <member name="T:WSTanHoa.wrThuTien.wsThuTien">
             <remarks/>
         </member>
@@ -3720,16 +3783,16 @@
         <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetVersionCompleted">
             <remarks/>
         </member>
-        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSToCompleted">
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_ToCompleted">
             <remarks/>
         </member>
-        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThuCompleted">
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThu_DoiCompleted">
             <remarks/>
         </member>
-        <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSNhanVienToCompleted">
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_DoiCompleted">
             <remarks/>
         </member>
-        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVienCompleted">
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_ToCompleted">
             <remarks/>
         </member>
         <member name="E:WSTanHoa.wrThuTien.wsThuTien.getDS_NamCompleted">
@@ -3805,6 +3868,9 @@
             <remarks/>
         </member>
         <member name="E:WSTanHoa.wrThuTien.wsThuTien.xoa_Folder_Hinh_ThuTienCompleted">
+            <remarks/>
+        </member>
+        <member name="E:WSTanHoa.wrThuTien.wsThuTien.get_FileinFolder_ThuTienCompleted">
             <remarks/>
         </member>
         <member name="E:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiemCompleted">
@@ -3966,40 +4032,40 @@
         <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetVersionAsync(System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTo">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_To(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSToAsync">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_ToAsync(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSToAsync(System.Object)">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_ToAsync(System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThu">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThu_Doi(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThuAsync">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThu_DoiAsync(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThuAsync(System.Object)">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_HanhThu_DoiAsync(System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSNhanVienTo(System.String)">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_Doi(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSNhanVienToAsync(System.String)">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_DoiAsync(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSNhanVienToAsync(System.String,System.Object)">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_DoiAsync(System.String,System.Object)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_To(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVienAsync">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_ToAsync(System.String)">
             <remarks/>
         </member>
-        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVienAsync(System.Object)">
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_NhanVien_ToAsync(System.String,System.Object)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuTien.wsThuTien.getDS_Nam">
@@ -4225,6 +4291,15 @@
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuTien.wsThuTien.xoa_Folder_Hinh_ThuTienAsync(System.String,System.String,System.Object)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.get_FileinFolder_ThuTien(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.get_FileinFolder_ThuTienAsync(System.String,System.String)">
+            <remarks/>
+        </member>
+        <member name="M:WSTanHoa.wrThuTien.wsThuTien.get_FileinFolder_ThuTienAsync(System.String,System.String,System.Object)">
             <remarks/>
         </member>
         <member name="M:WSTanHoa.wrThuTien.wsThuTien.GetDSTimKiem(System.String)">
@@ -4563,40 +4638,40 @@
         <member name="P:WSTanHoa.wrThuTien.GetVersionCompletedEventArgs.Result">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrThuTien.GetDSToCompletedEventHandler">
+        <member name="T:WSTanHoa.wrThuTien.getDS_ToCompletedEventHandler">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrThuTien.GetDSToCompletedEventArgs">
+        <member name="T:WSTanHoa.wrThuTien.getDS_ToCompletedEventArgs">
             <remarks/>
         </member>
-        <member name="P:WSTanHoa.wrThuTien.GetDSToCompletedEventArgs.Result">
+        <member name="P:WSTanHoa.wrThuTien.getDS_ToCompletedEventArgs.Result">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThuCompletedEventHandler">
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThu_DoiCompletedEventHandler">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThuCompletedEventArgs">
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThu_DoiCompletedEventArgs">
             <remarks/>
         </member>
-        <member name="P:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThuCompletedEventArgs.Result">
+        <member name="P:WSTanHoa.wrThuTien.getDS_NhanVien_HanhThu_DoiCompletedEventArgs.Result">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrThuTien.GetDSNhanVienToCompletedEventHandler">
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_DoiCompletedEventHandler">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrThuTien.GetDSNhanVienToCompletedEventArgs">
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_DoiCompletedEventArgs">
             <remarks/>
         </member>
-        <member name="P:WSTanHoa.wrThuTien.GetDSNhanVienToCompletedEventArgs.Result">
+        <member name="P:WSTanHoa.wrThuTien.getDS_NhanVien_DoiCompletedEventArgs.Result">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVienCompletedEventHandler">
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_ToCompletedEventHandler">
             <remarks/>
         </member>
-        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVienCompletedEventArgs">
+        <member name="T:WSTanHoa.wrThuTien.getDS_NhanVien_ToCompletedEventArgs">
             <remarks/>
         </member>
-        <member name="P:WSTanHoa.wrThuTien.getDS_NhanVienCompletedEventArgs.Result">
+        <member name="P:WSTanHoa.wrThuTien.getDS_NhanVien_ToCompletedEventArgs.Result">
             <remarks/>
         </member>
         <member name="T:WSTanHoa.wrThuTien.getDS_NamCompletedEventHandler">
@@ -4822,6 +4897,15 @@
             <remarks/>
         </member>
         <member name="P:WSTanHoa.wrThuTien.xoa_Folder_Hinh_ThuTienCompletedEventArgs.Result">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.get_FileinFolder_ThuTienCompletedEventHandler">
+            <remarks/>
+        </member>
+        <member name="T:WSTanHoa.wrThuTien.get_FileinFolder_ThuTienCompletedEventArgs">
+            <remarks/>
+        </member>
+        <member name="P:WSTanHoa.wrThuTien.get_FileinFolder_ThuTienCompletedEventArgs.Result">
             <remarks/>
         </member>
         <member name="T:WSTanHoa.wrThuTien.GetDSTimKiemCompletedEventHandler">

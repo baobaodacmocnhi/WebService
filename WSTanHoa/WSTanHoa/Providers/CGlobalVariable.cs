@@ -38,6 +38,7 @@ namespace WSTanHoa.Providers
         public static string pathHinhDHN = @"\\rackstation\HinhDHN";
         public static string pathHinhDHNMaHoa = @"\\rackstation\HinhDHN\MaHoa";
         public static string pathHinhTV = @"\\rackstation\HinhDHN\ThuongVu";
+        public static string pathHinhHoSoGoc = @"\\rackstation\hskhpdf";
         public static JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
         public static log4net.ILog log = log4net.LogManager.GetLogger("File");
 

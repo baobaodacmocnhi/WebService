@@ -120,6 +120,23 @@ namespace WSSmartPhone
             return _cThuTien.get_FileinFolder_241(CGlobalVariable.pathHinh + FolderRoot, FolderLoai, FolderIDCT);
         }
 
+        [WebMethod]
+        public byte[] get_Hinh_241(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName)
+        {
+            return _cThuTien.get_Hinh_241(FolderRoot, FolderLoai, FolderIDCT, FileName);
+        }
+
+        [WebMethod]
+        public string[] get_FileinFolder_241(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName)
+        {
+            return _cThuTien.get_FileinFolder_241(FolderRoot, FolderLoai, FolderIDCT, FileName);
+        }
+
+        [WebMethod]
+        public string get_FileInfo_CreateDate_241(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName)
+        {
+            return _cThuTien.get_FileInfo_CreateDate_241(FolderRoot, FolderLoai, FolderIDCT, FileName);
+        }
         //[WebMethod]
         //public void testAdmin()
         //{

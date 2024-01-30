@@ -3868,7 +3868,7 @@ namespace WSSmartPhone
                         + "         SELECT DanhBa, 'ChiSo'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS ChiSoKy, 'Code'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS CodeKy,"
                         + "             'TieuThu'+CAST(@LastNamKy-Nam*12-Ky AS CHAR) AS TieuThuKy, [CSCu], [CodeCu], [TieuThuCu]"
                         + "             FROM [DocSoTH].[dbo].[DocSo]"
-                        //+ "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and (PhanMay=@May or May=@May)) src"
+                //+ "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2 and (PhanMay=@May or May=@May)) src"
                         + "             WHERE @LastNamKy-Nam*12-Ky between 0 and 2) src"
                         + "     PIVOT (MAX([CSCu]) FOR ChiSoKy IN ([ChiSo0],[ChiSo1],[ChiSo2])) piv_cs"
                         + "     PIVOT (MAX([CodeCu]) FOR CodeKy IN ([Code0],[Code1],[Code2])) piv_code"
@@ -5188,6 +5188,39 @@ namespace WSSmartPhone
                 throw ex;
             }
         }
+
+        public string[] get_FileinFolder_241(string pathroot, string FolderLoai, string FolderIDCT, string FileName)
+        {
+            try
+            {
+                if (Directory.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT) == true)
+                {
+                    return Directory.GetFiles(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT, FileName, SearchOption.TopDirectoryOnly);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public string get_FileInfo_CreateDate_241(string pathroot, string FolderLoai, string FolderIDCT, string FileName)
+        {
+            try
+            {
+                if (File.Exists(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName) == true)
+                    return new FileInfo(pathroot + @"\" + FolderLoai + @"\" + FolderIDCT + @"\" + FileName).CreationTime.ToString("dd/MM/yyyy");
+                else
+                    return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+
 
         //kinh doanh
         public DataTable getDS_GiaNuoc()

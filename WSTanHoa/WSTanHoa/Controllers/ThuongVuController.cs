@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WSTanHoa.Models;
 using WSTanHoa.Providers;
 
 namespace WSTanHoa.Controllers
@@ -20,27 +21,6 @@ namespace WSTanHoa.Controllers
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: ThuongVu
-        //public ActionResult viewFile(string TableName, string IDFileName, string IDFileContent)
-        //{
-        //    if (TableName != null && IDFileName != null && IDFileContent != null && TableName != "" && IDFileName != "" && IDFileContent != "")
-        //    {
-        //        //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-        //        DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where " + IDFileName + "=" + IDFileContent);
-        //        if (dt != null && dt.Rows.Count > 0)
-        //        {
-        //            byte[] FileContent = wsThuongVu.get_Hinh(TableName, IDFileContent, dt.Rows[0]["filename"].ToString());
-        //            if (FileContent != null)
-        //                return new FileStreamResult(new MemoryStream(FileContent), "image/jpeg");
-        //            else
-        //                return View();
-        //        }
-        //        else
-        //            return View();
-        //    }
-        //    else
-        //        return null;
-        //}
-
         public ActionResult viewFile(string TableName, string IDFileName, string IDFileContent)
         {
             if (TableName != null && IDFileName != null && IDFileContent != null && TableName != "" && IDFileName != "" && IDFileContent != "")
@@ -54,7 +34,7 @@ namespace WSTanHoa.Controllers
                         byte[] FileContent = _wsThuongVu.get_Hinh(TableName, IDFileContent, item["filename"].ToString());
                         if (item["filename"].ToString().ToLower().Contains(".pdf"))
                         {
-                          return  viewFilePDF(FileContent);
+                            return viewFilePDF(FileContent);
                         }
                         else
                         {
@@ -138,7 +118,6 @@ namespace WSTanHoa.Controllers
                     DataTable dtGiaNuoc = getDS_GiaNuoc();
                     //check giảm giá
                     checkExists_GiamGiaNuoc(int.Parse(collection["txtNam"].ToString()), int.Parse(collection["txtKy"].ToString()), int.Parse(collection["txtGiaBieu"].ToString()), ref dtGiaNuoc);
-
                     int index = -1;
                     for (int i = 0; i < dtGiaNuoc.Rows.Count; i++)
                         if (DateTime.Parse(collection["txtTuNgay"].ToString()).Date < DateTime.Parse(dtGiaNuoc.Rows[i]["NgayTangGia"].ToString()).Date && DateTime.Parse(dtGiaNuoc.Rows[i]["NgayTangGia"].ToString()).Date < DateTime.Parse(collection["txtDenNgay"].ToString()).Date)
@@ -171,7 +150,6 @@ namespace WSTanHoa.Controllers
                                     DinhMucHN_Cu = (int)Math.Round((double)TongDinhMucCu * int.Parse(collection["txtDinhMucHN"].ToString()) / int.Parse(collection["txtDinhMuc"].ToString()), 0, MidpointRounding.AwayFromZero);
                             if (TongDinhMucMoi != 0 && int.Parse(collection["txtDinhMucHN"].ToString()) != 0 && int.Parse(collection["txtDinhMuc"].ToString()) != 0)
                                 DinhMucHN_Moi = (int)Math.Round((double)TongDinhMucMoi * int.Parse(collection["txtDinhMucHN"].ToString()) / int.Parse(collection["txtDinhMuc"].ToString()), 0, MidpointRounding.AwayFromZero);
-
                             ViewBag.txtTongSoNgay = TongSoNgay.ToString();
                             ViewBag.txtSoNgayCu = SoNgayCu.ToString();
                             ViewBag.txtSoNgayMoi = (TongSoNgay - SoNgayCu).ToString();
@@ -189,8 +167,6 @@ namespace WSTanHoa.Controllers
                     else
                     {
                     }
-                    //
-
                     ViewBag.txtTuNgay = collection["txtTuNgay"].ToString();
                     ViewBag.txtDenNgay = collection["txtDenNgay"].ToString();
                     ViewBag.txtGiaBieu = collection["txtGiaBieu"].ToString();
@@ -201,7 +177,6 @@ namespace WSTanHoa.Controllers
                     ViewBag.txtDinhMucHN = collection["txtDinhMucHN"].ToString();
                     ViewBag.txtDinhMuc = collection["txtDinhMuc"].ToString();
                     ViewBag.txtTieuThu = collection["txtTieuThu"].ToString();
-                    //
                     int GiaBanCu = 0, GiaBanMoi = 0, ThueGTGT = 0, PhiBVMTCu = 0, PhiBVMTMoi = 0, GiaBan = 0, TDVTN = 0, ThueGTGTTDVTN = 0, TongCong = 0, TieuThu_DieuChinhGia = 0;
                     string ChiTietCu = "", ChiTietMoi = "", ChiTietPhiBVMTCu = "", ChiTietPhiBVMTMoi = "";
                     wrThuTien.wsThuTien ws = new wrThuTien.wsThuTien();
@@ -209,22 +184,17 @@ namespace WSTanHoa.Controllers
                     string[] DenNgays = collection["txtDenNgay"].ToString().Split('-');
                     ws.TinhTienNuoc(false, false, false, 0, collection["txtDanhBo"].ToString(), int.Parse(collection["txtKy"].ToString()), int.Parse(collection["txtNam"].ToString()), new DateTime(int.Parse(TuNgays[0]), int.Parse(TuNgays[1]), int.Parse(TuNgays[2])), new DateTime(int.Parse(DenNgays[0]), int.Parse(DenNgays[1]), int.Parse(DenNgays[2])), int.Parse(collection["txtGiaBieu"].ToString()), int.Parse(collection["txtSH"].ToString()), int.Parse(collection["txtSX"].ToString()), int.Parse(collection["txtDV"].ToString()), int.Parse(collection["txtHCSN"].ToString()), int.Parse(collection["txtDinhMuc"].ToString()), int.Parse(collection["txtDinhMucHN"].ToString()), int.Parse(collection["txtTieuThu"].ToString()), ref GiaBanCu, ref ChiTietCu, ref GiaBanMoi, ref ChiTietMoi, ref TieuThu_DieuChinhGia, ref PhiBVMTCu, ref ChiTietPhiBVMTCu, ref PhiBVMTMoi, ref ChiTietPhiBVMTMoi, ref GiaBan, ref ThueGTGT, ref TDVTN, ref ThueGTGTTDVTN);
                     //ThueGTGT = (int)Math.Round((double)(GiaBanCu + GiaBanMoi) * 5 / 100, 0, MidpointRounding.AwayFromZero);
-
                     ViewBag.txtGiaBanCu = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", GiaBanCu);
                     ViewBag.txtGiaBanMoi = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", GiaBanMoi);
                     ViewBag.txtGiaBan = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", GiaBan);
-
                     ViewBag.txtThueGTGT = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", ThueGTGT);
-
                     ViewBag.txtTDVTNCu = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", PhiBVMTCu);
                     ViewBag.txtTDVTNMoi = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", PhiBVMTMoi);
                     ViewBag.txtTDVTN = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TDVTN);
-
                     ViewBag.txtChiTietCu = ChiTietCu;
                     ViewBag.txtChiTietTDVTNCu = ChiTietPhiBVMTCu;
                     ViewBag.txtChiTietMoi = ChiTietMoi;
                     ViewBag.txtChiTietTDVTNMoi = ChiTietPhiBVMTMoi;
-
                     TongCong = GiaBan + ThueGTGT + TDVTN + ThueGTGTTDVTN;
                     ViewBag.txtThueGTGTTDVTN = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", ThueGTGTTDVTN);
                     ViewBag.txtTongCong = String.Format(System.Globalization.CultureInfo.CreateSpecificCulture("vi-VN"), "{0:#,##}", TongCong);
@@ -336,7 +306,6 @@ namespace WSTanHoa.Controllers
         private bool checkExists_GiamGiaNuoc(int Nam, int Ky, int GiaBieu, ref DataTable dt)
         {
             DataTable dtGiaNuocGiam = getGiaNuocGiam(Nam, Ky, GiaBieu);
-
             if (dtGiaNuocGiam != null && dtGiaNuocGiam.Rows.Count > 0)
             {
                 double TyLeGiam = double.Parse(dtGiaNuocGiam.Rows[0]["TyLeGiam"].ToString());
@@ -439,7 +408,6 @@ namespace WSTanHoa.Controllers
                             _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CT" + (i + 1).ToString() + Path.GetExtension(HinhCT.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImageCT));
                         }
                     }
-
                     if (_cDAL_ThuongVu.ExecuteNonQuery(sql))
                         ModelState.AddModelError("", "Đăng Ký Thành Công");
                     else
@@ -477,6 +445,49 @@ namespace WSTanHoa.Controllers
                 return null;
         }
 
+        public ActionResult HoSoGoc(string DanhBo)
+        {
+            MView enView = new MView();
+            int STT = 0;
+            try
+            {
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select pdf from HOSOPDF where DanhBo='" + DanhBo + "'");
+                if (dt.Rows.Count > 0)
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        MView en = new MView();
+                        en.SoLuong = (++STT).ToString();
+                        en.ThoiGian = "01/01/2020";
+                        en.NoiDung = item["pdf"].ToString();
+                        enView.lst.Add(en);
+                    }
+                string HopDong = _cDAL_DHN.ExecuteQuery_ReturnOneValue("select HopDong from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'").ToString().Insert(2, " ");
+                string[] files = _wsThuongVu.get_FileinFolder_241(CGlobalVariable.pathHinhHoSoGoc, "HoSoSangTen", "", HopDong + "*");
+                foreach (string item in files)
+                {
+                    MView en = new MView();
+                    en.SoLuong = (++STT).ToString();
+                    en.ThoiGian = _wsThuongVu.get_FileInfo_CreateDate_241("", "", "", item);
+                    en.NoiDung = item;
+                    enView.lst.Add(en);
+                }
+            }
+            catch (Exception ex)
+            {
 
+            }
+            return View(enView);
+        }
+
+        public FileContentResult HoSoGoc_viewFilePDF(string path)
+        {
+            byte[] File = _wsThuongVu.get_Hinh_241("", "", "", path);
+            if (File != null && File.Length > 0)
+            {
+                return new FileContentResult(File, "application/pdf");
+            }
+            else
+                return null;
+        }
     }
 }

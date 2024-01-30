@@ -2264,6 +2264,7 @@
     <Content Include="Views\QLDHN\DHNDT.cshtml" />
     <Content Include="Views\TLMD\BaoCao.cshtml" />
     <Content Include="Views\KhachMoi\Index.cshtml" />
+    <Content Include="Views\ThuongVu\HoSoGoc.cshtml" />
     <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -2336,10 +2337,10 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>WSTanHoa_wrDHN_wsDHN</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://113.161.88.180:81/wsthuongvu.asmx">
+    <WebReferenceUrl Include="http://server5:81/wsthuongvu.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\wrThuongVu\</RelPath>
-      <UpdateFromURL>http://113.161.88.180:81/wsthuongvu.asmx</UpdateFromURL>
+      <UpdateFromURL>http://server5:81/wsthuongvu.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>

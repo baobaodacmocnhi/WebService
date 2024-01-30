@@ -121,47 +121,59 @@
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetDSTo">
-        <s:complexType />
-      </s:element>
-      <s:element name="GetDSToResponse">
+      <s:element name="getDS_To">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetDSToResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="IDPhong" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="getDS_NhanVien_HanhThu">
-        <s:complexType />
-      </s:element>
-      <s:element name="getDS_NhanVien_HanhThuResponse">
+      <s:element name="getDS_ToResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="getDS_NhanVien_HanhThuResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="getDS_ToResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetDSNhanVienTo">
+      <s:element name="getDS_NhanVien_HanhThu_Doi">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDPhong" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDS_NhanVien_HanhThu_DoiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDS_NhanVien_HanhThu_DoiResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDS_NhanVien_Doi">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="IDPhong" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDS_NhanVien_DoiResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="getDS_NhanVien_DoiResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="getDS_NhanVien_To">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="MaTo" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="GetDSNhanVienToResponse">
+      <s:element name="getDS_NhanVien_ToResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="GetDSNhanVienToResult" type="s:string" />
-          </s:sequence>
-        </s:complexType>
-      </s:element>
-      <s:element name="getDS_NhanVien">
-        <s:complexType />
-      </s:element>
-      <s:element name="getDS_NhanVienResponse">
-        <s:complexType>
-          <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="getDS_NhanVienResult" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="getDS_NhanVien_ToResult" type="s:string" />
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -602,6 +614,26 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="get_FileinFolder_ThuTien">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FolderLoai" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="FolderIDCT" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="get_FileinFolder_ThuTienResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="get_FileinFolder_ThuTienResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
       <s:element name="GetDSTimKiem">
         <s:complexType>
           <s:sequence>
@@ -1143,29 +1175,29 @@
   <wsdl:message name="GetVersionSoapOut">
     <wsdl:part name="parameters" element="tns:GetVersionResponse" />
   </wsdl:message>
-  <wsdl:message name="GetDSToSoapIn">
-    <wsdl:part name="parameters" element="tns:GetDSTo" />
+  <wsdl:message name="getDS_ToSoapIn">
+    <wsdl:part name="parameters" element="tns:getDS_To" />
   </wsdl:message>
-  <wsdl:message name="GetDSToSoapOut">
-    <wsdl:part name="parameters" element="tns:GetDSToResponse" />
+  <wsdl:message name="getDS_ToSoapOut">
+    <wsdl:part name="parameters" element="tns:getDS_ToResponse" />
   </wsdl:message>
-  <wsdl:message name="getDS_NhanVien_HanhThuSoapIn">
-    <wsdl:part name="parameters" element="tns:getDS_NhanVien_HanhThu" />
+  <wsdl:message name="getDS_NhanVien_HanhThu_DoiSoapIn">
+    <wsdl:part name="parameters" element="tns:getDS_NhanVien_HanhThu_Doi" />
   </wsdl:message>
-  <wsdl:message name="getDS_NhanVien_HanhThuSoapOut">
-    <wsdl:part name="parameters" element="tns:getDS_NhanVien_HanhThuResponse" />
+  <wsdl:message name="getDS_NhanVien_HanhThu_DoiSoapOut">
+    <wsdl:part name="parameters" element="tns:getDS_NhanVien_HanhThu_DoiResponse" />
   </wsdl:message>
-  <wsdl:message name="GetDSNhanVienToSoapIn">
-    <wsdl:part name="parameters" element="tns:GetDSNhanVienTo" />
+  <wsdl:message name="getDS_NhanVien_DoiSoapIn">
+    <wsdl:part name="parameters" element="tns:getDS_NhanVien_Doi" />
   </wsdl:message>
-  <wsdl:message name="GetDSNhanVienToSoapOut">
-    <wsdl:part name="parameters" element="tns:GetDSNhanVienToResponse" />
+  <wsdl:message name="getDS_NhanVien_DoiSoapOut">
+    <wsdl:part name="parameters" element="tns:getDS_NhanVien_DoiResponse" />
   </wsdl:message>
-  <wsdl:message name="getDS_NhanVienSoapIn">
-    <wsdl:part name="parameters" element="tns:getDS_NhanVien" />
+  <wsdl:message name="getDS_NhanVien_ToSoapIn">
+    <wsdl:part name="parameters" element="tns:getDS_NhanVien_To" />
   </wsdl:message>
-  <wsdl:message name="getDS_NhanVienSoapOut">
-    <wsdl:part name="parameters" element="tns:getDS_NhanVienResponse" />
+  <wsdl:message name="getDS_NhanVien_ToSoapOut">
+    <wsdl:part name="parameters" element="tns:getDS_NhanVien_ToResponse" />
   </wsdl:message>
   <wsdl:message name="getDS_NamSoapIn">
     <wsdl:part name="parameters" element="tns:getDS_Nam" />
@@ -1316,6 +1348,12 @@
   </wsdl:message>
   <wsdl:message name="xoa_Folder_Hinh_ThuTienSoapOut">
     <wsdl:part name="parameters" element="tns:xoa_Folder_Hinh_ThuTienResponse" />
+  </wsdl:message>
+  <wsdl:message name="get_FileinFolder_ThuTienSoapIn">
+    <wsdl:part name="parameters" element="tns:get_FileinFolder_ThuTien" />
+  </wsdl:message>
+  <wsdl:message name="get_FileinFolder_ThuTienSoapOut">
+    <wsdl:part name="parameters" element="tns:get_FileinFolder_ThuTienResponse" />
   </wsdl:message>
   <wsdl:message name="GetDSTimKiemSoapIn">
     <wsdl:part name="parameters" element="tns:GetDSTimKiem" />
@@ -1524,21 +1562,21 @@
       <wsdl:input message="tns:GetVersionSoapIn" />
       <wsdl:output message="tns:GetVersionSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetDSTo">
-      <wsdl:input message="tns:GetDSToSoapIn" />
-      <wsdl:output message="tns:GetDSToSoapOut" />
+    <wsdl:operation name="getDS_To">
+      <wsdl:input message="tns:getDS_ToSoapIn" />
+      <wsdl:output message="tns:getDS_ToSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="getDS_NhanVien_HanhThu">
-      <wsdl:input message="tns:getDS_NhanVien_HanhThuSoapIn" />
-      <wsdl:output message="tns:getDS_NhanVien_HanhThuSoapOut" />
+    <wsdl:operation name="getDS_NhanVien_HanhThu_Doi">
+      <wsdl:input message="tns:getDS_NhanVien_HanhThu_DoiSoapIn" />
+      <wsdl:output message="tns:getDS_NhanVien_HanhThu_DoiSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="GetDSNhanVienTo">
-      <wsdl:input message="tns:GetDSNhanVienToSoapIn" />
-      <wsdl:output message="tns:GetDSNhanVienToSoapOut" />
+    <wsdl:operation name="getDS_NhanVien_Doi">
+      <wsdl:input message="tns:getDS_NhanVien_DoiSoapIn" />
+      <wsdl:output message="tns:getDS_NhanVien_DoiSoapOut" />
     </wsdl:operation>
-    <wsdl:operation name="getDS_NhanVien">
-      <wsdl:input message="tns:getDS_NhanVienSoapIn" />
-      <wsdl:output message="tns:getDS_NhanVienSoapOut" />
+    <wsdl:operation name="getDS_NhanVien_To">
+      <wsdl:input message="tns:getDS_NhanVien_ToSoapIn" />
+      <wsdl:output message="tns:getDS_NhanVien_ToSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="getDS_Nam">
       <wsdl:input message="tns:getDS_NamSoapIn" />
@@ -1639,6 +1677,10 @@
     <wsdl:operation name="xoa_Folder_Hinh_ThuTien">
       <wsdl:input message="tns:xoa_Folder_Hinh_ThuTienSoapIn" />
       <wsdl:output message="tns:xoa_Folder_Hinh_ThuTienSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="get_FileinFolder_ThuTien">
+      <wsdl:input message="tns:get_FileinFolder_ThuTienSoapIn" />
+      <wsdl:output message="tns:get_FileinFolder_ThuTienSoapOut" />
     </wsdl:operation>
     <wsdl:operation name="GetDSTimKiem">
       <wsdl:input message="tns:GetDSTimKiemSoapIn" />
@@ -1831,8 +1873,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetDSTo">
-      <soap:operation soapAction="http://tempuri.org/GetDSTo" style="document" />
+    <wsdl:operation name="getDS_To">
+      <soap:operation soapAction="http://tempuri.org/getDS_To" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1840,8 +1882,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="getDS_NhanVien_HanhThu">
-      <soap:operation soapAction="http://tempuri.org/getDS_NhanVien_HanhThu" style="document" />
+    <wsdl:operation name="getDS_NhanVien_HanhThu_Doi">
+      <soap:operation soapAction="http://tempuri.org/getDS_NhanVien_HanhThu_Doi" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1849,8 +1891,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetDSNhanVienTo">
-      <soap:operation soapAction="http://tempuri.org/GetDSNhanVienTo" style="document" />
+    <wsdl:operation name="getDS_NhanVien_Doi">
+      <soap:operation soapAction="http://tempuri.org/getDS_NhanVien_Doi" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -1858,8 +1900,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="getDS_NhanVien">
-      <soap:operation soapAction="http://tempuri.org/getDS_NhanVien" style="document" />
+    <wsdl:operation name="getDS_NhanVien_To">
+      <soap:operation soapAction="http://tempuri.org/getDS_NhanVien_To" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -2085,6 +2127,15 @@
     </wsdl:operation>
     <wsdl:operation name="xoa_Folder_Hinh_ThuTien">
       <soap:operation soapAction="http://tempuri.org/xoa_Folder_Hinh_ThuTien" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_FileinFolder_ThuTien">
+      <soap:operation soapAction="http://tempuri.org/get_FileinFolder_ThuTien" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -2428,8 +2479,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetDSTo">
-      <soap12:operation soapAction="http://tempuri.org/GetDSTo" style="document" />
+    <wsdl:operation name="getDS_To">
+      <soap12:operation soapAction="http://tempuri.org/getDS_To" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -2437,8 +2488,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="getDS_NhanVien_HanhThu">
-      <soap12:operation soapAction="http://tempuri.org/getDS_NhanVien_HanhThu" style="document" />
+    <wsdl:operation name="getDS_NhanVien_HanhThu_Doi">
+      <soap12:operation soapAction="http://tempuri.org/getDS_NhanVien_HanhThu_Doi" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -2446,8 +2497,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetDSNhanVienTo">
-      <soap12:operation soapAction="http://tempuri.org/GetDSNhanVienTo" style="document" />
+    <wsdl:operation name="getDS_NhanVien_Doi">
+      <soap12:operation soapAction="http://tempuri.org/getDS_NhanVien_Doi" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -2455,8 +2506,8 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="getDS_NhanVien">
-      <soap12:operation soapAction="http://tempuri.org/getDS_NhanVien" style="document" />
+    <wsdl:operation name="getDS_NhanVien_To">
+      <soap12:operation soapAction="http://tempuri.org/getDS_NhanVien_To" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
@@ -2682,6 +2733,15 @@
     </wsdl:operation>
     <wsdl:operation name="xoa_Folder_Hinh_ThuTien">
       <soap12:operation soapAction="http://tempuri.org/xoa_Folder_Hinh_ThuTien" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="get_FileinFolder_ThuTien">
+      <soap12:operation soapAction="http://tempuri.org/get_FileinFolder_ThuTien" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

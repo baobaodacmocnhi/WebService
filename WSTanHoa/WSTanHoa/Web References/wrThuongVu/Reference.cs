@@ -63,6 +63,12 @@ namespace WSTanHoa.wrThuongVu {
         
         private System.Threading.SendOrPostCallback get_FileinFolder_RootOperationCompleted;
         
+        private System.Threading.SendOrPostCallback get_Hinh_241OperationCompleted;
+        
+        private System.Threading.SendOrPostCallback get_FileinFolder_241OperationCompleted;
+        
+        private System.Threading.SendOrPostCallback get_FileInfo_CreateDate_241OperationCompleted;
+        
         private bool useDefaultCredentialsSetExplicitly;
         
         /// <remarks/>
@@ -151,6 +157,15 @@ namespace WSTanHoa.wrThuongVu {
         
         /// <remarks/>
         public event get_FileinFolder_RootCompletedEventHandler get_FileinFolder_RootCompleted;
+        
+        /// <remarks/>
+        public event get_Hinh_241CompletedEventHandler get_Hinh_241Completed;
+        
+        /// <remarks/>
+        public event get_FileinFolder_241CompletedEventHandler get_FileinFolder_241Completed;
+        
+        /// <remarks/>
+        public event get_FileInfo_CreateDate_241CompletedEventHandler get_FileInfo_CreateDate_241Completed;
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/get_Hinh", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
@@ -711,6 +726,112 @@ namespace WSTanHoa.wrThuongVu {
         }
         
         /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/get_Hinh_241", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        [return: System.Xml.Serialization.XmlElementAttribute(DataType="base64Binary")]
+        public byte[] get_Hinh_241(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName) {
+            object[] results = this.Invoke("get_Hinh_241", new object[] {
+                        FolderRoot,
+                        FolderLoai,
+                        FolderIDCT,
+                        FileName});
+            return ((byte[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void get_Hinh_241Async(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName) {
+            this.get_Hinh_241Async(FolderRoot, FolderLoai, FolderIDCT, FileName, null);
+        }
+        
+        /// <remarks/>
+        public void get_Hinh_241Async(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName, object userState) {
+            if ((this.get_Hinh_241OperationCompleted == null)) {
+                this.get_Hinh_241OperationCompleted = new System.Threading.SendOrPostCallback(this.Onget_Hinh_241OperationCompleted);
+            }
+            this.InvokeAsync("get_Hinh_241", new object[] {
+                        FolderRoot,
+                        FolderLoai,
+                        FolderIDCT,
+                        FileName}, this.get_Hinh_241OperationCompleted, userState);
+        }
+        
+        private void Onget_Hinh_241OperationCompleted(object arg) {
+            if ((this.get_Hinh_241Completed != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.get_Hinh_241Completed(this, new get_Hinh_241CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/get_FileinFolder_241", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string[] get_FileinFolder_241(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName) {
+            object[] results = this.Invoke("get_FileinFolder_241", new object[] {
+                        FolderRoot,
+                        FolderLoai,
+                        FolderIDCT,
+                        FileName});
+            return ((string[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void get_FileinFolder_241Async(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName) {
+            this.get_FileinFolder_241Async(FolderRoot, FolderLoai, FolderIDCT, FileName, null);
+        }
+        
+        /// <remarks/>
+        public void get_FileinFolder_241Async(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName, object userState) {
+            if ((this.get_FileinFolder_241OperationCompleted == null)) {
+                this.get_FileinFolder_241OperationCompleted = new System.Threading.SendOrPostCallback(this.Onget_FileinFolder_241OperationCompleted);
+            }
+            this.InvokeAsync("get_FileinFolder_241", new object[] {
+                        FolderRoot,
+                        FolderLoai,
+                        FolderIDCT,
+                        FileName}, this.get_FileinFolder_241OperationCompleted, userState);
+        }
+        
+        private void Onget_FileinFolder_241OperationCompleted(object arg) {
+            if ((this.get_FileinFolder_241Completed != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.get_FileinFolder_241Completed(this, new get_FileinFolder_241CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/get_FileInfo_CreateDate_241", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string get_FileInfo_CreateDate_241(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName) {
+            object[] results = this.Invoke("get_FileInfo_CreateDate_241", new object[] {
+                        FolderRoot,
+                        FolderLoai,
+                        FolderIDCT,
+                        FileName});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void get_FileInfo_CreateDate_241Async(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName) {
+            this.get_FileInfo_CreateDate_241Async(FolderRoot, FolderLoai, FolderIDCT, FileName, null);
+        }
+        
+        /// <remarks/>
+        public void get_FileInfo_CreateDate_241Async(string FolderRoot, string FolderLoai, string FolderIDCT, string FileName, object userState) {
+            if ((this.get_FileInfo_CreateDate_241OperationCompleted == null)) {
+                this.get_FileInfo_CreateDate_241OperationCompleted = new System.Threading.SendOrPostCallback(this.Onget_FileInfo_CreateDate_241OperationCompleted);
+            }
+            this.InvokeAsync("get_FileInfo_CreateDate_241", new object[] {
+                        FolderRoot,
+                        FolderLoai,
+                        FolderIDCT,
+                        FileName}, this.get_FileInfo_CreateDate_241OperationCompleted, userState);
+        }
+        
+        private void Onget_FileInfo_CreateDate_241OperationCompleted(object arg) {
+            if ((this.get_FileInfo_CreateDate_241Completed != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.get_FileInfo_CreateDate_241Completed(this, new get_FileInfo_CreateDate_241CompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
         public new void CancelAsync(object userState) {
             base.CancelAsync(userState);
         }
@@ -1207,6 +1328,84 @@ namespace WSTanHoa.wrThuongVu {
             get {
                 this.RaiseExceptionIfNecessary();
                 return ((string[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void get_Hinh_241CompletedEventHandler(object sender, get_Hinh_241CompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class get_Hinh_241CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal get_Hinh_241CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public byte[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((byte[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void get_FileinFolder_241CompletedEventHandler(object sender, get_FileinFolder_241CompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class get_FileinFolder_241CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal get_FileinFolder_241CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void get_FileInfo_CreateDate_241CompletedEventHandler(object sender, get_FileInfo_CreateDate_241CompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class get_FileInfo_CreateDate_241CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal get_FileInfo_CreateDate_241CompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string)(this.results[0]));
             }
         }
     }

@@ -257,7 +257,6 @@ namespace WSSmartPhone
                     dataStream.Write(byteArray, 0, byteArray.Length);
                     dataStream.Close();
                     HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-
                     if (respuesta.StatusCode == HttpStatusCode.OK)
                     {
                         Stream read = respuesta.GetResponseStream();
@@ -297,7 +296,6 @@ namespace WSSmartPhone
                 if (checksum == CGlobalVariable.checksum)
                 {
                     renderEContract(HopDong, DanhBo, CreateDate, HoTen, CCCD, NgayCap, DCThuongTru, DCHienNay, DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, NgayHieuLuc, checksum, out strResponse);
-
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                     var client = new HttpClient();
@@ -352,7 +350,6 @@ namespace WSSmartPhone
                     var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                     if (response.Result.IsSuccessStatusCode)
                     {
-
                         string username = "";
                         if (CaNhan)
                             username = CCCD;

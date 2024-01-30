@@ -9,7 +9,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>01/22/2024 12:19:45</publishTime>
+      <publishTime>01/30/2024 15:18:26</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -180,10 +180,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2023 14:49:12</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>01/22/2024 12:23:30</publishTime>
+      <publishTime>01/30/2024 15:18:33</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>01/22/2024 12:23:31</publishTime>
+      <publishTime>01/30/2024 15:18:34</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -6140,6 +6140,9 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/ThuongVu/DangKyDinhMuc.cshtml">
       <publishTime>12/08/2023 14:49:10</publishTime>
     </File>
+    <File Include="Views/ThuongVu/HoSoGoc.cshtml">
+      <publishTime>01/30/2024 15:17:44</publishTime>
+    </File>
     <File Include="Views/ThuongVu/TinhTienNuoc.cshtml">
       <publishTime>12/08/2023 14:49:10</publishTime>
     </File>
@@ -6198,7 +6201,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>01/01/0001 00:00:00</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>01/10/2024 10:24:08</publishTime>
+      <publishTime>01/30/2024 15:18:35</publishTime>
     </File>
   </ItemGroup>
 </Project>

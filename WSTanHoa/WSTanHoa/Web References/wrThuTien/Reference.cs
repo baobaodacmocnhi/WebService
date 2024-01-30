@@ -23,7 +23,7 @@ namespace WSTanHoa.wrThuTien {
     
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="wsThuTienSoap", Namespace="http://tempuri.org/")]
@@ -45,13 +45,13 @@ namespace WSTanHoa.wrThuTien {
         
         private System.Threading.SendOrPostCallback GetVersionOperationCompleted;
         
-        private System.Threading.SendOrPostCallback GetDSToOperationCompleted;
+        private System.Threading.SendOrPostCallback getDS_ToOperationCompleted;
         
-        private System.Threading.SendOrPostCallback getDS_NhanVien_HanhThuOperationCompleted;
+        private System.Threading.SendOrPostCallback getDS_NhanVien_HanhThu_DoiOperationCompleted;
         
-        private System.Threading.SendOrPostCallback GetDSNhanVienToOperationCompleted;
+        private System.Threading.SendOrPostCallback getDS_NhanVien_DoiOperationCompleted;
         
-        private System.Threading.SendOrPostCallback getDS_NhanVienOperationCompleted;
+        private System.Threading.SendOrPostCallback getDS_NhanVien_ToOperationCompleted;
         
         private System.Threading.SendOrPostCallback getDS_NamOperationCompleted;
         
@@ -102,6 +102,8 @@ namespace WSTanHoa.wrThuTien {
         private System.Threading.SendOrPostCallback xoa_Hinh_ThuTienOperationCompleted;
         
         private System.Threading.SendOrPostCallback xoa_Folder_Hinh_ThuTienOperationCompleted;
+        
+        private System.Threading.SendOrPostCallback get_FileinFolder_ThuTienOperationCompleted;
         
         private System.Threading.SendOrPostCallback GetDSTimKiemOperationCompleted;
         
@@ -224,16 +226,16 @@ namespace WSTanHoa.wrThuTien {
         public event GetVersionCompletedEventHandler GetVersionCompleted;
         
         /// <remarks/>
-        public event GetDSToCompletedEventHandler GetDSToCompleted;
+        public event getDS_ToCompletedEventHandler getDS_ToCompleted;
         
         /// <remarks/>
-        public event getDS_NhanVien_HanhThuCompletedEventHandler getDS_NhanVien_HanhThuCompleted;
+        public event getDS_NhanVien_HanhThu_DoiCompletedEventHandler getDS_NhanVien_HanhThu_DoiCompleted;
         
         /// <remarks/>
-        public event GetDSNhanVienToCompletedEventHandler GetDSNhanVienToCompleted;
+        public event getDS_NhanVien_DoiCompletedEventHandler getDS_NhanVien_DoiCompleted;
         
         /// <remarks/>
-        public event getDS_NhanVienCompletedEventHandler getDS_NhanVienCompleted;
+        public event getDS_NhanVien_ToCompletedEventHandler getDS_NhanVien_ToCompleted;
         
         /// <remarks/>
         public event getDS_NamCompletedEventHandler getDS_NamCompleted;
@@ -309,6 +311,9 @@ namespace WSTanHoa.wrThuTien {
         
         /// <remarks/>
         public event xoa_Folder_Hinh_ThuTienCompletedEventHandler xoa_Folder_Hinh_ThuTienCompleted;
+        
+        /// <remarks/>
+        public event get_FileinFolder_ThuTienCompletedEventHandler get_FileinFolder_ThuTienCompleted;
         
         /// <remarks/>
         public event GetDSTimKiemCompletedEventHandler GetDSTimKiemCompleted;
@@ -650,112 +655,118 @@ namespace WSTanHoa.wrThuTien {
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetDSTo", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string GetDSTo() {
-            object[] results = this.Invoke("GetDSTo", new object[0]);
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/getDS_To", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string getDS_To(string IDPhong) {
+            object[] results = this.Invoke("getDS_To", new object[] {
+                        IDPhong});
             return ((string)(results[0]));
         }
         
         /// <remarks/>
-        public void GetDSToAsync() {
-            this.GetDSToAsync(null);
+        public void getDS_ToAsync(string IDPhong) {
+            this.getDS_ToAsync(IDPhong, null);
         }
         
         /// <remarks/>
-        public void GetDSToAsync(object userState) {
-            if ((this.GetDSToOperationCompleted == null)) {
-                this.GetDSToOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetDSToOperationCompleted);
+        public void getDS_ToAsync(string IDPhong, object userState) {
+            if ((this.getDS_ToOperationCompleted == null)) {
+                this.getDS_ToOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetDS_ToOperationCompleted);
             }
-            this.InvokeAsync("GetDSTo", new object[0], this.GetDSToOperationCompleted, userState);
+            this.InvokeAsync("getDS_To", new object[] {
+                        IDPhong}, this.getDS_ToOperationCompleted, userState);
         }
         
-        private void OnGetDSToOperationCompleted(object arg) {
-            if ((this.GetDSToCompleted != null)) {
+        private void OngetDS_ToOperationCompleted(object arg) {
+            if ((this.getDS_ToCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.GetDSToCompleted(this, new GetDSToCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.getDS_ToCompleted(this, new getDS_ToCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/getDS_NhanVien_HanhThu", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string getDS_NhanVien_HanhThu() {
-            object[] results = this.Invoke("getDS_NhanVien_HanhThu", new object[0]);
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/getDS_NhanVien_HanhThu_Doi", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string getDS_NhanVien_HanhThu_Doi(string IDPhong) {
+            object[] results = this.Invoke("getDS_NhanVien_HanhThu_Doi", new object[] {
+                        IDPhong});
             return ((string)(results[0]));
         }
         
         /// <remarks/>
-        public void getDS_NhanVien_HanhThuAsync() {
-            this.getDS_NhanVien_HanhThuAsync(null);
+        public void getDS_NhanVien_HanhThu_DoiAsync(string IDPhong) {
+            this.getDS_NhanVien_HanhThu_DoiAsync(IDPhong, null);
         }
         
         /// <remarks/>
-        public void getDS_NhanVien_HanhThuAsync(object userState) {
-            if ((this.getDS_NhanVien_HanhThuOperationCompleted == null)) {
-                this.getDS_NhanVien_HanhThuOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetDS_NhanVien_HanhThuOperationCompleted);
+        public void getDS_NhanVien_HanhThu_DoiAsync(string IDPhong, object userState) {
+            if ((this.getDS_NhanVien_HanhThu_DoiOperationCompleted == null)) {
+                this.getDS_NhanVien_HanhThu_DoiOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetDS_NhanVien_HanhThu_DoiOperationCompleted);
             }
-            this.InvokeAsync("getDS_NhanVien_HanhThu", new object[0], this.getDS_NhanVien_HanhThuOperationCompleted, userState);
+            this.InvokeAsync("getDS_NhanVien_HanhThu_Doi", new object[] {
+                        IDPhong}, this.getDS_NhanVien_HanhThu_DoiOperationCompleted, userState);
         }
         
-        private void OngetDS_NhanVien_HanhThuOperationCompleted(object arg) {
-            if ((this.getDS_NhanVien_HanhThuCompleted != null)) {
+        private void OngetDS_NhanVien_HanhThu_DoiOperationCompleted(object arg) {
+            if ((this.getDS_NhanVien_HanhThu_DoiCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getDS_NhanVien_HanhThuCompleted(this, new getDS_NhanVien_HanhThuCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.getDS_NhanVien_HanhThu_DoiCompleted(this, new getDS_NhanVien_HanhThu_DoiCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
         /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/GetDSNhanVienTo", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string GetDSNhanVienTo(string MaTo) {
-            object[] results = this.Invoke("GetDSNhanVienTo", new object[] {
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/getDS_NhanVien_Doi", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string getDS_NhanVien_Doi(string IDPhong) {
+            object[] results = this.Invoke("getDS_NhanVien_Doi", new object[] {
+                        IDPhong});
+            return ((string)(results[0]));
+        }
+        
+        /// <remarks/>
+        public void getDS_NhanVien_DoiAsync(string IDPhong) {
+            this.getDS_NhanVien_DoiAsync(IDPhong, null);
+        }
+        
+        /// <remarks/>
+        public void getDS_NhanVien_DoiAsync(string IDPhong, object userState) {
+            if ((this.getDS_NhanVien_DoiOperationCompleted == null)) {
+                this.getDS_NhanVien_DoiOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetDS_NhanVien_DoiOperationCompleted);
+            }
+            this.InvokeAsync("getDS_NhanVien_Doi", new object[] {
+                        IDPhong}, this.getDS_NhanVien_DoiOperationCompleted, userState);
+        }
+        
+        private void OngetDS_NhanVien_DoiOperationCompleted(object arg) {
+            if ((this.getDS_NhanVien_DoiCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.getDS_NhanVien_DoiCompleted(this, new getDS_NhanVien_DoiCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/getDS_NhanVien_To", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string getDS_NhanVien_To(string MaTo) {
+            object[] results = this.Invoke("getDS_NhanVien_To", new object[] {
                         MaTo});
             return ((string)(results[0]));
         }
         
         /// <remarks/>
-        public void GetDSNhanVienToAsync(string MaTo) {
-            this.GetDSNhanVienToAsync(MaTo, null);
+        public void getDS_NhanVien_ToAsync(string MaTo) {
+            this.getDS_NhanVien_ToAsync(MaTo, null);
         }
         
         /// <remarks/>
-        public void GetDSNhanVienToAsync(string MaTo, object userState) {
-            if ((this.GetDSNhanVienToOperationCompleted == null)) {
-                this.GetDSNhanVienToOperationCompleted = new System.Threading.SendOrPostCallback(this.OnGetDSNhanVienToOperationCompleted);
+        public void getDS_NhanVien_ToAsync(string MaTo, object userState) {
+            if ((this.getDS_NhanVien_ToOperationCompleted == null)) {
+                this.getDS_NhanVien_ToOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetDS_NhanVien_ToOperationCompleted);
             }
-            this.InvokeAsync("GetDSNhanVienTo", new object[] {
-                        MaTo}, this.GetDSNhanVienToOperationCompleted, userState);
+            this.InvokeAsync("getDS_NhanVien_To", new object[] {
+                        MaTo}, this.getDS_NhanVien_ToOperationCompleted, userState);
         }
         
-        private void OnGetDSNhanVienToOperationCompleted(object arg) {
-            if ((this.GetDSNhanVienToCompleted != null)) {
+        private void OngetDS_NhanVien_ToOperationCompleted(object arg) {
+            if ((this.getDS_NhanVien_ToCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.GetDSNhanVienToCompleted(this, new GetDSNhanVienToCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
-            }
-        }
-        
-        /// <remarks/>
-        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/getDS_NhanVien", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public string getDS_NhanVien() {
-            object[] results = this.Invoke("getDS_NhanVien", new object[0]);
-            return ((string)(results[0]));
-        }
-        
-        /// <remarks/>
-        public void getDS_NhanVienAsync() {
-            this.getDS_NhanVienAsync(null);
-        }
-        
-        /// <remarks/>
-        public void getDS_NhanVienAsync(object userState) {
-            if ((this.getDS_NhanVienOperationCompleted == null)) {
-                this.getDS_NhanVienOperationCompleted = new System.Threading.SendOrPostCallback(this.OngetDS_NhanVienOperationCompleted);
-            }
-            this.InvokeAsync("getDS_NhanVien", new object[0], this.getDS_NhanVienOperationCompleted, userState);
-        }
-        
-        private void OngetDS_NhanVienOperationCompleted(object arg) {
-            if ((this.getDS_NhanVienCompleted != null)) {
-                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
-                this.getDS_NhanVienCompleted(this, new getDS_NhanVienCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+                this.getDS_NhanVien_ToCompleted(this, new getDS_NhanVien_ToCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -1729,6 +1740,37 @@ namespace WSTanHoa.wrThuTien {
             if ((this.xoa_Folder_Hinh_ThuTienCompleted != null)) {
                 System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
                 this.xoa_Folder_Hinh_ThuTienCompleted(this, new xoa_Folder_Hinh_ThuTienCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
+            }
+        }
+        
+        /// <remarks/>
+        [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://tempuri.org/get_FileinFolder_ThuTien", RequestNamespace="http://tempuri.org/", ResponseNamespace="http://tempuri.org/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
+        public string[] get_FileinFolder_ThuTien(string FolderLoai, string FolderIDCT) {
+            object[] results = this.Invoke("get_FileinFolder_ThuTien", new object[] {
+                        FolderLoai,
+                        FolderIDCT});
+            return ((string[])(results[0]));
+        }
+        
+        /// <remarks/>
+        public void get_FileinFolder_ThuTienAsync(string FolderLoai, string FolderIDCT) {
+            this.get_FileinFolder_ThuTienAsync(FolderLoai, FolderIDCT, null);
+        }
+        
+        /// <remarks/>
+        public void get_FileinFolder_ThuTienAsync(string FolderLoai, string FolderIDCT, object userState) {
+            if ((this.get_FileinFolder_ThuTienOperationCompleted == null)) {
+                this.get_FileinFolder_ThuTienOperationCompleted = new System.Threading.SendOrPostCallback(this.Onget_FileinFolder_ThuTienOperationCompleted);
+            }
+            this.InvokeAsync("get_FileinFolder_ThuTien", new object[] {
+                        FolderLoai,
+                        FolderIDCT}, this.get_FileinFolder_ThuTienOperationCompleted, userState);
+        }
+        
+        private void Onget_FileinFolder_ThuTienOperationCompleted(object arg) {
+            if ((this.get_FileinFolder_ThuTienCompleted != null)) {
+                System.Web.Services.Protocols.InvokeCompletedEventArgs invokeArgs = ((System.Web.Services.Protocols.InvokeCompletedEventArgs)(arg));
+                this.get_FileinFolder_ThuTienCompleted(this, new get_FileinFolder_ThuTienCompletedEventArgs(invokeArgs.Results, invokeArgs.Error, invokeArgs.Cancelled, invokeArgs.UserState));
             }
         }
         
@@ -2842,11 +2884,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void UpdateUIDCompletedEventHandler(object sender, UpdateUIDCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class UpdateUIDCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -2868,11 +2910,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void DangNhapsCompletedEventHandler(object sender, DangNhapsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class DangNhapsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -2894,11 +2936,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void DangNhaps_AdminCompletedEventHandler(object sender, DangNhaps_AdminCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class DangNhaps_AdminCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -2920,11 +2962,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void DangXuatsCompletedEventHandler(object sender, DangXuatsCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class DangXuatsCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -2946,11 +2988,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void DangXuats_PersonCompletedEventHandler(object sender, DangXuats_PersonCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class DangXuats_PersonCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -2972,11 +3014,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void DangXuats_AdminCompletedEventHandler(object sender, DangXuats_AdminCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class DangXuats_AdminCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -2998,11 +3040,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void updateLoginCompletedEventHandler(object sender, updateLoginCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class updateLoginCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3024,11 +3066,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetVersionCompletedEventHandler(object sender, GetVersionCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetVersionCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3050,18 +3092,18 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void GetDSToCompletedEventHandler(object sender, GetDSToCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void getDS_ToCompletedEventHandler(object sender, getDS_ToCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class GetDSToCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getDS_ToCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal GetDSToCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal getDS_ToCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -3076,18 +3118,18 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void getDS_NhanVien_HanhThuCompletedEventHandler(object sender, getDS_NhanVien_HanhThuCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void getDS_NhanVien_HanhThu_DoiCompletedEventHandler(object sender, getDS_NhanVien_HanhThu_DoiCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getDS_NhanVien_HanhThuCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getDS_NhanVien_HanhThu_DoiCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal getDS_NhanVien_HanhThuCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal getDS_NhanVien_HanhThu_DoiCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -3102,18 +3144,18 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void GetDSNhanVienToCompletedEventHandler(object sender, GetDSNhanVienToCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void getDS_NhanVien_DoiCompletedEventHandler(object sender, getDS_NhanVien_DoiCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class GetDSNhanVienToCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getDS_NhanVien_DoiCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal GetDSNhanVienToCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal getDS_NhanVien_DoiCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -3128,18 +3170,18 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
-    public delegate void getDS_NhanVienCompletedEventHandler(object sender, getDS_NhanVienCompletedEventArgs e);
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void getDS_NhanVien_ToCompletedEventHandler(object sender, getDS_NhanVien_ToCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
-    public partial class getDS_NhanVienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+    public partial class getDS_NhanVien_ToCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
         
         private object[] results;
         
-        internal getDS_NhanVienCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+        internal getDS_NhanVien_ToCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
                 base(exception, cancelled, userState) {
             this.results = results;
         }
@@ -3154,11 +3196,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void getDS_NamCompletedEventHandler(object sender, getDS_NamCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getDS_NamCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3180,11 +3222,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void SendNotificationToClientCompletedEventHandler(object sender, SendNotificationToClientCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SendNotificationToClientCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3206,11 +3248,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void getDSHoaDonTon_NhanVienCompletedEventHandler(object sender, getDSHoaDonTon_NhanVienCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getDSHoaDonTon_NhanVienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3232,11 +3274,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void getDSHoaDonTon_MayCompletedEventHandler(object sender, getDSHoaDonTon_MayCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getDSHoaDonTon_MayCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3258,11 +3300,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void XuLy_HoaDonDienTuCompletedEventHandler(object sender, XuLy_HoaDonDienTuCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class XuLy_HoaDonDienTuCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3284,11 +3326,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void get_GhiChuCompletedEventHandler(object sender, get_GhiChuCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class get_GhiChuCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3310,11 +3352,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void update_GhiChuCompletedEventHandler(object sender, update_GhiChuCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class update_GhiChuCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3336,11 +3378,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void update_DiaChiDHNCompletedEventHandler(object sender, update_DiaChiDHNCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class update_DiaChiDHNCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3362,11 +3404,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetDSTamThuCompletedEventHandler(object sender, GetDSTamThuCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDSTamThuCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3388,11 +3430,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetDSDongNuocCompletedEventHandler(object sender, GetDSDongNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDSDongNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3414,11 +3456,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetDSCTDongNuocCompletedEventHandler(object sender, GetDSCTDongNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDSCTDongNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3440,11 +3482,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void CheckExist_DongNuocCompletedEventHandler(object sender, CheckExist_DongNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CheckExist_DongNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3466,11 +3508,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void CheckExist_DongNuoc2CompletedEventHandler(object sender, CheckExist_DongNuoc2CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CheckExist_DongNuoc2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3492,11 +3534,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void ThemDongNuocCompletedEventHandler(object sender, ThemDongNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ThemDongNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3518,11 +3560,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void SuaDongNuocCompletedEventHandler(object sender, SuaDongNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SuaDongNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3544,11 +3586,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void ThemDongNuoc2CompletedEventHandler(object sender, ThemDongNuoc2CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ThemDongNuoc2CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3570,11 +3612,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void CheckExist_MoNuocCompletedEventHandler(object sender, CheckExist_MoNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class CheckExist_MoNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3596,11 +3638,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void ThemMoNuocCompletedEventHandler(object sender, ThemMoNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ThemMoNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3622,11 +3664,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void SuaMoNuocCompletedEventHandler(object sender, SuaMoNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class SuaMoNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3648,11 +3690,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void DangNganDongNuocCompletedEventHandler(object sender, DangNganDongNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class DangNganDongNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3674,11 +3716,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetDSHoaDonTon_DongNuocCompletedEventHandler(object sender, GetDSHoaDonTon_DongNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDSHoaDonTon_DongNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3700,11 +3742,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void get_Hinh_ThuTienCompletedEventHandler(object sender, get_Hinh_ThuTienCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class get_Hinh_ThuTienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3726,11 +3768,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void ghi_Hinh_ThuTienCompletedEventHandler(object sender, ghi_Hinh_ThuTienCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class ghi_Hinh_ThuTienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3752,11 +3794,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void xoa_Hinh_ThuTienCompletedEventHandler(object sender, xoa_Hinh_ThuTienCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class xoa_Hinh_ThuTienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3778,11 +3820,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void xoa_Folder_Hinh_ThuTienCompletedEventHandler(object sender, xoa_Folder_Hinh_ThuTienCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class xoa_Folder_Hinh_ThuTienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3804,11 +3846,37 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    public delegate void get_FileinFolder_ThuTienCompletedEventHandler(object sender, get_FileinFolder_ThuTienCompletedEventArgs e);
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.ComponentModel.DesignerCategoryAttribute("code")]
+    public partial class get_FileinFolder_ThuTienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
+        
+        private object[] results;
+        
+        internal get_FileinFolder_ThuTienCompletedEventArgs(object[] results, System.Exception exception, bool cancelled, object userState) : 
+                base(exception, cancelled, userState) {
+            this.results = results;
+        }
+        
+        /// <remarks/>
+        public string[] Result {
+            get {
+                this.RaiseExceptionIfNecessary();
+                return ((string[])(this.results[0]));
+            }
+        }
+    }
+    
+    /// <remarks/>
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetDSTimKiemCompletedEventHandler(object sender, GetDSTimKiemCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDSTimKiemCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3830,11 +3898,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetDSTimKiemTTKHCompletedEventHandler(object sender, GetDSTimKiemTTKHCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDSTimKiemTTKHCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3856,11 +3924,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetTongGiaoHoaDonCompletedEventHandler(object sender, GetTongGiaoHoaDonCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTongGiaoHoaDonCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3882,11 +3950,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetTongDangNganCompletedEventHandler(object sender, GetTongDangNganCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTongDangNganCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3908,11 +3976,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetTongTon_DenKyCompletedEventHandler(object sender, GetTongTon_DenKyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTongTon_DenKyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3934,11 +4002,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetTongTon_TrongKyCompletedEventHandler(object sender, GetTongTon_TrongKyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTongTon_TrongKyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3960,11 +4028,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetTongDongMoNuoc_TongCompletedEventHandler(object sender, GetTongDongMoNuoc_TongCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTongDongMoNuoc_TongCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -3986,11 +4054,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetTongDongMoNuoc_ChiTietCompletedEventHandler(object sender, GetTongDongMoNuoc_ChiTietCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTongDongMoNuoc_ChiTietCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4012,11 +4080,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetTongThuHo_TongCompletedEventHandler(object sender, GetTongThuHo_TongCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTongThuHo_TongCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4038,11 +4106,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetTongThuHo_ChiTietCompletedEventHandler(object sender, GetTongThuHo_ChiTietCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetTongThuHo_ChiTietCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4064,11 +4132,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void truyvanCompletedEventHandler(object sender, truyvanCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class truyvanCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4090,11 +4158,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void capnhatCompletedEventHandler(object sender, capnhatCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class capnhatCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4116,11 +4184,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void GetDSHoaDon_LenhHuyCompletedEventHandler(object sender, GetDSHoaDon_LenhHuyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class GetDSHoaDon_LenhHuyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4142,11 +4210,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void Sua_LenhHuyCompletedEventHandler(object sender, Sua_LenhHuyCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class Sua_LenhHuyCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4168,11 +4236,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void getDS_ChotDangNganCompletedEventHandler(object sender, getDS_ChotDangNganCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class getDS_ChotDangNganCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4194,11 +4262,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void them_ChotDangNganCompletedEventHandler(object sender, them_ChotDangNganCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class them_ChotDangNganCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4220,11 +4288,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void chotDangNganCompletedEventHandler(object sender, chotDangNganCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class chotDangNganCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4246,11 +4314,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void syncThanhToan_01072022CompletedEventHandler(object sender, syncThanhToan_01072022CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class syncThanhToan_01072022CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4272,11 +4340,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void syncThanhToanCompletedEventHandler(object sender, syncThanhToanCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class syncThanhToanCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4298,11 +4366,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void syncThanhToan_ThuHoCompletedEventHandler(object sender, syncThanhToan_ThuHoCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class syncThanhToan_ThuHoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4324,11 +4392,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void syncNopTien_01072022CompletedEventHandler(object sender, syncNopTien_01072022CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class syncNopTien_01072022CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4350,11 +4418,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void syncNopTienCompletedEventHandler(object sender, syncNopTienCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class syncNopTienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4376,11 +4444,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void syncNopTienLoCompletedEventHandler(object sender, syncNopTienLoCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class syncNopTienLoCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4402,11 +4470,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void syncNopTienLo_Except12CompletedEventHandler(object sender, syncNopTienLo_Except12CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class syncNopTienLo_Except12CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4428,11 +4496,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void syncNopTienLo_12CompletedEventHandler(object sender, syncNopTienLo_12CompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class syncNopTienLo_12CompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4454,11 +4522,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void showError_NopTienCompletedEventHandler(object sender, showError_NopTienCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class showError_NopTienCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4480,11 +4548,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void showHDDCBaoCaoThueCompletedEventHandler(object sender, showHDDCBaoCaoThueCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class showHDDCBaoCaoThueCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4506,11 +4574,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void updateChiTietTienNuocCompletedEventHandler(object sender, updateChiTietTienNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class updateChiTietTienNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {
@@ -4532,11 +4600,11 @@ namespace WSTanHoa.wrThuTien {
     }
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     public delegate void TinhTienNuocCompletedEventHandler(object sender, TinhTienNuocCompletedEventArgs e);
     
     /// <remarks/>
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.4084.0")]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.8.9037.0")]
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     public partial class TinhTienNuocCompletedEventArgs : System.ComponentModel.AsyncCompletedEventArgs {

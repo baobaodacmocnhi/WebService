@@ -6,7 +6,7 @@
       <Value Profile="(Default)">http://server5:81/wsthutien.asmx</Value>
     </Setting>
     <Setting Name="WSTanHoa_wrThuongVu_wsThuongVu" Type="(Web Service URL)" Scope="Application">
-      <Value Profile="(Default)">http://113.161.88.180:81/wsthuongvu.asmx</Value>
+      <Value Profile="(Default)">http://server5:81/wsthuongvu.asmx</Value>
     </Setting>
     <Setting Name="WSTanHoa_wrDHN_wsDHN" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://server5:81/wsdhn.asmx</Value>
