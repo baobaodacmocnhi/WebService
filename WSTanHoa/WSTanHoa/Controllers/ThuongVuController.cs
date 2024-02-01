@@ -461,6 +461,30 @@ namespace WSTanHoa.Controllers
                         en.NoiDung = item["pdf"].ToString();
                         enView.lst.Add(en);
                     }
+                else
+                {
+                    string[] files1 = _wsThuongVu.get_FileinFolder_241(CGlobalVariable.pathHinhHoSoGoc, "", "", DanhBo + "*");
+                    foreach (string item in files1)
+                    {
+                        MView en = new MView();
+                        en.SoLuong = (++STT).ToString();
+                        en.ThoiGian = _wsThuongVu.get_FileInfo_CreateDate_241("", "", "", item);
+                        en.NoiDung = item;
+                        enView.lst.Add(en);
+                    }
+                    if (files1.Count() == 0)
+                    {
+                        string[] files2 = _wsThuongVu.get_FileinFolder_241(CGlobalVariable.pathHinhHoSoGoc, "HoanThanh", "", DanhBo + "*");
+                        foreach (string item in files2)
+                        {
+                            MView en = new MView();
+                            en.SoLuong = (++STT).ToString();
+                            en.ThoiGian = _wsThuongVu.get_FileInfo_CreateDate_241("", "", "", item);
+                            en.NoiDung = item;
+                            enView.lst.Add(en);
+                        }
+                    }
+                }
                 string HopDong = _cDAL_DHN.ExecuteQuery_ReturnOneValue("select HopDong from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo + "'").ToString().Insert(2, " ");
                 string[] files = _wsThuongVu.get_FileinFolder_241(CGlobalVariable.pathHinhHoSoGoc, "HoSoSangTen", "", HopDong + "*");
                 foreach (string item in files)

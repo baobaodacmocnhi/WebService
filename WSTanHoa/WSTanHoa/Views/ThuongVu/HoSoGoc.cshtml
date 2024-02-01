@@ -1,7 +1,7 @@
 ﻿@model WSTanHoa.Models.MView
 @{
     Layout = null;
-    ViewBag.Title = "Hồ Sơ Góc";
+    ViewBag.Title = "Hồ Sơ Gốc";
 }
 
 <head>
@@ -9,17 +9,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewBag.Title</title>
-    @Styles.Render("~/Content/cssNOTMASTER")
+    @Styles.Render("~/Content/cssNOTMASTER2")
 </head>
 <body>
     <div class="bd-example border rounded-3 shadow-sm">
+        <h4 class="text-center">Hồ Sơ Gốc được Số Hóa</h4>
+
         <div class="overflow-auto">
             <table class="table table-striped table-bordered text-center">
                 <thead>
                     <tr style="background-color:#00b3b3;color:white">
-                        <th class="col-md-1">STT</th>
-                        <th class="col-md-1">Thời Gian</th>
-                        <th class="col-md-1">File</th>
+                        <th class="col">STT</th>
+                        <th class="col">Thời Gian</th>
+                        <th class="col">File</th>
                     </tr>
                 </thead>
                 <tbody>

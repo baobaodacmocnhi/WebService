@@ -185,13 +185,11 @@ namespace WSTanHoa.Controllers
                             en.ThongTin += " - ";
                         en.ThongTin += "Có sử dụng Giếng";
                     }
-                    if (checkExists_HoSoGoc(en.DanhBo))
-                        en.HoSoGoc = "<a style='color: blue;' target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/thuongvu/hosogoc/" + en.DanhBo + "'>Xem File</a>";
-                    else
-                        en.HoSoGoc = "Chưa scan";
-                    //if (en.ThongTin != "")
-                    //    en.ThongTin += " - ";
-                    //en.ThongTin += "<a style='color: blue;' target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/thuongvu/hosogoc/" + en.DanhBo + "'>Hồ sơ gốc</a>";
+                    //if (checkExists_HoSoGoc(en.DanhBo))
+                    //    en.HoSoGoc = "<a style='color: blue;' target='_blank' href='https://old.cskhtanhoa.com.vn:1803/api/thuongvu/hosogoc/" + en.DanhBo + "'>Xem File</a>";
+                    //else
+                    //    en.HoSoGoc = "Chưa scan";
+                    en.HoSoGoc = "<a style='color: blue;' target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/HoSoGoc?DanhBo=" + en.DanhBo + "'>Xem File</a>";
                     DataTable dtNiemChi = getDS_NiemChi(dt.Rows[0]["DanhBo"].ToString());
                     if (dtNiemChi != null && dtNiemChi.Rows.Count > 0)
                     {

@@ -16,7 +16,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuHo")]
     public class apiThuHoController : ApiController
     {
-        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien_test);
+        private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
 
         /// <summary>
         /// Lấy Tất Cả Hóa Đơn Tồn
