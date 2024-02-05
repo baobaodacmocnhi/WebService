@@ -822,6 +822,24 @@ namespace WSSmartPhone
             return bool.Parse(_cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString());
         }
 
+        public string getDSCuaHangThuHo(string Dot, string May)
+        {
+            CResult result = new CResult();
+            try
+            {
+                result.data = DataTableToJSON(_cDAL_ThuTien.ExecuteQuery_DataTable("SELECT top 2 CuaHangThuHo=[Name]+': '+DiaChi"
+                  + " FROM [HOADON_TA].[dbo].[TT_DichVuThu_CuaHang] ch,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh"
+                  + " where ch.DanhBo=ttkh.DANHBO and SUBSTRING(LOTRINH,1,2)=" + Dot + " and SUBSTRING(LOTRINH,3,2)=" + May));
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return jss.Serialize(result);
+        }
+
         //tạm thu
         public string GetDSTamThu(bool RutSot, string MaNV, DateTime FromCreateDate, DateTime ToCreateDate)
         {

@@ -148,6 +148,12 @@ namespace WSSmartPhone
             return _cThuTien.update_DiaChiDHN(MaNV, DanhBo, DiaChiDHN);
         }
 
+        [WebMethod]
+        public string getDSCuaHangThuHo(string Dot, string May)
+        {
+            return _cThuTien.getDSCuaHangThuHo(Dot, May);
+        }
+
         //tạm thu
         [WebMethod]
         public string GetDSTamThu(string RutSot, string MaNV, string FromCreateDate, string ToCreateDate)
