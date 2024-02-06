@@ -142,9 +142,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public string getDSCuaHangThuHo(string Dot, string May)
+        public string getDS_CuaHangThuHo(string Dot, string May)
         {
-            return _cThuTien.getDSCuaHangThuHo(Dot, May);
+            return _cThuTien.getDS_CuaHangThuHo(Dot, May);
         }
 
         [WebMethod]

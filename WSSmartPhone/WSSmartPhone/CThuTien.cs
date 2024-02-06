@@ -822,7 +822,7 @@ namespace WSSmartPhone
             return bool.Parse(_cDAL_ThuTien.ExecuteQuery_ReturnOneValue(sql).ToString());
         }
 
-        public string getDSCuaHangThuHo(string Dot, string May)
+        public string getDS_CuaHangThuHo(string Dot, string May)
         {
             CResult result = new CResult();
             try
@@ -4048,7 +4048,7 @@ namespace WSSmartPhone
                                             result.alert = "Tiêu Thụ = " + hd.TieuThu;
                                         }
                                         else
-                                            if (hd.TieuThu > 0 && (hd.TieuThu < int.Parse(TBTT) - int.Parse(TBTT) * 1.4 || hd.TieuThu >= int.Parse(TBTT) * 1.4))
+                                            if (hd.TieuThu > 0 && (hd.TieuThu <= int.Parse(TBTT) * (1 - 0.3) || hd.TieuThu >= int.Parse(TBTT) * 1.3))
                                             {
                                                 result.alert = "Tiêu Thụ bất thường = " + hd.TieuThu;
                                             }
