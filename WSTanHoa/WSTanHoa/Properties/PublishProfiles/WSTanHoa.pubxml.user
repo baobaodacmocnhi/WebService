@@ -9,7 +9,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>02/01/2024 14:16:49</publishTime>
+      <publishTime>02/01/2024 15:19:16</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -6141,7 +6141,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2023 14:49:10</publishTime>
     </File>
     <File Include="Views/ThuongVu/HoSoGoc.cshtml">
-      <publishTime>01/31/2024 08:27:08</publishTime>
+      <publishTime>02/06/2024 15:03:31</publishTime>
     </File>
     <File Include="Views/ThuongVu/TinhTienNuoc.cshtml">
       <publishTime>12/08/2023 14:49:10</publishTime>
