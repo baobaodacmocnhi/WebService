@@ -1791,12 +1791,14 @@ namespace WSTanHoa.Controllers
                                         + " where CAST(TimeStamp as date) = DATEADD(DAY, -1, @date) and DATEPART(HOUR, TimeStamp) = 01 and DATEPART(MINUTE, TimeStamp) = 0)"
                                         + " ,DenNgay = convert(varchar(10),@date,103),CSM = (select cast(t0.value-(select t2.Value FROM [SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp=t0.TimeStamp) as decimal(10,0)) FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0"
                                         + " where CAST(TimeStamp as date)=@date and DATEPART(HOUR, TimeStamp)=01 and DATEPART(MINUTE, TimeStamp)=0))t1");
-
                         if (dtCS != null || dtCS.Rows.Count > 0)
                         {
-                            string NoiDung = getTTKH(item["DanhBo"].ToString())
-                                + "Chỉ số đồng hồ nước điện từ tính từ 01g00 ngày " + dtCS.Rows[0]["TuNgay"].ToString() + " đến 01g00 ngày " + dtCS.Rows[0]["DenNgay"].ToString() + "\n"
-                                + "CSC: " + float.Parse(dtCS.Rows[0]["CSC"].ToString()).ToString("0.00") + "    CSM: " + float.Parse(dtCS.Rows[0]["CSM"].ToString()).ToString("0.00") + "    TT: " + float.Parse(dtCS.Rows[0]["TieuThu"].ToString()).ToString("0.00") + " m3";
+                            string NoiDung = getTTKH(item["DanhBo"].ToString());
+                            if (dtCS.Rows[0]["CSC"].ToString() != "" && dtCS.Rows[0]["CSM"].ToString() != "")
+                                NoiDung += "Chỉ số đồng hồ nước điện từ tính từ 01g00 ngày " + dtCS.Rows[0]["TuNgay"].ToString() + " đến 01g00 ngày " + dtCS.Rows[0]["DenNgay"].ToString() + "\n"
+                                 + "CSC: " + float.Parse(dtCS.Rows[0]["CSC"].ToString()).ToString("0.00") + "    CSM: " + float.Parse(dtCS.Rows[0]["CSM"].ToString()).ToString("0.00") + "    TT: " + float.Parse(dtCS.Rows[0]["TieuThu"].ToString()).ToString("0.00") + " m3";
+                            else
+                                NoiDung += "Chỉ số đồng hồ nước điện từ đang ghi nhận";
                             DataTable dtZalo = _cDAL_TrungTam.ExecuteQuery_DataTable("select a.IDZalo from Zalo_QuanTam a,Zalo_DangKy b where a.IDZalo=b.IDZalo and Follow=1 and DanhBo='" + item["DanhBo"].ToString() + "'");
                             foreach (DataRow itemZalo in dtZalo.Rows)
                             {
