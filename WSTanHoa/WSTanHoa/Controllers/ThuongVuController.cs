@@ -26,8 +26,7 @@ namespace WSTanHoa.Controllers
             if (TableName != null && IDFileName != null && IDFileContent != null && TableName != "" && IDFileName != "" && IDFileContent != "")
             {
                 string NoiDung = "";
-                //byte[] FileContent = getFile(TableName, IDFileName, IDFileContent);
-                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent + " order by CreateDate asc");
+                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent + " order by CreateDate desc");
                 if (dt != null && dt.Rows.Count > 0)
                     foreach (DataRow item in dt.Rows)
                     {
@@ -49,7 +48,33 @@ namespace WSTanHoa.Controllers
             else
                 return null;
         }
-
+        public ActionResult viewFile_ChiTiet(string TableName, string IDFileContent, string ID)
+        {
+            if (TableName != null && IDFileContent != null && ID != null && TableName != "" && IDFileContent != "" && ID != "")
+            {
+                string NoiDung = "";
+                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and ID=" + ID);
+                if (dt != null && dt.Rows.Count > 0)
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        byte[] FileContent = _wsThuongVu.get_Hinh(TableName, IDFileContent, item["filename"].ToString());
+                        if (item["filename"].ToString().ToLower().Contains(".pdf"))
+                        {
+                            return viewFilePDF(FileContent);
+                        }
+                        else
+                        {
+                            if (FileContent != null)
+                                NoiDung += "<img height='100%' src='data:image/jpeg;base64," + Convert.ToBase64String(FileContent) + "'/></br></br>";
+                        }
+                    }
+                else
+                    NoiDung = "<head><meta charset='UTF-8'><link rel='shortcut icon' type='image/ico' href='~/Images/logoctycp.png'></head><body><h3>Không có hình ảnh!</h3></body>";
+                return Content(NoiDung, "text/html");
+            }
+            else
+                return null;
+        }
         private byte[] getFile(string TableName, string IDFileName, string IDFileContent)
         {
             int count = (int)_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select count(*) from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent);

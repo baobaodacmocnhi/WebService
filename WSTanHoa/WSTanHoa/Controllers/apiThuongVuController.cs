@@ -13,7 +13,7 @@ namespace WSTanHoa.Controllers
     public class apiThuongVuController : ApiController
     {
         private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
-        private CConnection _cDAL_ThuongVutest = new CConnection("Data Source=server9;Initial Catalog=KTKS_DonKHtest;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
+        //private CConnection _cDAL_ThuongVu = new CConnection("Data Source=server9;Initial Catalog=KTKS_DonKHtest;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         [Route("insertCCCDtoTCT")]
@@ -93,13 +93,13 @@ namespace WSTanHoa.Controllers
                     var jsonContent = JObject.Parse(jsonResult);
                     if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
                     {
-                        DataTable dt = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select TenHTKT from KTKS_DonKH.dbo.KTXM_HienTrang where " + _cDAL_ThuongVutest.ExecuteQuery_ReturnOneValue("select t.KyHieu from KTKS_DonKH.dbo.Users u,KTKS_DonKH.dbo.[To] t where u.MaTo = t.MaTo and u.MaU = " + jsonContent["IDUser"].ToString()) + "=1 order by TenHTKT asc");
+                        DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select TenHTKT from KTKS_DonKH.dbo.KTXM_HienTrang where " + _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select t.KyHieu from KTKS_DonKH.dbo.Users u,KTKS_DonKH.dbo.[To] t where u.MaTo = t.MaTo and u.MaU = " + jsonContent["IDUser"].ToString()) + "=1 order by TenHTKT asc");
                         string[] HTKT = new string[dt.Rows.Count];
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
                             HTKT[i] = dt.Rows[i][0].ToString();
                         };
-                        dt = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select TenTTBC from KTKS_DonKH.dbo.BamChi_TrangThai order by TenTTBC asc");
+                        dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select TenTTBC from KTKS_DonKH.dbo.BamChi_TrangThai order by TenTTBC asc");
                         string[] TTBC = new string[dt.Rows.Count];
                         for (int i = 0; i < dt.Rows.Count; i++)
                         {
@@ -357,7 +357,7 @@ namespace WSTanHoa.Controllers
                     var jsonContent = JObject.Parse(jsonResult);
                     if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
                     {
-                        DataTable dt = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select top 1 DANHBA, hd.HOPDONG, TENKH, SO, DUONG, GB, DM, hd.DinhMucHN, Hieu = ttkh.HIEUDH, Co = ttkh.CODH, SoThan = ttkh.SOTHANDH from[HOADON_TA].[dbo].[HOADON] hd left join[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh on ttkh.DanhBo = hd.DanhBa"
+                        DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select top 1 DANHBA, hd.HOPDONG, TENKH, SO, DUONG, GB, DM, hd.DinhMucHN, Hieu = ttkh.HIEUDH, Co = ttkh.CODH, SoThan = ttkh.SOTHANDH from[HOADON_TA].[dbo].[HOADON] hd left join[CAPNUOCTANHOA].[dbo].[TB_DULIEUKHACHHANG] ttkh on ttkh.DanhBo = hd.DanhBa"
                             + " where DanhBa = '" + jsonContent["DanhBo"].ToString() + "' order by ID_HOADON desc");
                         if (dt != null && dt.Rows.Count > 0)
                         {
@@ -416,15 +416,15 @@ namespace WSTanHoa.Controllers
                     {
                         string[] MaDons = jsonContent["MaDon"].ToString().Split('.');
                         DataTable dtDonKH = new DataTable(), dtBBKT = new DataTable(), dtBBBC = new DataTable();
-                        dtDonKH = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select dtct.MaDon,dtct.STT,dtct.DanhBo,dtct.MLT,dtct.HopDong,dtct.HoTen,dtct.DiaChi,dtct.GiaBieu,dtct.DinhMuc,DinhMucHN,NoiDung=dt.Name_NhomDon_PKH,dtct.CreateDate,ls.NgayChuyen"
+                        dtDonKH = _cDAL_ThuongVu.ExecuteQuery_DataTable("select dtct.MaDon,dtct.STT,dtct.DanhBo,dtct.MLT,dtct.HopDong,dtct.HoTen,dtct.DiaChi,dtct.GiaBieu,dtct.DinhMuc,DinhMucHN,NoiDung=dt.Name_NhomDon_PKH,dtct.CreateDate,ls.NgayChuyen"
                             + " ,dtct.Nam,dtct.Ky,dtct.Dot,dtct.Quan,dtct.Phuong"
                             + " from KTKS_DonKH.dbo.DonTu_LichSu ls, KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct"
                             + " where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and dtct.MaDon=" + MaDons[0] + " and dtct.STT=" + MaDons[1]
                             + " and ls.MaDon = dt.MaDon and dt.MaDon = dtct.MaDon and ls.STT = dtct.STT order by dtct.CreateDate asc");
-                        dtBBKT = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select MaDon=kt.MaDonMoi,ktct.* from KTKS_DonKH.dbo.KTXM kt,KTKS_DonKH.dbo.KTXM_ChiTiet ktct,KTKS_DonKH.dbo.DonTu_LichSu ls"
+                        dtBBKT = _cDAL_ThuongVu.ExecuteQuery_DataTable("select MaDon=kt.MaDonMoi,ktct.* from KTKS_DonKH.dbo.KTXM kt,KTKS_DonKH.dbo.KTXM_ChiTiet ktct,KTKS_DonKH.dbo.DonTu_LichSu ls"
                             + " where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and kt.MaDonMoi=" + MaDons[0] + " and ktct.STT=" + MaDons[1]
                             + " and kt.MaKTXM = ktct.MaKTXM and ktct.CreateBy = " + jsonContent["IDUser"].ToString() + " and ls.MaDon = kt.MaDonMoi and ls.STT = ktct.STT");
-                        dtBBBC = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select MaDon=bc.MaDonMoi,bcct.* from KTKS_DonKH.dbo.BamChi bc,KTKS_DonKH.dbo.BamChi_ChiTiet bcct,KTKS_DonKH.dbo.DonTu_LichSu ls"
+                        dtBBBC = _cDAL_ThuongVu.ExecuteQuery_DataTable("select MaDon=bc.MaDonMoi,bcct.* from KTKS_DonKH.dbo.BamChi bc,KTKS_DonKH.dbo.BamChi_ChiTiet bcct,KTKS_DonKH.dbo.DonTu_LichSu ls"
                             + " where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and bc.MaDonMoi=" + MaDons[0] + " and bcct.STT=" + MaDons[1]
                             + " and bc.MaBC = bcct.MaBC and bcct.CreateBy = " + jsonContent["IDUser"].ToString() + " and ls.MaDon = bc.MaDonMoi and ls.STT = bcct.STT");
                         List<DonKH> lst = new List<DonKH>();
@@ -493,9 +493,14 @@ namespace WSTanHoa.Controllers
                                         enBBKT.ThucHienTheoYeuCau = dr[j]["TheoYeuCau"].ToString();
                                         enBBKT.TTTB = dr[j]["TieuThuTrungBinh"].ToString();
                                         enBBKT.TongSoTien = dr[j]["SoTienDongTien"].ToString();
-                                        HinhAnh enHinhAnh = new HinhAnh();
-                                        enHinhAnh.Url = "https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=KTXM_ChiTiet_Hinh&IDFileName=IDKTXM_ChiTiet&IDFileContent=" + enBBKT.ID;
-                                        enBBKT.lstHinhAnh.Add(enHinhAnh);
+                                        DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select ID from KTXM_ChiTiet_Hinh where Huy=0 and IDKTXM_ChiTiet = " + enBBKT.ID + " order by CreateDate desc");
+                                        foreach (DataRow item in dt.Rows)
+                                        {
+                                            HinhAnh enHinhAnh = new HinhAnh();
+                                            enHinhAnh.Name = item["ID"].ToString();
+                                            enHinhAnh.Url = "https://service.cskhtanhoa.com.vn/ThuongVu/viewFile_ChiTiet?TableName=KTXM_ChiTiet_Hinh&IDFileContent=" + enBBKT.ID + "&ID=" + item["ID"].ToString();
+                                            enBBKT.lstHinhAnh.Add(enHinhAnh);
+                                        }
                                         en.lstBBKT.Add(enBBKT);
                                     }
                                 }
@@ -538,9 +543,14 @@ namespace WSTanHoa.Controllers
                                         enBBBC.DayChi = dr[j]["DayChi"].ToString();
                                         enBBBC.ThucHienTheoYeuCau = dr[j]["TheoYeuCau"].ToString();
                                         enBBBC.GhiChu = dr[j]["GhiChu"].ToString();
-                                        HinhAnh enHinhAnh = new HinhAnh();
-                                        enHinhAnh.Url = "https://service.cskhtanhoa.com.vn/ThuongVu/viewFile?TableName=BamChi_ChiTiet_Hinh&IDFileName=IDBamChi_ChiTiet&IDFileContent=" + enBBBC.ID;
-                                        enBBBC.lstHinhAnh.Add(enHinhAnh);
+                                        DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select ID from BamChi_ChiTiet_Hinh where Huy=0 and IDBamChi_ChiTiet = " + enBBBC.ID + " order by CreateDate desc");
+                                        foreach (DataRow item in dt.Rows)
+                                        {
+                                            HinhAnh enHinhAnh = new HinhAnh();
+                                            enHinhAnh.Name = item["ID"].ToString();
+                                            enHinhAnh.Url = "https://service.cskhtanhoa.com.vn/ThuongVu/viewFile_ChiTiet?TableName=BamChi_ChiTiet_Hinh&IDFileContent=" + enBBBC.ID + "&ID=" + item["ID"].ToString();
+                                            enBBBC.lstHinhAnh.Add(enHinhAnh);
+                                        }
                                         en.lstBBBC.Add(enBBBC);
                                     }
                                 }
@@ -598,20 +608,20 @@ namespace WSTanHoa.Controllers
                         switch (jsonContent["Loai"].ToString())
                         {
                             case "Giao":
-                                dtDonKH = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select dtct.MaDon,dtct.STT,dtct.DanhBo,dtct.MLT,dtct.HopDong,dtct.HoTen,dtct.DiaChi,dtct.GiaBieu,dtct.DinhMuc,DinhMucHN,NoiDung=dt.Name_NhomDon_PKH,dtct.CreateDate,ls.NgayChuyen"
+                                dtDonKH = _cDAL_ThuongVu.ExecuteQuery_DataTable("select dtct.MaDon,dtct.STT,dtct.DanhBo,dtct.MLT,dtct.HopDong,dtct.HoTen,dtct.DiaChi,dtct.GiaBieu,dtct.DinhMuc,DinhMucHN,NoiDung=dt.Name_NhomDon_PKH,dtct.CreateDate,ls.NgayChuyen"
                                     + " ,dtct.Nam,dtct.Ky,dtct.Dot,dtct.Quan,dtct.Phuong"
                                     + " from KTKS_DonKH.dbo.DonTu_LichSu ls, KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct"
                                     + " where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and CAST(NgayChuyen as date) >= '" + FromDate + "' and CAST(NgayChuyen as date) <= '" + FromDate + "'"
                                     + " and ls.MaDon = dt.MaDon and dt.MaDon = dtct.MaDon and ls.STT = dtct.STT order by dtct.CreateDate asc");
-                                dtBBKT = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select MaDon=kt.MaDonMoi,ktct.* from KTKS_DonKH.dbo.KTXM kt,KTKS_DonKH.dbo.KTXM_ChiTiet ktct,KTKS_DonKH.dbo.DonTu_LichSu ls"
+                                dtBBKT = _cDAL_ThuongVu.ExecuteQuery_DataTable("select MaDon=kt.MaDonMoi,ktct.* from KTKS_DonKH.dbo.KTXM kt,KTKS_DonKH.dbo.KTXM_ChiTiet ktct,KTKS_DonKH.dbo.DonTu_LichSu ls"
                                     + " where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and CAST(NgayChuyen as date) >= '" + FromDate + "' and CAST(NgayChuyen as date) <= '" + FromDate + "'"
                                     + " and kt.MaKTXM = ktct.MaKTXM and ktct.CreateBy = " + jsonContent["IDUser"].ToString() + " and ls.MaDon = kt.MaDonMoi and ls.STT = ktct.STT");
-                                dtBBBC = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select MaDon=bc.MaDonMoi,bcct.* from KTKS_DonKH.dbo.BamChi bc,KTKS_DonKH.dbo.BamChi_ChiTiet bcct,KTKS_DonKH.dbo.DonTu_LichSu ls"
+                                dtBBBC = _cDAL_ThuongVu.ExecuteQuery_DataTable("select MaDon=bc.MaDonMoi,bcct.* from KTKS_DonKH.dbo.BamChi bc,KTKS_DonKH.dbo.BamChi_ChiTiet bcct,KTKS_DonKH.dbo.DonTu_LichSu ls"
                                     + " where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and CAST(NgayChuyen as date) >= '" + FromDate + "' and CAST(NgayChuyen as date) <= '" + FromDate + "'"
                                     + " and bc.MaBC = bcct.MaBC and bcct.CreateBy = " + jsonContent["IDUser"].ToString() + " and ls.MaDon = bc.MaDonMoi and ls.STT = bcct.STT");
                                 break;
                             case "XuLy":
-                                //dtDonKH = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select dtct.MaDon, dtct.STT, dtct.DanhBo, dtct.MLT, dtct.HopDong, dtct.HoTen, dtct.DiaChi, dtct.GiaBieu, dtct.DinhMuc, DinhMucHN"
+                                //dtDonKH = _cDAL_ThuongVu.ExecuteQuery_DataTable("select dtct.MaDon, dtct.STT, dtct.DanhBo, dtct.MLT, dtct.HopDong, dtct.HoTen, dtct.DiaChi, dtct.GiaBieu, dtct.DinhMuc, DinhMucHN"
                                 //    + " , NoiDung = dt.Name_NhomDon_PKH, dtct.CreateDate, NgayChuyen = (select top 1 NgayChuyen from KTKS_DonKH.dbo.DonTu_LichSu ls where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and ls.MaDon = t2.MaDon and ls.STT = t2.STT and CAST(NgayChuyen as date) <= CAST(t2.NgayXuLy as date))"
                                 //    + " ,dtct.Nam,dtct.Ky,dtct.Dot,dtct.Quan,dtct.Phuong"
                                 //    + " from(select distinct * from"
@@ -624,7 +634,7 @@ namespace WSTanHoa.Controllers
                                 //    + " and bc.MaBC = bcct.MaBC and bcct.CreateBy = " + jsonContent["IDUser"].ToString() + ")t1)t2,KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct"
                                 //    + " where t2.MaDon = dt.MaDon and dt.MaDon = dtct.MaDon and t2.STT = dtct.STT"
                                 //    + " order by dtct.CreateDate asc");
-                                dtDonKH = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select dtct.MaDon, dtct.STT, dtct.DanhBo, dtct.MLT, dtct.HopDong, dtct.HoTen, dtct.DiaChi, dtct.GiaBieu, dtct.DinhMuc, DinhMucHN"
+                                dtDonKH = _cDAL_ThuongVu.ExecuteQuery_DataTable("select dtct.MaDon, dtct.STT, dtct.DanhBo, dtct.MLT, dtct.HopDong, dtct.HoTen, dtct.DiaChi, dtct.GiaBieu, dtct.DinhMuc, DinhMucHN"
                                     + " , NoiDung = dt.Name_NhomDon_PKH, dtct.CreateDate, NgayChuyen = (select top 1 NgayChuyen from KTKS_DonKH.dbo.DonTu_LichSu ls where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and ls.MaDon = t2.MaDon and ls.STT = t2.STT and CAST(NgayChuyen as date) <= CAST(t2.NgayXuLy as date))"
                                     + " ,dtct.Nam,dtct.Ky,dtct.Dot,dtct.Quan,dtct.Phuong"
                                     + " from(select distinct * from"
@@ -637,15 +647,15 @@ namespace WSTanHoa.Controllers
                                     + " and bc.MaBC = bcct.MaBC and bcct.CreateBy = " + jsonContent["IDUser"].ToString() + ")t1)t2,KTKS_DonKH.dbo.DonTu_LichSu ls,KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct"
                                     + " where t2.MaDon = dt.MaDon and dt.MaDon = dtct.MaDon and t2.STT = dtct.STT and ID_KTXM=" + jsonContent["IDUser"].ToString() + " and ls.MaDon=dt.MaDon and ls.STT=dtct.STT"
                                     + " order by dtct.CreateDate asc");
-                                dtBBKT = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select MaDon=kt.MaDonMoi,ktct.* from KTKS_DonKH.dbo.KTXM kt,KTKS_DonKH.dbo.KTXM_ChiTiet ktct"
+                                dtBBKT = _cDAL_ThuongVu.ExecuteQuery_DataTable("select MaDon=kt.MaDonMoi,ktct.* from KTKS_DonKH.dbo.KTXM kt,KTKS_DonKH.dbo.KTXM_ChiTiet ktct"
                                     + " where CAST(NgayKTXM as date) >= '" + FromDate + "' and CAST(NgayKTXM as date) <= '" + FromDate + "'"
                                     + " and kt.MaKTXM = ktct.MaKTXM and ktct.CreateBy = " + jsonContent["IDUser"].ToString());
-                                dtBBBC = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select MaDon=bc.MaDonMoi,bcct.* from KTKS_DonKH.dbo.BamChi bc,KTKS_DonKH.dbo.BamChi_ChiTiet bcct"
+                                dtBBBC = _cDAL_ThuongVu.ExecuteQuery_DataTable("select MaDon=bc.MaDonMoi,bcct.* from KTKS_DonKH.dbo.BamChi bc,KTKS_DonKH.dbo.BamChi_ChiTiet bcct"
                                     + " where CAST(NgayBC as date) >= '" + FromDate + "' and CAST(NgayBC as date) <= '" + FromDate + "'"
                                     + " and bc.MaBC = bcct.MaBC and bcct.CreateBy = " + jsonContent["IDUser"].ToString());
                                 break;
                             case "Ton":
-                                dtDonKH = _cDAL_ThuongVutest.ExecuteQuery_DataTable("select dtct.MaDon,dtct.STT,dtct.DanhBo,dtct.MLT,dtct.HopDong,dtct.HoTen,dtct.DiaChi,dtct.GiaBieu,dtct.DinhMuc,DinhMucHN,NoiDung=dt.Name_NhomDon_PKH,dtct.CreateDate,ls.NgayChuyen"
+                                dtDonKH = _cDAL_ThuongVu.ExecuteQuery_DataTable("select dtct.MaDon,dtct.STT,dtct.DanhBo,dtct.MLT,dtct.HopDong,dtct.HoTen,dtct.DiaChi,dtct.GiaBieu,dtct.DinhMuc,DinhMucHN,NoiDung=dt.Name_NhomDon_PKH,dtct.CreateDate,ls.NgayChuyen"
                                     + " ,dtct.Nam,dtct.Ky,dtct.Dot,dtct.Quan,dtct.Phuong"
                                     + " from KTKS_DonKH.dbo.DonTu_LichSu ls, KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct"
                                     + " where ID_KTXM = " + jsonContent["IDUser"].ToString() + " and ls.MaDon = dt.MaDon and dt.MaDon = dtct.MaDon and ls.STT = dtct.STT"
@@ -817,21 +827,21 @@ namespace WSTanHoa.Controllers
                     if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
                     {
                         string[] MaDons = jsonContent["MaDon"].ToString().Split('.');
-                        string MaKTXM = _cDAL_ThuongVutest.ExecuteQuery_ReturnOneValue("declare @Ma int"
+                        string MaKTXM = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("declare @Ma int"
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaKTXM), LEN(CONVERT(nvarchar(50), MaKTXM)) - 1, 2)) from KTXM"
                         + " select MAX(MaKTXM) from KTXM where SUBSTRING(CONVERT(nvarchar(50), MaKTXM), LEN(CONVERT(nvarchar(50), MaKTXM)) - 1, 2) = @Ma").ToString();
                         MaKTXM = getMaxNextIDTable(MaKTXM);
-                        _cDAL_ThuongVutest.ExecuteNonQuery("if exists (select * from KTKS_DonKH.dbo.KTXM where MaDonMoi=" + MaDons[0] + ")"
+                        _cDAL_ThuongVu.ExecuteNonQuery("if exists (select * from KTKS_DonKH.dbo.KTXM where MaDonMoi=" + MaDons[0] + ")"
                         + " insert into KTKS_DonKH.dbo.KTXM(MaKTXM, MaDonMoi, CreateBy, CreateDate)values(" + MaKTXM + ", " + MaDons[0] + ", " + jsonContent["IDUser"].ToString() + ", GETDATE())");
-                        MaKTXM = _cDAL_ThuongVutest.ExecuteQuery_ReturnOneValue("select MaKTXM from KTKS_DonKH.dbo.KTXM where MaDonMoi=" + MaDons[0] + "").ToString();
-                        string MaCTKTXM = _cDAL_ThuongVutest.ExecuteQuery_ReturnOneValue("declare @Ma int"
+                        MaKTXM = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select MaKTXM from KTKS_DonKH.dbo.KTXM where MaDonMoi=" + MaDons[0] + "").ToString();
+                        string MaCTKTXM = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("declare @Ma int"
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaCTKTXM), LEN(CONVERT(nvarchar(50), MaCTKTXM)) - 1, 2)) from KTXM_ChiTiet"
                         + " select MAX(MaCTKTXM) from KTXM_ChiTiet where SUBSTRING(CONVERT(nvarchar(50), MaCTKTXM), LEN(CONVERT(nvarchar(50), MaCTKTXM)) - 1, 2) = @Ma").ToString();
                         var transactionOptions = new TransactionOptions();
                         transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                         using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                         {
-                            if (_cDAL_ThuongVutest.ExecuteNonQuery("INSERT INTO [KTKS_DonKH].[dbo].[KTXM_ChiTiet]"
+                            if (_cDAL_ThuongVu.ExecuteNonQuery("INSERT INTO [KTKS_DonKH].[dbo].[KTXM_ChiTiet]"
                            + " ([MaCTKTXM]"
                            + " ,[DanhBo]"
                            + " ,[HopDong]"
@@ -921,23 +931,17 @@ namespace WSTanHoa.Controllers
                                     byte[] hinh = System.Convert.FromBase64String(item["Value"]);
                                     if (_wsThuongVu.ghi_Hinh("KTXM_ChiTiet_Hinh", MaCTKTXM, enHinhAnhReturn.Name + item["Type"], hinh) == true)
                                     {
-                                        _cDAL_ThuongVutest.ExecuteNonQuery("insert into KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh(ID,IDKTXM_ChiTiet,Name,Loai,CreateBy,CreateDate)"
+                                        _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh(ID,IDKTXM_ChiTiet,Name,Loai,CreateBy,CreateDate)"
                                             + "values((if exists (select top 1 * from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh else select 1)"
                                             + "," + MaCTKTXM + ",'" + enHinhAnhReturn.Name + "','" + item["Type"] + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
                                     }
                                     lstHinhAnhReturn.Add(enHinhAnhReturn);
                                 }
-                                result.success = _cDAL_ThuongVutest.ExecuteNonQuery("insert into KTKS_DonKH.dbo.DonTu_LichSu(ID,NgayChuyen,ID_NoiChuyen,NoiChuyen,NoiDung,TableName,IDCT,MaDon,STT,CreateBy,CreateDate)"
+                                result.success = _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.DonTu_LichSu(ID,NgayChuyen,ID_NoiChuyen,NoiChuyen,NoiDung,TableName,IDCT,MaDon,STT,CreateBy,CreateDate)"
                                     + "values((if exists (select top 1 * from KTKS_DonKH.dbo.DonTu_LichSu) select MAX(ID)+1 from KTKS_DonKH.dbo.DonTu_LichSu else select 1),'" + NgayKTXM + "',5,N'Kiểm Tra',N'Đã Kiểm Tra, "
                                     + jsonContent["NoiDungKiemTra"].ToString() + "','KTXM_ChiTiet'," + MaCTKTXM + "," + MaDons[0] + "," + MaDons[1] + "," + jsonContent["IDUser"].ToString() + ",getdate())");
                                 scope.Complete();
                                 scope.Dispose();
-                                //var data = new
-                                //{
-                                //    ID = MaCTKTXM,
-                                //    lstHinhAnh = lstHinhAnhReturn
-                                //};
-                                //result.data = CGlobalVariable.jsSerializer.Serialize(data);
                             }
                             else
                                 result.success = false;
@@ -982,7 +986,7 @@ namespace WSTanHoa.Controllers
                     }
                     if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
                     {
-                        _cDAL_ThuongVutest.ExecuteNonQuery("UPDATE KTKS_DonKH.dbo.KTXM_ChiTiet SET"
+                        _cDAL_ThuongVu.ExecuteNonQuery("UPDATE KTKS_DonKH.dbo.KTXM_ChiTiet SET"
                             + " [DanhBo] = N'" + jsonContent["DanhBo"].ToString() + "'"
                             + " ,[HopDong] = N'" + jsonContent["HopDong"].ToString() + "'"
                             + " ,[HoTen] = N'" + jsonContent["HoTen"].ToString() + "'"
@@ -1059,8 +1063,8 @@ namespace WSTanHoa.Controllers
                         transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                         using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                         {
-                            _cDAL_ThuongVutest.ExecuteNonQuery("delete KTKS_DonKH.dbo.DonTu_LichSu where TableName='KTXM_ChiTiet' and IDCT=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
-                            if (_cDAL_ThuongVutest.ExecuteNonQuery("delete KTKS_DonKH.dbo.KTXM_ChiTiet WHERE MaCTKTXM=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString()))
+                            _cDAL_ThuongVu.ExecuteNonQuery("delete KTKS_DonKH.dbo.DonTu_LichSu where TableName='KTXM_ChiTiet' and IDCT=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
+                            if (_cDAL_ThuongVu.ExecuteNonQuery("delete KTKS_DonKH.dbo.KTXM_ChiTiet WHERE MaCTKTXM=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString()))
                             {
                                 _wsThuongVu.xoa_Folder_Hinh("KTXM_ChiTiet_Hinh", jsonContent["ID"].ToString());
                                 scope.Complete();
@@ -1109,21 +1113,21 @@ namespace WSTanHoa.Controllers
                     if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
                     {
                         string[] MaDons = jsonContent["MaDon"].ToString().Split('.');
-                        string MaBC = _cDAL_ThuongVutest.ExecuteQuery_ReturnOneValue("declare @Ma int"
+                        string MaBC = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("declare @Ma int"
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaBC), LEN(CONVERT(nvarchar(50), MaBC)) - 1, 2)) from BamChi"
                         + " select MAX(MaBC) from BamChi where SUBSTRING(CONVERT(nvarchar(50), MaBC), LEN(CONVERT(nvarchar(50), MaBC)) - 1, 2) = @Ma").ToString();
                         MaBC = getMaxNextIDTable(MaBC);
-                        _cDAL_ThuongVutest.ExecuteNonQuery("if exists (select * from KTKS_DonKH.dbo.BamChi where MaDonMoi=" + MaDons[0] + ")"
+                        _cDAL_ThuongVu.ExecuteNonQuery("if exists (select * from KTKS_DonKH.dbo.BamChi where MaDonMoi=" + MaDons[0] + ")"
                         + " insert into KTKS_DonKH.dbo.BamChi(MaBC, MaDonMoi, CreateBy, CreateDate)values(" + MaBC + ", " + MaDons[0] + ", " + jsonContent["IDUser"].ToString() + ", GETDATE())");
-                        MaBC = _cDAL_ThuongVutest.ExecuteQuery_ReturnOneValue("select MaBC from KTKS_DonKH.dbo.BamChi where MaDonMoi=" + MaDons[0] + "").ToString();
-                        string MaCTBC = _cDAL_ThuongVutest.ExecuteQuery_ReturnOneValue("declare @Ma int"
+                        MaBC = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select MaBC from KTKS_DonKH.dbo.BamChi where MaDonMoi=" + MaDons[0] + "").ToString();
+                        string MaCTBC = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("declare @Ma int"
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaCTBC), LEN(CONVERT(nvarchar(50), MaCTBC)) - 1, 2)) from BamChi_ChiTiet"
                         + " select MAX(MaCTBC) from BamChi_ChiTiet where SUBSTRING(CONVERT(nvarchar(50), MaCTBC), LEN(CONVERT(nvarchar(50), MaCTBC)) - 1, 2) = @Ma").ToString();
                         var transactionOptions = new TransactionOptions();
                         transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                         using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                         {
-                            if (_cDAL_ThuongVutest.ExecuteNonQuery("INSERT INTO [KTKS_DonKH].[dbo].[BamChi_ChiTiet]"
+                            if (_cDAL_ThuongVu.ExecuteNonQuery("INSERT INTO [KTKS_DonKH].[dbo].[BamChi_ChiTiet]"
                              + " ([MaCTBC]"
                              + " ,[DanhBo]"
                              + " ,[HopDong]"
@@ -1203,23 +1207,17 @@ namespace WSTanHoa.Controllers
                                     byte[] hinh = System.Convert.FromBase64String(item["Value"]);
                                     if (_wsThuongVu.ghi_Hinh("BamChi_ChiTiet_Hinh", MaCTBC, enHinhAnhReturn.Name + item["Type"], hinh) == true)
                                     {
-                                        _cDAL_ThuongVutest.ExecuteNonQuery("insert into KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh(ID,IDBamChi_ChiTiet,Name,Loai,CreateBy,CreateDate)"
+                                        _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh(ID,IDBamChi_ChiTiet,Name,Loai,CreateBy,CreateDate)"
                                             + "values((if exists (select top 1 * from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh else select 1)"
                                             + "," + MaCTBC + ",'" + enHinhAnhReturn.Name + "','" + item["Type"] + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
                                     }
                                     lstHinhAnhReturn.Add(enHinhAnhReturn);
                                 }
-                                result.success = _cDAL_ThuongVutest.ExecuteNonQuery("insert into KTKS_DonKH.dbo.DonTu_LichSu(ID,NgayChuyen,ID_NoiChuyen,NoiChuyen,NoiDung,TableName,IDCT,MaDon,STT,CreateBy,CreateDate)"
+                                result.success = _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.DonTu_LichSu(ID,NgayChuyen,ID_NoiChuyen,NoiChuyen,NoiDung,TableName,IDCT,MaDon,STT,CreateBy,CreateDate)"
                                                             + "values((if exists (select top 1 * from KTKS_DonKH.dbo.DonTu_LichSu) select MAX(ID)+1 from KTKS_DonKH.dbo.DonTu_LichSu else select 1),'" + NgayBC + "',5,N'Kiểm Tra',N'Đã Bấm Chì, "
                                                             + jsonContent["TrangThaiBamChi"].ToString() + "','BamChi_ChiTiet'," + MaCTBC + "," + MaDons[0] + "," + MaDons[1] + "," + jsonContent["IDUser"].ToString() + ",getdate())");
                                 scope.Complete();
                                 scope.Dispose();
-                                //var data = new
-                                //{
-                                //    ID = MaCTBC,
-                                //    lstHinhAnh = lstHinhAnhReturn
-                                //};
-                                //result.data = CGlobalVariable.jsSerializer.Serialize(data);
                             }
                             else
                                 result.success = false;
@@ -1264,7 +1262,7 @@ namespace WSTanHoa.Controllers
                     }
                     if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
                     {
-                        _cDAL_ThuongVutest.ExecuteNonQuery("UPDATE KTKS_DonKH.dbo.BamChi_ChiTiet SET"
+                        _cDAL_ThuongVu.ExecuteNonQuery("UPDATE KTKS_DonKH.dbo.BamChi_ChiTiet SET"
                           + " [DanhBo] = N'" + jsonContent["DanhBo"].ToString() + "'"
                           + " ,[HopDong] = N'" + jsonContent["HopDong"].ToString() + "'"
                           + " ,[HoTen] = N'" + jsonContent["HoTen"].ToString() + "'"
@@ -1336,8 +1334,8 @@ namespace WSTanHoa.Controllers
                         transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                         using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
                         {
-                            _cDAL_ThuongVutest.ExecuteNonQuery("delete KTKS_DonKH.dbo.DonTu_LichSu where TableName='BamChi_ChiTiet' and IDCT=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
-                            _cDAL_ThuongVutest.ExecuteNonQuery("delete KTKS_DonKH.dbo.BamChi_ChiTiet WHERE MaCTBC=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
+                            _cDAL_ThuongVu.ExecuteNonQuery("delete KTKS_DonKH.dbo.DonTu_LichSu where TableName='BamChi_ChiTiet' and IDCT=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
+                            _cDAL_ThuongVu.ExecuteNonQuery("delete KTKS_DonKH.dbo.BamChi_ChiTiet WHERE MaCTBC=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
                             _wsThuongVu.xoa_Folder_Hinh("BamChi_ChiTiet_Hinh", jsonContent["ID"].ToString());
                             scope.Complete();
                             scope.Dispose();
@@ -1364,95 +1362,124 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        //[Route("donkh_insertHinhAnh")]
-        //[HttpPost]
-        //public MResult donkh_insertHinhAnh()
-        //{
-        //    MResult result = new MResult();
-        //    try
-        //    {
-        //        string jsonResult = Request.Content.ReadAsStringAsync().Result;
-        //        if (jsonResult != null)
-        //        {
-        //            var jsonContent = JObject.Parse(jsonResult);
-        //            if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
-        //            {
-        //                var transactionOptions = new TransactionOptions();
-        //                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
-        //                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
-        //                {
-        //                    _cDAL_ThuongVutest.ExecuteNonQuery("delete KTKS_DonKH.dbo.DonTu_LichSu where TableName='BamChi_ChiTiet' and IDCT=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
-        //                    _cDAL_ThuongVutest.ExecuteNonQuery("delete KTKS_DonKH.dbo.BamChi_ChiTiet WHERE MaCTBC=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
-        //                    _wsThuongVu.xoa_Folder_Hinh("BamChi_ChiTiet_Hinh", jsonContent["ID"].ToString());
-        //                    scope.Complete();
-        //                    scope.Dispose();
-        //                    result.success = true;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                result.success = false;
-        //                result.error = "Sai checksum";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            result.success = false;
-        //            result.error = "Thiếu parameter";
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        result.success = false;
-        //        result.error = ex.Message;
-        //    }
-        //    return result;
-        //}
+        [Route("donkh_insertHinhAnh")]
+        [HttpPost]
+        public MResult donkh_insertHinhAnh()
+        {
+            MResult result = new MResult();
+            try
+            {
+                string jsonResult = Request.Content.ReadAsStringAsync().Result;
+                if (jsonResult != null)
+                {
+                    var jsonContent = JObject.Parse(jsonResult);
+                    if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
+                    {
+                        var transactionOptions = new TransactionOptions();
+                        transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                        using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
+                        {
+                            HinhAnh enHinhAnhReturn = new HinhAnh();
+                            enHinhAnhReturn.Name = DateTime.Now.ToString("dd.MM.yyyy HH.mm.ss");
+                            byte[] hinh = System.Convert.FromBase64String(jsonContent["Value"].ToString());
+                            if (jsonContent["Loai"].ToString() == "BBKT")
+                            {
+                                if (_wsThuongVu.ghi_Hinh("KTXM_ChiTiet_Hinh", jsonContent["ID"].ToString(), enHinhAnhReturn.Name + jsonContent["Type"].ToString(), hinh) == true)
+                                {
+                                    _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh(ID,IDKTXM_ChiTiet,Name,Loai,CreateBy,CreateDate)"
+                                        + "values((if exists (select top 1 * from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh else select 1)"
+                                        + "," + jsonContent["ID"].ToString() + ",'" + enHinhAnhReturn.Name + "','" + jsonContent["Type"].ToString() + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
+                                }
+                            }
+                            else
+                                if (jsonContent["Loai"].ToString() == "BBBC")
+                            {
+                                if (_wsThuongVu.ghi_Hinh("BamChi_ChiTiet_Hinh", jsonContent["ID"].ToString(), enHinhAnhReturn.Name + jsonContent["Type"].ToString(), hinh) == true)
+                                {
+                                    _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh(ID,IDBamChi_ChiTiet,Name,Loai,CreateBy,CreateDate)"
+                                        + "values((if exists (select top 1 * from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh else select 1)"
+                                        + "," + jsonContent["ID"].ToString() + ",'" + enHinhAnhReturn.Name + "','" + jsonContent["Type"].ToString() + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
+                                }
+                            }
+                            scope.Complete();
+                            scope.Dispose();
+                            result.success = true;
+                        }
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.error = "Sai checksum";
+                    }
+                }
+                else
+                {
+                    result.success = false;
+                    result.error = "Thiếu parameter";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return result;
+        }
 
-        //[Route("donkh_deletetHinhAnh")]
-        //[HttpPost]
-        //public MResult donkh_deletetHinhAnh()
-        //{
-        //    MResult result = new MResult();
-        //    try
-        //    {
-        //        string jsonResult = Request.Content.ReadAsStringAsync().Result;
-        //        if (jsonResult != null)
-        //        {
-        //            var jsonContent = JObject.Parse(jsonResult);
-        //            if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
-        //            {
-        //                var transactionOptions = new TransactionOptions();
-        //                transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
-        //                using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
-        //                {
-        //                    _cDAL_ThuongVutest.ExecuteNonQuery("delete KTKS_DonKH.dbo.DonTu_LichSu where TableName='BamChi_ChiTiet' and IDCT=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
-        //                    _cDAL_ThuongVutest.ExecuteNonQuery("delete KTKS_DonKH.dbo.BamChi_ChiTiet WHERE MaCTBC=" + jsonContent["ID"].ToString() + " and CreateBy=" + jsonContent["IDUser"].ToString());
-        //                    _wsThuongVu.xoa_Folder_Hinh("BamChi_ChiTiet_Hinh", jsonContent["ID"].ToString());
-        //                    scope.Complete();
-        //                    scope.Dispose();
-        //                    result.success = true;
-        //                }
-        //            }
-        //            else
-        //            {
-        //                result.success = false;
-        //                result.error = "Sai checksum";
-        //            }
-        //        }
-        //        else
-        //        {
-        //            result.success = false;
-        //            result.error = "Thiếu parameter";
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        result.success = false;
-        //        result.error = ex.Message;
-        //    }
-        //    return result;
-        //}
+        [Route("donkh_deletetHinhAnh")]
+        [HttpPost]
+        public MResult donkh_deletetHinhAnh()
+        {
+            MResult result = new MResult();
+            try
+            {
+                string jsonResult = Request.Content.ReadAsStringAsync().Result;
+                if (jsonResult != null)
+                {
+                    var jsonContent = JObject.Parse(jsonResult);
+                    if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
+                    {
+                        var transactionOptions = new TransactionOptions();
+                        transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
+                        using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
+                        {
+                            string TableName = "";
+                            if (jsonContent["Loai"].ToString() == "BBKT")
+                            {
+                                TableName = "KTXM_ChiTiet_Hinh";
+                            }
+                            else
+                                if (jsonContent["Loai"].ToString() == "BBBC")
+                            {
+                                TableName = "BamChi_ChiTiet_Hinh";
+                            }
+                                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and ID=" + jsonContent["Name"].ToString());
+                            _wsThuongVu.xoa_Hinh(TableName, jsonContent["ID"].ToString(), dt.Rows[0]["filename"].ToString());
+                            _cDAL_ThuongVu.ExecuteNonQuery("delete " + TableName + " where ID=" + jsonContent["Name"].ToString());
+                            scope.Complete();
+                            scope.Dispose();
+                            result.success = true;
+                        }
+                    }
+                    else
+                    {
+                        result.success = false;
+                        result.error = "Sai checksum";
+                    }
+                }
+                else
+                {
+                    result.success = false;
+                    result.error = "Thiếu parameter";
+                }
+            }
+            catch (Exception ex)
+            {
+                result.success = false;
+                result.error = ex.Message;
+            }
+            return result;
+        }
 
         private string getMaxNextIDTable(string id)
         {

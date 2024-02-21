@@ -264,7 +264,8 @@ namespace WSTanHoa.Controllers
                     foreach (string item in KyHDs)
                     {
                         string[] KyHD = item.Split('/');
-                        sql += ",CSDocSo=(select CSMoi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
+                        sql += ",Code=(select CodeMoi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
+                            + ",CSDocSo=(select CSMoi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
                             + ",ThoiGianDocSo=(select GioGhi from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + ")"
                             + ",CSsDHN=(select ChiSo from"
                             + " (select top 1 diff =case when datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) < 0 then datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) * -1 else datediff(SECOND, (select convert(varchar(20),GioGhi,120) from DocSoTH.dbo.DocSo where danhba=sdhn.DanhBo and nam=" + KyHD[1] + " and ky=" + KyHD[0] + "), ThoiGianCapNhat) end"
