@@ -35,7 +35,6 @@ namespace WSTanHoa.Controllers
                 if (id != null)
                     TempData["IDZalo"] = id.Value;
             }
-
             if (TempData["IDZalo"] != null)
                 _IDZalo = decimal.Parse(TempData["IDZalo"].ToString());
 
@@ -51,7 +50,6 @@ namespace WSTanHoa.Controllers
                 //en.DienThoai = item["DienThoai"].ToString();
                 zalo.lst.Add(en);
             }
-
             if (ModelState.IsValid && !String.IsNullOrWhiteSpace(action))
                 if (TempData["IDZalo"] != null)
                 {
@@ -130,7 +128,6 @@ namespace WSTanHoa.Controllers
                             break;
                     }
                 }
-
             return View(zalo);
         }
 
@@ -151,7 +148,6 @@ namespace WSTanHoa.Controllers
                 await _db.SaveChangesAsync();
                 return RedirectToAction("Index", "Zalo", new { id = IDZalo });
             }
-            //return View(zalo);
         }
 
         protected override void Dispose(bool disposing)
@@ -172,7 +168,6 @@ namespace WSTanHoa.Controllers
         //        req.Seek(0, System.IO.SeekOrigin.Begin);
         //        string json = new StreamReader(req, Encoding.UTF8, false).ReadToEnd();
         //        var details = JObject.Parse(json);
-
         //        string idzalo = "", message = "";
         //        if (details["event_name"].ToString() == "follow" || details["event_name"].ToString() == "unfollow")
         //        {
@@ -193,19 +188,15 @@ namespace WSTanHoa.Controllers
         //        }
         //        //log4net.ILog _log = log4net.LogManager.GetLogger("File");
         //        //_log.Debug("link: " + "https://service.cskhtanhoa.com.vn/api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"));
-
         //        //using (var client = new HttpClient())
         //        //{
         //        //    //Passing service base url  
         //        //    client.BaseAddress = new Uri("https://service.cskhtanhoa.com.vn");
-
         //        //    client.DefaultRequestHeaders.Clear();
         //        //    //Define request data format  
         //        //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
         //        //    //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
         //        //    HttpResponseMessage Res = await client.PostAsync("api/Zalo/webhook?IDZalo=" + idzalo + "&event_name=" + details["event_name"] + "&message=" + message.Replace("#", "$"), null);
-
         //        //    //Checking the response is successful or not which is sent using HttpClient  
         //        //    if (Res.IsSuccessStatusCode)
         //        //    {
@@ -217,7 +208,5 @@ namespace WSTanHoa.Controllers
         //    catch (Exception) { }
         //    return View();
         //}
-
-
     }
 }

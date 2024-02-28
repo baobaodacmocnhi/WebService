@@ -789,7 +789,6 @@ namespace WSTanHoa.Controllers
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 request.Headers["access_token"] = getAccess_token();
-
                 var data = new
                 {
                     recipient = new { user_id = IDZalo },
@@ -803,7 +802,6 @@ namespace WSTanHoa.Controllers
                 Stream dataStream = request.GetRequestStream();
                 dataStream.Write(byteArray, 0, byteArray.Length);
                 dataStream.Close();
-
                 //string data = "{"
                 //            + "\"recipient\":{"
                 //            + "\"user_id\":\""+ IDZalo + "\""
@@ -816,7 +814,6 @@ namespace WSTanHoa.Controllers
                 //{
                 //    streamWriter.Write(data);
                 //}
-
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
@@ -858,7 +855,6 @@ namespace WSTanHoa.Controllers
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 request.Headers["access_token"] = getAccess_token();
-
                 string data = "{"
                             + "\"recipient\":{"
                             + "\"user_id\":\"" + IDZalo + "\""
@@ -894,7 +890,6 @@ namespace WSTanHoa.Controllers
                 {
                     streamWriter.Write(data);
                 }
-
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
@@ -932,7 +927,6 @@ namespace WSTanHoa.Controllers
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 request.Headers["access_token"] = getAccess_token();
-
                 string data = "{"
                             + "\"recipient\": {"
                             + "\"user_id\":\"" + IDZalo + "\""
@@ -955,7 +949,6 @@ namespace WSTanHoa.Controllers
                 {
                     streamWriter.Write(data);
                 }
-
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
@@ -1139,7 +1132,6 @@ namespace WSTanHoa.Controllers
                             }
                             else
                                 message += "\n  + Lượng nước tiêu thụ tạm tính: " + item["TieuThu"];
-
                             dtTon = _cDAL_ThuTien.ExecuteQuery_DataTable("select * from fnGetHoaDonTon(" + item["DanhBo"].ToString() + ")");
                             TongCongNo = 0;
                             hdTon = "";
