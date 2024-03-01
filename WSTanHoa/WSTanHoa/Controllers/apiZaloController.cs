@@ -779,7 +779,7 @@ namespace WSTanHoa.Controllers
             string strResponse = "";
             try
             {
-                string url = "https://openapi.zalo.me/v2.0/oa/message";
+                string url = "https://openapi.zalo.me/v3.0/oa/message/cs";
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Tls11
@@ -840,12 +840,12 @@ namespace WSTanHoa.Controllers
         /// </summary>
         /// <param name="IDZalo"></param>
         /// <returns></returns>
-        private string sendMessageDangKy(string IDZalo)
+        private string sendMessageDangKy_old(string IDZalo)
         {
             string strResponse = "";
             try
             {
-                string url = "https://openapi.zalo.me/v2.0/oa/message";
+                string url = "https://openapi.zalo.me/v3.0/oa/message/cs";
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                        | SecurityProtocolType.Tls11
@@ -881,6 +881,64 @@ namespace WSTanHoa.Controllers
                             + "\"type\":\"oa.open.url\","
                             + "\"url\":\"" + _url + "/Zalo?id=" + IDZalo + "\""
                             + "}"
+                            + "}]"
+                            + "}"
+                            + "}"
+                            + "}"
+                            + "}";
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
+                    strResponse = deserializedResult.message;
+                    read.Close();
+                    respuesta.Close();
+                }
+                else
+                {
+                    strResponse = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
+        private string sendMessageDangKy(string IDZalo)
+        {
+            string strResponse = "";
+            try
+            {
+                string url = "https://openapi.zalo.me/v3.0/oa/message/cs";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Tls11
+                       | SecurityProtocolType.Tls12
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["access_token"] = getAccess_token();
+                string data = "{"
+                            + "\"recipient\":{"
+                            + "\"user_id\":\"" + IDZalo + "\""
+                            + "},"
+                            + "\"message\":{"
+                            + "\"text\":\"Để sử dụng dịch vụ tra cứu tự động, Quý Khách Hàng cần phải đăng ký ít nhất một mã khách hàng (Danh Bộ) " + _url + "/Zalo?id=" + IDZalo + "\","
+                            + "\"attachment\":{"
+                            + "\"type\":\"template\","
+                            + "\"payload\":{"
+                            + "\"template_type\":\"media\","
+                            + "\"elements\":[{"
+                            + "\"media_type\":\"image\","
+                            + "\"url\":\"" + _urlImage + "/zaloOACover1333x750.png\","
                             + "}]"
                             + "}"
                             + "}"
