@@ -314,47 +314,47 @@
                             <tbody>
                                 @foreach (var item in Model.lstHoaDon)
                                 {
-                                    <tr>
-                                        <td>
-                                            @item.GiaBieu
+                                <tr>
+                                    <td>
+                                        @item.GiaBieu
+                                    </td>
+                                    <td>
+                                        @item.DinhMuc
+                                    </td>
+                                    @*<td>
+                                            @item.DinhMucHN
+                                        </td>*@
+                                    <td>
+                                        @item.Ky
+                                    </td>
+                                    <td>
+                                        @item.CSC
+                                    </td>
+                                    <td>
+                                        @item.CSM
+                                    </td>
+                                    <td>
+                                        @item.TieuThu
+                                    </td>
+                                    @*<td>
+                                            @item.GiaBan
                                         </td>
                                         <td>
-                                            @item.DinhMuc
-                                        </td>
-                                        @*<td>
-                                                @item.DinhMucHN
-                                            </td>*@
-                                        <td>
-                                            @item.Ky
+                                            @item.ThueGTGT
                                         </td>
                                         <td>
-                                            @item.CSC
-                                        </td>
-                                        <td>
-                                            @item.CSM
-                                        </td>
-                                        <td>
-                                            @item.TieuThu
-                                        </td>
-                                        @*<td>
-                                                @item.GiaBan
-                                            </td>
-                                            <td>
-                                                @item.ThueGTGT
-                                            </td>
-                                            <td>
-                                                @item.PhiBVMT
-                                            </td>*@
-                                        <td>
-                                            @item.TongCong
-                                        </td>
-                                        <td>
-                                            @if (@item.NgayGiaiTrach != null)
+                                            @item.PhiBVMT
+                                        </td>*@
+                                    <td>
+                                        @item.TongCong
+                                    </td>
+                                    <td>
+                                        @if (@item.NgayGiaiTrach != null)
                                             {
-                                                @item.NgayGiaiTrach.Value.ToString("dd/MM/yyyy")
+                                            @item.NgayGiaiTrach.Value.ToString("dd/MM/yyyy")
                                             }
-                                        </td>
-                                    </tr>
+                                    </td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
@@ -378,7 +378,7 @@
                     </div>
                     <div class="card-body">
                         <div>
-                            <img class="img-fluid" src="~/Images/gianuoc.jpg" />
+                            <img class="img-fluid" src="~/Images/gianuoc.png" />
                         </div>
                     </div>
                 </div>

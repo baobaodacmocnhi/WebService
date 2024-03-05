@@ -274,6 +274,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Images\gianuoc.png" />
+    <Content Include="Images\gianuoc2023.png" />
+    <Content Include="Images\gianuoc2022.jpg" />
     <Content Include="Images\QuaySo\0.jpg" />
     <Content Include="Images\QuaySo\1.png" />
     <Content Include="Images\QuaySo\2.png" />
@@ -282,7 +284,6 @@
     <Content Include="Images\Banks\momo.jpg" />
     <Content Include="Images\Banks\shopeepay.png" />
     <Content Include="Images\daihoidoantct2022.png" />
-    <Content Include="Images\gianuoc2022.jpg" />
     <Content Include="Images\info.announcement.png" />
     <Content Include="Images\Banks\acb.png" />
     <Content Include="Images\Banks\agr.png" />

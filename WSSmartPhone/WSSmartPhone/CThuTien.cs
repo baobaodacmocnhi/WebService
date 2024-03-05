@@ -2995,18 +2995,17 @@ namespace WSSmartPhone
                                             _cDAL_ThuTien.ExecuteNonQuery("update HOADON set SyncNopTien=1,SyncNopTien_Ngay=getdate() where SyncNopTien=0 and SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'"
                                                                     + " delete Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "' and [Action]='NopTien'");
                                         }
-                                        //else
-                                        //if (item.Status == "ERR:6")
-                                        //{
-                                        //syncThanhToan(itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000"), true, 0);
-                                        //syncNopTien(itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000"));
-                                        //}
                                         else
-                                        {
-                                            _cDAL_ThuTien.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
-                                            + " insert into Temp_SyncHoaDon([Action],MaHD,SoHoaDon,Result)values('NopTien',(select ID_HOADON from HOADON where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'),'" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
-                                            + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'");
-                                        }
+                                            if (item.Status == "ERR:6")
+                                            {
+                                                syncThanhToan(int.Parse(_cDAL_ThuTien.ExecuteQuery_ReturnOneValue("select ID_HOADON from HOADON where SOHOADON='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'").ToString()), true, 0);
+                                            }
+                                            else
+                                            {
+                                                _cDAL_ThuTien.ExecuteNonQuery("if not exists (select ID from Temp_SyncHoaDon where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "')"
+                                                + " insert into Temp_SyncHoaDon([Action],MaHD,SoHoaDon,Result)values('NopTien',(select ID_HOADON from HOADON where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'),'" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "',N'" + item.Status + " = " + item.Message + "')"
+                                                + " else update Temp_SyncHoaDon set Result=N'" + item.Status + " = " + item.Message + "',ModifyDate=getdate() where SoHoaDon='" + itemSerial["serial"].ToString() + ((int)item.SoHD).ToString("0000000") + "'");
+                                            }
                                     }
                                     result = "true;" + deserializedResult.Status + " = " + deserializedResult.Message;
                                 }
