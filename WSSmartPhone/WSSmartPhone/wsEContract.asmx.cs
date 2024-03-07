@@ -101,5 +101,11 @@ namespace WSSmartPhone
             return _cEContract.duyetKhongKy(IDEContract, out  strResponse);
         }
 
+        //[WebMethod]
+        //public void test()
+        //{
+        //    _cEContract.test();
+        //}
+
     }
 }

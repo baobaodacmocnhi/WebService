@@ -654,6 +654,11 @@ namespace WSSmartPhone
                             strResponse = "EContract đã có hiệu lực";
                             return false;
                         }
+                        if (checkHuyEContract(dt.Rows[0]["IDEContract"].ToString()))
+                        {
+                            _cDAL_TTKH.ExecuteNonQuery("delete Zalo_EContract_ChiTiet where IDEContract='" + dt.Rows[0]["IDEContract"].ToString() + "'");
+                            return true;
+                        }
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                         var client = new HttpClient();
@@ -694,7 +699,6 @@ namespace WSSmartPhone
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
                     var client = new HttpClient();
                     var request = new HttpRequestMessage();
-
                     var content = new MultipartFormDataContent();
                     if (MST == "")
                     {
@@ -768,6 +772,42 @@ namespace WSSmartPhone
                 strResponse = ex.Message;
             }
             return false;
+        }
+
+        private bool checkHuyEContract(string IDEContract)
+        {
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, urlApi + "/esolution-service/contracts/" + IDEContract);
+                request.Headers.Add("Authorization", "Bearer " + getAccess_token_User());
+                var response = client.SendAsync(request);
+                var result = response.Result.Content.ReadAsStringAsync();
+                var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                if (response.Result.IsSuccessStatusCode)
+                {
+                    if (obj["object"]["currentStage"] == "LC_DRAFT_CANCEL")
+                        return true;
+                }
+            }
+            catch
+            {
+            }
+            return false;
+        }
+
+        public void test()
+        {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esolution-service/contracts/545be90a-cecf-4d45-be16-2bd852e29f24/delete-draft");
+            request.Headers.Add("Authorization", "Bearer " + getAccess_token_Client());
+            var response = client.SendAsync(request);
+            var result = response.Result.Content.ReadAsStringAsync();
+            var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
         }
 
         public byte[] ImageToByte(Bitmap image)
