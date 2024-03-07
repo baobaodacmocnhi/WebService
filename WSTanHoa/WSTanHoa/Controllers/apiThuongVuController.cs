@@ -12,7 +12,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuongVu")]
     public class apiThuongVuController : ApiController
     {
-        private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
+        private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVuWFH);
         //private CConnection _cDAL_ThuongVu = new CConnection("Data Source=server9;Initial Catalog=KTKS_DonKHtest;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
@@ -831,9 +831,9 @@ namespace WSTanHoa.Controllers
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaKTXM), LEN(CONVERT(nvarchar(50), MaKTXM)) - 1, 2)) from KTXM"
                         + " select MAX(MaKTXM) from KTXM where SUBSTRING(CONVERT(nvarchar(50), MaKTXM), LEN(CONVERT(nvarchar(50), MaKTXM)) - 1, 2) = @Ma").ToString();
                         MaKTXM = getMaxNextIDTable(MaKTXM);
-                        _cDAL_ThuongVu.ExecuteNonQuery("if exists (select * from KTKS_DonKH.dbo.KTXM where MaDonMoi=" + MaDons[0] + ")"
+                        _cDAL_ThuongVu.ExecuteNonQuery("if not exists (select * from KTKS_DonKH.dbo.KTXM where MaDonMoi=" + MaDons[0] + ")"
                         + " insert into KTKS_DonKH.dbo.KTXM(MaKTXM, MaDonMoi, CreateBy, CreateDate)values(" + MaKTXM + ", " + MaDons[0] + ", " + jsonContent["IDUser"].ToString() + ", GETDATE())");
-                        MaKTXM = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select MaKTXM from KTKS_DonKH.dbo.KTXM where MaDonMoi=" + MaDons[0] + "").ToString();
+                        MaKTXM = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select MaKTXM from KTKS_DonKH.dbo.KTXM where MaDonMoi=" + MaDons[0]).ToString();
                         string MaCTKTXM = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("declare @Ma int"
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaCTKTXM), LEN(CONVERT(nvarchar(50), MaCTKTXM)) - 1, 2)) from KTXM_ChiTiet"
                         + " select MAX(MaCTKTXM) from KTXM_ChiTiet where SUBSTRING(CONVERT(nvarchar(50), MaCTKTXM), LEN(CONVERT(nvarchar(50), MaCTKTXM)) - 1, 2) = @Ma").ToString();
@@ -888,35 +888,35 @@ namespace WSTanHoa.Controllers
                            + " ,N'" + jsonContent["HoTen"].ToString() + "'"
                            + " ,N'" + jsonContent["DiaChi"].ToString() + "'"
                            + " ,N'" + jsonContent["GiaBieu"].ToString() + "'"
-                           + " ," + jsonContent["DinhMuc"].ToString()
-                           + " ," + jsonContent["DinhMucHN"].ToString()
-                           + " ,N'" + jsonContent["Dot"].ToString() + "'"
-                           + " ,N'" + jsonContent["Ky"].ToString() + "'"
-                           + " ,N'" + jsonContent["Nam"].ToString() + "'"
-                           + " ,N'" + jsonContent["Quan"].ToString() + "'"
-                           + " ,N'" + jsonContent["Phuong"].ToString() + "'"
+                           + " ," + jsonContent["DinhMuc"].ToString() == "" ? "NULL" : jsonContent["DinhMuc"].ToString()
+                           + " ," + jsonContent["DinhMucHN"].ToString() == "" ? "NULL" : jsonContent["DinhMucHN"].ToString()
+                           + " ,N'" + jsonContent["Dot"].ToString() == "" ? "NULL" : jsonContent["Dot"].ToString() + "'"
+                           + " ,N'" + jsonContent["Ky"].ToString() == "" ? "NULL" : jsonContent["Ky"].ToString() + "'"
+                           + " ,N'" + jsonContent["Nam"].ToString() == "" ? "NULL" : jsonContent["Nam"].ToString() + "'"
+                           + " ,N'" + jsonContent["Quan"].ToString() == "" ? "NULL" : jsonContent["Quan"].ToString() + "'"
+                           + " ,N'" + jsonContent["Phuong"].ToString() == "" ? "NULL" : jsonContent["Phuong"].ToString() + "'"
                            + " ,'" + NgayKTXM + "'"
-                           + " ,N'" + jsonContent["HienTrangKiemTra"].ToString() + "'"
-                           + " ,N'" + jsonContent["Hieu"].ToString() + "'"
-                           + " ,N'" + jsonContent["Co"].ToString() + "'"
-                           + " ,N'" + jsonContent["SoThan"].ToString() + "'"
-                           + " ,N'" + jsonContent["ChiSo"].ToString() + "'"
-                           + " ,N'" + jsonContent["ChiSoLucKiemTra"].ToString() + "'"
-                           + " ,N'" + jsonContent["ChiMatSo"].ToString() + "'"
-                           + " ,N'" + jsonContent["ChiKhoaGoc"].ToString() + "'"
-                           + " ,N'" + jsonContent["MucDichSuDung"].ToString() + "'"
-                           + " ,N'" + jsonContent["NoiDungKiemTra"].ToString() + "'"
-                           + " ,N'" + jsonContent["DienThoai"].ToString() + "'"
-                           + " ,N'" + jsonContent["HoTenKHKy"].ToString() + "'"
-                           + " ,N'" + jsonContent["TheoYeuCau"].ToString() + "'"
-                           + " ,N'" + jsonContent["ViTriDHN1"].ToString() + "'"
-                           + " ,N'" + jsonContent["ViTriDHN2"].ToString() + "'"
-                           + " ," + jsonContent["TTTB"].ToString()
-                           + " ," + jsonContent["DinhMucMoi"].ToString()
-                           + " ,N'" + jsonContent["BaoThay"].ToString() + "'"
-                           + " ,N'" + jsonContent["BaoThayGhiChu"].ToString() + "'"
-                           + " ," + jsonContent["CanKhachHangLienHe"].ToString()
-                           + " ," + jsonContent["DinhMucKhongDangKy"].ToString()
+                           + " ,N'" + jsonContent["HienTrangKiemTra"].ToString() == "" ? "NULL" : jsonContent["HienTrangKiemTra"].ToString() + "'"
+                           + " ,N'" + jsonContent["Hieu"].ToString() == "" ? "NULL" : jsonContent["Hieu"].ToString() + "'"
+                           + " ,N'" + jsonContent["Co"].ToString() == "" ? "NULL" : jsonContent["Co"].ToString() + "'"
+                           + " ,N'" + jsonContent["SoThan"].ToString() == "" ? "NULL" : jsonContent["SoThan"].ToString() + "'"
+                           + " ,N'" + jsonContent["ChiSo"].ToString() == "" ? "NULL" : jsonContent["ChiSo"].ToString() + "'"
+                           + " ,N'" + jsonContent["ChiSoLucKiemTra"].ToString() == "" ? "NULL" : jsonContent["ChiSoLucKiemTra"].ToString() + "'"
+                           + " ,N'" + jsonContent["ChiMatSo"].ToString() == "" ? "NULL" : jsonContent["ChiMatSo"].ToString() + "'"
+                           + " ,N'" + jsonContent["ChiKhoaGoc"].ToString() == "" ? "NULL" : jsonContent["ChiKhoaGoc"].ToString() + "'"
+                           + " ,N'" + jsonContent["MucDichSuDung"].ToString() == "" ? "NULL" : jsonContent["MucDichSuDung"].ToString() + "'"
+                           + " ,N'" + jsonContent["NoiDungKiemTra"].ToString() == "" ? "NULL" : jsonContent["NoiDungKiemTra"].ToString() + "'"
+                           + " ,N'" + jsonContent["DienThoai"].ToString() == "" ? "NULL" : jsonContent["DienThoai"].ToString() + "'"
+                           + " ,N'" + jsonContent["HoTenKHKy"].ToString() == "" ? "NULL" : jsonContent["HoTenKHKy"].ToString() + "'"
+                           + " ,N'" + jsonContent["ThucHienTheoYeuCau"].ToString() == "" ? "NULL" : jsonContent["ThucHienTheoYeuCau"].ToString() + "'"
+                           + " ,N'" + jsonContent["ViTriDHN1"].ToString() == "" ? "NULL" : jsonContent["ViTriDHN1"].ToString() + "'"
+                           + " ,N'" + jsonContent["ViTriDHN2"].ToString() == "" ? "NULL" : jsonContent["ViTriDHN2"].ToString() + "'"
+                           + " ," + jsonContent["TTTB"].ToString() == "" ? "NULL" : jsonContent["TTTB"].ToString()
+                           + " ," + jsonContent["DinhMucMoi"].ToString() == "" ? "NULL" : jsonContent["DinhMucMoi"].ToString()
+                           + " ,N'" + jsonContent["BaoThay"].ToString() == "" ? "NULL" : jsonContent["BaoThay"].ToString() + "'"
+                           + " ,N'" + jsonContent["BaoThayGhiChu"].ToString() == "" ? "NULL" : jsonContent["BaoThayGhiChu"].ToString() + "'"
+                           + " ," + jsonContent["CanKhachHangLienHe"].ToString() == "" ? "NULL" : jsonContent["CanKhachHangLienHe"].ToString()
+                           + " ," + jsonContent["DinhMucKhongDangKy"].ToString() == "" ? "NULL" : jsonContent["DinhMucKhongDangKy"].ToString()
                            + " ," + MaKTXM
                            + " ," + MaDons[1]
                            + " ,getdate()"
@@ -1453,7 +1453,7 @@ namespace WSTanHoa.Controllers
                             {
                                 TableName = "BamChi_ChiTiet_Hinh";
                             }
-                                DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and ID=" + jsonContent["Name"].ToString());
+                            DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select filename=Name+Loai from " + TableName + " where Huy=0 and ID=" + jsonContent["Name"].ToString());
                             _wsThuongVu.xoa_Hinh(TableName, jsonContent["ID"].ToString(), dt.Rows[0]["filename"].ToString());
                             _cDAL_ThuongVu.ExecuteNonQuery("delete " + TableName + " where ID=" + jsonContent["Name"].ToString());
                             scope.Complete();
