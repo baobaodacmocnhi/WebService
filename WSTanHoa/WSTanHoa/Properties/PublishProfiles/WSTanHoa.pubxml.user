@@ -9,7 +9,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>02/28/2024 10:53:55</publishTime>
+      <publishTime>03/08/2024 10:18:38</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -180,10 +180,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2023 14:49:12</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>03/01/2024 14:04:52</publishTime>
+      <publishTime>03/08/2024 10:49:13</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>03/01/2024 14:04:53</publishTime>
+      <publishTime>03/08/2024 10:49:14</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -387,9 +387,12 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2023 14:49:10</publishTime>
     </File>
     <File Include="Images/gianuoc.png">
-      <publishTime>12/08/2023 14:49:10</publishTime>
+      <publishTime>03/04/2024 10:29:41</publishTime>
     </File>
     <File Include="Images/gianuoc2022.jpg">
+      <publishTime>12/08/2023 14:49:10</publishTime>
+    </File>
+    <File Include="Images/gianuoc2023.png">
       <publishTime>12/08/2023 14:49:10</publishTime>
     </File>
     <File Include="Images/giaybaotiennuoc.png">
@@ -6078,7 +6081,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2023 14:49:10</publishTime>
     </File>
     <File Include="Views/KhachHang/ThongTin.cshtml">
-      <publishTime>12/08/2023 14:49:10</publishTime>
+      <publishTime>03/04/2024 10:29:48</publishTime>
     </File>
     <File Include="Views/KhachHang/TienTrinhDon.cshtml">
       <publishTime>12/08/2023 14:49:10</publishTime>

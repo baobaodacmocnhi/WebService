@@ -12,7 +12,7 @@ namespace WSTanHoa.Controllers
     [RoutePrefix("api/ThuongVu")]
     public class apiThuongVuController : ApiController
     {
-        private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVuWFH);
+        private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
         //private CConnection _cDAL_ThuongVu = new CConnection("Data Source=server9;Initial Catalog=KTKS_DonKHtest;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
@@ -837,6 +837,42 @@ namespace WSTanHoa.Controllers
                         string MaCTKTXM = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("declare @Ma int"
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaCTKTXM), LEN(CONVERT(nvarchar(50), MaCTKTXM)) - 1, 2)) from KTXM_ChiTiet"
                         + " select MAX(MaCTKTXM) from KTXM_ChiTiet where SUBSTRING(CONVERT(nvarchar(50), MaCTKTXM), LEN(CONVERT(nvarchar(50), MaCTKTXM)) - 1, 2) = @Ma").ToString();
+                        MaCTKTXM = getMaxNextIDTable(MaCTKTXM).ToString();
+                        string flag = "";
+                        flag = string.IsNullOrEmpty(jsonContent["CanKhachHangLienHe"].ToString()) ? "0" : bool.Parse(jsonContent["CanKhachHangLienHe"].ToString()) ? "1" : "0";
+                        BBKT enBBKT = new BBKT();
+                        enBBKT.DanhBo = string.IsNullOrEmpty(jsonContent["DanhBo"].ToString()) ? "NULL" : "N'" + jsonContent["DanhBo"].ToString() + "'";
+                        enBBKT.HopDong = string.IsNullOrEmpty(jsonContent["HopDong"].ToString()) ? "NULL" : "N'" + jsonContent["HopDong"].ToString() + "'";
+                        enBBKT.HoTen = string.IsNullOrEmpty(jsonContent["HoTen"].ToString()) ? "NULL" : "N'" + jsonContent["HoTen"].ToString() + "'";
+                        enBBKT.DiaChi = string.IsNullOrEmpty(jsonContent["DiaChi"].ToString()) ? "NULL" : "N'" + jsonContent["DiaChi"].ToString() + "'";
+                        enBBKT.GiaBieu = string.IsNullOrEmpty(jsonContent["GiaBieu"].ToString()) ? "NULL" : "N'" + jsonContent["GiaBieu"].ToString() + "'";
+                        enBBKT.DinhMuc = string.IsNullOrEmpty(jsonContent["DinhMuc"].ToString()) ? "NULL" : jsonContent["DinhMuc"].ToString();
+                        enBBKT.DinhMucHN = string.IsNullOrEmpty(jsonContent["DinhMucHN"].ToString()) ? "NULL" : jsonContent["DinhMucHN"].ToString();
+                        enBBKT.Dot = string.IsNullOrEmpty(jsonContent["Dot"].ToString()) ? "NULL" : "N'" + jsonContent["Dot"].ToString() + "'";
+                        enBBKT.Ky = string.IsNullOrEmpty(jsonContent["Ky"].ToString()) ? "NULL" : "N'" + jsonContent["Ky"].ToString() + "'";
+                        enBBKT.Nam = string.IsNullOrEmpty(jsonContent["Nam"].ToString()) ? "NULL" : "N'" + jsonContent["Nam"].ToString() + "'";
+                        enBBKT.Phuong = string.IsNullOrEmpty(jsonContent["Phuong"].ToString()) ? "NULL" : "N'" + jsonContent["Phuong"].ToString() + "'";
+                        enBBKT.Quan = string.IsNullOrEmpty(jsonContent["Quan"].ToString()) ? "NULL" : "N'" + jsonContent["Quan"].ToString() + "'";
+                        enBBKT.HienTrangKiemTra = string.IsNullOrEmpty(jsonContent["HienTrangKiemTra"].ToString()) ? "NULL" : "N'" + jsonContent["HienTrangKiemTra"].ToString() + "'";
+                        enBBKT.Hieu = string.IsNullOrEmpty(jsonContent["Hieu"].ToString()) ? "NULL" : "N'" + jsonContent["Hieu"].ToString() + "'";
+                        enBBKT.Co = string.IsNullOrEmpty(jsonContent["Co"].ToString()) ? "NULL" : "N'" + jsonContent["Co"].ToString() + "'";
+                        enBBKT.SoThan = string.IsNullOrEmpty(jsonContent["SoThan"].ToString()) ? "NULL" : "N'" + jsonContent["SoThan"].ToString() + "'";
+                        enBBKT.ChiSo = string.IsNullOrEmpty(jsonContent["ChiSo"].ToString()) ? "NULL" : "N'" + jsonContent["ChiSo"].ToString() + "'";
+                        enBBKT.ChiSoLucKiemTra = string.IsNullOrEmpty(jsonContent["ChiSoLucKiemTra"].ToString()) ? "NULL" : "N'" + jsonContent["ChiSoLucKiemTra"].ToString() + "'";
+                        enBBKT.ChiMatSo = string.IsNullOrEmpty(jsonContent["ChiMatSo"].ToString()) ? "NULL" : "N'" + jsonContent["ChiMatSo"].ToString() + "'";
+                        enBBKT.ChiKhoaGoc = string.IsNullOrEmpty(jsonContent["ChiKhoaGoc"].ToString()) ? "NULL" : "N'" + jsonContent["ChiKhoaGoc"].ToString() + "'";
+                        enBBKT.MucDichSuDung = string.IsNullOrEmpty(jsonContent["MucDichSuDung"].ToString()) ? "NULL" : "N'" + jsonContent["MucDichSuDung"].ToString() + "'";
+                        enBBKT.NoiDungKiemTra = string.IsNullOrEmpty(jsonContent["NoiDungKiemTra"].ToString()) ? "NULL" : "N'" + jsonContent["NoiDungKiemTra"].ToString() + "'";
+                        enBBKT.DienThoai = string.IsNullOrEmpty(jsonContent["DienThoai"].ToString()) ? "NULL" : "N'" + jsonContent["DienThoai"].ToString() + "'";
+                        enBBKT.HoTenKHKy = string.IsNullOrEmpty(jsonContent["HoTenKHKy"].ToString()) ? "NULL" : "N'" + jsonContent["HoTenKHKy"].ToString() + "'";
+                        enBBKT.ThucHienTheoYeuCau = string.IsNullOrEmpty(jsonContent["ThucHienTheoYeuCau"].ToString()) ? "NULL" : "N'" + jsonContent["ThucHienTheoYeuCau"].ToString() + "'";
+                        enBBKT.ViTriDHN1 = string.IsNullOrEmpty(jsonContent["ViTriDHN1"].ToString()) ? "NULL" : "N'" + jsonContent["ViTriDHN1"].ToString() + "'";
+                        enBBKT.ViTriDHN2 = string.IsNullOrEmpty(jsonContent["ViTriDHN2"].ToString()) ? "NULL" : "N'" + jsonContent["ViTriDHN2"].ToString() + "'";
+                        enBBKT.TTTB = string.IsNullOrEmpty(jsonContent["TTTB"].ToString()) ? "NULL" : jsonContent["TTTB"].ToString();
+                        enBBKT.DinhMucMoi = string.IsNullOrEmpty(jsonContent["DinhMucMoi"].ToString()) ? "NULL" : jsonContent["DinhMucMoi"].ToString();
+                        enBBKT.BaoThay = string.IsNullOrEmpty(jsonContent["BaoThay"].ToString()) ? "NULL" : "N'" + jsonContent["BaoThay"].ToString() + "'";
+                        enBBKT.BaoThayGhiChu = string.IsNullOrEmpty(jsonContent["BaoThayGhiChu"].ToString()) ? "NULL" : "N'" + jsonContent["BaoThayGhiChu"].ToString() + "'";
+                        enBBKT.DinhMucKhongDangKy = string.IsNullOrEmpty(jsonContent["DinhMucKhongDangKy"].ToString()) ? "NULL" : jsonContent["DinhMucKhongDangKy"].ToString();
                         var transactionOptions = new TransactionOptions();
                         transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                         using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
@@ -883,40 +919,40 @@ namespace WSTanHoa.Controllers
                            + " ,[CreateBy])"
                      + " VALUES"
                            + " (" + MaCTKTXM
-                           + " ,N'" + jsonContent["DanhBo"].ToString() + "'"
-                           + " ,N'" + jsonContent["HopDong"].ToString() + "'"
-                           + " ,N'" + jsonContent["HoTen"].ToString() + "'"
-                           + " ,N'" + jsonContent["DiaChi"].ToString() + "'"
-                           + " ,N'" + jsonContent["GiaBieu"].ToString() + "'"
-                           + " ," + jsonContent["DinhMuc"].ToString() == "" ? "NULL" : jsonContent["DinhMuc"].ToString()
-                           + " ," + jsonContent["DinhMucHN"].ToString() == "" ? "NULL" : jsonContent["DinhMucHN"].ToString()
-                           + " ,N'" + jsonContent["Dot"].ToString() == "" ? "NULL" : jsonContent["Dot"].ToString() + "'"
-                           + " ,N'" + jsonContent["Ky"].ToString() == "" ? "NULL" : jsonContent["Ky"].ToString() + "'"
-                           + " ,N'" + jsonContent["Nam"].ToString() == "" ? "NULL" : jsonContent["Nam"].ToString() + "'"
-                           + " ,N'" + jsonContent["Quan"].ToString() == "" ? "NULL" : jsonContent["Quan"].ToString() + "'"
-                           + " ,N'" + jsonContent["Phuong"].ToString() == "" ? "NULL" : jsonContent["Phuong"].ToString() + "'"
+                           + " ," + enBBKT.DanhBo
+                           + " ," + enBBKT.HopDong
+                           + " ," + enBBKT.HoTen
+                           + " ," + enBBKT.DiaChi
+                           + " ," + enBBKT.GiaBieu
+                           + " ," + enBBKT.DinhMuc
+                           + " ," + enBBKT.DinhMucHN
+                           + " ," + enBBKT.Dot
+                           + " ," + enBBKT.Ky
+                           + " ," + enBBKT.Nam
+                           + " ," + enBBKT.Quan
+                           + " ," + enBBKT.Phuong
                            + " ,'" + NgayKTXM + "'"
-                           + " ,N'" + jsonContent["HienTrangKiemTra"].ToString() == "" ? "NULL" : jsonContent["HienTrangKiemTra"].ToString() + "'"
-                           + " ,N'" + jsonContent["Hieu"].ToString() == "" ? "NULL" : jsonContent["Hieu"].ToString() + "'"
-                           + " ,N'" + jsonContent["Co"].ToString() == "" ? "NULL" : jsonContent["Co"].ToString() + "'"
-                           + " ,N'" + jsonContent["SoThan"].ToString() == "" ? "NULL" : jsonContent["SoThan"].ToString() + "'"
-                           + " ,N'" + jsonContent["ChiSo"].ToString() == "" ? "NULL" : jsonContent["ChiSo"].ToString() + "'"
-                           + " ,N'" + jsonContent["ChiSoLucKiemTra"].ToString() == "" ? "NULL" : jsonContent["ChiSoLucKiemTra"].ToString() + "'"
-                           + " ,N'" + jsonContent["ChiMatSo"].ToString() == "" ? "NULL" : jsonContent["ChiMatSo"].ToString() + "'"
-                           + " ,N'" + jsonContent["ChiKhoaGoc"].ToString() == "" ? "NULL" : jsonContent["ChiKhoaGoc"].ToString() + "'"
-                           + " ,N'" + jsonContent["MucDichSuDung"].ToString() == "" ? "NULL" : jsonContent["MucDichSuDung"].ToString() + "'"
-                           + " ,N'" + jsonContent["NoiDungKiemTra"].ToString() == "" ? "NULL" : jsonContent["NoiDungKiemTra"].ToString() + "'"
-                           + " ,N'" + jsonContent["DienThoai"].ToString() == "" ? "NULL" : jsonContent["DienThoai"].ToString() + "'"
-                           + " ,N'" + jsonContent["HoTenKHKy"].ToString() == "" ? "NULL" : jsonContent["HoTenKHKy"].ToString() + "'"
-                           + " ,N'" + jsonContent["ThucHienTheoYeuCau"].ToString() == "" ? "NULL" : jsonContent["ThucHienTheoYeuCau"].ToString() + "'"
-                           + " ,N'" + jsonContent["ViTriDHN1"].ToString() == "" ? "NULL" : jsonContent["ViTriDHN1"].ToString() + "'"
-                           + " ,N'" + jsonContent["ViTriDHN2"].ToString() == "" ? "NULL" : jsonContent["ViTriDHN2"].ToString() + "'"
-                           + " ," + jsonContent["TTTB"].ToString() == "" ? "NULL" : jsonContent["TTTB"].ToString()
-                           + " ," + jsonContent["DinhMucMoi"].ToString() == "" ? "NULL" : jsonContent["DinhMucMoi"].ToString()
-                           + " ,N'" + jsonContent["BaoThay"].ToString() == "" ? "NULL" : jsonContent["BaoThay"].ToString() + "'"
-                           + " ,N'" + jsonContent["BaoThayGhiChu"].ToString() == "" ? "NULL" : jsonContent["BaoThayGhiChu"].ToString() + "'"
-                           + " ," + jsonContent["CanKhachHangLienHe"].ToString() == "" ? "NULL" : jsonContent["CanKhachHangLienHe"].ToString()
-                           + " ," + jsonContent["DinhMucKhongDangKy"].ToString() == "" ? "NULL" : jsonContent["DinhMucKhongDangKy"].ToString()
+                           + " ," + enBBKT.HienTrangKiemTra
+                           + " ," + enBBKT.Hieu
+                           + " ," + enBBKT.Co
+                           + " ," + enBBKT.SoThan
+                           + " ," + enBBKT.ChiSo
+                           + " ," + enBBKT.ChiSoLucKiemTra
+                           + " ," + enBBKT.ChiMatSo
+                           + " ," + enBBKT.ChiKhoaGoc
+                           + " ," + enBBKT.MucDichSuDung
+                           + " ," + enBBKT.NoiDungKiemTra
+                           + " ," + enBBKT.DienThoai
+                           + " ," + enBBKT.HoTenKHKy
+                           + " ," + enBBKT.ThucHienTheoYeuCau
+                           + " ," + enBBKT.ViTriDHN1
+                           + " ," + enBBKT.ViTriDHN2
+                           + " ," + enBBKT.TTTB
+                           + " ," + enBBKT.DinhMucMoi
+                           + " ," + enBBKT.BaoThay
+                           + " ," + enBBKT.BaoThayGhiChu
+                           + " ," + flag
+                           + " ," + enBBKT.DinhMucKhongDangKy
                            + " ," + MaKTXM
                            + " ," + MaDons[1]
                            + " ,getdate()"
@@ -931,14 +967,16 @@ namespace WSTanHoa.Controllers
                                     byte[] hinh = System.Convert.FromBase64String(item["Value"]);
                                     if (_wsThuongVu.ghi_Hinh("KTXM_ChiTiet_Hinh", MaCTKTXM, enHinhAnhReturn.Name + item["Type"], hinh) == true)
                                     {
+                                        string IDHinh = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("if exists (select top 1 * from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh else select 1").ToString();
                                         _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh(ID,IDKTXM_ChiTiet,Name,Loai,CreateBy,CreateDate)"
-                                            + "values((if exists (select top 1 * from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh else select 1)"
+                                            + "values(" + IDHinh
                                             + "," + MaCTKTXM + ",'" + enHinhAnhReturn.Name + "','" + item["Type"] + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
                                     }
                                     lstHinhAnhReturn.Add(enHinhAnhReturn);
                                 }
+                                string IDLichSu = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("if exists (select top 1 * from KTKS_DonKH.dbo.DonTu_LichSu) select MAX(ID)+1 from KTKS_DonKH.dbo.DonTu_LichSu else select 1").ToString();
                                 result.success = _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.DonTu_LichSu(ID,NgayChuyen,ID_NoiChuyen,NoiChuyen,NoiDung,TableName,IDCT,MaDon,STT,CreateBy,CreateDate)"
-                                    + "values((if exists (select top 1 * from KTKS_DonKH.dbo.DonTu_LichSu) select MAX(ID)+1 from KTKS_DonKH.dbo.DonTu_LichSu else select 1),'" + NgayKTXM + "',5,N'Kiểm Tra',N'Đã Kiểm Tra, "
+                                    + "values(" + IDLichSu + ",'" + NgayKTXM + "',5,N'Kiểm Tra',N'Đã Kiểm Tra, "
                                     + jsonContent["NoiDungKiemTra"].ToString() + "','KTXM_ChiTiet'," + MaCTKTXM + "," + MaDons[0] + "," + MaDons[1] + "," + jsonContent["IDUser"].ToString() + ",getdate())");
                                 scope.Complete();
                                 scope.Dispose();
@@ -986,41 +1024,76 @@ namespace WSTanHoa.Controllers
                     }
                     if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
                     {
+                        string flag = "";
+                        flag = string.IsNullOrEmpty(jsonContent["CanKhachHangLienHe"].ToString()) ? "0" : bool.Parse(jsonContent["CanKhachHangLienHe"].ToString()) ? "1" : "0";
+                        BBKT enBBKT = new BBKT();
+                        enBBKT.DanhBo = string.IsNullOrEmpty(jsonContent["DanhBo"].ToString()) ? "NULL" : "N'" + jsonContent["DanhBo"].ToString() + "'";
+                        enBBKT.HopDong = string.IsNullOrEmpty(jsonContent["HopDong"].ToString()) ? "NULL" : "N'" + jsonContent["HopDong"].ToString() + "'";
+                        enBBKT.HoTen = string.IsNullOrEmpty(jsonContent["HoTen"].ToString()) ? "NULL" : "N'" + jsonContent["HoTen"].ToString() + "'";
+                        enBBKT.DiaChi = string.IsNullOrEmpty(jsonContent["DiaChi"].ToString()) ? "NULL" : "N'" + jsonContent["DiaChi"].ToString() + "'";
+                        enBBKT.GiaBieu = string.IsNullOrEmpty(jsonContent["GiaBieu"].ToString()) ? "NULL" : "N'" + jsonContent["GiaBieu"].ToString() + "'";
+                        enBBKT.DinhMuc = string.IsNullOrEmpty(jsonContent["DinhMuc"].ToString()) ? "NULL" : jsonContent["DinhMuc"].ToString();
+                        enBBKT.DinhMucHN = string.IsNullOrEmpty(jsonContent["DinhMucHN"].ToString()) ? "NULL" : jsonContent["DinhMucHN"].ToString();
+                        enBBKT.Dot = string.IsNullOrEmpty(jsonContent["Dot"].ToString()) ? "NULL" : "N'" + jsonContent["Dot"].ToString() + "'";
+                        enBBKT.Ky = string.IsNullOrEmpty(jsonContent["Ky"].ToString()) ? "NULL" : "N'" + jsonContent["Ky"].ToString() + "'";
+                        enBBKT.Nam = string.IsNullOrEmpty(jsonContent["Nam"].ToString()) ? "NULL" : "N'" + jsonContent["Nam"].ToString() + "'";
+                        enBBKT.Phuong = string.IsNullOrEmpty(jsonContent["Phuong"].ToString()) ? "NULL" : "N'" + jsonContent["Phuong"].ToString() + "'";
+                        enBBKT.Quan = string.IsNullOrEmpty(jsonContent["Quan"].ToString()) ? "NULL" : "N'" + jsonContent["Quan"].ToString() + "'";
+                        enBBKT.HienTrangKiemTra = string.IsNullOrEmpty(jsonContent["HienTrangKiemTra"].ToString()) ? "NULL" : "N'" + jsonContent["HienTrangKiemTra"].ToString() + "'";
+                        enBBKT.Hieu = string.IsNullOrEmpty(jsonContent["Hieu"].ToString()) ? "NULL" : "N'" + jsonContent["Hieu"].ToString() + "'";
+                        enBBKT.Co = string.IsNullOrEmpty(jsonContent["Co"].ToString()) ? "NULL" : "N'" + jsonContent["Co"].ToString() + "'";
+                        enBBKT.SoThan = string.IsNullOrEmpty(jsonContent["SoThan"].ToString()) ? "NULL" : "N'" + jsonContent["SoThan"].ToString() + "'";
+                        enBBKT.ChiSo = string.IsNullOrEmpty(jsonContent["ChiSo"].ToString()) ? "NULL" : "N'" + jsonContent["ChiSo"].ToString() + "'";
+                        enBBKT.ChiSoLucKiemTra = string.IsNullOrEmpty(jsonContent["ChiSoLucKiemTra"].ToString()) ? "NULL" : "N'" + jsonContent["ChiSoLucKiemTra"].ToString() + "'";
+                        enBBKT.ChiMatSo = string.IsNullOrEmpty(jsonContent["ChiMatSo"].ToString()) ? "NULL" : "N'" + jsonContent["ChiMatSo"].ToString() + "'";
+                        enBBKT.ChiKhoaGoc = string.IsNullOrEmpty(jsonContent["ChiKhoaGoc"].ToString()) ? "NULL" : "N'" + jsonContent["ChiKhoaGoc"].ToString() + "'";
+                        enBBKT.MucDichSuDung = string.IsNullOrEmpty(jsonContent["MucDichSuDung"].ToString()) ? "NULL" : "N'" + jsonContent["MucDichSuDung"].ToString() + "'";
+                        enBBKT.NoiDungKiemTra = string.IsNullOrEmpty(jsonContent["NoiDungKiemTra"].ToString()) ? "NULL" : "N'" + jsonContent["NoiDungKiemTra"].ToString() + "'";
+                        enBBKT.DienThoai = string.IsNullOrEmpty(jsonContent["DienThoai"].ToString()) ? "NULL" : "N'" + jsonContent["DienThoai"].ToString() + "'";
+                        enBBKT.HoTenKHKy = string.IsNullOrEmpty(jsonContent["HoTenKHKy"].ToString()) ? "NULL" : "N'" + jsonContent["HoTenKHKy"].ToString() + "'";
+                        enBBKT.ThucHienTheoYeuCau = string.IsNullOrEmpty(jsonContent["ThucHienTheoYeuCau"].ToString()) ? "NULL" : "N'" + jsonContent["ThucHienTheoYeuCau"].ToString() + "'";
+                        enBBKT.ViTriDHN1 = string.IsNullOrEmpty(jsonContent["ViTriDHN1"].ToString()) ? "NULL" : "N'" + jsonContent["ViTriDHN1"].ToString() + "'";
+                        enBBKT.ViTriDHN2 = string.IsNullOrEmpty(jsonContent["ViTriDHN2"].ToString()) ? "NULL" : "N'" + jsonContent["ViTriDHN2"].ToString() + "'";
+                        enBBKT.TTTB = string.IsNullOrEmpty(jsonContent["TTTB"].ToString()) ? "NULL" : jsonContent["TTTB"].ToString();
+                        enBBKT.DinhMucMoi = string.IsNullOrEmpty(jsonContent["DinhMucMoi"].ToString()) ? "NULL" : jsonContent["DinhMucMoi"].ToString();
+                        enBBKT.BaoThay = string.IsNullOrEmpty(jsonContent["BaoThay"].ToString()) ? "NULL" : "N'" + jsonContent["BaoThay"].ToString() + "'";
+                        enBBKT.BaoThayGhiChu = string.IsNullOrEmpty(jsonContent["BaoThayGhiChu"].ToString()) ? "NULL" : "N'" + jsonContent["BaoThayGhiChu"].ToString() + "'";
+                        enBBKT.DinhMucKhongDangKy = string.IsNullOrEmpty(jsonContent["DinhMucKhongDangKy"].ToString()) ? "NULL" : jsonContent["DinhMucKhongDangKy"].ToString();
                         _cDAL_ThuongVu.ExecuteNonQuery("UPDATE KTKS_DonKH.dbo.KTXM_ChiTiet SET"
-                            + " [DanhBo] = N'" + jsonContent["DanhBo"].ToString() + "'"
-                            + " ,[HopDong] = N'" + jsonContent["HopDong"].ToString() + "'"
-                            + " ,[HoTen] = N'" + jsonContent["HoTen"].ToString() + "'"
-                            + " ,[DiaChi] = N'" + jsonContent["DiaChi"].ToString() + "'"
-                            + " ,[GiaBieu] = N'" + jsonContent["GiaBieu"].ToString() + "'"
-                            + " ,[DinhMuc] = " + jsonContent["DinhMuc"].ToString()
-                            + " ,[DinhMucHN] = " + jsonContent["DinhMucHN"].ToString()
-                            + " ,[Dot] = N'" + jsonContent["Dot"].ToString() + "'"
-                            + " ,[Ky] = N'" + jsonContent["Ky"].ToString() + "'"
-                            + " ,[Nam] = N'" + jsonContent["Nam"].ToString() + "'"
-                            + " ,[Quan] = N'" + jsonContent["Quan"].ToString() + "'"
-                            + " ,[Phuong] = N'" + jsonContent["Phuong"].ToString() + "'"
-                            + " ,[NgayKTXM] = N'" + NgayKTXM + "'"
-                            + " ,[HienTrangKiemTra] = N'" + jsonContent["HienTrangKiemTra"].ToString() + "'"
-                            + " ,[Hieu] = N'" + jsonContent["Hieu"].ToString() + "'"
-                            + " ,[Co] = N'" + jsonContent["Co"].ToString() + "'"
-                            + " ,[SoThan] = N'" + jsonContent["SoThan"].ToString() + "'"
-                            + " ,[ChiSo] = N'" + jsonContent["ChiSo"].ToString() + "'"
-                            + " ,[TinhTrangChiSo] = N'" + jsonContent["ChiSoLucKiemTra"].ToString() + "'"
-                            + " ,[ChiMatSo] = N'" + jsonContent["ChiMatSo"].ToString() + "'"
-                            + " ,[ChiKhoaGoc] = N'" + jsonContent["ChiKhoaGoc"].ToString() + "'"
-                            + " ,[MucDichSuDung] = N'" + jsonContent["MucDichSuDung"].ToString() + "'"
-                            + " ,[NoiDungKiemTra] = N'" + jsonContent["NoiDungKiemTra"].ToString() + "'"
-                            + " ,[DienThoai] = N'" + jsonContent["DienThoai"].ToString() + "'"
-                            + " ,[HoTenKHKy] = N'" + jsonContent["HoTenKHKy"].ToString() + "'"
-                            + " ,[TheoYeuCau] = N'" + jsonContent["TheoYeuCau"].ToString() + "'"
-                            + " ,[ViTriDHN1] = N'" + jsonContent["ViTriDHN1"].ToString() + "'"
-                            + " ,[ViTriDHN2] = N'" + jsonContent["ViTriDHN2"].ToString() + "'"
-                            + " ,[TieuThuTrungBinh] = " + jsonContent["TTTB"].ToString()
-                            + " ,[DinhMucMoi] = " + jsonContent["DinhMucMoi"].ToString()
-                            + " ,[NoiDungBaoThay] = N'" + jsonContent["BaoThay"].ToString() + "'"
-                            + " ,[GhiChuNoiDungBaoThay] = N'" + jsonContent["BaoThayGhiChu"].ToString() + "'"
-                            + " ,[CanKhachHangLienHe] = " + jsonContent["CanKhachHangLienHe"].ToString()
-                            + " ,[DinhMuc_KhongDangKy] = " + jsonContent["DinhMucKhongDangKy"].ToString()
+                            + " [DanhBo] = " + enBBKT.DanhBo
+                            + " ,[HopDong] = " + enBBKT.HopDong
+                            + " ,[HoTen] = " + enBBKT.HoTen
+                            + " ,[DiaChi] = " + enBBKT.DiaChi
+                            + " ,[GiaBieu] = " + enBBKT.GiaBieu
+                            + " ,[DinhMuc] = " + enBBKT.DinhMuc
+                            + " ,[DinhMucHN] = " + enBBKT.DinhMucHN
+                            + " ,[Dot] = " + enBBKT.Dot
+                            + " ,[Ky] = " + enBBKT.Ky
+                            + " ,[Nam] = " + enBBKT.Nam
+                            + " ,[Quan] = " + enBBKT.Quan
+                            + " ,[Phuong] = " + enBBKT.Phuong
+                            + " ,[NgayKTXM] = '" + NgayKTXM + "'"
+                            + " ,[HienTrangKiemTra] = " + enBBKT.HienTrangKiemTra
+                            + " ,[Hieu] = " + enBBKT.Hieu
+                            + " ,[Co] = " + enBBKT.Co
+                            + " ,[SoThan] = " + enBBKT.SoThan
+                            + " ,[ChiSo] = " + enBBKT.ChiSo
+                            + " ,[TinhTrangChiSo] = " + enBBKT.ChiSoLucKiemTra
+                            + " ,[ChiMatSo] = " + enBBKT.ChiMatSo
+                            + " ,[ChiKhoaGoc] = " + enBBKT.ChiKhoaGoc
+                            + " ,[MucDichSuDung] = " + enBBKT.MucDichSuDung
+                            + " ,[NoiDungKiemTra] = " + enBBKT.NoiDungKiemTra
+                            + " ,[DienThoai] = " + enBBKT.DienThoai
+                            + " ,[HoTenKHKy] = " + enBBKT.HoTenKHKy
+                            + " ,[TheoYeuCau] = " + enBBKT.ThucHienTheoYeuCau
+                            + " ,[ViTriDHN1] = " + enBBKT.ViTriDHN1
+                            + " ,[ViTriDHN2] = " + enBBKT.ViTriDHN2
+                            + " ,[TieuThuTrungBinh] = " + enBBKT.TTTB
+                            + " ,[DinhMucMoi] = " + enBBKT.DinhMucMoi
+                            + " ,[NoiDungBaoThay] = " + enBBKT.BaoThay
+                            + " ,[GhiChuNoiDungBaoThay] = " + enBBKT.BaoThayGhiChu
+                            + " ,[CanKhachHangLienHe] = " + flag
+                            + " ,[DinhMuc_KhongDangKy] = " + enBBKT.DinhMucKhongDangKy
                             + " ,[ModifyDate] = getdate()"
                             + " ,[ModifyBy] = " + jsonContent["IDUser"].ToString()
                             + " WHERE MaCTKTXM=" + jsonContent["ID"].ToString());
@@ -1123,6 +1196,36 @@ namespace WSTanHoa.Controllers
                         string MaCTBC = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("declare @Ma int"
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaCTBC), LEN(CONVERT(nvarchar(50), MaCTBC)) - 1, 2)) from BamChi_ChiTiet"
                         + " select MAX(MaCTBC) from BamChi_ChiTiet where SUBSTRING(CONVERT(nvarchar(50), MaCTBC), LEN(CONVERT(nvarchar(50), MaCTBC)) - 1, 2) = @Ma").ToString();
+                        MaCTBC = getMaxNextIDTable(MaCTBC);
+                        BBBC enBBBC = new BBBC();
+                        enBBBC.DanhBo = string.IsNullOrEmpty(jsonContent["DanhBo"].ToString()) ? "NULL" : "N'" + jsonContent["DanhBo"].ToString() + "'";
+                        enBBBC.HopDong = string.IsNullOrEmpty(jsonContent["HopDong"].ToString()) ? "NULL" : "N'" + jsonContent["HopDong"].ToString() + "'";
+                        enBBBC.HoTen = string.IsNullOrEmpty(jsonContent["HoTen"].ToString()) ? "NULL" : "N'" + jsonContent["HoTen"].ToString() + "'";
+                        enBBBC.DiaChi = string.IsNullOrEmpty(jsonContent["DiaChi"].ToString()) ? "NULL" : "N'" + jsonContent["DiaChi"].ToString() + "'";
+                        enBBBC.GiaBieu = string.IsNullOrEmpty(jsonContent["GiaBieu"].ToString()) ? "NULL" : jsonContent["GiaBieu"].ToString();
+                        enBBBC.DinhMuc = string.IsNullOrEmpty(jsonContent["DinhMuc"].ToString()) ? "NULL" : jsonContent["DinhMuc"].ToString();
+                        enBBBC.DinhMucHN = string.IsNullOrEmpty(jsonContent["DinhMucHN"].ToString()) ? "NULL" : jsonContent["DinhMucHN"].ToString();
+                        enBBBC.Dot = string.IsNullOrEmpty(jsonContent["Dot"].ToString()) ? "NULL" : "N'" + jsonContent["Dot"].ToString() + "'";
+                        enBBBC.Ky = string.IsNullOrEmpty(jsonContent["Ky"].ToString()) ? "NULL" : "N'" + jsonContent["Ky"].ToString() + "'";
+                        enBBBC.Nam = string.IsNullOrEmpty(jsonContent["Nam"].ToString()) ? "NULL" : "N'" + jsonContent["Nam"].ToString() + "'";
+                        enBBBC.Phuong = string.IsNullOrEmpty(jsonContent["Phuong"].ToString()) ? "NULL" : "N'" + jsonContent["Phuong"].ToString() + "'";
+                        enBBBC.Quan = string.IsNullOrEmpty(jsonContent["Quan"].ToString()) ? "NULL" : "N'" + jsonContent["Quan"].ToString() + "'";
+                        enBBBC.Hieu = string.IsNullOrEmpty(jsonContent["Hieu"].ToString()) ? "NULL" : "N'" + jsonContent["Hieu"].ToString() + "'";
+                        enBBBC.Co = string.IsNullOrEmpty(jsonContent["Co"].ToString()) ? "NULL" : jsonContent["Co"].ToString();
+                        enBBBC.SoThan = string.IsNullOrEmpty(jsonContent["SoThan"].ToString()) ? "NULL" : "N'" + jsonContent["SoThan"].ToString() + "'";
+                        enBBBC.ChiSo = string.IsNullOrEmpty(jsonContent["ChiSo"].ToString()) ? "NULL" : jsonContent["ChiSo"].ToString();
+                        enBBBC.NiemChi = string.IsNullOrEmpty(jsonContent["NiemChi"].ToString()) ? "NULL" : "N'" + jsonContent["NiemChi"].ToString() + "'";
+                        enBBBC.MauSac = string.IsNullOrEmpty(jsonContent["MauSac"].ToString()) ? "NULL" : "N'" + jsonContent["MauSac"].ToString() + "'";
+                        enBBBC.ChiSoLucKiemTra = string.IsNullOrEmpty(jsonContent["ChiSoLucKiemTra"].ToString()) ? "NULL" : "N'" + jsonContent["ChiSoLucKiemTra"].ToString() + "'";
+                        enBBBC.ChiMatSo = string.IsNullOrEmpty(jsonContent["ChiMatSo"].ToString()) ? "NULL" : "N'" + jsonContent["ChiMatSo"].ToString() + "'";
+                        enBBBC.ChiKhoaGoc = string.IsNullOrEmpty(jsonContent["ChiKhoaGoc"].ToString()) ? "NULL" : "N'" + jsonContent["ChiKhoaGoc"].ToString() + "'";
+                        enBBBC.MucDichSuDung = string.IsNullOrEmpty(jsonContent["MucDichSuDung"].ToString()) ? "NULL" : "N'" + jsonContent["MucDichSuDung"].ToString() + "'";
+                        enBBBC.TrangThaiBamChi = string.IsNullOrEmpty(jsonContent["TrangThaiBamChi"].ToString()) ? "NULL" : "N'" + jsonContent["TrangThaiBamChi"].ToString() + "'";
+                        enBBBC.MaKim = string.IsNullOrEmpty(jsonContent["MaKim"].ToString()) ? "NULL" : "N'" + jsonContent["MaKim"].ToString() + "'";
+                        enBBBC.VienChi = string.IsNullOrEmpty(jsonContent["VienChi"].ToString()) ? "NULL" : jsonContent["VienChi"].ToString();
+                        enBBBC.DayChi = string.IsNullOrEmpty(jsonContent["DayChi"].ToString()) ? "NULL" : jsonContent["DayChi"].ToString();
+                        enBBBC.ThucHienTheoYeuCau = string.IsNullOrEmpty(jsonContent["ThucHienTheoYeuCau"].ToString()) ? "NULL" : "N'" + jsonContent["ThucHienTheoYeuCau"].ToString() + "'";
+                        enBBBC.GhiChu = string.IsNullOrEmpty(jsonContent["GhiChu"].ToString()) ? "NULL" : "N'" + jsonContent["GhiChu"].ToString() + "'";
                         var transactionOptions = new TransactionOptions();
                         transactionOptions.IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted;
                         using (TransactionScope scope = new TransactionScope(TransactionScopeOption.Required, transactionOptions))
@@ -1164,35 +1267,35 @@ namespace WSTanHoa.Controllers
                              + " ,[CreateBy])"
                        + " VALUES"
                              + " (" + MaCTBC
-                             + " ,N'" + jsonContent["DanhBo"].ToString() + "'"
-                             + " ,N'" + jsonContent["HopDong"].ToString() + "'"
-                             + " ,N'" + jsonContent["HoTen"].ToString() + "'"
-                             + " ,N'" + jsonContent["DiaChi"].ToString() + "'"
-                             + " ," + jsonContent["GiaBieu"].ToString()
-                             + " ," + jsonContent["DinhMuc"].ToString()
-                             + " ," + jsonContent["DinhMucHN"].ToString()
-                             + " ,N'" + jsonContent["Dot"].ToString() + "'"
-                             + " ,N'" + jsonContent["Ky"].ToString() + "'"
-                             + " ,N'" + jsonContent["Nam"].ToString() + "'"
-                             + " ,N'" + jsonContent["Quan"].ToString() + "'"
-                             + " ,N'" + jsonContent["Phuong"].ToString() + "'"
+                             + " ," + enBBBC.DanhBo
+                             + " ," + enBBBC.HopDong
+                             + " ," + enBBBC.HoTen
+                             + " ," + enBBBC.DiaChi
+                             + " ," + enBBBC.GiaBieu
+                             + " ," + enBBBC.DinhMuc
+                             + " ," + enBBBC.DinhMucHN
+                             + " ," + enBBBC.Dot
+                             + " ," + enBBBC.Ky
+                             + " ," + enBBBC.Nam
+                             + " ," + enBBBC.Quan
+                             + " ," + enBBBC.Phuong
                              + " ,'" + NgayBC + "'"
-                             + " ,N'" + jsonContent["Hieu"].ToString() + "'"
-                             + " ," + jsonContent["Co"].ToString()
-                             + " ,N'" + jsonContent["SoThan"].ToString() + "'"
-                             + " ," + jsonContent["ChiSo"].ToString()
-                             + " ,N'" + jsonContent["NiemChi"].ToString() + "'"
-                             + " ,N'" + jsonContent["MauSac"].ToString() + "'"
-                             + " ,N'" + jsonContent["ChiSoLucKiemTra"].ToString() + "'"
-                             + " ,N'" + jsonContent["ChiMatSo"].ToString() + "'"
-                             + " ,N'" + jsonContent["ChiKhoaGoc"].ToString() + "'"
-                             + " ,N'" + jsonContent["MucDichSuDung"].ToString() + "'"
-                             + " ,N'" + jsonContent["TrangThaiBamChi"].ToString() + "'"
-                             + " ,N'" + jsonContent["MaKim"].ToString() + "'"
-                             + " ," + jsonContent["VienChi"].ToString()
-                             + " ," + jsonContent["DayChi"].ToString()
-                             + " ,N'" + jsonContent["TheoYeuCau"].ToString() + "'"
-                             + " ,N'" + jsonContent["GhiChu"].ToString() + "'"
+                             + " ," + enBBBC.Hieu
+                             + " ," + enBBBC.Co
+                             + " ," + enBBBC.SoThan
+                             + " ," + enBBBC.ChiSo
+                             + " ," + enBBBC.NiemChi
+                             + " ," + enBBBC.MauSac
+                             + " ," + enBBBC.ChiSoLucKiemTra
+                             + " ," + enBBBC.ChiMatSo
+                             + " ," + enBBBC.ChiKhoaGoc
+                             + " ," + enBBBC.MucDichSuDung
+                             + " ," + enBBBC.TrangThaiBamChi
+                             + " ," + enBBBC.MaKim
+                             + " ," + enBBBC.VienChi
+                             + " ," + enBBBC.DayChi
+                             + " ," + enBBBC.ThucHienTheoYeuCau
+                             + " ," + enBBBC.GhiChu
                              + " ," + MaBC
                              + " ," + MaDons[1]
                              + " ,getdate()"
@@ -1207,14 +1310,16 @@ namespace WSTanHoa.Controllers
                                     byte[] hinh = System.Convert.FromBase64String(item["Value"]);
                                     if (_wsThuongVu.ghi_Hinh("BamChi_ChiTiet_Hinh", MaCTBC, enHinhAnhReturn.Name + item["Type"], hinh) == true)
                                     {
+                                        string IDHinh = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("if exists (select top 1 * from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh else select 1").ToString();
                                         _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh(ID,IDBamChi_ChiTiet,Name,Loai,CreateBy,CreateDate)"
-                                            + "values((if exists (select top 1 * from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh else select 1)"
+                                            + "values(" + IDHinh
                                             + "," + MaCTBC + ",'" + enHinhAnhReturn.Name + "','" + item["Type"] + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
                                     }
                                     lstHinhAnhReturn.Add(enHinhAnhReturn);
                                 }
+                                string IDLichSu = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("if exists (select top 1 * from KTKS_DonKH.dbo.DonTu_LichSu) select MAX(ID)+1 from KTKS_DonKH.dbo.DonTu_LichSu else select 1").ToString();
                                 result.success = _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.DonTu_LichSu(ID,NgayChuyen,ID_NoiChuyen,NoiChuyen,NoiDung,TableName,IDCT,MaDon,STT,CreateBy,CreateDate)"
-                                                            + "values((if exists (select top 1 * from KTKS_DonKH.dbo.DonTu_LichSu) select MAX(ID)+1 from KTKS_DonKH.dbo.DonTu_LichSu else select 1),'" + NgayBC + "',5,N'Kiểm Tra',N'Đã Bấm Chì, "
+                                                            + "values(" + IDLichSu + ",'" + NgayBC + "',5,N'Kiểm Tra',N'Đã Bấm Chì, "
                                                             + jsonContent["TrangThaiBamChi"].ToString() + "','BamChi_ChiTiet'," + MaCTBC + "," + MaDons[0] + "," + MaDons[1] + "," + jsonContent["IDUser"].ToString() + ",getdate())");
                                 scope.Complete();
                                 scope.Dispose();
@@ -1262,36 +1367,65 @@ namespace WSTanHoa.Controllers
                     }
                     if (jsonContent["checksum"].ToString() == CGlobalVariable.salaPass)
                     {
+                        BBBC enBBBC = new BBBC();
+                        enBBBC.DanhBo = string.IsNullOrEmpty(jsonContent["DanhBo"].ToString()) ? "NULL" : "N'" + jsonContent["DanhBo"].ToString() + "'";
+                        enBBBC.HopDong = string.IsNullOrEmpty(jsonContent["HopDong"].ToString()) ? "NULL" : "N'" + jsonContent["HopDong"].ToString() + "'";
+                        enBBBC.HoTen = string.IsNullOrEmpty(jsonContent["HoTen"].ToString()) ? "NULL" : "N'" + jsonContent["HoTen"].ToString() + "'";
+                        enBBBC.DiaChi = string.IsNullOrEmpty(jsonContent["DiaChi"].ToString()) ? "NULL" : "N'" + jsonContent["DiaChi"].ToString() + "'";
+                        enBBBC.GiaBieu = string.IsNullOrEmpty(jsonContent["GiaBieu"].ToString()) ? "NULL" : jsonContent["GiaBieu"].ToString();
+                        enBBBC.DinhMuc = string.IsNullOrEmpty(jsonContent["DinhMuc"].ToString()) ? "NULL" : jsonContent["DinhMuc"].ToString();
+                        enBBBC.DinhMucHN = string.IsNullOrEmpty(jsonContent["DinhMucHN"].ToString()) ? "NULL" : jsonContent["DinhMucHN"].ToString();
+                        enBBBC.Dot = string.IsNullOrEmpty(jsonContent["Dot"].ToString()) ? "NULL" : "N'" + jsonContent["Dot"].ToString() + "'";
+                        enBBBC.Ky = string.IsNullOrEmpty(jsonContent["Ky"].ToString()) ? "NULL" : "N'" + jsonContent["Ky"].ToString() + "'";
+                        enBBBC.Nam = string.IsNullOrEmpty(jsonContent["Nam"].ToString()) ? "NULL" : "N'" + jsonContent["Nam"].ToString() + "'";
+                        enBBBC.Phuong = string.IsNullOrEmpty(jsonContent["Phuong"].ToString()) ? "NULL" : "N'" + jsonContent["Phuong"].ToString() + "'";
+                        enBBBC.Quan = string.IsNullOrEmpty(jsonContent["Quan"].ToString()) ? "NULL" : "N'" + jsonContent["Quan"].ToString() + "'";
+                        enBBBC.Hieu = string.IsNullOrEmpty(jsonContent["Hieu"].ToString()) ? "NULL" : "N'" + jsonContent["Hieu"].ToString() + "'";
+                        enBBBC.Co = string.IsNullOrEmpty(jsonContent["Co"].ToString()) ? "NULL" : jsonContent["Co"].ToString();
+                        enBBBC.SoThan = string.IsNullOrEmpty(jsonContent["SoThan"].ToString()) ? "NULL" : "N'" + jsonContent["SoThan"].ToString() + "'";
+                        enBBBC.ChiSo = string.IsNullOrEmpty(jsonContent["ChiSo"].ToString()) ? "NULL" : jsonContent["ChiSo"].ToString();
+                        enBBBC.NiemChi = string.IsNullOrEmpty(jsonContent["NiemChi"].ToString()) ? "NULL" : "N'" + jsonContent["NiemChi"].ToString() + "'";
+                        enBBBC.MauSac = string.IsNullOrEmpty(jsonContent["MauSac"].ToString()) ? "NULL" : "N'" + jsonContent["MauSac"].ToString() + "'";
+                        enBBBC.ChiSoLucKiemTra = string.IsNullOrEmpty(jsonContent["ChiSoLucKiemTra"].ToString()) ? "NULL" : "N'" + jsonContent["ChiSoLucKiemTra"].ToString() + "'";
+                        enBBBC.ChiMatSo = string.IsNullOrEmpty(jsonContent["ChiMatSo"].ToString()) ? "NULL" : "N'" + jsonContent["ChiMatSo"].ToString() + "'";
+                        enBBBC.ChiKhoaGoc = string.IsNullOrEmpty(jsonContent["ChiKhoaGoc"].ToString()) ? "NULL" : "N'" + jsonContent["ChiKhoaGoc"].ToString() + "'";
+                        enBBBC.MucDichSuDung = string.IsNullOrEmpty(jsonContent["MucDichSuDung"].ToString()) ? "NULL" : "N'" + jsonContent["MucDichSuDung"].ToString() + "'";
+                        enBBBC.TrangThaiBamChi = string.IsNullOrEmpty(jsonContent["TrangThaiBamChi"].ToString()) ? "NULL" : "N'" + jsonContent["TrangThaiBamChi"].ToString() + "'";
+                        enBBBC.MaKim = string.IsNullOrEmpty(jsonContent["MaKim"].ToString()) ? "NULL" : "N'" + jsonContent["MaKim"].ToString() + "'";
+                        enBBBC.VienChi = string.IsNullOrEmpty(jsonContent["VienChi"].ToString()) ? "NULL" : jsonContent["VienChi"].ToString();
+                        enBBBC.DayChi = string.IsNullOrEmpty(jsonContent["DayChi"].ToString()) ? "NULL" : jsonContent["DayChi"].ToString();
+                        enBBBC.ThucHienTheoYeuCau = string.IsNullOrEmpty(jsonContent["ThucHienTheoYeuCau"].ToString()) ? "NULL" : "N'" + jsonContent["ThucHienTheoYeuCau"].ToString() + "'";
+                        enBBBC.GhiChu = string.IsNullOrEmpty(jsonContent["GhiChu"].ToString()) ? "NULL" : "N'" + jsonContent["GhiChu"].ToString() + "'";
                         _cDAL_ThuongVu.ExecuteNonQuery("UPDATE KTKS_DonKH.dbo.BamChi_ChiTiet SET"
-                          + " [DanhBo] = N'" + jsonContent["DanhBo"].ToString() + "'"
-                          + " ,[HopDong] = N'" + jsonContent["HopDong"].ToString() + "'"
-                          + " ,[HoTen] = N'" + jsonContent["HoTen"].ToString() + "'"
-                          + " ,[DiaChi] =N'" + jsonContent["DiaChi"].ToString() + "'"
-                          + " ,[GiaBieu] = " + jsonContent["GiaBieu"].ToString()
-                          + " ,[DinhMuc] = " + jsonContent["DinhMuc"].ToString()
-                          + " ,[DinhMucHN] = " + jsonContent["DinhMucHN"].ToString()
-                          + " ,[Dot] = N'" + jsonContent["Dot"].ToString() + "'"
-                          + " ,[Ky] = N'" + jsonContent["Ky"].ToString() + "'"
-                          + " ,[Nam] = N'" + jsonContent["Nam"].ToString() + "'"
-                          + " ,[Quan] = N'" + jsonContent["Quan"].ToString() + "'"
-                          + " ,[Phuong] = N'" + jsonContent["Phuong"].ToString() + "'"
+                          + " [DanhBo] = " + enBBBC.DanhBo
+                          + " ,[HopDong] = " + enBBBC.HopDong
+                          + " ,[HoTen] = " + enBBBC.HoTen
+                          + " ,[DiaChi] =" + enBBBC.DiaChi
+                          + " ,[GiaBieu] = " + enBBBC.GiaBieu
+                          + " ,[DinhMuc] = " + enBBBC.DinhMuc
+                          + " ,[DinhMucHN] = " + enBBBC.DinhMucHN
+                          + " ,[Dot] = " + enBBBC.Dot
+                          + " ,[Ky] = " + enBBBC.Ky
+                          + " ,[Nam] = " + enBBBC.Nam
+                          + " ,[Quan] = " + enBBBC.Quan
+                          + " ,[Phuong] = " + enBBBC.Phuong
                           + " ,[NgayBC] = '" + NgayBC + "'"
-                          + " ,[Hieu] = N'" + jsonContent["Hieu"].ToString() + "'"
-                          + " ,[Co] = " + jsonContent["Co"].ToString()
-                          + " ,[SoThan] = N'" + jsonContent["SoThan"].ToString() + "'"
-                          + " ,[ChiSo] = " + jsonContent["ChiSo"].ToString()
-                          + " ,[NiemChi] =N'" + jsonContent["NiemChi"].ToString() + "'"
-                          + " ,[MauSac] = N'" + jsonContent["MauSac"].ToString() + "'"
-                          + " ,[TinhTrangChiSo] =N'" + jsonContent["ChiSoLucKiemTra"].ToString() + "'"
-                          + " ,[ChiMatSo] = N'" + jsonContent["ChiMatSo"].ToString() + "'"
-                          + " ,[ChiKhoaGoc] =N'" + jsonContent["ChiKhoaGoc"].ToString() + "'"
-                          + " ,[MucDichSuDung] = N'" + jsonContent["MucDichSuDung"].ToString() + "'"
-                          + " ,[VienChi] = " + jsonContent["VienChi"].ToString()
-                          + " ,[DayChi] = " + jsonContent["DayChi"].ToString()
-                          + " ,[TrangThaiBC] =  N'" + jsonContent["TrangThaiBamChi"].ToString() + "'"
-                          + " ,[GhiChu] =  N'" + jsonContent["GhiChu"].ToString() + "'"
-                          + " ,[MaSoBC] =  N'" + jsonContent["MaSoBC"].ToString() + "'"
-                          + " ,[TheoYeuCau] = N'" + jsonContent["TheoYeuCau"].ToString() + "'"
+                          + " ,[Hieu] = " + enBBBC.Hieu
+                          + " ,[Co] = " + enBBBC.Co
+                          + " ,[SoThan] = " + enBBBC.SoThan
+                          + " ,[ChiSo] = " + enBBBC.ChiSo
+                          + " ,[NiemChi] =" + enBBBC.NiemChi
+                          + " ,[MauSac] = " + enBBBC.MauSac
+                          + " ,[TinhTrangChiSo] =" + enBBBC.ChiSoLucKiemTra
+                          + " ,[ChiMatSo] = " + enBBBC.ChiMatSo
+                          + " ,[ChiKhoaGoc] =" + enBBBC.ChiKhoaGoc
+                          + " ,[MucDichSuDung] = " + enBBBC.MucDichSuDung
+                          + " ,[VienChi] = " + enBBBC.VienChi
+                          + " ,[DayChi] = " + enBBBC.DayChi
+                          + " ,[TrangThaiBC] =  " + enBBBC.TrangThaiBamChi
+                          + " ,[GhiChu] =  " + enBBBC.GhiChu
+                          + " ,[MaSoBC] =  " + enBBBC.MaKim
+                          + " ,[TheoYeuCau] = " + enBBBC.ThucHienTheoYeuCau
                           + " ,[ModifyDate] = getdate()"
                           + " ,[ModifyBy] = " + jsonContent["IDUser"].ToString()
                           + " WHERE MaCTBC=" + jsonContent["ID"].ToString());
@@ -1386,6 +1520,7 @@ namespace WSTanHoa.Controllers
                             {
                                 if (_wsThuongVu.ghi_Hinh("KTXM_ChiTiet_Hinh", jsonContent["ID"].ToString(), enHinhAnhReturn.Name + jsonContent["Type"].ToString(), hinh) == true)
                                 {
+                                    string IDHinh = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("if exists (select top 1 * from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh else select 1").ToString();
                                     _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh(ID,IDKTXM_ChiTiet,Name,Loai,CreateBy,CreateDate)"
                                         + "values((if exists (select top 1 * from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.KTXM_ChiTiet_Hinh else select 1)"
                                         + "," + jsonContent["ID"].ToString() + ",'" + enHinhAnhReturn.Name + "','" + jsonContent["Type"].ToString() + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
@@ -1396,6 +1531,7 @@ namespace WSTanHoa.Controllers
                             {
                                 if (_wsThuongVu.ghi_Hinh("BamChi_ChiTiet_Hinh", jsonContent["ID"].ToString(), enHinhAnhReturn.Name + jsonContent["Type"].ToString(), hinh) == true)
                                 {
+                                    string IDHinh = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("if exists (select top 1 * from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh else select 1").ToString();
                                     _cDAL_ThuongVu.ExecuteNonQuery("insert into KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh(ID,IDBamChi_ChiTiet,Name,Loai,CreateBy,CreateDate)"
                                         + "values((if exists (select top 1 * from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh) select MAX(ID)+1 from KTKS_DonKH.dbo.BamChi_ChiTiet_Hinh else select 1)"
                                         + "," + jsonContent["ID"].ToString() + ",'" + enHinhAnhReturn.Name + "','" + jsonContent["Type"].ToString() + "'," + jsonContent["IDUser"].ToString() + ",getdate())");
