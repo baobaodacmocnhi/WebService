@@ -835,6 +835,99 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
+        private string sendMessageOver7Days(string IDZalo, string message)
+        {
+            string strResponse = "";
+            try
+            {
+                string url = "https://openapi.zalo.me/v3.0/oa/message/transaction";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Tls11
+                       | SecurityProtocolType.Tls12
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["access_token"] = getAccess_token();
+                string data = "{"
+                            + "\"recipient\":{"
+                            + "\"user_id\":\"" + IDZalo + "\""
+                            + "},"
+                            + "\"message\":{"
+                            + "\"attachment\":{"
+                            + "\"type\":\"template\","
+                            + "\"payload\":{"
+                            + "\"template_type\":\"transaction_order\","
+                            + "\"language\":\"VI\","
+                            + "\"elements\":["
+                            + "{"
+                            + "\"type\":\"banner\","
+                            + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\""
+                            + "},"
+                            + "{"
+                            + "\"type\":\"header\","
+                            + "\"content\":\"Hóa đơn chưa thanh toán\","
+                            + "\"align\":\"left\""
+                            + "},"
+                            +"{"
+                            + "\"type\":\"text\","
+                            + "\"content\":\"• Cảm ơn bạn đã mua hàng tại cửa hàng.<br>• Thông tin đơn hàng của bạn như sau:\","
+                            + "\"align\":\"left\""
+                            + "},"
+                            + "{"
+                            + "\"type\":\"table\","
+                            + "\"content\":["
+                            + "{"
+                            + "\"value\":\"F-01332973223\","
+                            + "\"key\":\"Mã khách hàng\""
+                            + "},"
+                            + "{"
+                            + "\"value\":\"Đang giao\","
+                            + "\"key\":\"Trạng thái\""
+                            + "},"
+                            + "{"
+                            + "\"value\":\"250,000đ\","
+                            + "\"key\":\"Giá tiền\""
+                            + "}"
+                            + "]"
+                            + "},"
+                            + "{"
+                            + "\"type\":\"text\","
+                            + "\"content\":\"📱Lưu ý điện thoại. Xin cảm ơn!\","
+                            + "\"align\":\"center\""
+                            + "}"
+                            + "],"
+                             + "\"buttons\":[]"
+                            + "}"
+                            + "}"
+                            + "}"
+                            + "}";
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
+                    strResponse = deserializedResult.message;
+                    read.Close();
+                    respuesta.Close();
+                }
+                else
+                {
+                    strResponse = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
         /// <summary>
         /// Gửi tin nhắn đăng ký
         /// </summary>

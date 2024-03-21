@@ -616,7 +616,13 @@ namespace WSSmartPhone
                             return true;
                         }
                         else
-                            strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
+                            if (obj["code"] == "INFO_NOT_FOUND")
+                            {
+                                _cDAL_TTKH.ExecuteNonQuery("delete Zalo_EContract_ChiTiet where IDEContract='" + dt.Rows[0]["IDEContract"].ToString() + "'");
+                                return true;
+                            }
+                            else
+                                strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
                     }
                     else
                         strResponse = "Không có dữ liệu từ mã đơn";
@@ -653,11 +659,6 @@ namespace WSSmartPhone
                         {
                             strResponse = "EContract đã có hiệu lực";
                             return false;
-                        }
-                        if (checkHuyEContract(dt.Rows[0]["IDEContract"].ToString()))
-                        {
-                            _cDAL_TTKH.ExecuteNonQuery("delete Zalo_EContract_ChiTiet where IDEContract='" + dt.Rows[0]["IDEContract"].ToString() + "'");
-                            return true;
                         }
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;

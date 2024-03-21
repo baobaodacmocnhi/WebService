@@ -1190,7 +1190,7 @@ namespace WSTanHoa.Controllers
                         + " select @Ma = MAX(SUBSTRING(CONVERT(nvarchar(50), MaBC), LEN(CONVERT(nvarchar(50), MaBC)) - 1, 2)) from BamChi"
                         + " select MAX(MaBC) from BamChi where SUBSTRING(CONVERT(nvarchar(50), MaBC), LEN(CONVERT(nvarchar(50), MaBC)) - 1, 2) = @Ma").ToString();
                         MaBC = getMaxNextIDTable(MaBC);
-                        _cDAL_ThuongVu.ExecuteNonQuery("if exists (select * from KTKS_DonKH.dbo.BamChi where MaDonMoi=" + MaDons[0] + ")"
+                        _cDAL_ThuongVu.ExecuteNonQuery("if not exists (select * from KTKS_DonKH.dbo.BamChi where MaDonMoi=" + MaDons[0] + ")"
                         + " insert into KTKS_DonKH.dbo.BamChi(MaBC, MaDonMoi, CreateBy, CreateDate)values(" + MaBC + ", " + MaDons[0] + ", " + jsonContent["IDUser"].ToString() + ", GETDATE())");
                         MaBC = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select MaBC from KTKS_DonKH.dbo.BamChi where MaDonMoi=" + MaDons[0] + "").ToString();
                         string MaCTBC = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("declare @Ma int"
