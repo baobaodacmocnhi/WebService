@@ -361,7 +361,13 @@ namespace WSSmartPhone
                         return true;
                     }
                     else
-                        strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
+                        if (obj["message"] == "ECT-00001110")
+                        {
+                            getAccess_token("tanho@2022");
+                            strResponse = "Lỗi api - Vui lòng thực hiện lại";
+                        }
+                        else
+                            strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
                 }
                 else
                     strResponse = "Sai checksum";
