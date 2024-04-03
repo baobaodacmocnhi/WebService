@@ -25,7 +25,8 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_TrungTam = new CConnection(CGlobalVariable.TrungTamKhachHang);
         apiTrungTamKhachHangController _apiTTKH = new apiTrungTamKhachHangController();
-        string _IDZalo = "4276209776391262580";
+        string _IDZaloBao = "4276209776391262580";
+        string _IDZaloDat = "1530532967005608465";
         string _url = "https://service.cskhtanhoa.com.vn";
         string _urlImage = "https://service.cskhtanhoa.com.vn/Images";
         //string _url = "http://service.capnuoctanhoa.com.vn:1010";
@@ -835,98 +836,6 @@ namespace WSTanHoa.Controllers
             return strResponse;
         }
 
-        private string sendMessageOver7Days(string IDZalo, string message)
-        {
-            string strResponse = "";
-            try
-            {
-                string url = "https://openapi.zalo.me/v3.0/oa/message/transaction";
-                ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                       | SecurityProtocolType.Tls11
-                       | SecurityProtocolType.Tls12
-                       | SecurityProtocolType.Ssl3;
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                request.Method = "POST";
-                request.ContentType = "application/json";
-                request.Headers["access_token"] = getAccess_token();
-                string data = "{"
-                            + "\"recipient\":{"
-                            + "\"user_id\":\"" + IDZalo + "\""
-                            + "},"
-                            + "\"message\":{"
-                            + "\"attachment\":{"
-                            + "\"type\":\"template\","
-                            + "\"payload\":{"
-                            + "\"template_type\":\"transaction_order\","
-                            + "\"language\":\"VI\","
-                            + "\"elements\":["
-                            + "{"
-                            + "\"type\":\"banner\","
-                            + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\""
-                            + "},"
-                            + "{"
-                            + "\"type\":\"header\","
-                            + "\"content\":\"Hóa đơn chưa thanh toán\","
-                            + "\"align\":\"left\""
-                            + "},"
-                            +"{"
-                            + "\"type\":\"text\","
-                            + "\"content\":\"• Cảm ơn bạn đã mua hàng tại cửa hàng.<br>• Thông tin đơn hàng của bạn như sau:\","
-                            + "\"align\":\"left\""
-                            + "},"
-                            + "{"
-                            + "\"type\":\"table\","
-                            + "\"content\":["
-                            + "{"
-                            + "\"value\":\"F-01332973223\","
-                            + "\"key\":\"Mã khách hàng\""
-                            + "},"
-                            + "{"
-                            + "\"value\":\"Đang giao\","
-                            + "\"key\":\"Trạng thái\""
-                            + "},"
-                            + "{"
-                            + "\"value\":\"250,000đ\","
-                            + "\"key\":\"Giá tiền\""
-                            + "}"
-                            + "]"
-                            + "},"
-                            + "{"
-                            + "\"type\":\"text\","
-                            + "\"content\":\"📱Lưu ý điện thoại. Xin cảm ơn!\","
-                            + "\"align\":\"center\""
-                            + "}"
-                            + "],"
-                             + "\"buttons\":[]"
-                            + "}"
-                            + "}"
-                            + "}"
-                            + "}";
-                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
-                {
-                    streamWriter.Write(data);
-                }
-                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
-                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
-                {
-                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
-                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
-                    strResponse = deserializedResult.message;
-                    read.Close();
-                    respuesta.Close();
-                }
-                else
-                {
-                    strResponse = "Error: " + respuesta.StatusCode;
-                }
-            }
-            catch (Exception ex)
-            {
-                strResponse = ex.Message;
-            }
-            return strResponse;
-        }
 
         /// <summary>
         /// Gửi tin nhắn đăng ký
@@ -1570,20 +1479,25 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
-                    string sql = "select b.DanhBo,b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b, HOADON_TA.dbo.HOADON hd where a.IDZalo = b.IDZalo and a.Follow = 1"
-                                 + " and DanhBo not in (select t1.DanhBo from (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0) t1,HOADON_TA.dbo.HOADON hd"
-                                 + " where hd.NAM = 2023 and hd.ky = 10 and t1.DanhBo = hd.DANHBA and hd.DM >= 40)"
-                                 + " and hd.NAM = 2023 and hd.ky = 10 and b.DanhBo = hd.DANHBA and hd.DM >= 40"
-                                 + " and DANHBA not in (select distinct DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where Loai like '%cccd%' and DanhBo in (select distinct ct.danhbo from KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet ct"
-                                 + " where dt.MaDon = ct.MaDon  and CAST(ct.CreateDate as date) >= '20231012' and Name_NhomDon like N'%định mức%'))";
-                    //string sql = "select IDZalo='" + IDZalo + "'";
+                    //string sql = "select b.DanhBo,b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b, HOADON_TA.dbo.HOADON hd where a.IDZalo = b.IDZalo and a.Follow = 1"
+                    //             + " and DanhBo not in (select t1.DanhBo from (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0) t1,HOADON_TA.dbo.HOADON hd"
+                    //             + " where hd.NAM = 2023 and hd.ky = 10 and t1.DanhBo = hd.DANHBA and hd.DM >= 40)"
+                    //             + " and hd.NAM = 2023 and hd.ky = 10 and b.DanhBo = hd.DANHBA and hd.DM >= 40"
+                    //             + " and DANHBA not in (select distinct DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where Loai like '%cccd%' and DanhBo in (select distinct ct.danhbo from KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet ct"
+                    //             + " where dt.MaDon = ct.MaDon  and CAST(ct.CreateDate as date) >= '20231012' and Name_NhomDon like N'%định mức%'))";
+                    string sql = "select * from"
+                        + " (select DanhBo, IDZalo, HoTen = TENKH from(select distinct DanhBo, b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b where a.IDZalo = b.IDZalo and a.Follow = 1)t2, HOADON_TA.dbo.HOADON hd"
+                        + " where DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
+                        + " and hd.NAM = 2024 and hd.ky = 3 and t2.DanhBo = hd.DANHBA and hd.DM >= 4 and hd.DM <= 36)t1"
+                        + " where t1.DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.DCBD_ChiTietBienDong where HieuLucKy in ('12/2023','01/2024','02/2024','03/2024','04/2024','05/2024','06/2024','07/2024','08/2024'))"
+                        + " and t1.DanhBo in (select danhbo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date)='20240403' and Loai='thongbaocccd' and Result='-230 : User has not interacted with the OA in the past 7 days')";
                     DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     string message;
                     foreach (DataRow item in dt.Rows)
                     {
-                        message = "    Công ty Cổ phần Cấp nước Tân Hòa (Công ty) trân trọng thông báo đến Quý khách hàng việc cấp định mức nước theo số định danh cá nhân."
-                                    + "\n    Kính đề nghị Quý khách hàng khi nhận được thông báo này, khẩn trương liên hệ Công ty qua số điện thoại: 1900 6489 để được hướng dẫn."
-                                    + "\n    Trường hợp hết ngày 11/11/2023, khách hàng vẫn không liên hệ, Công ty buộc lòng điều chỉnh định mức nước = 0m3/tháng."
+                        message = "    Công ty Cổ phần Cấp nước Tân Hòa (Công ty) trân trọng thông báo đến Quý khách hàng " + item["HoTen"].ToString() + " - DB:" + item["DanhBo"].ToString() + " việc cấp định mức nước theo số định danh cá nhân."
+                                    + "\n    Kính đề nghị Quý khách khi nhận được thông báo này, khẩn trương liên hệ Công ty qua số điện thoại: 1900 6489 để được hướng dẫn."
+                                    + "\n    Trường hợp sau 07 ngày Quý khách vẫn không liên hệ, Công ty buộc lòng điều chỉnh định mức nước = 0m3/tháng."
                                     + "\n    Trân trọng kính báo./.";
                         strResponse = sendMessage(item["IDZalo"].ToString(), message);
                         _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + item["DanhBo"].ToString() + "',N'thongbaocccd',N'" + message + "',N'" + strResponse + "')");
@@ -1597,7 +1511,163 @@ namespace WSTanHoa.Controllers
             {
                 strResponse = ex.Message;
             }
-            _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('0',N'',N'thongbaocccd',N'',N'" + strResponse + "')");
+            if (strResponse != "Đã xử lý")
+                _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('0',N'',N'thongbaocccd',N'',N'" + strResponse + "')");
+            return strResponse;
+        }
+
+        [Route("ThongBaoDangKyCCCDOver7Days")]
+        [HttpGet]
+        public string ThongBaoDangKyCCCDOver7Days(string checksum)
+        {
+            string strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    string sql = "select * from"
+                        + " (select DanhBo, IDZalo, HoTen = TENKH,DiaChi=SO+' '+DUONG,DinhMuc=DM from(select distinct DanhBo, b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b where a.IDZalo = b.IDZalo and a.Follow = 1)t2, HOADON_TA.dbo.HOADON hd"
+                        + " where DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
+                        + " and hd.NAM = 2024 and hd.ky = 3 and t2.DanhBo = hd.DANHBA and hd.DM >= 4 and hd.DM <= 36)t1"
+                        + " where t1.DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.DCBD_ChiTietBienDong where HieuLucKy in ('12/2023','01/2024','02/2024','03/2024','04/2024','05/2024','06/2024','07/2024','08/2024'))"
+                        + " and t1.DanhBo in (select danhbo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date)='20240403' and Loai='thongbaocccd' and Result='-230 : User has not interacted with the OA in the past 7 days')";
+                    DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        strResponse = sendMessageOver7Days_CCCD(_IDZaloBao
+                            , "Thông báo về việc cấp định mức nước theo số định danh cá nhân."
+                            , "Công ty Cổ phần Cấp nước Tân Hòa trân trọng thông báo đến Quý khách hàng"
+                            , "Quý khách hàng vui lòng cung cấp đầy đủ thông tin số định danh cá nhân và các giấy tờ liên quan đến nơi cư trú để đăng ký định mức nước. Trường hợp sau 07 ngày Quý khách vẫn không liên hệ, Công ty buộc lòng điều chỉnh định mức nước = 0m3/tháng."
+                            , item["DanhBo"].ToString(), item["HoTen"].ToString(), item["DiaChi"].ToString(), item["DinhMuc"].ToString() + " m3");
+                        _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + item["DanhBo"].ToString() + "',N'thongbaocccd',N'Over7Days',N'" + strResponse + "')");
+                    }
+                    strResponse = "Đã xử lý";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            if (strResponse != "Đã xử lý")
+                _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values('0',N'',N'thongbaocccd',N'',N'" + strResponse + "')");
+            return strResponse;
+        }
+
+        private string sendMessageOver7Days_CCCD(string IDZalo, string TieuDe, string NoiDung, string NoiDungEnd, string DanhBo, string HoTen, string DiaChi, string DinhMuc)
+        {
+            string strResponse = "";
+            try
+            {
+                string url = "https://openapi.zalo.me/v3.0/oa/message/transaction";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Tls11
+                       | SecurityProtocolType.Tls12
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["access_token"] = getAccess_token();
+                string data = "{"
+                            + "\"recipient\":{"
+                            + "\"user_id\":\"" + IDZalo + "\""
+                            + "},"
+                            + "\"message\":{"
+                            + "\"attachment\":{"
+                            + "\"type\":\"template\","
+                            + "\"payload\":{"
+                            + "\"template_type\":\"transaction_contract\","
+                            + "\"language\":\"VI\","
+                            + "\"elements\":["
+                            + "{"
+                            + "\"type\":\"banner\","
+                            + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\""
+                            + "},"
+                            + "{"
+                            + "\"type\":\"header\","
+                            + "\"content\":\"" + TieuDe + "\","
+                            + "\"align\":\"left\""
+                            + "},"
+                            + "{"
+                            + "\"type\":\"text\","
+                            + "\"content\":\"" + NoiDung + "\","
+                            + "\"align\":\"left\""
+                            + "},"
+                            + "{"
+                            + "\"type\":\"table\","
+                            + "\"content\":["
+                            + "{"
+                            + "\"value\":\"" + DanhBo + "\","
+                            + "\"key\":\"Mã Danh bộ\""
+                            + "},"
+                            + "{"
+                            + "\"value\":\"" + HoTen + "\","
+                            + "\"key\":\"Tên Khách hàng\""
+                            + "},"
+                            + "{"
+                            + "\"value\":\"" + DiaChi + "\","
+                            + "\"key\":\"Địa chỉ\""
+                            + "},"
+                            + "{"
+                            + "\"value\":\"" + DinhMuc + "\","
+                            + "\"key\":\"Định mức hiện tại\""
+                            + "},"
+                            + "]"
+                            + "},"
+                            + "{"
+                            + "\"type\":\"text\","
+                            + "\"content\":\"" + NoiDungEnd + "\","
+                            + "\"align\":\"left\""
+                            + "}"
+                            + "],"
+                            + "\"buttons\":["
+                            + "{"
+                            + "\"title\":\"Truy cập website đăng ký\","
+                            + "\"image_icon\":\"\","
+                            + "\"type\":\"oa.open.url\","
+                            + "\"payload\":"
+                            + "{"
+                            + "\"url\":\"https://service.cskhtanhoa.com.vn/ThuongVu/DangKyDinhMuc\""
+                            + "}"
+                            + "},"
+                            + "{"
+                            + "\"title\":\"Liên hệ tổng đài\","
+                            + "\"image_icon\":\"\","
+                            + "\"type\":\"oa.open.phone\","
+                            + "\"payload\":"
+                            + "{"
+                            + "\"phone_code\":\"19006489\""
+                            + "}"
+                            + "}"
+                            + "]"
+                            + "}"
+                            + "}"
+                            + "}"
+                            + "}";
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
+                    strResponse = deserializedResult.message;
+                    read.Close();
+                    respuesta.Close();
+                }
+                else
+                {
+                    strResponse = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
             return strResponse;
         }
 

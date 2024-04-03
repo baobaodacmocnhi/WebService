@@ -1,0 +1,1 @@
+select a.DanhBo,b.Name,HIEU_DHTM,ttkh.HIEUDH from sDHN_TCT a,sDHN_NCC b,DHTM_THONGTIN c,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG ttkh where a.IDNCC=b.ID and b.ID=c.ID and a.DanhBo=ttkh.DANHBO and c.HIEU_DHTM!=ttkh.HIEUDH
