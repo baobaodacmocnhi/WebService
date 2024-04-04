@@ -26,7 +26,7 @@ namespace WSTanHoa.Controllers
                 DataTable dt = _cDAL.ExecuteQuery_DataTable("select * from ThuMoi_QR where STT=" + Decrypt(id));
                 view.TieuDe = id;
                 view.HoTen = dt.Rows[0]["HoTen"].ToString();
-                view.DiaChi = dt.Rows[0]["DonVi"].ToString();
+                view.DiaChi = dt.Rows[0]["ChucVu"].ToString();
             }
             if (collection.AllKeys.Contains("function") && collection["function"].ToString() == "DangKy")
             {

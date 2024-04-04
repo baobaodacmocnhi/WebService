@@ -481,8 +481,7 @@ namespace WSSmartPhone
                         var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                         if (response.Result.IsSuccessStatusCode)
                         {
-                            _cDAL_TTKH.ExecuteNonQuery("update Zalo_EContract_ChiTiet set HieuLuc=1 where IDEContract='" + dt.Rows[0]["IDEContract"].ToString() + "'"
-                                + " update [KTKS_DonKH].[dbo].[ChungTu_ChiTiet] set DanhBo='" + DanhBo + "' where SHS='" + SHS + "' and DanhBo like ''");
+                            _cDAL_TTKH.ExecuteNonQuery("update [KTKS_DonKH].[dbo].[ChungTu_ChiTiet] set DanhBo='" + DanhBo + "' where SHS='" + SHS + "' and DanhBo like ''");
                             duyetKhongKy(dt.Rows[0]["IDEContract"].ToString(), out strResponse);
                             return true;
                         }
@@ -769,6 +768,7 @@ namespace WSSmartPhone
                 var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                 if (response.Result.IsSuccessStatusCode)
                 {
+                    _cDAL_TTKH.ExecuteNonQuery("update Zalo_EContract_ChiTiet set HieuLuc=1 where IDEContract='" + IDEContract + "'");
                     return true;
                 }
                 else

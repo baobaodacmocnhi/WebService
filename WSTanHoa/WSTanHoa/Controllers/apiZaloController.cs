@@ -1444,7 +1444,7 @@ namespace WSTanHoa.Controllers
 
         [Route("resendMessageDangKy")]
         [HttpGet]
-        public string resendMessageDangKy(string checksum)
+        private string resendMessageDangKy(string checksum)
         {
             string strResponse = "";
             try
@@ -1472,7 +1472,7 @@ namespace WSTanHoa.Controllers
 
         [Route("ThongBaoDangKyCCCD")]
         [HttpGet]
-        public string ThongBaoDangKyCCCD(string checksum)
+        private string ThongBaoDangKyCCCD(string checksum)
         {
             string strResponse = "";
             try
@@ -1518,14 +1518,14 @@ namespace WSTanHoa.Controllers
 
         [Route("ThongBaoDangKyCCCDOver7Days")]
         [HttpGet]
-        public string ThongBaoDangKyCCCDOver7Days(string checksum)
+        private string ThongBaoDangKyCCCDOver7Days(string checksum)
         {
             string strResponse = "";
             try
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
-                    string sql = "select * from"
+                    string sql = "select top 50 * from"
                         + " (select DanhBo, IDZalo, HoTen = TENKH,DiaChi=SO+' '+DUONG,DinhMuc=DM from(select distinct DanhBo, b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b where a.IDZalo = b.IDZalo and a.Follow = 1)t2, HOADON_TA.dbo.HOADON hd"
                         + " where DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
                         + " and hd.NAM = 2024 and hd.ky = 3 and t2.DanhBo = hd.DANHBA and hd.DM >= 4 and hd.DM <= 36)t1"
@@ -1534,11 +1534,12 @@ namespace WSTanHoa.Controllers
                     DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     foreach (DataRow item in dt.Rows)
                     {
-                        strResponse = sendMessageOver7Days_CCCD(_IDZaloBao
+                        strResponse = sendMessageOver7Days_CCCD(item["IDZalo"].ToString()
                             , "Thông báo về việc cấp định mức nước theo số định danh cá nhân."
                             , "Công ty Cổ phần Cấp nước Tân Hòa trân trọng thông báo đến Quý khách hàng"
                             , "Quý khách hàng vui lòng cung cấp đầy đủ thông tin số định danh cá nhân và các giấy tờ liên quan đến nơi cư trú để đăng ký định mức nước. Trường hợp sau 07 ngày Quý khách vẫn không liên hệ, Công ty buộc lòng điều chỉnh định mức nước = 0m3/tháng."
                             , item["DanhBo"].ToString(), item["HoTen"].ToString(), item["DiaChi"].ToString(), item["DinhMuc"].ToString() + " m3");
+                        _cDAL_TrungTam.ExecuteNonQuery("update TRUNGTAMKHACHHANG.dbo.Zalo_Send set Result='success' where CAST(CreateDate as date)='20240403' and Loai='thongbaocccd' and Result='-230 : User has not interacted with the OA in the past 7 days' and DanhBo='"+ item["DanhBo"].ToString() + "' and IDZalo='"+ item["IDZalo"].ToString() + "'");
                         _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + item["DanhBo"].ToString() + "',N'thongbaocccd',N'Over7Days',N'" + strResponse + "')");
                     }
                     strResponse = "Đã xử lý";
