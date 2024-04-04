@@ -18,6 +18,7 @@ namespace WSTanHoa.Controllers
         private CConnection _cDAL_ThuTien = new CConnection(CGlobalVariable.ThuTien);
         private CConnection _cDAL_DocSo = new CConnection(CGlobalVariable.DocSo);
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
+        private CConnection _cDAL_HinhThayDHN = new CConnection(CGlobalVariable.HinhThayDHN);
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         // GET: ThuongVu
@@ -48,6 +49,7 @@ namespace WSTanHoa.Controllers
             else
                 return null;
         }
+
         public ActionResult viewFile_ChiTiet(string TableName, string IDFileContent, string ID)
         {
             if (TableName != null && IDFileContent != null && ID != null && TableName != "" && IDFileContent != "" && ID != "")
@@ -75,6 +77,7 @@ namespace WSTanHoa.Controllers
             else
                 return null;
         }
+
         private byte[] getFile(string TableName, string IDFileName, string IDFileContent)
         {
             int count = (int)_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select count(*) from " + TableName + " where Huy=0 and " + IDFileName + "=" + IDFileContent);
@@ -534,6 +537,27 @@ namespace WSTanHoa.Controllers
             if (File != null && File.Length > 0)
             {
                 return new FileContentResult(File, "application/pdf");
+            }
+            else
+                return null;
+        }
+
+        public ActionResult viewFileHinhThayDHN(string ID)
+        {
+            if (ID != null && ID != "")
+            {
+                string NoiDung = "";
+                DataTable dt = _cDAL_HinhThayDHN.ExecuteQuery_DataTable("SELECT [Image] FROM[IMAGE].[dbo].[THAYDHN] where id = " + ID);
+                if (dt != null && dt.Rows.Count > 0)
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        byte[] FileContent = (byte[])item["Image"];
+                        if (FileContent != null)
+                            NoiDung += "<img height='100%' src='data:image/jpeg;base64," + Convert.ToBase64String(FileContent) + "'/></br></br>";
+                    }
+                else
+                    NoiDung = "<head><meta charset='UTF-8'><link rel='shortcut icon' type='image/ico' href='~/Images/logoctycp.png'></head><body><h3>Không có hình ảnh!</h3></body>";
+                return Content(NoiDung, "text/html");
             }
             else
                 return null;
