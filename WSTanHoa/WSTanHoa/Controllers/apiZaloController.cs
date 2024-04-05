@@ -1525,7 +1525,7 @@ namespace WSTanHoa.Controllers
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
-                    string sql = "select top 50 * from"
+                    string sql = "select top 300 * from"
                         + " (select DanhBo, IDZalo, HoTen = TENKH,DiaChi=SO+' '+DUONG,DinhMuc=DM from(select distinct DanhBo, b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b where a.IDZalo = b.IDZalo and a.Follow = 1)t2, HOADON_TA.dbo.HOADON hd"
                         + " where DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
                         + " and hd.NAM = 2024 and hd.ky = 3 and t2.DanhBo = hd.DANHBA and hd.DM >= 4 and hd.DM <= 36)t1"
