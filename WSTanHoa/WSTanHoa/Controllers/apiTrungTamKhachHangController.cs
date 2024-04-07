@@ -1452,6 +1452,7 @@ namespace WSTanHoa.Controllers
                     throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.OK, error));
                 }
                 List<ThongTinExtra> lst = new List<ThongTinExtra>();
+                //thay đhn định kỳ và bồi thường
                 DataTable dtThayDHN = _cDAL_DHN.ExecuteQuery_DataTable("SELECT isnull(DHN_LOAIBANGKE,'')+'-' + isnull(convert(varchar, DHN_SOBANGKE), '') MASO,DHN_NGAYBAOTHAY NGAYBAO, 'THAY '+DHN_LYDOTHAY AS LYDO,HCT_NGAYGAN HOANTHANH"
                 + ", case when HCT_NHOMTRONGAI = 0 then '' else LyDo + ', ' end + isnull(HCT_LYDOTRONGAI, '') TRONGAI,ID=ID_BAOTHAY"
                 + " FROM TB_THAYDHN t1"
@@ -1479,6 +1480,25 @@ namespace WSTanHoa.Controllers
                         lstC.Add(dtThayDHN.Rows[i][j].ToString());
                     }
                     lstC.Add("<a target='_blank' href='https://service.cskhtanhoa.com.vn/ThuongVu/viewFileHinhThayDHN?ID=" + dtThayDHN.Rows[i][5].ToString() + "'>File Scan</a>");
+                    en.lstRow.Add(lstC);
+                }
+                lst.Add(en);
+                //danh sách cccd
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select ct.MaCT,HoTen,NgaySinh=CONVERT(char(10),NgaySinh,103),DiaChi,CreateDate=CONVERT(char(10),ctct.CreateDate,103),GhiChu from ChungTu ct,ChungTu_ChiTiet ctct"
+                    + " where ct.MaCT = ctct.MaCT and ct.MaLCT = ctct.MaLCT and ct.MaLCT = 15 and Cat = 0 and DanhBo = '" + DanhBo + "' order by ctct.CreateDate desc");
+                en = new ThongTinExtra();
+                en.Title = "Thu thập mã định danh cá nhân";
+                en.totalColumn = 6;
+                en.lstColumn = new List<string> { "STT", "Số CT", "Họ Tên", "Ngày Sinh", "Địa Chỉ", "Ngày Nhập", "Ghi Chú" };
+                en.totalRow = dt.Rows.Count;
+                for (int i = 0; i < en.totalRow; i++)
+                {
+                    List<string> lstC = new List<string>();
+                    lstC.Add((i + 1).ToString());
+                    for (int j = 0; j < en.totalColumn; j++)
+                    {
+                        lstC.Add(dt.Rows[i][j].ToString());
+                    }
                     en.lstRow.Add(lstC);
                 }
                 lst.Add(en);
