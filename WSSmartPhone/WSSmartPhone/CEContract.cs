@@ -501,6 +501,59 @@ namespace WSSmartPhone
             return false;
         }
 
+        public bool editEContract_NgayHieuLuc(string MaDon, string SHS, string checksum, out string strResponse)
+        {
+            strResponse = "";
+            try
+            {
+                if (checksum == CGlobalVariable.checksum)
+                {
+                    DataTable dt = new DataTable();
+                    string NgayHieuLuc = "";
+                    if (MaDon != "")
+                    {
+                        dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract,CreateDate=CONVERT(varchar(10),CreateDate,103) from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' and Huy=0 and HieuLuc=0 order by CreateDate desc");
+                        NgayHieuLuc = dt.Rows[0]["CreateDate"].ToString();
+                    }
+                    if (dt != null && dt.Rows.Count > 0)
+                    {
+                        if (checkHieuLucEContract(dt.Rows[0]["IDEContract"].ToString()))
+                        {
+                            strResponse = "EContract đã có hiệu lực";
+                            return false;
+                        }
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                        var client = new HttpClient();
+                        client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                        var request = new HttpRequestMessage(HttpMethod.Post, urlApi + "/esignature-service/dsign/attach-tawaco-information");
+                        request.Headers.Add("Authorization", "Bearer " + getAccess_token_Client());
+                        var content = new StringContent("{\"contractId\":\"" + dt.Rows[0]["IDEContract"].ToString() + "\",\"soDanhBa\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,815,320,230]}]},\"soHoSo\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[290,840,320,230]}]},\"ngayKy\":{\"value\":\"" + NgayHieuLuc + "\",\"signFrame\":[{\"pageSign\":3,\"bboxSign\":[320,400,300,250]}]},\"coDongHo\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":1,\"bboxSign\":[190,890,300,250]}]},\"QRcode\":{\"value\":\"\",\"signFrame\":[{\"pageSign\":0,\"bboxSign\":[0,0,0,0]}]}}", null, "application/json");
+                        request.Content = content;
+                        var response = client.SendAsync(request);
+                        var result = response.Result.Content.ReadAsStringAsync();
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                        if (response.Result.IsSuccessStatusCode)
+                        {
+                            duyetKhongKy(dt.Rows[0]["IDEContract"].ToString(), out strResponse);
+                            return true;
+                        }
+                        else
+                            strResponse = "Lỗi api - " + obj["message"] + " - " + obj["error"][0];
+                    }
+                    else
+                        strResponse = "Không có dữ liệu từ mã đơn";
+                }
+                else
+                    strResponse = "Sai checksum";
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return false;
+        }
+
         public bool editEContract2(string MaDon, string SHS, string checksum, out string strResponse)
         {
             strResponse = "";

@@ -71,6 +71,12 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
+        public bool editEContract_NgayHieuLuc(string MaDon, string SHS, string checksum, out string strResponse)
+        {
+            return _cEContract.editEContract_NgayHieuLuc(MaDon, SHS, checksum, out strResponse);
+        }
+
+        [WebMethod]
         public bool editEContract2(string MaDon, string SHS, string checksum)
         {
             string strResponse;
@@ -78,16 +84,14 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public bool cancelEContract(string MaDon, string SHS, string checksum)
+        public bool cancelEContract(string MaDon, string SHS, string checksum, out string strResponse)
         {
-            string strResponse;
             return _cEContract.cancelEContract(MaDon, SHS, checksum, out strResponse);
         }
 
         [WebMethod]
-        public bool deleteEContract(string MaDon, string SHS, string checksum)
+        public bool deleteEContract(string MaDon, string SHS, string checksum, out string strResponse)
         {
-            string strResponse;
             return _cEContract.deleteEContract(MaDon, SHS, checksum, out strResponse);
         }
 
