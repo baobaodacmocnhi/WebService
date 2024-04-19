@@ -334,7 +334,7 @@ namespace BaoCaoWeb.Controllers
             if (Dot == "0")
                 Dot = "";
             else
-                Dot = " and Dot=" + Dot;
+                Dot = " and (Dot=" + Dot + " or Dot=" + (int.Parse(Dot) + 15) + ")";
             List<NoiDung> lstChart = new List<NoiDung>();
             DataTable dt = _cDocSo.ExecuteQuery_DataTable("declare @Nam int = " + Nam + ";"
                     + " declare @Ky int= " + Ky + ";"
