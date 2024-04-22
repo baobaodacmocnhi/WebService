@@ -443,7 +443,10 @@ namespace BaoCaoWeb.Controllers
                 if (DateTime.Now.Month == i)
                 {
                     DataTable dtLichDS = _cDocSo.ExecuteQuery_DataTable("select Dot=IDDot,NgayDoc=convert(char(10),NgayDoc,103) from Lich_DocSo a,Lich_DocSo_ChiTiet b,Lich_Dot c where a.ID=b.IDDocSo and c.ID=b.IDDot and a.nam=" + NamPresent + " and a.ky=" + i + " and CAST(NgayDoc as date)>=CAST(getdate() as date) and IDDot<=15");
-                    enSL.NoiDung = dtLichDS.Rows[0]["NgayDoc"].ToString() + " - đang đọc đợt " + dtLichDS.Rows[0]["Dot"].ToString() + "/15";
+                    if (dtLichDS != null && dtLichDS.Rows.Count > 0)
+                        enSL.NoiDung = dtLichDS.Rows[0]["NgayDoc"].ToString() + " - đang đọc đợt " + dtLichDS.Rows[0]["Dot"].ToString() + "/15";
+                    else
+                        enSL.NoiDung = "Đã kết thúc 15 đợt đọc";
                 }
                 lstChart.Add(enSL);
             }
