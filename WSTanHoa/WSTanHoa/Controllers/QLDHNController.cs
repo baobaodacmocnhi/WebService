@@ -358,14 +358,12 @@ namespace WSTanHoa.Controllers
                     wb.Worksheets.Add(dt);
                     wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     wb.Style.Font.Bold = true;
-
                     Response.Clear();
                     Response.Buffer = true;
                     Response.Charset = "";
                     Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                     Response.ContentType = "application/vnd.ms-excel";
                     Response.AddHeader("content-disposition", "attachment;filename= TanHoa.sDHN." + filename + ".xlsx");
-
                     using (MemoryStream MyMemoryStream = new MemoryStream())
                     {
                         wb.SaveAs(MyMemoryStream);
@@ -396,14 +394,12 @@ namespace WSTanHoa.Controllers
                     wb.Worksheets.Add(dt);
                     wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
                     wb.Style.Font.Bold = true;
-
                     Response.Clear();
                     Response.Buffer = true;
                     Response.Charset = "";
                     Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
                     Response.ContentType = "application/vnd.ms-excel";
                     Response.AddHeader("content-disposition", "attachment;filename= TanHoa.sDHN." + filename + ".xlsx");
-
                     using (MemoryStream MyMemoryStream = new MemoryStream())
                     {
                         wb.SaveAs(MyMemoryStream);

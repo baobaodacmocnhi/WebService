@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -706,11 +707,15 @@ namespace WSTanHoa.Controllers
                             System.IO.File.Delete(path1);
                         }
                         fileUpload.SaveAs(path1);
-                        DataTable dtExcel = CGlobalVariable.ExcelToDataTable(path1);
+                        XLWorkbook workbook = new XLWorkbook(path1);
+                        var rowCount = workbook.Worksheet(1).LastRowUsed().RowNumber();
+                        var columnCount = workbook.Worksheet(1).LastColumnUsed().ColumnNumber();
                         _cDAL_BauCu.ExecuteNonQuery("delete BCH_UngCu");
-                        foreach (DataRow item in dtExcel.Rows)
+                        int row = 1;
+                        while (row <= rowCount)
                         {
-                            _cDAL_BauCu.ExecuteNonQuery("insert into BCH_UngCu(ID,STT,HoTen,NamSinh,ChucVu,BCH,BiThu,DaiBieuChinhThuc)values((select count(ID) from BCH_UngCu)," + item[0].ToString() + ",N'" + item[1].ToString() + "'," + item[2].ToString() + ",N'" + item[3].ToString() + "',1,1,1)");
+                            _cDAL_BauCu.ExecuteNonQuery("insert into BCH_UngCu(ID,STT,HoTen,NamSinh,ChucVu,BCH,BiThu,DaiBieuChinhThuc)values((select count(ID) from BCH_UngCu)," + workbook.Worksheets.Worksheet(1).Cell(row, 1).GetString() + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 2).GetString() + "'," + workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString() + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 4).GetString() + "',1,1,1)");
+                            row++;
                         }
                     }
                 }
