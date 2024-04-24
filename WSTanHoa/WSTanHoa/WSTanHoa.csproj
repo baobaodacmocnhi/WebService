@@ -82,6 +82,9 @@
       <HintPath>..\packages\Microsoft.IO.RecyclableMemoryStream.1.4.1\lib\net45\Microsoft.IO.RecyclableMemoryStream.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -2266,6 +2269,11 @@
     <Content Include="Views\TLMD\BaoCao.cshtml" />
     <Content Include="Views\KhachMoi\Index.cshtml" />
     <Content Include="Views\ThuongVu\HoSoGoc.cshtml" />
+    <Content Include="Views\BauCu\QuanTriBauCu.cshtml" />
+    <Content Include="Views\BauCu\BCH1.cshtml" />
+    <Content Include="Views\BauCu\BCH1_View.cshtml" />
+    <Content Include="Views\BauCu\BCH2.cshtml" />
+    <Content Include="Views\BauCu\BCH2_View.cshtml" />
     <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

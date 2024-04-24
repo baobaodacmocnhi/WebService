@@ -102,12 +102,12 @@
                             <li>@Html.ActionLink("Đăng Xuất", "DangXuat", "TLMD", new { area = "" }, new { @class = "nav-link active" })</li>
                         </ul>
                     </li>
-                    <li class="nav-item dropdown invisible">
+                    <li class="nav-item dropdown">
                         <a class="nav-link active dropdown-toggle" href="#" id="menuThuongVu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Bầu Cử
                         </a>
                         <ul class="dropdown-menu" style="background-color: #00b3b3;" aria-labelledby="menuThuongVu">
-                            <li>@Html.ActionLink("Ban Chấp Hành", "BCH", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            @*<li>@Html.ActionLink("Ban Chấp Hành", "BCH", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                             <li>@Html.ActionLink("Bí Thư", "BiThu", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                             <li>@Html.ActionLink("Đại Biểu Chính Chức", "DaiBieuChinhThuc", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                             <li>@Html.ActionLink("Đại Biểu Dự Khuyết", "DaiBieuDuKhuyet", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
@@ -115,6 +115,14 @@
                             <li>@Html.ActionLink("KQ Bí Thư", "BiThu_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                             <li>@Html.ActionLink("KQ Đại Biểu Chính Thức", "DaiBieuChinhThuc_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                             <li>@Html.ActionLink("KQ Đại Biểu Dự Khuyết", "DaiBieuDuKhuyet_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Quản Trị", "QuanTriBauCu", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>*@
+                            <li>@Html.ActionLink("BAN CHẤP HÀNH", "BCH", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("BAN THƯỜNG VỤ", "BCH1", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("PHÓ BÍ THƯ", "BCH2", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("KQ BAN CHẤP HÀNH", "BCH_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("KQ BAN THƯỜNG VỤ", "BCH1_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("KQ PHÓ BÍ THƯ", "BCH2_View", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("Quản Trị", "QuanTriBauCu", "BauCu", new { area = "" }, new { @class = "nav-link active" })</li>
                         </ul>
                     </li>
                 </ul>
