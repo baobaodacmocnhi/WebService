@@ -9,7 +9,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>04/24/2024 14:51:29</publishTime>
+      <publishTime>04/26/2024 09:51:15</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -180,10 +180,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2023 14:49:12</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>04/24/2024 14:51:52</publishTime>
+      <publishTime>04/26/2024 09:53:57</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>04/24/2024 14:51:54</publishTime>
+      <publishTime>04/26/2024 09:53:59</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -6039,16 +6039,16 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/24/2024 14:31:47</publishTime>
     </File>
     <File Include="Views/BauCu/BCH1_View.cshtml">
-      <publishTime>04/24/2024 14:31:47</publishTime>
+      <publishTime>04/26/2024 09:53:45</publishTime>
     </File>
     <File Include="Views/BauCu/BCH2.cshtml">
       <publishTime>04/24/2024 14:31:45</publishTime>
     </File>
     <File Include="Views/BauCu/BCH2_View.cshtml">
-      <publishTime>04/24/2024 14:30:42</publishTime>
+      <publishTime>04/26/2024 09:53:43</publishTime>
     </File>
     <File Include="Views/BauCu/BCH_View.cshtml">
-      <publishTime>04/24/2024 14:18:36</publishTime>
+      <publishTime>04/26/2024 09:42:07</publishTime>
     </File>
     <File Include="Views/BauCu/BiThu.cshtml">
       <publishTime>04/24/2024 14:29:25</publishTime>
@@ -6069,7 +6069,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>04/24/2024 12:40:14</publishTime>
     </File>
     <File Include="Views/BauCu/QuanTriBauCu.cshtml">
-      <publishTime>04/24/2024 14:50:02</publishTime>
+      <publishTime>04/26/2024 08:57:02</publishTime>
     </File>
     <File Include="Views/HDSD/BaoCao.cshtml">
       <publishTime>12/08/2023 14:49:10</publishTime>

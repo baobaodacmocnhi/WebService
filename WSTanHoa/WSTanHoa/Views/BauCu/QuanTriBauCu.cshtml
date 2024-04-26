@@ -52,14 +52,43 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     @Html.AntiForgeryToken()
                 </div>
-                <div class="row mt-3">
+                <div class="row rounded-3 shadow mt-3">
                     @using (Html.BeginForm("QuanTriBauCu", "BauCu", FormMethod.Post, new { encType = "multipart/form-data" }))
                     {
                         <div class="col">
-                            <label class="form-label">File Excel</label>
-                            <input type="file" class="form-control" name="fileUpload" accept=".xlsx, .xls">
+                            <div class="row">Import Danh Sách BCH</div>
+                            <div class="row">
+                                <div class="col-2"><label class="form-label">File Excel</label></div>
+                                <div class="col-7"><input type="file" class="form-control" name="fileUpload" accept=".xlsx, .xls"></div>
+                                <div class="col-3"><button type="submit" class="btn btn-primary" name="function" value="Import" onclick="return confirm('Bạn có chắc chắn?');">Import</button></div>
+                            </div>
                         </div>
-                        <div class="col mt-3"><button type="submit" class="btn btn-primary" name="function" value="Import" onclick="return confirm('Bạn có chắc chắn?');">Import Danh Sách</button></div>
+                    }
+                </div>
+                <div class="row rounded-3 shadow mt-5">
+                    @using (Html.BeginForm("QuanTriBauCu", "BauCu", FormMethod.Post, new { encType = "multipart/form-data" }))
+                    {
+                        <div class="col">
+                            <div class="row">Import Danh Sách BTV</div>
+                            <div class="row">
+                                <div class="col-2"><label class="form-label">File Excel</label></div>
+                                <div class="col-7"><input type="file" class="form-control" name="fileUpload" accept=".xlsx, .xls"></div>
+                                <div class="col-3"><button type="submit" class="btn btn-primary" name="function" value="Import2" onclick="return confirm('Bạn có chắc chắn?');">Import</button></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="row rounded-3 shadow mt-5">
+                    @using (Html.BeginForm("QuanTriBauCu", "BauCu", FormMethod.Post, new { encType = "multipart/form-data" }))
+                    {
+                        <div class="col">
+                            <div class="row">Import Danh Sách PBT</div>
+                            <div class="row">
+                                <div class="col-2"><label class="form-label">File Excel</label></div>
+                                <div class="col-7"><input type="file" class="form-control" name="fileUpload" accept=".xlsx, .xls"></div>
+                                <div class="col-3"><button type="submit" class="btn btn-primary" name="function" value="Import3" onclick="return confirm('Bạn có chắc chắn?');">Import</button></div>
+                            </div>
+                        </div>
                     }
                 </div>
                 <div class="row mt-5">

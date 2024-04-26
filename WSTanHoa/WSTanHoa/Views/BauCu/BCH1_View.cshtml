@@ -47,13 +47,13 @@
                                             <td>STT</td>
                                             <td>Họ Tên</td>
                                             @*<td>Đồng Ý</td>
-                                            <td>% Đồng Ý</td>
-                                            <td>Không Đồng Ý</td>
-                                            <td>% Không Đồng Ý</td>*@
+                                                <td>% Đồng Ý</td>
+                                                <td>Không Đồng Ý</td>
+                                                <td>% Không Đồng Ý</td>*@
+                                            <td>Năm Sinh</td>
+                                            <td>Chức Danh</td>
                                             <td>Số Phiếu Giới Thiệu</td>
                                             <td>% Số Phiếu Giới Thiệu</td>
-                                            <td>Số Phiếu Không Giới Thiệu</td>
-                                            <td>% Số Phiếu Không Giới Thiệu</td>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,29 +69,35 @@
                                                         <label>@item.HoTen</label>
                                                     </td>
                                                     @*<td>
-                                                        <label>@item.DiaChi</label>
+                                                            <label>@item.DiaChi</label>
+                                                        </td>
+                                                        <td>
+                                                            <label>@item.DienThoai</label>
+                                                        </td>
+                                                        <td>
+                                                            <label>@item.DinhMuc</label>
+                                                        </td>
+                                                        <td>
+                                                            <label>@item.DinhMucHN</label>
+                                                        </td>*@
+                                                    <td>
+                                                        <label>@item.HieuDH</label>
                                                     </td>
                                                     <td>
-                                                        <label>@item.DienThoai</label>
+                                                        <label>@item.CoDH</label>
                                                     </td>
                                                     <td>
                                                         <label>@item.DinhMuc</label>
                                                     </td>
                                                     <td>
                                                         <label>@item.DinhMucHN</label>
-                                                    </td>*@
-                                                    <td>
-                                                        <label>@item.DinhMuc</label>
                                                     </td>
-                                                    <td>
-                                                        <label>@item.DinhMucHN</label>
-                                                    </td>
-                                                    <td>
-                                                        <label>@item.DiaChi</label>
-                                                    </td>
-                                                    <td>
-                                                        <label>@item.DienThoai</label>
-                                                    </td>
+                                                    @*<td>
+                                                            <label>@item.DiaChi</label>
+                                                        </td>
+                                                        <td>
+                                                            <label>@item.DienThoai</label>
+                                                        </td>*@
                                                 </tr>
                                             }
                                         }
@@ -102,6 +108,9 @@
                     </div>
                     <div class="mt-3">
                         <button type="submit" class="btn btn-primary" name="function" value="Sort">Sort</button>
+                    </div>
+                    <div class="mt-3">
+                        <button type="submit" class="btn btn-primary" name="function" value="Excel">Excel</button>
                     </div>
                 }
             </div>

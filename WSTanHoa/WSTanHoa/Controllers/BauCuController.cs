@@ -102,14 +102,16 @@ namespace WSTanHoa.Controllers
             ViewBag.Tong = dt.Rows[0]["Tong"].ToString();
             ViewBag.HopLe = dt.Rows[0]["HopLe"].ToString();
             ViewBag.KhongHopLe = dt.Rows[0]["KhongHopLe"].ToString();
-            dt = _cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
+            dt = _cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,uc.NamSinh,uc.ChucVu,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
               + " where bp.ID=bpct.IDBoPhieu and uc.ID=bpct.IDUngVien and bp.BCH=1"
-              + " group by uc.ID,uc.HoTen)t1");
+              + " group by uc.ID,uc.HoTen,uc.NamSinh,uc.ChucVu)t1");
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
                 en.MLT = item["STT"].ToString();
                 en.HoTen = item["HoTen"].ToString();
+                en.HieuDH = item["NamSinh"].ToString();
+                en.CoDH = item["ChucVu"].ToString();
                 en.DiaChi = item["Chon"].ToString();
                 en.DienThoai = ((double)(double.Parse(item["Chon"].ToString()) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
                 en.DinhMuc = ((int)(int.Parse(ViewBag.Tong) - int.Parse(item["Chon"].ToString()))).ToString();
@@ -120,12 +122,60 @@ namespace WSTanHoa.Controllers
             {
                 if (function == "Sort")
                 {
-                    List<ThongTinKhachHang> SortedList = model.OrderByDescending(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    //List<ThongTinKhachHang> SortedList = model.OrderByDescending(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    List<ThongTinKhachHang> SortedList = model.OrderBy(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
                     for (int i = 0; i < SortedList.Count; i++)
                     {
                         SortedList[i].MLT = (i + 1).ToString();
                     }
                     ViewBag.BCH_BoPhieu = SortedList;
+                }
+                else
+                    if (function == "Excel")
+                {
+                    DataTable dtExcel = new DataTable();
+                    dtExcel.TableName = "Sheet1";
+                    dtExcel.Columns.Add("STT", typeof(String));
+                    dtExcel.Columns.Add("HoTen", typeof(String));
+                    dtExcel.Columns.Add("NamSinh", typeof(String));
+                    dtExcel.Columns.Add("ChucVu", typeof(String));
+                    dtExcel.Columns.Add("DeCu", typeof(String));
+                    dtExcel.Columns.Add("TyLeDeCu", typeof(String));
+                    List<ThongTinKhachHang> SortedList = model.OrderBy(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    for (int i = 0; i < SortedList.Count; i++)
+                    {
+                        SortedList[i].MLT = (i + 1).ToString();
+                    }
+                    foreach (ThongTinKhachHang item in SortedList)
+                    {
+                        DataRow dr = dtExcel.NewRow();
+                        dr["STT"] = item.MLT;
+                        dr["HoTen"] = item.HoTen;
+                        dr["NamSinh"] = item.HieuDH;
+                        dr["ChucVu"] = item.CoDH;
+                        dr["DeCu"] = item.DinhMuc;
+                        dr["TyLeDeCu"] = item.DinhMucHN;
+                        dtExcel.Rows.Add(dr);
+                    }
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dtExcel);
+                        wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        wb.Style.Font.Bold = true;
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.Charset = "";
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.ContentType = "application/vnd.ms-excel";
+                        Response.AddHeader("content-disposition", "attachment;filename= ketqua.xlsx");
+                        using (MemoryStream MyMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(MyMemoryStream);
+                            MyMemoryStream.WriteTo(Response.OutputStream);
+                            Response.Flush();
+                            Response.End();
+                        }
+                    }
                 }
             }
             else
@@ -217,14 +267,16 @@ namespace WSTanHoa.Controllers
             ViewBag.Tong = dt.Rows[0]["Tong"].ToString();
             ViewBag.HopLe = dt.Rows[0]["HopLe"].ToString();
             ViewBag.KhongHopLe = dt.Rows[0]["KhongHopLe"].ToString();
-            dt = _cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
+            dt = _cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,uc.NamSinh,uc.ChucVu,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
               + " where bp.ID=bpct.IDBoPhieu and uc.ID=bpct.IDUngVien and bp.BiThu=1"
-              + " group by uc.ID,uc.HoTen)t1");
+              + " group by uc.ID,uc.HoTen,uc.NamSinh,uc.ChucVu)t1");
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
                 en.MLT = item["STT"].ToString();
                 en.HoTen = item["HoTen"].ToString();
+                en.HieuDH = item["NamSinh"].ToString();
+                en.CoDH = item["ChucVu"].ToString();
                 en.DiaChi = item["Chon"].ToString();
                 en.DienThoai = ((double)(double.Parse(item["Chon"].ToString()) / double.Parse(ViewBag.Tong) * 100)).ToString("0.00") + " %";
                 en.DinhMuc = ((int)(int.Parse(ViewBag.Tong) - int.Parse(item["Chon"].ToString()))).ToString();
@@ -235,12 +287,60 @@ namespace WSTanHoa.Controllers
             {
                 if (function == "Sort")
                 {
-                    List<ThongTinKhachHang> SortedList = model.OrderByDescending(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    //List<ThongTinKhachHang> SortedList = model.OrderByDescending(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    List<ThongTinKhachHang> SortedList = model.OrderBy(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
                     for (int i = 0; i < SortedList.Count; i++)
                     {
                         SortedList[i].MLT = (i + 1).ToString();
                     }
                     ViewBag.BCH_BoPhieu = SortedList;
+                }
+                else
+                    if (function == "Excel")
+                {
+                    DataTable dtExcel = new DataTable();
+                    dtExcel.TableName = "Sheet1";
+                    dtExcel.Columns.Add("STT", typeof(String));
+                    dtExcel.Columns.Add("HoTen", typeof(String));
+                    dtExcel.Columns.Add("NamSinh", typeof(String));
+                    dtExcel.Columns.Add("ChucVu", typeof(String));
+                    dtExcel.Columns.Add("DeCu", typeof(String));
+                    dtExcel.Columns.Add("TyLeDeCu", typeof(String));
+                    List<ThongTinKhachHang> SortedList = model.OrderBy(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    for (int i = 0; i < SortedList.Count; i++)
+                    {
+                        SortedList[i].MLT = (i + 1).ToString();
+                    }
+                    foreach (ThongTinKhachHang item in SortedList)
+                    {
+                        DataRow dr = dtExcel.NewRow();
+                        dr["STT"] = item.MLT;
+                        dr["HoTen"] = item.HoTen;
+                        dr["NamSinh"] = item.HieuDH;
+                        dr["ChucVu"] = item.CoDH;
+                        dr["DeCu"] = item.DinhMuc;
+                        dr["TyLeDeCu"] = item.DinhMucHN;
+                        dtExcel.Rows.Add(dr);
+                    }
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dtExcel);
+                        wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        wb.Style.Font.Bold = true;
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.Charset = "";
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.ContentType = "application/vnd.ms-excel";
+                        Response.AddHeader("content-disposition", "attachment;filename= ketqua.xlsx");
+                        using (MemoryStream MyMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(MyMemoryStream);
+                            MyMemoryStream.WriteTo(Response.OutputStream);
+                            Response.Flush();
+                            Response.End();
+                        }
+                    }
                 }
             }
             else
@@ -332,9 +432,9 @@ namespace WSTanHoa.Controllers
             ViewBag.Tong = dt.Rows[0]["Tong"].ToString();
             ViewBag.HopLe = dt.Rows[0]["HopLe"].ToString();
             ViewBag.KhongHopLe = dt.Rows[0]["KhongHopLe"].ToString();
-            dt = _cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
+            dt = _cDAL_BauCu.ExecuteQuery_DataTable("select STT=ROW_NUMBER() OVER(ORDER BY t1.ID asc),t1.* from (select uc.ID,uc.HoTen,uc.NamSinh,uc.ChucVu,Chon=COUNT(NULLIF(0, Chon)) from BCH_BoPhieu bp,BCH_BoPhieu_ChiTiet bpct,BCH_UngCu uc"
               + " where bp.ID=bpct.IDBoPhieu and uc.ID=bpct.IDUngVien and bp.DaiBieuChinhThuc=1"
-              + " group by uc.ID,uc.HoTen)t1");
+              + " group by uc.ID,uc.HoTen,uc.NamSinh,uc.ChucVu)t1");
             foreach (DataRow item in dt.Rows)
             {
                 ThongTinKhachHang en = new ThongTinKhachHang();
@@ -350,12 +450,60 @@ namespace WSTanHoa.Controllers
             {
                 if (function == "Sort")
                 {
-                    List<ThongTinKhachHang> SortedList = model.OrderByDescending(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    //List<ThongTinKhachHang> SortedList = model.OrderByDescending(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    List<ThongTinKhachHang> SortedList = model.OrderBy(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
                     for (int i = 0; i < SortedList.Count; i++)
                     {
                         SortedList[i].MLT = (i + 1).ToString();
                     }
                     ViewBag.BCH_BoPhieu = SortedList;
+                }
+                else
+                    if (function == "Excel")
+                {
+                    DataTable dtExcel = new DataTable();
+                    dtExcel.TableName = "Sheet1";
+                    dtExcel.Columns.Add("STT", typeof(String));
+                    dtExcel.Columns.Add("HoTen", typeof(String));
+                    dtExcel.Columns.Add("NamSinh", typeof(String));
+                    dtExcel.Columns.Add("ChucVu", typeof(String));
+                    dtExcel.Columns.Add("DeCu", typeof(String));
+                    dtExcel.Columns.Add("TyLeDeCu", typeof(String));
+                    List<ThongTinKhachHang> SortedList = model.OrderBy(o => o.DiaChi).ThenBy(o => o.MLT).ToList();
+                    for (int i = 0; i < SortedList.Count; i++)
+                    {
+                        SortedList[i].MLT = (i + 1).ToString();
+                    }
+                    foreach (ThongTinKhachHang item in SortedList)
+                    {
+                        DataRow dr = dtExcel.NewRow();
+                        dr["STT"] = item.MLT;
+                        dr["HoTen"] = item.HoTen;
+                        dr["NamSinh"] = item.HieuDH;
+                        dr["ChucVu"] = item.CoDH;
+                        dr["DeCu"] = item.DinhMuc;
+                        dr["TyLeDeCu"] = item.DinhMucHN;
+                        dtExcel.Rows.Add(dr);
+                    }
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dtExcel);
+                        wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                        wb.Style.Font.Bold = true;
+                        Response.Clear();
+                        Response.Buffer = true;
+                        Response.Charset = "";
+                        Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                        Response.ContentType = "application/vnd.ms-excel";
+                        Response.AddHeader("content-disposition", "attachment;filename= ketqua.xlsx");
+                        using (MemoryStream MyMemoryStream = new MemoryStream())
+                        {
+                            wb.SaveAs(MyMemoryStream);
+                            MyMemoryStream.WriteTo(Response.OutputStream);
+                            Response.Flush();
+                            Response.End();
+                        }
+                    }
                 }
             }
             else
@@ -683,11 +831,11 @@ namespace WSTanHoa.Controllers
         {
             try
             {
-                //if (Session["ID"] == null)
-                //{
-                //    Session["Url"] = Request.Url;
-                //    return RedirectToAction("Login", "Home");
-                //}
+                if (Session["ID"] == null)
+                {
+                    Session["Url"] = Request.Url;
+                    return RedirectToAction("Login", "Home");
+                }
                 if (function != null)
                 {
                     if (function == "Reset")
@@ -695,7 +843,6 @@ namespace WSTanHoa.Controllers
                         _cDAL_BauCu.ExecuteNonQuery("delete BCH_BoPhieu_ChiTiet delete BCH_BoPhieu");
                     }
                     else
-                    if (function == "Import")
                     {
                         string path1 = string.Format("{0}/{1}", Server.MapPath("~/Uploads"), fileUpload.FileName);
                         if (!Directory.Exists(path1))
@@ -710,14 +857,77 @@ namespace WSTanHoa.Controllers
                         XLWorkbook workbook = new XLWorkbook(path1);
                         var rowCount = workbook.Worksheet(1).LastRowUsed().RowNumber();
                         var columnCount = workbook.Worksheet(1).LastColumnUsed().ColumnNumber();
-                        _cDAL_BauCu.ExecuteNonQuery("delete BCH_UngCu");
-                        int row = 1;
-                        while (row <= rowCount)
+                        int row = 2;
+                        if (function == "Import")
                         {
-                            _cDAL_BauCu.ExecuteNonQuery("insert into BCH_UngCu(ID,STT,HoTen,NamSinh,ChucVu,BCH,BiThu,DaiBieuChinhThuc)values((select count(ID) from BCH_UngCu)," + workbook.Worksheets.Worksheet(1).Cell(row, 1).GetString() + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 2).GetString() + "'," + workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString() + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 4).GetString() + "',1,1,1)");
-                            row++;
+                            _cDAL_BauCu.ExecuteNonQuery("delete BCH_UngCu where BCH=1");
+                            while (row <= rowCount)
+                            {
+                                string ID = _cDAL_BauCu.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from BCH_UngCu").ToString();
+                                if (ID == "")
+                                    ID = "1";
+                                string ngaysinh;
+                                if (workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().Length > 10)
+                                    ngaysinh = workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().Substring(0, workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().IndexOf(" "));
+                                else
+                                    ngaysinh = workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim();
+                                _cDAL_BauCu.ExecuteNonQuery("insert into BCH_UngCu(ID,STT,HoTen,NamSinh,ChucVu,BCH)values"
+                                    + "(" + ID
+                                    + "," + workbook.Worksheets.Worksheet(1).Cell(row, 1).GetString().Trim()
+                                    + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 2).GetString().Trim() + "'"
+                                    + ",'" + ngaysinh + "'"
+                                    + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 4).GetString().Trim() + "',1)");
+                                row++;
+                            }
+                        }
+                        else
+                            if (function == "Import2")
+                        {
+                            _cDAL_BauCu.ExecuteNonQuery("delete BCH_UngCu where BiThu=1");
+                            while (row <= rowCount)
+                            {
+                                string ID = _cDAL_BauCu.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from BCH_UngCu").ToString();
+                                if (ID == "")
+                                    ID = "1";
+                                string ngaysinh;
+                                if (workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().Length > 10)
+                                    ngaysinh = workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().Substring(0, workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().IndexOf(" "));
+                                else
+                                    ngaysinh = workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim();
+                                _cDAL_BauCu.ExecuteNonQuery("insert into BCH_UngCu(ID,STT,HoTen,NamSinh,ChucVu,BiThu)values"
+                                    + "(" + ID
+                                    + "," + workbook.Worksheets.Worksheet(1).Cell(row, 1).GetString().Trim()
+                                    + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 2).GetString().Trim() + "'"
+                                    + ",'" + ngaysinh + "'"
+                                    + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 4).GetString().Trim() + "',1)");
+                                row++;
+                            }
+                        }
+                        else
+                            if (function == "Import3")
+                        {
+                            _cDAL_BauCu.ExecuteNonQuery("delete BCH_UngCu where DaiBieuChinhThuc=1");
+                            while (row <= rowCount)
+                            {
+                                string ID = _cDAL_BauCu.ExecuteQuery_ReturnOneValue("select MAX(ID)+1 from BCH_UngCu").ToString();
+                                if (ID == "")
+                                    ID = "1";
+                                string ngaysinh;
+                                if (workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().Length > 10)
+                                    ngaysinh = workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().Substring(0, workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim().IndexOf(" "));
+                                else
+                                    ngaysinh = workbook.Worksheets.Worksheet(1).Cell(row, 3).GetString().Trim();
+                                _cDAL_BauCu.ExecuteNonQuery("insert into BCH_UngCu(ID,STT,HoTen,NamSinh,ChucVu,DaiBieuChinhThuc)values"
+                                    + "(" + ID
+                                    + "," + workbook.Worksheets.Worksheet(1).Cell(row, 1).GetString().Trim()
+                                    + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 2).GetString().Trim() + "'"
+                                    + ",'" + ngaysinh + "'"
+                                    + ",N'" + workbook.Worksheets.Worksheet(1).Cell(row, 4).GetString().Trim() + "',1)");
+                                row++;
+                            }
                         }
                     }
+                    ModelState.AddModelError("", "Thành Công");
                 }
             }
             catch (Exception ex)
