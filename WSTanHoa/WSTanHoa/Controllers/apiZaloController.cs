@@ -1534,12 +1534,12 @@ namespace WSTanHoa.Controllers
                     //    + " and t1.DanhBo in (select danhbo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date)='20240403' and Loai='thongbaocccd' and Result='-230 : User has not interacted with the OA in the past 7 days')";
                     //gửi nhắc lại lần 2
                     string sql = "select top 500 * from"
-                         + " (select DanhBo, IDZalo, HoTen = TENKH, DiaChi = SO + ' ' + DUONG, DinhMuc = DM from(select distinct DanhBo, b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b where a.IDZalo = b.IDZalo and a.Follow = 1)t2, HOADON_TA.dbo.HOADON hd"
-                         + " where DOT in (1, 16, 2, 17, 3, 18, 4, 19, 5, 20, 6, 21, 7, 22, 8, 23, 9, 24, 10, 25, 11, 26, 12, 27, 13, 28, 14, 29, 15, 30) and DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
-                         + " and hd.NAM = 2024 and hd.ky = 3 and t2.DanhBo = hd.DANHBA and hd.DM >= 4 and hd.DM <= 36)t1"
-                         + " where t1.DANHBO in (select dtct.DanhBo from KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct where dt.MaDon = dtct.MaDon and dtct.CreateBy = 74 and CAST(dtct.CreateDate as date) >= '20240424')"
-                         + " and t1.DANHBO not in (select DanhBo from KTKS_DonKH.dbo.DCBD_DKDM_DanhBo where CAST(CreateDate as date) >= '20240404')"
-                         + " and t1.DanhBo not in (select DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date)>='20240502' and Loai='thongbaocccd')";
+                        + " (select DanhBo, IDZalo, HoTen = TENKH, DiaChi = SO + ' ' + DUONG, DinhMuc = DM from(select distinct DanhBo, b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b where a.IDZalo = b.IDZalo and a.Follow = 1)t2, HOADON_TA.dbo.HOADON hd"
+                        + " where DOT in (6, 21, 7, 22) and DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
+                        + " and hd.NAM = 2024 and hd.ky = 4 and t2.DanhBo = hd.DANHBA and hd.DM >= 4 and hd.DM <= 36)t1"
+                        + " where t1.DANHBO not in (select dtct.DanhBo from KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct where dt.MaDon = dtct.MaDon and CAST(dtct.CreateDate as date) >= '20231201' and Name_NhomDon_PKH like N'%định mức%')"
+                        + " and t1.DANHBO not in (select DanhBo from KTKS_DonKH.dbo.DCBD_DKDM_DanhBo where CAST(CreateDate as date) >= '20240404')"
+                        + " and t1.DanhBo not in (select DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date) >= '20240502' and Loai = 'thongbaocccd')";
                     DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     foreach (DataRow item in dt.Rows)
                     {
