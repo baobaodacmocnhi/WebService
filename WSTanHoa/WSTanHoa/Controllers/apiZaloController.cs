@@ -1535,11 +1535,12 @@ namespace WSTanHoa.Controllers
                     //gửi nhắc lại lần 2
                     string sql = "select top 500 * from"
                         + " (select DanhBo, IDZalo, HoTen = TENKH, DiaChi = SO + ' ' + DUONG, DinhMuc = DM from(select distinct DanhBo, b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b where a.IDZalo = b.IDZalo and a.Follow = 1)t2, HOADON_TA.dbo.HOADON hd"
-                        + " where DOT in (6, 21, 7, 22) and DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
+                        + " where DOT in (6, 21, 7, 22,8,23,9,24,10,25) and DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
                         + " and hd.NAM = 2024 and hd.ky = 4 and t2.DanhBo = hd.DANHBA and hd.DM >= 4 and hd.DM <= 36)t1"
                         + " where t1.DANHBO not in (select dtct.DanhBo from KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct where dt.MaDon = dtct.MaDon and CAST(dtct.CreateDate as date) >= '20231201' and Name_NhomDon_PKH like N'%định mức%')"
                         + " and t1.DANHBO not in (select DanhBo from KTKS_DonKH.dbo.DCBD_DKDM_DanhBo where CAST(CreateDate as date) >= '20240404')"
-                        + " and t1.DanhBo not in (select DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date) >= '20240502' and Loai = 'thongbaocccd')";
+                        + " and t1.DanhBo not in (select DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date) >= '20240502' and Loai = 'thongbaocccd')"
+                        + " and t1.DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.DCBD_ChiTietBienDong where HieuLucKy in ('12/2023','01/2024','02/2024','03/2024','04/2024','05/2024','06/2024','07/2024','08/2024') and ThongTin like N'%định mức%')";
                     DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     foreach (DataRow item in dt.Rows)
                     {
@@ -1975,6 +1976,8 @@ namespace WSTanHoa.Controllers
                         foreach (DataRow item in dt.Rows)
                         {
                             string strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);
+                            if (strResponse == "-230 : User has not interacted with the OA in the past 7 days" && NoiDung.Contains("đã có hiệu lực"))
+                                strResponse = sendEContractOver7Days(item["IDZalo"].ToString(), "",);
                             _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + DienThoai + "',N'econtract',N'" + NoiDung + "',N'" + strResponse + "')");
                         }
                         result.success = true;
@@ -1992,6 +1995,109 @@ namespace WSTanHoa.Controllers
                 result.error = ex.Message;
             }
             return result;
+        }
+
+        private string sendEContractOver7Days(string IDZalo, string TieuDe, string NoiDung, string NoiDungEnd, string DanhBo, string HoTen, string DiaChi)
+        {
+            string strResponse = "";
+            try
+            {
+                string url = "https://openapi.zalo.me/v3.0/oa/message/transaction";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                       | SecurityProtocolType.Tls11
+                       | SecurityProtocolType.Tls12
+                       | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["access_token"] = getAccess_token();
+                string data = "{"
+                            + "\"recipient\":{"
+                            + "\"user_id\":\"" + IDZalo + "\""
+                            + "},"
+                            + "\"message\":{"
+                            + "\"attachment\":{"
+                            + "\"type\":\"template\","
+                            + "\"payload\":{"
+                            + "\"template_type\":\"transaction_contract\","
+                            + "\"language\":\"VI\","
+                            + "\"elements\":["
+                            + "{"
+                            + "\"type\":\"banner\","
+                            + "\"image_url\":\"" + _urlImage + "/zaloOACover1333x750.png\""
+                            + "},"
+                            + "{"
+                            + "\"type\":\"header\","
+                            + "\"content\":\"" + TieuDe + "\","
+                            + "\"align\":\"left\""
+                            + "},"
+                            + "{"
+                            + "\"type\":\"text\","
+                            + "\"content\":\"" + NoiDung + "\","
+                            + "\"align\":\"left\""
+                            + "},"
+                            + "{"
+                            + "\"type\":\"table\","
+                            + "\"content\":["
+                            + "{"
+                            + "\"value\":\"" + DanhBo + "\","
+                            + "\"key\":\"Mã Danh bộ\""
+                            + "},"
+                            + "{"
+                            + "\"value\":\"" + HoTen + "\","
+                            + "\"key\":\"Tên Khách hàng\""
+                            + "},"
+                            + "{"
+                            + "\"value\":\"" + DiaChi + "\","
+                            + "\"key\":\"Địa chỉ\""
+                            + "},"
+                            + "]"
+                            + "},"
+                            + "{"
+                            + "\"type\":\"text\","
+                            + "\"content\":\"" + NoiDungEnd + "\","
+                            + "\"align\":\"left\""
+                            + "}"
+                            + "],"
+                            + "\"buttons\":["
+                            + "{"
+                            + "\"title\":\"Truy cập website\","
+                            + "\"image_icon\":\"\","
+                            + "\"type\":\"oa.open.url\","
+                            + "\"payload\":"
+                            + "{"
+                            + "\"url\":\"https://econtract.cskhtanhoa.com.vn:1443\""
+                            + "}"
+                            + "}"
+                            + "]"
+                            + "}"
+                            + "}"
+                            + "}"
+                            + "}";
+                using (var streamWriter = new StreamWriter(request.GetRequestStream()))
+                {
+                    streamWriter.Write(data);
+                }
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    jsonReult deserializedResult = CGlobalVariable.jsSerializer.Deserialize<jsonReult>(read.ReadToEnd());
+                    strResponse = deserializedResult.message;
+                    read.Close();
+                    respuesta.Close();
+                }
+                else
+                {
+                    strResponse = "Error: " + respuesta.StatusCode;
+                }
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
         }
 
         //gửi dự liệu chỉ số đhn >= 100ly

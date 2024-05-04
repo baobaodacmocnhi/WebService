@@ -433,7 +433,6 @@ namespace WSSmartPhone
                     if (MaDon != "")
                     {
                         dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where MaDon='" + MaDon + "' and Huy=0 and HieuLuc=0 order by CreateDate desc");
-                        //DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate='08/09/2023'");
                         DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("select CreateDate=CONVERT(varchar(10),b.CreateDate,103) from KTKS_DonKH.dbo.DCBD a,KTKS_DonKH.dbo.DCBD_ChiTietBienDong b"
                         + " where a.MaDCBD=b.MaDCBD and a.MaDonMoi=" + MaDon + " and b.ThongTin like N'%tên%'");
                         if (dtThongTin == null || dtThongTin.Rows.Count == 0)
@@ -446,7 +445,6 @@ namespace WSSmartPhone
                     else
                     {
                         dt = _cDAL_TTKH.ExecuteQuery_DataTable("select top 1 IDEContract from Zalo_EContract_ChiTiet where SHS='" + SHS + "' and Huy=0 and HieuLuc=0 order by CreateDate desc");
-                        //DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT COTLK='15',DHN_SODANHBO='13130000000',DHN_SOHOPDONG='TP123456',DHN_NGAYCHOSODB='08/09/2023'");
                         DataTable dtThongTin = _cDAL_TTKH.ExecuteQuery_DataTable("SELECT COTLK,DHN_SODANHBO,DHN_SOHOPDONG,DHN_NGAYCHOSODB=CONVERT(varchar(10),DHN_NGAYCHOSODB,103) FROM TANHOA_WATER.dbo.KH_HOSOKHACHHANG where shs='" + SHS + "' and DHN_SODANHBO is not null");
                         if (dtThongTin == null || dtThongTin.Rows.Count == 0)
                         {
