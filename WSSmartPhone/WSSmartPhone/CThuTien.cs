@@ -3693,18 +3693,15 @@ namespace WSSmartPhone
             try
             {
                 object MaNV = null;
-                MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0");
-                if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
-                    MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0");
-
+                MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and An=0 and Khoa=0");
+                if (MaNV != null && MaNV.ToString() != "0" && MaNV.ToString() != "1")
+                    MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and MatKhau='" + Password + "' and IDMobile='" + IDMobile + "' and An=0 and Khoa=0");
                 if (MaNV == null || MaNV.ToString() == "")
                     return "false;Sai mật khẩu hoặc IDMobile";
-
                 //xóa máy đăng nhập MaNV khác
                 //object MaNV_UID_Old = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
                 //if (MaNV_UID_Old != null && (int)MaNV_UID_Old > 0)
                 //    _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV!=" + MaNV + " and UID='" + UID + "'");
-
                 //if (MaNV.ToString() != "0" && MaNV.ToString() != "1")
                 //{
                 //    DataTable dt = _cDAL.ExecuteQuery_DataTable("select UID from TT_DeviceSigned where MaNV=" + MaNV);
@@ -3714,16 +3711,13 @@ namespace WSSmartPhone
                 //        _cDAL.ExecuteNonQuery("delete TT_DeviceSigned where UID='" + item["UID"].ToString() + "'");
                 //    }
                 //}
-
                 //object MaNV_UID = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select COUNT(MaNV) from DeviceSigned where MaNV='" + MaNV + "' and UID='" + UID + "'");
                 //if (MaNV_UID != null)
                 //    if ((int)MaNV_UID == 0)
                 //        _cDAL_DocSo.ExecuteNonQuery("insert DeviceSigned(MaNV,UID,CreateDate)values(" + MaNV + ",'" + UID + "',getDate())");
                 //    else
                 //        _cDAL_DocSo.ExecuteNonQuery("update DeviceSigned set ModifyDate=getdate() where MaNV=" + MaNV + " and UID='" + UID + "'");
-
                 _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='" + UID + "',UIDDate=getdate() where MaND=" + MaNV);
-
                 return "true;" + DataTableToJSON(_cDAL_DocSo.ExecuteQuery_DataTable("select TaiKhoan,MatKhau,MaND,HoTen,May,Admin,Doi,ToTruong,MaTo,DienThoai,IDPhong=(select IDPhong from [To] where [To].MaTo=NguoiDung.MaTo) from NguoiDung where MaND=" + MaNV));
             }
             catch (Exception ex)
@@ -3737,9 +3731,7 @@ namespace WSSmartPhone
             try
             {
                 //string MaNV = _cDAL.ExecuteQuery_ReturnOneValue("select MaND from TT_NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
-
                 //_cDAL.ExecuteNonQuery("delete TT_DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
-
                 return _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
             }
             catch (Exception ex)
@@ -3753,10 +3745,8 @@ namespace WSSmartPhone
             try
             {
                 object MaNV = _cDAL_DocSo.ExecuteQuery_ReturnOneValue("select MaND from NguoiDung where TaiKhoan='" + Username + "' and An=0").ToString();
-
                 //if (MaNV != null)
                 //    _cDAL_DocSo.ExecuteNonQuery("delete DeviceSigned where MaNV=" + MaNV + " and UID='" + UID + "'");
-
                 return _cDAL_DocSo.ExecuteNonQuery("update NguoiDung set UID='' where TaiKhoan='" + Username + "'").ToString() + ";";
             }
             catch (Exception ex)

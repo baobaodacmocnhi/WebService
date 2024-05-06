@@ -1535,17 +1535,17 @@ namespace WSTanHoa.Controllers
                     //gửi nhắc lại lần 2
                     string sql = "select top 500 * from"
                         + " (select DanhBo, IDZalo, HoTen = TENKH, DiaChi = SO + ' ' + DUONG, DinhMuc = DM from(select distinct DanhBo, b.IDZalo from TRUNGTAMKHACHHANG.dbo.Zalo_QuanTam a, TRUNGTAMKHACHHANG.dbo.Zalo_DangKy b where a.IDZalo = b.IDZalo and a.Follow = 1)t2, HOADON_TA.dbo.HOADON hd"
-                        + " where DOT in (6, 21, 7, 22,8,23,9,24,10,25) and DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
+                        + " where DOT in (6, 21, 7, 22,8,23,9,24,10,25,11,26,12,27,13,28,14,29,15,30) and DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.ChungTu_ChiTiet where MaLCT = 15 and cat = 0)"
                         + " and hd.NAM = 2024 and hd.ky = 4 and t2.DanhBo = hd.DANHBA and hd.DM >= 4 and hd.DM <= 36)t1"
-                        + " where t1.DANHBO not in (select dtct.DanhBo from KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct where dt.MaDon = dtct.MaDon and CAST(dtct.CreateDate as date) >= '20231201' and Name_NhomDon_PKH like N'%định mức%')"
-                        + " and t1.DANHBO not in (select DanhBo from KTKS_DonKH.dbo.DCBD_DKDM_DanhBo where CAST(CreateDate as date) >= '20240404')"
-                        + " and t1.DanhBo not in (select DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date) >= '20240502' and Loai = 'thongbaocccd')"
+                        + " where t1.DANHBO not in (select distinct dtct.DanhBo from KTKS_DonKH.dbo.DonTu dt, KTKS_DonKH.dbo.DonTu_ChiTiet dtct where dt.MaDon = dtct.MaDon and CAST(dtct.CreateDate as date) >= '20231201' and Name_NhomDon_PKH like N'%định mức%')"
+                        + " and t1.DANHBO not in (select distinct DanhBo from KTKS_DonKH.dbo.DCBD_DKDM_DanhBo where CAST(CreateDate as date) >= '20240404')"
+                        + " and t1.DanhBo not in (select distinct DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_Send where CAST(CreateDate as date) >= '20240502' and Loai = 'thongbaocccd')"
                         + " and t1.DanhBo not in (select distinct DanhBo from KTKS_DonKH.dbo.DCBD_ChiTietBienDong where HieuLucKy in ('12/2023','01/2024','02/2024','03/2024','04/2024','05/2024','06/2024','07/2024','08/2024') and ThongTin like N'%định mức%')";
                     DataTable dt = _cDAL_TrungTam.ExecuteQuery_DataTable(sql);
                     foreach (DataRow item in dt.Rows)
                     {
                         strResponse = sendMessageOver7Days_CCCD(item["IDZalo"].ToString()
-                            , "Thông báo về việc cấp định mức nước theo số định danh cá nhân."
+                            , "Thông báo về việc cấp định mức nước theo số định danh cá nhân LẦN 2."
                             , "Công ty Cổ phần Cấp nước Tân Hòa trân trọng thông báo đến Quý khách hàng"
                             , "Quý khách hàng vui lòng cung cấp đầy đủ thông tin số định danh cá nhân và các giấy tờ liên quan đến nơi cư trú để đăng ký định mức nước. Trường hợp sau 07 ngày Quý khách vẫn không liên hệ, Công ty buộc lòng điều chỉnh định mức nước = 0m3/tháng."
                             , item["DanhBo"].ToString(), item["HoTen"].ToString(), item["DiaChi"].ToString(), item["DinhMuc"].ToString() + " m3");
@@ -1976,8 +1976,8 @@ namespace WSTanHoa.Controllers
                         foreach (DataRow item in dt.Rows)
                         {
                             string strResponse = sendMessage(item["IDZalo"].ToString(), NoiDung);
-                            if (strResponse == "-230 : User has not interacted with the OA in the past 7 days" && NoiDung.Contains("đã có hiệu lực"))
-                                strResponse = sendEContractOver7Days(item["IDZalo"].ToString(), "",);
+                            //if (strResponse == "-230 : User has not interacted with the OA in the past 7 days" && NoiDung.Contains("đã có hiệu lực"))
+                            //    strResponse = sendEContractOver7Days(item["IDZalo"].ToString(), "",);
                             _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,DanhBo,Loai,NoiDung,Result)values(" + item["IDZalo"].ToString() + ",N'" + DienThoai + "',N'econtract',N'" + NoiDung + "',N'" + strResponse + "')");
                         }
                         result.success = true;

@@ -356,91 +356,103 @@ namespace WSTanHoa.Controllers
         //đăng ký định mức cccd
         public ActionResult DangKyDinhMuc(string function, string DanhBo, string DienThoai, string SoNK, FormCollection form, IEnumerable<HttpPostedFileBase> HinhCCCD, IEnumerable<HttpPostedFileBase> HinhCT)
         {
-            if (function == "KiemTra")
+            try
             {
-                if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
+                if (function == "KiemTra")
                 {
-                    DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
-                    if (dt != null && dt.Rows.Count > 0)
+                    if (DanhBo != null && DanhBo.Replace(" ", "").Replace("-", "") != "")
                     {
-                        ViewBag.DanhBo = dt.Rows[0]["DanhBo"];
-                        ViewBag.HoTen = dt.Rows[0]["HoTen"];
-                        ViewBag.DiaChi = dt.Rows[0]["DiaChi"];
+                        DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select MLT=LOTRINH,DanhBo,HoTen,DiaChi = SONHA + ' ' + TENDUONG from TB_DULIEUKHACHHANG where DanhBo='" + DanhBo.Replace(" ", "").Replace("-", "") + "'");
+                        if (dt != null && dt.Rows.Count > 0)
+                        {
+                            ViewBag.DanhBo = dt.Rows[0]["DanhBo"];
+                            ViewBag.HoTen = dt.Rows[0]["HoTen"];
+                            ViewBag.DiaChi = dt.Rows[0]["DiaChi"];
+                        }
+                        else
+                            ModelState.AddModelError("", "Danh Bộ không tồn tại");
                     }
-                    else
-                        ModelState.AddModelError("", "Danh Bộ không tồn tại");
-                }
-            }
-            else
-                if (function == "Gui")
-            {
-                DanhBo = DanhBo.Trim().Replace(" ", "").Replace("-", "");
-                DienThoai = DienThoai.Trim().Replace(".", "").Replace("-", "");
-                SoNK = SoNK.Trim();
-                if (DanhBo == "")
-                    ModelState.AddModelError("", "Thiếu Danh Bộ");
-                if (DienThoai == "" || DienThoai.Length != 10)
-                    ModelState.AddModelError("", "Thiếu Điện Thoại hoặc Điện Thoại Không Đủ 10 số");
-                if (SoNK == "")
-                    ModelState.AddModelError("", "Thiếu Số Nhân Khẩu");
-                for (int i = 0; i < int.Parse(SoNK); i++)
-                {
-                    if (form["HoTen" + (i + 1) + ""].ToString().Trim() == "")
-                    {
-                        ModelState.AddModelError("", "Thiếu Họ Tên");
-                        return View();
-                    }
-                    if (form["DCThuongTru" + (i + 1) + ""].ToString().Trim() == "" && form["DCTamTru" + (i + 1) + ""].ToString().Trim() == "")
-                    {
-                        ModelState.AddModelError("", "Thiếu Địa chỉ thường trụ hoặc tạm trú");
-                        return View();
-                    }
-                    if (form["CCCD" + (i + 1) + ""].ToString().Trim() == "")
-                    {
-                        ModelState.AddModelError("", "Thiếu số CCCD");
-                        return View();
-                    }
-                    if (HinhCCCD.ElementAt(i) == null || HinhCCCD.ElementAt(i).ContentLength <= 0)
-                    {
-                        ModelState.AddModelError("", "Thiếu Hình ảnh đính kèm");
-                        return View();
-                    }
-                }
-                string checkExists = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select case when exists(select ID from DCBD_DKDM_DanhBo where DanhBo='" + DanhBo + "' and cast(createdate as date)=cast(getdate() as date)) then 1 else 0 end").ToString();
-                if (checkExists == "1")
-                {
-                    ModelState.AddModelError("", "Danh Bộ đã nhập trong ngày");
                 }
                 else
-                if (DanhBo != "" && DienThoai.Length == 10 && SoNK != "")
+                if (function == "Gui")
                 {
-                    string Date = DateTime.Now.ToString("yyyyMMdd");
-                    DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 GB,DM from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
-                    string sql = "declare @tbID table (id int);"
-                              + " insert into DCBD_DKDM_DanhBo(DanhBo,GiaBieu,DinhMuc,SDT)"
-                              + " output inserted.ID into @tbID"
-                              + " values('" + DanhBo + "'," + dt.Rows[0]["GB"] + "," + dt.Rows[0]["DM"] + ",'" + DienThoai + "');"
-                              + " declare @ID int"
-                              + " select @ID=id from @tbID;";
+                    DanhBo = DanhBo.Trim().Replace(" ", "").Replace("-", "");
+                    DienThoai = DienThoai.Trim().Replace(".", "").Replace("-", "");
+                    SoNK = SoNK.Trim();
+                    if (DanhBo == "")
+                        ModelState.AddModelError("", "Thiếu Danh Bộ");
+                    if (DienThoai == "" || DienThoai.Length != 10)
+                        ModelState.AddModelError("", "Thiếu Điện Thoại hoặc Điện Thoại Không Đủ 10 số");
+                    if (SoNK == "")
+                        ModelState.AddModelError("", "Thiếu Số Nhân Khẩu");
                     for (int i = 0; i < int.Parse(SoNK); i++)
                     {
-                        sql += " insert into DCBD_DKDM_CCCD(IDDanhBo,CCCD,HoTen,NgaySinh,DCThuongTru,DCTamTru)values(@ID"
-                            + ",N'" + form["CCCD" + (i + 1) + ""].ToString().Trim() + "',N'" + form["HoTen" + (i + 1) + ""].ToString().Trim() + "','" + form["NgaySinh" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCThuongTru" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCTamTru" + (i + 1) + ""].ToString().Trim() + "')";
-                        Image image = Image.FromStream(HinhCCCD.ElementAt(i).InputStream);
-                        Bitmap resizedImage = CGlobalVariable.resizeImage(image, 0.5m);
-                        _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CCCD" + (i + 1).ToString() + Path.GetExtension(HinhCCCD.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImage));
-                        if (HinhCT.ElementAt(i) != null && HinhCT.ElementAt(i).ContentLength > 0)
+                        if (form["HoTen" + (i + 1) + ""].ToString().Trim() == "")
                         {
-                            Image imageCT = Image.FromStream(HinhCT.ElementAt(i).InputStream);
-                            Bitmap resizedImageCT = CGlobalVariable.resizeImage(imageCT, 0.5m);
-                            _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CT" + (i + 1).ToString() + Path.GetExtension(HinhCT.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImageCT));
+                            ModelState.AddModelError("", "Thiếu Họ Tên");
+                            return View();
+                        }
+                        if (form["DCThuongTru" + (i + 1) + ""].ToString().Trim() == "" && form["DCTamTru" + (i + 1) + ""].ToString().Trim() == "")
+                        {
+                            ModelState.AddModelError("", "Thiếu Địa chỉ thường trụ hoặc tạm trú");
+                            return View();
+                        }
+                        if (form["CCCD" + (i + 1) + ""].ToString().Trim() == "")
+                        {
+                            ModelState.AddModelError("", "Thiếu số CCCD");
+                            return View();
+                        }
+                        if (HinhCCCD.ElementAt(i) == null || HinhCCCD.ElementAt(i).ContentLength <= 0)
+                        {
+                            ModelState.AddModelError("", "Thiếu Hình ảnh đính kèm");
+                            return View();
                         }
                     }
-                    if (_cDAL_ThuongVu.ExecuteNonQuery(sql))
-                        ModelState.AddModelError("", "Đăng Ký Thành Công");
+                    //string checkExists = _cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select case when exists(select ID from DCBD_DKDM_DanhBo where DanhBo='" + DanhBo + "' and cast(createdate as date)=cast(getdate() as date)) then 1 else 0 end").ToString();
+                    //if (checkExists == "1")
+                    //{
+                    //    ModelState.AddModelError("", "Danh Bộ đã nhập trong ngày");
+                    //}
+                    int checkExists = int.Parse(_cDAL_ThuongVu.ExecuteQuery_ReturnOneValue("select COUNT(ID) from DCBD_DKDM_DanhBo where DanhBo='" + DanhBo + "' and cast(createdate as date)=cast(getdate() as date)").ToString());
+                    if (checkExists > 3)
+                    {
+                        ModelState.AddModelError("", "Danh Bộ đã nhập quá 3 lần trong ngày");
+                    }
                     else
-                        ModelState.AddModelError("", "Đăng Ký Không Thành Công");
+                    if (DanhBo != "" && DienThoai.Length == 10 && SoNK != "")
+                    {
+                        string Date = DateTime.Now.ToString("yyyyMMdd");
+                        DataTable dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1 GB,DM from HOADON where DANHBA='" + DanhBo + "' order by ID_HOADON desc");
+                        string sql = "declare @tbID table (id int);"
+                                  + " insert into DCBD_DKDM_DanhBo(DanhBo,GiaBieu,DinhMuc,SDT)"
+                                  + " output inserted.ID into @tbID"
+                                  + " values('" + DanhBo + "'," + dt.Rows[0]["GB"] + "," + dt.Rows[0]["DM"] + ",'" + DienThoai + "');"
+                                  + " declare @ID int"
+                                  + " select @ID=id from @tbID;";
+                        for (int i = 0; i < int.Parse(SoNK); i++)
+                        {
+                            sql += " insert into DCBD_DKDM_CCCD(IDDanhBo,CCCD,HoTen,NgaySinh,DCThuongTru,DCTamTru)values(@ID"
+                                + ",N'" + form["CCCD" + (i + 1) + ""].ToString().Trim() + "',N'" + form["HoTen" + (i + 1) + ""].ToString().Trim() + "','" + form["NgaySinh" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCThuongTru" + (i + 1) + ""].ToString().Trim() + "',N'" + form["DCTamTru" + (i + 1) + ""].ToString().Trim() + "')";
+                            Image image = Image.FromStream(HinhCCCD.ElementAt(i).InputStream);
+                            Bitmap resizedImage = CGlobalVariable.resizeImage(image, 0.5m);
+                            _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CCCD" + (i + 1).ToString() + Path.GetExtension(HinhCCCD.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImage));
+                            if (HinhCT.ElementAt(i) != null && HinhCT.ElementAt(i).ContentLength > 0)
+                            {
+                                Image imageCT = Image.FromStream(HinhCT.ElementAt(i).InputStream);
+                                Bitmap resizedImageCT = CGlobalVariable.resizeImage(imageCT, 0.5m);
+                                _wsThuongVu.ghi_Hinh("DangKyDinhMuc", DanhBo + "." + Date, "CT" + (i + 1).ToString() + Path.GetExtension(HinhCT.ElementAt(i).FileName), CGlobalVariable.ImageToByte(resizedImageCT));
+                            }
+                        }
+                        if (_cDAL_ThuongVu.ExecuteNonQuery(sql))
+                            ModelState.AddModelError("", "Đăng Ký Thành Công");
+                        else
+                            ModelState.AddModelError("", "Đăng Ký Không Thành Công");
+                    }
                 }
+            }
+            catch
+            {
+                ModelState.AddModelError("", "Lỗi - Đăng Ký Không Thành Công");
             }
             return View();
         }
