@@ -33,8 +33,7 @@ namespace WSTanHoa
             bundles.Add(new StyleBundle("~/Content/css").Include(
                      "~/Template/SBAdmin2/css/sb-admin-2.css",
                      "~/Content/Site.css",
-                     "~/Lib/lightbox2.2.11.3/css/lightbox.css",
-                     "~/Lib/bootstrap-datepicker-1.9.0/css/bootstrap-datepicker.css"));
+                     "~/Lib/lightbox2.2.11.3/css/lightbox.css"));
 
             bundles.Add(new StyleBundle("~/Content/cssDoanTCT2022").Include(
                      "~/Content/bootstrap.css",

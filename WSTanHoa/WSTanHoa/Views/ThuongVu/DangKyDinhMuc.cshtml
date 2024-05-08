@@ -14,6 +14,9 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    @*<link href="~/Lib/bootstrap-datepicker-1.9.0/css/bootstrap-datepicker3.css" rel="stylesheet" />
+        <script src="~/Lib/bootstrap-datepicker-1.9.0/js/bootstrap-datepicker.min.js"></script>
+        <script src="~/Scripts/globalscript.js"></script>*@
     <script>
         function fillrows() {
             var rows = $("input[name=SoNK]").val();
@@ -46,37 +49,37 @@
                     + "        <div class='row mt-3'>"
                     + "            <div class='col'>"
                     + "                <label class='form-label'>Họ tên</label>"
-                    + "                <input type='text' class='form-control' name='HoTen" + (i + 1) + "' value=''>"
+                    + "                <input type='text' class='form-control' id='HoTen" + (i + 1) + "' name='HoTen" + (i + 1) + "' value=''>"
                     + "            </div>"
                     + "        </div>"
                     + "        <div class='row mt-3'>"
                     + "            <div class='col'>"
                     + "                <label class='form-label'>Ngày sinh</label>"
-                    + "                <input type='date' class='form-control' name='NgaySinh" + (i + 1) + "' value=''>"
+                    + "                <input type='date' class='form-control' data-date-format='dd/mm/yyyy' id='NgaySinh" + (i + 1) + "' name='NgaySinh" + (i + 1) + "' value=''>"
                     + "            </div>"
                     + "        </div>"
                     + "        <div class='row mt-3'>"
                     + "            <div class='col'>"
                     + "                <label class='form-label'>Địa chỉ thường trú</label>"
-                    + "                <input type='text' class='form-control' name='DCThuongTru" + (i + 1) + "' value=''>"
+                    + "                <input type='text' class='form-control' id='DCThuongTru" + (i + 1) + "' name='DCThuongTru" + (i + 1) + "' value=''>"
                     + "            </div>"
                     + "        </div>"
                     + "        <div class='row mt-3'>"
                     + "            <div class='col'>"
                     + "                <label class='form-label'>Địa chỉ tạm trú</label>"
-                    + "                <input type='text' class='form-control' name='DCTamTru" + (i + 1) + "' value=''>"
+                    + "                <input type='text' class='form-control' id='DCTamTru" + (i + 1) + "' name='DCTamTru" + (i + 1) + "' value=''>"
                     + "            </div>"
                     + "        </div>"
                     + "        <div class='row mt-3'>"
                     + "            <div class='col'>"
                     + "                <label class='form-label'>CCCD/Số định danh</label>"
-                    + "                <input type='number' class='form-control' name='CCCD" + (i + 1) + "' value=''>"
+                    + "                <input type='number' class='form-control' id='CCCD" + (i + 1) + "' name='CCCD" + (i + 1) + "' value=''>"
                     + "            </div>"
                     + "        </div>"
                     + "        <div class='row mt-3'>"
                     + "            <div class='col'>"
                     + "                <label class='form-label'>Hình CCCD (mặt trước)</label>"
-                    + "                <input type='file' class='form-control' name='HinhCCCD' accept='image/png, image/jpeg'>"
+                    + "                <input type='file' class='form-control' id='HinhCCCD' name='HinhCCCD' accept='image/png, image/jpeg'>"
                     + "            </div>"
                     + "        </div>"
                     + "        <div class='row mt-3'>"
@@ -102,6 +105,32 @@
             if ($("#SoNK").val() == "") {
                 alert("Thiếu Số Nhân Khẩu");
                 return false;
+            }
+            for (var i = 1; i <= $("#SoNK").val() ; i++) {
+                if ($("#HoTen" + i).val() == "") {
+                    alert("Thiếu Họ Tên vị trí " + i);
+                    return false;
+                }
+                if ($("#NgaySinh" + i).val() == "") {
+                    alert("Thiếu Ngày Sinh vị trí " + i);
+                    return false;
+                }
+                if ($("#DCThuongTru" + i).val() == "") {
+                    alert("Thiếu Địa Chỉ Thường Trú vị trí " + i);
+                    return false;
+                }
+                if ($("#CCCD" + i).val() == "") {
+                    alert("Thiếu CCCD vị trí " + i);
+                    return false;
+                }
+                if ($("#CCCD" + i).val().length != 12) {
+                    alert("CCCD Không Đủ 10 số vị trí " + i);
+                    return false;
+                }
+                if ($("#HinhCCCD").get(i - 1).files.length == 0) {
+                    alert("Thiếu Hình ảnh CCCD đính kèm vị trí " + i);
+                    return false;
+                }
             }
         }
     </script>
@@ -216,7 +245,7 @@
                             <div class="row mt-3">
                                 <div class="col">
                                     <label class="form-label">Ngày sinh</label>
-                                    <input type="date" class="form-control" name="NgaySinh1" value="">
+                                    <input type="date" class="form-control" data-date-format="dd/mm/yyyy" name="NgaySinh1" value="">
                                 </div>
                             </div>
                             <div class="row mt-3">
