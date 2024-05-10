@@ -13,7 +13,6 @@ namespace WSTanHoa.Controllers
     public class apiThuongVuController : ApiController
     {
         private CConnection _cDAL_ThuongVu = new CConnection(CGlobalVariable.ThuongVu);
-        //private CConnection _cDAL_ThuongVu = new CConnection("Data Source=server9;Initial Catalog=KTKS_DonKHtest;Persist Security Info=True;User ID=sa;Password=db9@tanhoa");
         private wrThuongVu.wsThuongVu _wsThuongVu = new wrThuongVu.wsThuongVu();
 
         [Route("insertCCCDtoTCT")]
@@ -24,7 +23,7 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.checksum == checksum)
                 {
-                    DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from ChungTu_ChiTiet where len(MaCT)=12 and malct=15 and Cat=0 and mact not in(select CCCD from CCCD_Temp) and DanhBo is not null and DanhBo not like ''");
+                    DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from ChungTu_ChiTiet where len(MaCT)=12 and malct=15 and Cat=0 and mact not in(select CCCD from CCCD_Temp) and DanhBo is not null and DanhBo not like '' and LEN(DanhBo)=11");
                     foreach (DataRow item in dt.Rows)
                     {
                         try
@@ -48,37 +47,37 @@ namespace WSTanHoa.Controllers
             }
         }
 
-        [Route("insertCCCDtoTCT_BoSung2023")]
-        [HttpGet]
-        public bool insertCCCDtoTCT_BoSung2023(string dot, string checksum)
-        {
-            try
-            {
-                if (CGlobalVariable.checksum == checksum)
-                {
-                    DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from CCCD_BoSung2023 where XuLy=0 and Dot=" + dot);
-                    foreach (DataRow item in dt.Rows)
-                    {
-                        try
-                        {
-                            string result = "";
-                            _wsThuongVu.them_CCCD_BoSung2023(item["DanhBo"].ToString(), item["MaCT"].ToString(), out result);
-                            _cDAL_ThuongVu.ExecuteNonQuery("update CCCD_BoSung2023 set XuLy=1,Result=N'" + result + "' where MaCT='" + item["MaCT"].ToString() + "' and DanhBo='" + item["DanhBo"].ToString() + "'");
-                        }
-                        catch
-                        {
-                        }
-                    }
-                    return true;
-                }
-                else
-                    return false;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
+        //[Route("insertCCCDtoTCT_BoSung2023")]
+        //[HttpGet]
+        //public bool insertCCCDtoTCT_BoSung2023(string dot, string checksum)
+        //{
+        //    try
+        //    {
+        //        if (CGlobalVariable.checksum == checksum)
+        //        {
+        //            DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from CCCD_BoSung2023 where XuLy=0 and Dot=" + dot);
+        //            foreach (DataRow item in dt.Rows)
+        //            {
+        //                try
+        //                {
+        //                    string result = "";
+        //                    _wsThuongVu.them_CCCD_BoSung2023(item["DanhBo"].ToString(), item["MaCT"].ToString(), out result);
+        //                    _cDAL_ThuongVu.ExecuteNonQuery("update CCCD_BoSung2023 set XuLy=1,Result=N'" + result + "' where MaCT='" + item["MaCT"].ToString() + "' and DanhBo='" + item["DanhBo"].ToString() + "'");
+        //                }
+        //                catch
+        //                {
+        //                }
+        //            }
+        //            return true;
+        //        }
+        //        else
+        //            return false;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return false;
+        //    }
+        //}
 
         [Route("donkh_login")]
         [HttpPost]

@@ -2046,7 +2046,6 @@ namespace WSSmartPhone
                         request.Headers.Add("username", userName);
                         request.Headers.Add("password", passWord);
                         request.ContentType = "application/json; charset=utf-8";
-
                         string NgayThanhToan = "", LoaiThuTien = "0", ThanhToan = "-1", TenThuTien = "";
                         if (item["NgayGiaiTrach"].ToString() != "")
                             NgayThanhToan = item["NgayGiaiTrach"].ToString();
@@ -2061,7 +2060,6 @@ namespace WSSmartPhone
                             else
                                 if (bool.Parse(item["DangNgan_Quay"].ToString()) == true)
                                     LoaiThuTien = "1";
-
                         if (GiaiTrach == true)
                             ThanhToan = "1";
                         else
@@ -2071,19 +2069,6 @@ namespace WSSmartPhone
                             TenThuTien = item["DangNgan"].ToString();
                         else
                             TenThuTien = "NULL";
-
-                        //var data = new
-                        //{
-                        //    branchcode = branchcode,
-                        //    pattern = pattern,
-                        //    serial = serial,
-                        //    SoHD = item["SoHoaDon"].ToString().Substring(6),
-                        //    NgayThanhToan = NgayThanhToan,
-                        //    TongSoTien = item["TongCong"].ToString(),
-                        //    LoaiThuTien = LoaiThuTien,
-                        //    TenThuTien = TenThuTien,
-                        //    ThanhToan = ThanhToan,
-                        //};
                         HoaDonThanhToan en = new HoaDonThanhToan();
                         en.branchcode = branchcode;
                         if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
@@ -2104,7 +2089,6 @@ namespace WSSmartPhone
                         en.LoaiThuTien = LoaiThuTien;
                         en.TenThuTien = TenThuTien;
                         en.ThanhToan = ThanhToan;
-
                         var json = jss.Serialize(en);
                         Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                         request.ContentLength = byteArray.Length;
@@ -2112,7 +2096,6 @@ namespace WSSmartPhone
                         Stream dataStream = request.GetRequestStream();
                         dataStream.Write(byteArray, 0, byteArray.Length);
                         dataStream.Close();
-
                         HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                         if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                         {
@@ -2120,7 +2103,6 @@ namespace WSSmartPhone
                             result = read.ReadToEnd();
                             read.Close();
                             respuesta.Close();
-
                             var obj = jss.Deserialize<dynamic>(result);
                             if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                             {
@@ -2185,7 +2167,6 @@ namespace WSSmartPhone
                         request.Headers.Add("username", userName);
                         request.Headers.Add("password", passWord);
                         request.ContentType = "application/json; charset=utf-8";
-
                         string NgayThanhToan = "", LoaiThuTien = "0", ThanhToan = "-1", TenThuTien = "";
                         if (item["NgayGiaiTrach"].ToString() != "")
                             NgayThanhToan = item["NgayGiaiTrach"].ToString();
@@ -2200,29 +2181,14 @@ namespace WSSmartPhone
                             else
                                 if (bool.Parse(item["DangNgan_Quay"].ToString()) == true)
                                     LoaiThuTien = "1";
-
                         if (GiaiTrach == true)
                             ThanhToan = "1";
                         else
                             ThanhToan = "0";
-
                         if (item["DangNgan"].ToString() != "")
                             TenThuTien = item["DangNgan"].ToString();
                         else
                             TenThuTien = "NULL";
-
-                        //var data = new
-                        //{
-                        //    branchcode = branchcode,
-                        //    pattern = pattern,
-                        //    serial = serial,
-                        //    SoHD = item["SoHoaDon"].ToString().Substring(6),
-                        //    NgayThanhToan = NgayThanhToan,
-                        //    TongSoTien = item["TongCong"].ToString(),
-                        //    LoaiThuTien = LoaiThuTien,
-                        //    TenThuTien = TenThuTien,
-                        //    ThanhToan = ThanhToan,
-                        //};
                         HoaDonThanhToan en = new HoaDonThanhToan();
                         en.branchcode = branchcode;
                         if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
@@ -2243,7 +2209,6 @@ namespace WSSmartPhone
                         en.LoaiThuTien = LoaiThuTien;
                         en.TenThuTien = TenThuTien;
                         en.ThanhToan = ThanhToan;
-
                         var json = jss.Serialize(en);
                         Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                         request.ContentLength = byteArray.Length;
@@ -2251,7 +2216,6 @@ namespace WSSmartPhone
                         Stream dataStream = request.GetRequestStream();
                         dataStream.Write(byteArray, 0, byteArray.Length);
                         dataStream.Close();
-
                         HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                         if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                         {
@@ -2259,7 +2223,6 @@ namespace WSSmartPhone
                             result = read.ReadToEnd();
                             read.Close();
                             respuesta.Close();
-
                             var obj = jss.Deserialize<dynamic>(result);
                             if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                             {
@@ -2468,7 +2431,6 @@ namespace WSSmartPhone
                         request.Headers.Add("username", userName);
                         request.Headers.Add("password", passWord);
                         request.ContentType = "application/json; charset=utf-8";
-
                         string NgayThanhToan = "", LoaiThuTien = "0", ThanhToan = "-1", TenThuTien = "";
                         if (item["NgayGiaiTrach"].ToString() != "")
                             NgayThanhToan = item["NgayGiaiTrach"].ToString();
@@ -2483,7 +2445,6 @@ namespace WSSmartPhone
                             else
                                 if (bool.Parse(item["DangNgan_Quay"].ToString()) == true)
                                     LoaiThuTien = "1";
-
                         if (GiaiTrach == true)
                             ThanhToan = "1";
                         else
@@ -2493,19 +2454,6 @@ namespace WSSmartPhone
                             TenThuTien = item["DangNgan"].ToString();
                         else
                             TenThuTien = "NULL";
-
-                        //var data = new
-                        //{
-                        //    branchcode = branchcode,
-                        //    pattern = pattern,
-                        //    serial = serial,
-                        //    SoHD = item["SoHoaDon"].ToString().Substring(6),
-                        //    NgayThanhToan = NgayThanhToan,
-                        //    TongSoTien = item["TongCong"].ToString(),
-                        //    LoaiThuTien = LoaiThuTien,
-                        //    TenThuTien = TenThuTien,
-                        //    ThanhToan = ThanhToan,
-                        //};
                         HoaDonThanhToan en = new HoaDonThanhToan();
                         en.branchcode = branchcode;
                         if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
@@ -2526,7 +2474,6 @@ namespace WSSmartPhone
                         en.LoaiThuTien = LoaiThuTien;
                         en.TenThuTien = TenThuTien;
                         en.ThanhToan = ThanhToan;
-
                         var json = jss.Serialize(en);
                         Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                         request.ContentLength = byteArray.Length;
@@ -2534,7 +2481,6 @@ namespace WSSmartPhone
                         Stream dataStream = request.GetRequestStream();
                         dataStream.Write(byteArray, 0, byteArray.Length);
                         dataStream.Close();
-
                         HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                         if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                         {
@@ -2542,7 +2488,6 @@ namespace WSSmartPhone
                             result = read.ReadToEnd();
                             read.Close();
                             respuesta.Close();
-
                             var obj = jss.Deserialize<dynamic>(result);
                             if (obj["status"] == "OK" || obj["status"] == "ERR:4" || obj["status"] == "ERR:6" || obj["status"] == "ERR:7")
                             {
@@ -2606,28 +2551,15 @@ namespace WSSmartPhone
                         request.Headers.Add("username", userName);
                         request.Headers.Add("password", passWord);
                         request.ContentType = "application/json; charset=utf-8";
-
                         string NgayNopTien = "", HinhThucThanhToan = "";
                         if (item["NgayGiaiTrach"].ToString() != "")
                             NgayNopTien = item["NgayGiaiTrach"].ToString();
                         else
                             NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
-
                         if (bool.Parse(item["ChuyenNoKhoDoi"].ToString()) == true)
                             HinhThucThanhToan = "2";
                         else
                             HinhThucThanhToan = "1";
-
-                        //var data = new
-                        //{
-                        //    branchcode = branchcode,
-                        //    pattern = pattern,
-                        //    serial = serial,
-                        //    SoHD = item["SoHoaDon"].ToString().Substring(6),
-                        //    NgayNopTien = NgayNopTien,
-                        //    TongSoTien = item["TongCong"].ToString(),
-                        //    HinhThucThanhToan = HinhThucThanhToan,
-                        //};
                         HoaDonNopTien en = new HoaDonNopTien();
                         en.branchcode = branchcode;
                         if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
@@ -2646,7 +2578,6 @@ namespace WSSmartPhone
                         en.NgayNopTien = NgayNopTien;
                         en.TongSoTien = item["TongCong"].ToString();
                         en.HinhThucThanhToan = HinhThucThanhToan;
-
                         var json = jss.Serialize(en);
                         Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                         request.ContentLength = byteArray.Length;
@@ -2654,7 +2585,6 @@ namespace WSSmartPhone
                         Stream dataStream = request.GetRequestStream();
                         dataStream.Write(byteArray, 0, byteArray.Length);
                         dataStream.Close();
-
                         HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                         if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                         {
@@ -2662,7 +2592,6 @@ namespace WSSmartPhone
                             result = read.ReadToEnd();
                             read.Close();
                             respuesta.Close();
-
                             var obj = jss.Deserialize<dynamic>(result);
                             if (obj["status"] == "OK" || obj["status"] == "ERR:7" || obj["status"] == "ERR:8")
                             {
@@ -2722,28 +2651,15 @@ namespace WSSmartPhone
                         request.Headers.Add("username", userName);
                         request.Headers.Add("password", passWord);
                         request.ContentType = "application/json; charset=utf-8";
-
                         string NgayNopTien = "", HinhThucThanhToan = "";
                         if (item["NgayGiaiTrach"].ToString() != "")
                             NgayNopTien = item["NgayGiaiTrach"].ToString();
                         else
                             NgayNopTien = DateTime.Now.ToString("yyyyMMdd");
-
                         if (bool.Parse(item["ChuyenNoKhoDoi"].ToString()) == true)
                             HinhThucThanhToan = "2";
                         else
                             HinhThucThanhToan = "1";
-
-                        //var data = new
-                        //{
-                        //    branchcode = branchcode,
-                        //    pattern = pattern,
-                        //    serial = serial,
-                        //    SoHD = item["SoHoaDon"].ToString().Substring(6),
-                        //    NgayNopTien = NgayNopTien,
-                        //    TongSoTien = item["TongCong"].ToString(),
-                        //    HinhThucThanhToan = HinhThucThanhToan,
-                        //};
                         HoaDonNopTien en = new HoaDonNopTien();
                         en.branchcode = branchcode;
                         if (item["SoHoaDon"].ToString().Substring(0, 2).Contains("1K"))
@@ -2762,7 +2678,6 @@ namespace WSSmartPhone
                         en.NgayNopTien = NgayNopTien;
                         en.TongSoTien = item["TongCong"].ToString();
                         en.HinhThucThanhToan = HinhThucThanhToan;
-
                         var json = jss.Serialize(en);
                         Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                         request.ContentLength = byteArray.Length;
@@ -2770,7 +2685,6 @@ namespace WSSmartPhone
                         Stream dataStream = request.GetRequestStream();
                         dataStream.Write(byteArray, 0, byteArray.Length);
                         dataStream.Close();
-
                         HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                         if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                         {
@@ -2778,7 +2692,6 @@ namespace WSSmartPhone
                             result = read.ReadToEnd();
                             read.Close();
                             respuesta.Close();
-
                             var obj = jss.Deserialize<dynamic>(result);
                             if (obj["status"] == "OK" || obj["status"] == "ERR:7" || obj["status"] == "ERR:8")
                             {
@@ -2948,7 +2861,6 @@ namespace WSSmartPhone
                             request.Headers.Add("username", userName);
                             request.Headers.Add("password", passWord);
                             request.ContentType = "application/json; charset=utf-8";
-
                             var lstHD = new List<HoaDonNopTienLo>();
                             dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                             foreach (DataRow item in dt.Rows)
@@ -2977,7 +2889,6 @@ namespace WSSmartPhone
                             Stream dataStream = request.GetRequestStream();
                             dataStream.Write(byteArray, 0, byteArray.Length);
                             dataStream.Close();
-
                             HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                             if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                             {
@@ -3155,7 +3066,6 @@ namespace WSSmartPhone
                             request.Headers.Add("username", userName);
                             request.Headers.Add("password", passWord);
                             request.ContentType = "application/json; charset=utf-8";
-
                             var lstHD = new List<HoaDonNopTienLo>();
                             dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM<" + NgayGiaiTrach.Year + " or (NAM=" + NgayGiaiTrach.Year + " and KY<12)) and DCHD=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                             foreach (DataRow item in dt.Rows)
@@ -3184,7 +3094,6 @@ namespace WSSmartPhone
                             Stream dataStream = request.GetRequestStream();
                             dataStream.Write(byteArray, 0, byteArray.Length);
                             dataStream.Close();
-
                             HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                             if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                             {
@@ -3192,7 +3101,6 @@ namespace WSSmartPhone
                                 result = read.ReadToEnd();
                                 read.Close();
                                 respuesta.Close();
-
                                 HoaDonNopTienLoResult deserializedResult = jss.Deserialize<HoaDonNopTienLoResult>(result);
                                 if (deserializedResult.Status == "OK")
                                 {
@@ -3254,7 +3162,6 @@ namespace WSSmartPhone
                             request.Headers.Add("username", userName);
                             request.Headers.Add("password", passWord);
                             request.ContentType = "application/json; charset=utf-8";
-
                             var lstHD = new List<HoaDonNopTienLo>();
                             dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 * from (" + sql + ")t1 order by NgayGiaiTrach asc");
                             foreach (DataRow item in dt.Rows)
@@ -3283,7 +3190,6 @@ namespace WSSmartPhone
                             Stream dataStream = request.GetRequestStream();
                             dataStream.Write(byteArray, 0, byteArray.Length);
                             dataStream.Close();
-
                             HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                             if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                             {
@@ -3291,7 +3197,6 @@ namespace WSSmartPhone
                                 result = read.ReadToEnd();
                                 read.Close();
                                 respuesta.Close();
-
                                 HoaDonNopTienLoResult deserializedResult = jss.Deserialize<HoaDonNopTienLoResult>(result);
                                 if (deserializedResult.Status == "OK")
                                 {
@@ -3363,7 +3268,6 @@ namespace WSSmartPhone
                             request.Headers.Add("username", userName);
                             request.Headers.Add("password", passWord);
                             request.ContentType = "application/json; charset=utf-8";
-
                             var lstHD = new List<HoaDonNopTienLo>();
                             dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 SOHOADON,NGAYGIAITRACH=(select convert(varchar, NGAYGIAITRACH, 112)),TONGCONG,ChuyenNoKhoDoi from HOADON where Cast(NgayGiaiTrach as date)='" + NgayGiaiTrach.ToString("yyyyMMdd") + "' and MaNV_DangNgan is not null and syncNopTien=0 and (NAM>2020 or (NAM=2020 and KY>=7)) and (NAM=" + NgayGiaiTrach.Year + " and KY=12) and DCHD=0 and BaoCaoThue=0 and SUBSTRING(SOHOADON,0,7)='" + itemSerial["serial"].ToString() + "' order by NGAYGIAITRACH asc");
                             foreach (DataRow item in dt.Rows)
@@ -3392,7 +3296,6 @@ namespace WSSmartPhone
                             Stream dataStream = request.GetRequestStream();
                             dataStream.Write(byteArray, 0, byteArray.Length);
                             dataStream.Close();
-
                             HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                             if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                             {
@@ -3461,7 +3364,6 @@ namespace WSSmartPhone
                             request.Headers.Add("username", userName);
                             request.Headers.Add("password", passWord);
                             request.ContentType = "application/json; charset=utf-8";
-
                             var lstHD = new List<HoaDonNopTienLo>();
                             dt = _cDAL_ThuTien.ExecuteQuery_DataTable("select top 1000 * from (" + sql + ")t1 order by NgayGiaiTrach asc");
                             foreach (DataRow item in dt.Rows)
@@ -3490,7 +3392,6 @@ namespace WSSmartPhone
                             Stream dataStream = request.GetRequestStream();
                             dataStream.Write(byteArray, 0, byteArray.Length);
                             dataStream.Close();
-
                             HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                             if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                             {
@@ -5227,8 +5128,6 @@ namespace WSSmartPhone
                 return null;
             }
         }
-
-
 
         //kinh doanh
         public DataTable getDS_GiaNuoc()
