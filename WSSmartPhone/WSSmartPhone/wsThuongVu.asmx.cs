@@ -61,8 +61,9 @@ namespace WSSmartPhone
         }
 
         [WebMethod]
-        public int checkExists_CCCD(string DanhBo, string CCCD, out string result)
+        public int checkExists_CCCD(string DanhBo, string CCCD)
         {
+             string result;
             return _cThuTien.checkExists_CCCD(DanhBo, CCCD, out result);
         }
 

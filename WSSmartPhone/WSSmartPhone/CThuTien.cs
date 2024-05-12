@@ -7242,12 +7242,11 @@ namespace WSSmartPhone
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
-
                 var data = new
                 {
                     grant_type = "password",
                     userName = "cskh.cnth",
-                    Password = "123456@ABcd"
+                    Password = "cskh@Tanhoa+Sawaco2020"
                 };
                 //Password = "cskh2022@tanhoa"
                 var serializer = new JavaScriptSerializer();
@@ -7258,7 +7257,6 @@ namespace WSSmartPhone
                 Stream dataStream = request.GetRequestStream();
                 dataStream.Write(byteArray, 0, byteArray.Length);
                 dataStream.Close();
-
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
@@ -7305,7 +7303,6 @@ namespace WSSmartPhone
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
                 request.Headers["Authorization"] = "Bearer " + getAccess_token();
-
                 HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
                 if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
                 {
@@ -7406,19 +7403,13 @@ namespace WSSmartPhone
                             if (obj["duLieuKhongHopLe"][0]["ghichu"].ToString() != "")
                                 result = obj["duLieuKhongHopLe"][0]["ghichu"];
                         }
-                        catch
-                        {
-
-                        }
+                        catch{}
                         try
                         {
                             if (obj["duLieuTrung"][0]["id"].ToString() != "")
                                 result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " - " + obj["duLieuTrung"][0]["danhbo"].ToString() + " - " + obj["duLieuTrung"][0]["createdDate"].ToString();
                         }
-                        catch
-                        {
-
-                        }
+                        catch {}
                         return 0;
                     }
                 }
@@ -7502,19 +7493,13 @@ namespace WSSmartPhone
                             if (obj["duLieuKhongHopLe"][0]["ghichu"].ToString() != "")
                                 result = obj["duLieuKhongHopLe"][0]["ghichu"];
                         }
-                        catch
-                        {
-
-                        }
+                        catch{}
                         try
                         {
                             if (obj["duLieuTrung"][0]["id"].ToString() != "")
                                 result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " - " + obj["duLieuTrung"][0]["danhbo"].ToString() + " - " + obj["duLieuTrung"][0]["createdDate"].ToString();
                         }
-                        catch
-                        {
-
-                        }
+                        catch{}
                         return 0;
                     }
                 }
