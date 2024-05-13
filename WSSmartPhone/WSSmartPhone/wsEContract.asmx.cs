@@ -52,10 +52,10 @@ namespace WSSmartPhone
 
         [WebMethod]
         public bool createEContract(string HopDong, string DanhBo, DateTime CreateDate, string HoTen, string CCCD, string NgayCap, string DCThuongTru, string DCHienNay
-            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, bool GanMoi, bool CaNhan, string MaDon, string SHS, string checksum, out string strResponse)
+            , string DienThoai, string Fax, string Email, string TaiKhoan, string Bank, string MST, string CoDHN, string DCLapDat, string NgayHieuLuc, bool GanMoi, bool CaNhan, bool KyCaNhan, string MaDon, string SHS, string checksum, out string strResponse)
         {
             return _cEContract.createEContract(HopDong, DanhBo, CreateDate, HoTen, CCCD, NgayCap, DCThuongTru, DCHienNay
-             , DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, NgayHieuLuc, GanMoi, CaNhan, MaDon, SHS, checksum, out strResponse);
+             , DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, NgayHieuLuc, GanMoi, CaNhan, KyCaNhan, MaDon, SHS, checksum, out strResponse);
         }
 
         [WebMethod]
