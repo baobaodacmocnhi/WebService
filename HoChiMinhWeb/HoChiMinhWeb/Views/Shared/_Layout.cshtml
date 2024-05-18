@@ -1,0 +1,100 @@
+﻿<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" type="image/ico" href="~/images/logoctycp.png">
+    <title>&#9884; KGVH Hồ Chí Minh &#9884;</title>
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Template/SBAdmin2/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        @@media screen and (min-width: 1400px) {
+            body {
+                margin-top: 10px;
+            }
+        }
+
+        @@media screen and (max-width: 1399px) {
+            body {
+                margin-top: 60px;
+            }
+        }
+
+        @@media screen and (max-width: 1199px) {
+            body {
+                margin-top: 90px;
+            }
+        }
+
+        @@media screen and (max-width: 991px) {
+            body {
+                margin-top: 130px;
+            }
+        }
+
+        @@media screen and (max-width: 767px) {
+            body {
+                margin-top: 40px;
+            }
+        }
+
+        @@media screen and (max-width: 421px) {
+            body {
+                margin-top: 40px;
+            }
+        }
+
+        @@media screen and (max-width: 365px) {
+            body {
+                margin-top: 40px;
+            }
+        }
+    </style>
+</head>
+<nav class="navbar navbar-expand-md navbar-dark fixed-top" style="background-color: #FF1493;">
+    <div class="container">
+        <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between fw-bold">
+            @*<a class="navbar-brand">
+                    <img src="~/Images/logoctycp.png" alt="" width="32" height="30" class="d-inline-block align-text-top">
+                </a>*@
+            @Html.ActionLink("KGVH Hồ Chí Minh", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+                <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                    <li class="nav-item">
+                        @Html.ActionLink("CUỘC ĐỜI, SỰ NGHIỆP", "Index", "Home", new { area = "" }, new { @class = "nav-link active" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("TƯ TƯỞNG, ĐẠO ĐỨC, PHONG CÁCH", "Index", "TTDDPC", new { area = "" }, new { @class = "nav-link active" })
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link active" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            HỌC TẬP VÀ LÀM THEO LỜI BÁC
+                        </a>
+                        <ul class="dropdown-menu" style="background-color: #FF1493;">
+                            <li>@Html.ActionLink("ĐẢNG ỦY", "DU", "HTLTLB", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("CHÍNH QUYỀN", "CQ", "HTLTLB", new { area = "" }, new { @class = "nav-link active" })</li>
+                            <li>@Html.ActionLink("ĐOÀN THỂ", "DT", "HTLTLB", new { area = "" }, new { @class = "nav-link active" })</li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("MỖI TUẦN MỘT CÂU CHUYỆN VỀ BÁC", "Index", "MTMCCVB", new { area = "" }, new { @class = "nav-link active" })
+                    </li>
+                </ul>
+            </div>
+        </header>
+    </div>
+</nav>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12"><img src="~/images/banner2.jpg" width="100%" /></div>
+        </div>
+        @RenderBody()
+    </div>
+    <div class="row">
+        <div class="col-sm-12"><img src="~/images/footer.png" width="100%" /></div>
+    </div>
+</body>
