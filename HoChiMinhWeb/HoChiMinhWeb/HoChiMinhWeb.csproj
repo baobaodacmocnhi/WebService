@@ -359,6 +359,17 @@
     <Content Include="images\CDSN\pic5.jpg" />
     <Content Include="images\CDSN\pic5\Mien Nam trong trai tim toi VFI_.mp4" />
     <Content Include="images\footer.png" />
+    <Content Include="images\HTLTLB\CQ\pic1.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic1\1.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic1\2.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic1\3.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic1\4.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic1\5.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic1\6.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic1\7.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic1\8.jpg" />
+    <Content Include="images\HTLTLB\CQ\pic2.jpg" />
+    <Content Include="images\HTLTLB\DU\pic4.jpg" />
     <Content Include="images\HTLTLB\DT\pic1.png" />
     <Content Include="images\HTLTLB\DT\pic1\1.png" />
     <Content Include="images\HTLTLB\DT\pic1\10.png" />
@@ -380,7 +391,7 @@
     <Content Include="images\HTLTLB\DU\pic1\2.jpg" />
     <Content Include="images\HTLTLB\DU\pic1\3.jpg" />
     <Content Include="images\HTLTLB\DU\pic2.jpg" />
-    <Content Include="images\HTLTLB\DU\pic2.png" />
+    <Content Include="images\HTLTLB\DU\pic3.png" />
     <Content Include="images\logoctycp.png" />
     <Content Include="images\MTMCCVB\pic1.jpg" />
     <Content Include="images\TTDDPC\1.1  Đạo đức cách mạng cán bộ, Đảng viên.mp4" />
@@ -2165,11 +2176,11 @@
     <Content Include="Views\MTMCCVB\pic1.cshtml" />
     <Content Include="Views\MTMCCVB\pic2.cshtml" />
     <Content Include="Views\MTMCCVB\pic3.cshtml" />
+    <Content Include="Views\HTLTLB\CQpic1.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="HCM\V1\js\" />
-    <Folder Include="images\HTLTLB\CQ\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

@@ -29,6 +29,11 @@ namespace HoChiMinhWeb.Controllers
             return View();
         }
 
+        public ActionResult CQpic1()
+        {
+            return View();
+        }
+
         public ActionResult DT()
         {
             return View();
