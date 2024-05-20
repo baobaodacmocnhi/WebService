@@ -78,13 +78,17 @@ namespace BaoCaoWeb.DAL
 
         public DataTable getSanLuongNam(int NamPrevious, int NamPresent)
         {
-            string sql = "select t1.Ky,SanLuongPrevious=t1.SanLuong,SanLuongPresent=t2.SanLuong,ChenhLech=t2.SanLuong-t1.SanLuong from"
-                        + " (select Ky, SanLuong = SUM(TIEUTHU)-SUM(case when dc.TIEUTHU_DC is null then 0 else dc.TIEUTHU_DC end)+SUM(case when dc.TIEUTHU_BD is null then 0 else dc.TIEUTHU_BD end) from HOADON hd left join DIEUCHINH_HD dc on hd.ID_HOADON=dc.FK_HOADON where Nam = " + NamPrevious + " group by Ky)t1"
-                        + " left join"
-                        + " (select Ky, SanLuong = SUM(TIEUTHU)-SUM(case when dc.TIEUTHU_DC is null then 0 else dc.TIEUTHU_DC end)+SUM(case when dc.TIEUTHU_BD is null then 0 else dc.TIEUTHU_BD end) from HOADON hd left join DIEUCHINH_HD dc on hd.ID_HOADON=dc.FK_HOADON where Nam = " + NamPresent + " group by Ky)t2 on t1.Ky = t2.Ky"
-                        + " order by t1.Ky";
+            string sql = " select t1.Ky,SanLuongPrevious=t1.SanLuong,SanLuongPresent=t2.SanLuong,ChenhLech=t2.SanLuong-t1.SanLuong from"
+                            + " (select Ky, SanLuong = coalesce(SUM(TIEUTHU), 0) - coalesce(SUM(dc.TIEUTHU_DC), 0) + coalesce(SUM(dc.TIEUTHU_BD), 0) from HOADON hd left join DIEUCHINH_HD dc on hd.ID_HOADON = dc.FK_HOADON where Nam = " + NamPrevious + " group by Ky)t1"
+                            + " left join"
+                            + " (select Ky, SanLuong = coalesce(SUM(TIEUTHU), 0) - coalesce(SUM(dc.TIEUTHU_DC), 0) + coalesce(SUM(dc.TIEUTHU_BD), 0) + (select coalesce(SUM(tieuthumoi), 0) from DocSoTH.dbo.DocSo where nam = " + NamPresent + " and ky = hd.KY and cast(dot as int) in"
+                            + "         (select dot from"
+                            + "         (select dot = cast(dot as int) from DocSoTH.dbo.DocSo where nam = " + NamPresent + " and ky = hd.KY group by dot) t1 where t1.Dot not in"
+                            + "         (select dot = cast(dot as int) from HOADON where nam = " + NamPresent + " and ky = hd.KY group by dot))) from HOADON hd left join DIEUCHINH_HD dc on hd.ID_HOADON = dc.FK_HOADON where Nam = " + NamPresent + " group by Ky)t2 on t1.Ky = t2.Ky"
+                            + " order by t1.Ky";
             return ExecuteQuery_DataTable(sql);
         }
+
 
         public DataTable getDoanhThu(int NamPrevious, int NamPresent)
         {
