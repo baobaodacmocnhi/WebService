@@ -357,7 +357,6 @@
     <Content Include="images\CDSN\pic4\8.jpg" />
     <Content Include="images\CDSN\pic4\9.jpg" />
     <Content Include="images\CDSN\pic5.jpg" />
-    <Content Include="images\CDSN\pic5\Mien Nam trong trai tim toi VFI_.mp4" />
     <Content Include="images\footer.png" />
     <Content Include="images\HTLTLB\CQ\pic1.jpg" />
     <Content Include="images\HTLTLB\CQ\pic1\1.jpg" />
@@ -369,7 +368,6 @@
     <Content Include="images\HTLTLB\CQ\pic1\7.jpg" />
     <Content Include="images\HTLTLB\CQ\pic1\8.jpg" />
     <Content Include="images\HTLTLB\CQ\pic2.jpg" />
-    <Content Include="images\HTLTLB\DU\pic3\KGVHHCM.mp4" />
     <Content Include="images\HTLTLB\DU\pic4.jpg" />
     <Content Include="images\HTLTLB\DT\pic1.png" />
     <Content Include="images\HTLTLB\DT\pic1\1.png" />
@@ -395,15 +393,6 @@
     <Content Include="images\HTLTLB\DU\pic3.png" />
     <Content Include="images\logoctycp.png" />
     <Content Include="images\MTMCCVB\pic1.jpg" />
-    <Content Include="images\TTDDPC\1.1  Đạo đức cách mạng cán bộ, Đảng viên.mp4" />
-    <Content Include="images\TTDDPC\1.2 Đạo đức cách mạng theo tư tưởng Hồ Chí Minh.mp4" />
-    <Content Include="images\TTDDPC\1.3 Tư tưởng Hồ Chí Minh về Đảng phụng sự và liêm chính.mp4" />
-    <Content Include="images\TTDDPC\2.1 Thế trận lòng dân, cội nguồn sức mạnh đất nước.mp4" />
-    <Content Include="images\TTDDPC\2.2 Thực hành dân chủ vì lợi ích của dân.mp4" />
-    <Content Include="images\TTDDPC\2.3 Tư tưởng Hồ Chí Minh về xây dựng con người Việt Nam.mp4" />
-    <Content Include="images\TTDDPC\3.1 Chan dung mot con nguoi.mp4" />
-    <Content Include="images\TTDDPC\3.2 Độc lập - tự do - hạnh phúc.mp4" />
-    <Content Include="images\TTDDPC\3.3 Phong cách gần dân của Bác.mp4" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="images\HTLTLB\DU\pic1\1.jpg" />
@@ -2178,10 +2167,16 @@
     <Content Include="Views\MTMCCVB\pic2.cshtml" />
     <Content Include="Views\MTMCCVB\pic3.cshtml" />
     <Content Include="Views\HTLTLB\CQpic1.cshtml" />
+    <Content Include="Views\MTMCCVB\pic4.cshtml" />
+    <Content Include="Views\MTMCCVB\pic5.cshtml" />
+    <Content Include="Views\MTMCCVB\pic6.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="HCM\V1\js\" />
+    <Folder Include="images\CDSN\pic5\" />
+    <Folder Include="images\HTLTLB\DU\pic3\" />
+    <Folder Include="images\TTDDPC\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
