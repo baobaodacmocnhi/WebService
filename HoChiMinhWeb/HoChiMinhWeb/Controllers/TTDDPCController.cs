@@ -13,5 +13,20 @@ namespace HoChiMinhWeb.Controllers
         {
             return View();
         }
+
+        public ActionResult pic1()
+        {
+            return View();
+        }
+
+        public ActionResult pic2()
+        {
+            return View();
+        }
+
+        public ActionResult pic3()
+        {
+            return View();
+        }
     }
 }

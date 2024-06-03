@@ -2170,6 +2170,24 @@
     <Content Include="Views\MTMCCVB\pic4.cshtml" />
     <Content Include="Views\MTMCCVB\pic5.cshtml" />
     <Content Include="Views\MTMCCVB\pic6.cshtml" />
+    <Content Include="Views\HTLTLB\DUpic3.cshtml" />
+    <Content Include="Views\HTLTLB\DUpic4.cshtml" />
+    <Content Include="Views\HTLTLB\DUpic5.cshtml" />
+    <Content Include="Views\HTLTLB\CQpic2.cshtml" />
+    <Content Include="Views\HTLTLB\CQpic3.cshtml" />
+    <Content Include="Views\HTLTLB\CQpic4.cshtml" />
+    <Content Include="Views\HTLTLB\DTpic2.cshtml" />
+    <Content Include="Views\HTLTLB\DTpic3.cshtml" />
+    <Content Include="Views\HTLTLB\DTpic4.cshtml" />
+    <Content Include="Views\MTMCCVB\pic7.cshtml" />
+    <Content Include="Views\MTMCCVB\pic8.cshtml" />
+    <Content Include="Views\MTMCCVB\pic9.cshtml" />
+    <Content Include="Views\Home\pic6.cshtml" />
+    <Content Include="Views\Home\pic7.cshtml" />
+    <Content Include="Views\Home\pic8.cshtml" />
+    <Content Include="Views\TTDDPC\pic1.cshtml" />
+    <Content Include="Views\TTDDPC\pic2.cshtml" />
+    <Content Include="Views\TTDDPC\pic3.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

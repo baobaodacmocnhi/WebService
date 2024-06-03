@@ -13,7 +13,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/22/2013 08:43:40</publishTime>
     </File>
     <File Include="bin/HoChiMinhWeb.dll">
-      <publishTime>05/22/2024 15:23:56</publishTime>
+      <publishTime>06/03/2024 10:25:13</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>06/15/2015 02:06:24</publishTime>
@@ -6177,11 +6177,29 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/Home/pic5.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
     </File>
+    <File Include="Views/Home/pic6.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
+    <File Include="Views/Home/pic7.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
+    <File Include="Views/Home/pic8.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
     <File Include="Views/HTLTLB/CQ.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
     </File>
     <File Include="Views/HTLTLB/CQpic1.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/CQpic2.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/CQpic3.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/CQpic4.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
     </File>
     <File Include="Views/HTLTLB/DT.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
@@ -6189,14 +6207,32 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/HTLTLB/DTpic1.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
     </File>
+    <File Include="Views/HTLTLB/DTpic2.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/DTpic3.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/DTpic4.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
     <File Include="Views/HTLTLB/DU.cshtml">
-      <publishTime>05/21/2024 08:22:10</publishTime>
+      <publishTime>06/03/2024 13:25:46</publishTime>
     </File>
     <File Include="Views/HTLTLB/DUpic1.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
     </File>
     <File Include="Views/HTLTLB/DUpic2.cshtml">
-      <publishTime>05/20/2024 13:25:46</publishTime>
+      <publishTime>06/03/2024 13:25:36</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/DUpic3.cshtml">
+      <publishTime>06/03/2024 12:12:29</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/DUpic4.cshtml">
+      <publishTime>06/03/2024 10:20:05</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/DUpic5.cshtml">
+      <publishTime>06/03/2024 13:29:50</publishTime>
     </File>
     <File Include="Views/MTMCCVB/Index.cshtml">
       <publishTime>05/21/2024 09:54:48</publishTime>
@@ -6219,14 +6255,32 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Views/MTMCCVB/pic6.cshtml">
       <publishTime>05/21/2024 10:11:51</publishTime>
     </File>
+    <File Include="Views/MTMCCVB/pic7.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
+    <File Include="Views/MTMCCVB/pic8.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
+    <File Include="Views/MTMCCVB/pic9.cshtml">
+      <publishTime>06/03/2024 12:13:12</publishTime>
+    </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>05/22/2024 15:32:17</publishTime>
+      <publishTime>06/03/2024 10:18:53</publishTime>
     </File>
     <File Include="Views/TTDDPC/Index.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
+    </File>
+    <File Include="Views/TTDDPC/pic1.cshtml">
+      <publishTime>06/03/2024 10:24:05</publishTime>
+    </File>
+    <File Include="Views/TTDDPC/pic2.cshtml">
+      <publishTime>06/03/2024 10:24:11</publishTime>
+    </File>
+    <File Include="Views/TTDDPC/pic3.cshtml">
+      <publishTime>06/03/2024 10:24:17</publishTime>
     </File>
     <File Include="Views/Web.config">
       <publishTime>06/05/2023 10:37:04</publishTime>

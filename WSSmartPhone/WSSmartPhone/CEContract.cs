@@ -295,6 +295,10 @@ namespace WSSmartPhone
             {
                 if (checksum == CGlobalVariable.checksum)
                 {
+                    if (File.Exists(AppDomain.CurrentDomain.BaseDirectory + @"\Images\EContract.pdf"))
+                    {
+                        File.Delete(AppDomain.CurrentDomain.BaseDirectory + @"\Images\EContract.pdf");
+                    }
                     renderEContract(HopDong, DanhBo, CreateDate, HoTen, CCCD, NgayCap, DCThuongTru, DCHienNay, DienThoai, Fax, Email, TaiKhoan, Bank, MST, CoDHN, DCLapDat, NgayHieuLuc, checksum, out strResponse);
                     ServicePointManager.Expect100Continue = true;
                     ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
