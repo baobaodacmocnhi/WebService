@@ -871,6 +871,31 @@ namespace WSSmartPhone
             var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
         }
 
+        public string getThongTinDoiTac(string NoiDungTimKiem)
+        {
+            string strResponse = "";
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072;
+                var client = new HttpClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, urlApi + "/esolution-service/trusted-partners?identityLevel=&searchString=" + NoiDungTimKiem + "&maxSize=10&page=1&userType=&sortInfo=");
+                request.Headers.Add("Authorization", "Bearer " + getAccess_token_User());
+                var response = client.SendAsync(request);
+                var result = response.Result.Content.ReadAsStringAsync();
+                var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
+                if (obj["message"] == "ECT-00000000")
+                {
+                    strResponse = obj["object"]["data"][0]["ten"] + " - " + obj["object"]["data"][0]["username"] + " - " + obj["object"]["data"][0]["sdt"];
+                }
+            }
+            catch (Exception ex)
+            {
+                strResponse = ex.Message;
+            }
+            return strResponse;
+        }
+
         public byte[] ImageToByte(Bitmap image)
         {
             ImageConverter converter = new ImageConverter();

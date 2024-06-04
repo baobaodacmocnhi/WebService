@@ -107,6 +107,12 @@ namespace WSSmartPhone
             return _cEContract.duyetKhongKy(IDEContract, out  strResponse);
         }
 
+        [WebMethod]
+        public string getThongTinDoiTac(string NoiDungTimKiem)
+        {
+            return _cEContract.getThongTinDoiTac(NoiDungTimKiem);
+        }
+
         //[WebMethod]
         //public void test()
         //{
