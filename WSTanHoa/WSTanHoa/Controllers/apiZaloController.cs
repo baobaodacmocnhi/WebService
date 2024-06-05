@@ -265,6 +265,9 @@ namespace WSTanHoa.Controllers
                                                    //xét id chưa đăng ký
                                 getlichthutien(IDZalo, ref strResponse);
                                 break;
+                            case "#getchisodientu":
+                                getchisodientu(IDZalo, ref strResponse);
+                                break;
                             default:
                                 //insert chat
                                 if (message.Contains("#") == false)
@@ -526,6 +529,47 @@ namespace WSTanHoa.Controllers
                 //insert lịch sử truy vấn
                 string sql = "insert into Zalo_LichSuTruyVan(IDZalo,TruyVan,CreateDate,Result)values(" + IDZalo + ",'getlichthutien',getdate(),N'" + strResponse + "')";
                 _cDAL_TrungTam.ExecuteNonQuery(sql);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void getchisodientu(string IDZalo, ref string strResponse)
+        {
+            try
+            {
+                DataTable dt_DanhBo = _cDAL_TrungTam.ExecuteQuery_DataTable("select a.DanhBo from TRUNGTAMKHACHHANG.dbo.Zalo_DangKy a,sDHN.dbo.sDHN_PMAC b where a.DanhBo = b.DanhBo and a.IDZalo =" + IDZalo + "");
+                if (dt_DanhBo == null || dt_DanhBo.Rows.Count == 0)
+                {
+                    strResponse = sendMessage(IDZalo, "Đồng hồ nước của Quý Khách hàng không phải đồng hồ nước điện từ");
+                }
+                foreach (DataRow itemDB in dt_DanhBo.Rows)
+                {
+                    string content = getTTKH(itemDB["DanhBo"].ToString());
+                    if (content == "")
+                    {
+                        strResponse = sendMessage(IDZalo, "Danh Bộ " + itemDB["DanhBo"].ToString() + " không tồn tại");
+                    }
+                    else
+                    {
+                        DataTable dtsDHN = _cDAL_ThuTien.ExecuteQuery_DataTable("SELECT [DanhBo],[TableName],[TableNameNguoc] FROM [sDHN].[dbo].[sDHN_PMAC] where DanhBo='" + itemDB["DanhBo"].ToString() + "'");
+                        foreach (DataRow item in dtsDHN.Rows)
+                        {
+                            DataTable dtCS = _cDAL_TrungTam.ExecuteQuery_DataTable("SELECT top 1 [TimeStamp]"
+                            + ",CS =[Value] - (SELECT [Value] FROM [SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp =t1.TimeStamp)"
+                            + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t1 order by TimeStamp desc");
+                            if (dtCS != null || dtCS.Rows.Count > 0)
+                            {
+                                string NoiDung = getTTKH(itemDB["DanhBo"].ToString());
+                                NoiDung += "Chỉ số đồng hồ nước điện từ mới nhất là " + dtCS.Rows[0]["CS"].ToString() + " được ghi nhận vào ngày " + dtCS.Rows[0]["TimeStamp"].ToString();
+                                strResponse = sendMessage(IDZalo, NoiDung);
+                                _cDAL_TrungTam.ExecuteNonQuery("insert into Zalo_Send(IDZalo,Loai,NoiDung,Result)values(" + IDZalo + ",N'sendsDHN100',N'" + NoiDung + "',N'" + strResponse + "')");
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
