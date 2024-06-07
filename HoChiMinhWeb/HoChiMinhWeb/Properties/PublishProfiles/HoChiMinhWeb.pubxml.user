@@ -13,7 +13,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>02/22/2013 08:43:40</publishTime>
     </File>
     <File Include="bin/HoChiMinhWeb.dll">
-      <publishTime>06/03/2024 10:25:13</publishTime>
+      <publishTime>06/06/2024 08:39:24</publishTime>
     </File>
     <File Include="bin/Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll">
       <publishTime>06/15/2015 02:06:24</publishTime>
@@ -926,6 +926,48 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="images/HTLTLB/DU/pic4.jpg">
       <publishTime>05/20/2024 13:25:48</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic5.jpg">
+      <publishTime>06/06/2024 07:58:36</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic5/1.jpg">
+      <publishTime>06/06/2024 07:59:26</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic5/2.jpg">
+      <publishTime>06/06/2024 07:59:26</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic5/3.jpg">
+      <publishTime>06/06/2024 07:59:26</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic5/4.jpg">
+      <publishTime>06/06/2024 07:59:26</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6.jpg">
+      <publishTime>06/06/2024 08:26:17</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6/1.jpg">
+      <publishTime>06/06/2024 08:26:17</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6/2.jpg">
+      <publishTime>06/06/2024 08:26:31</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6/3.jpg">
+      <publishTime>06/06/2024 08:26:43</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6/4.jpg">
+      <publishTime>06/06/2024 08:27:29</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6/5.jpg">
+      <publishTime>06/06/2024 08:26:52</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6/6.jpg">
+      <publishTime>06/06/2024 08:27:01</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6/7.jpg">
+      <publishTime>06/06/2024 08:27:12</publishTime>
+    </File>
+    <File Include="images/HTLTLB/DU/pic6/8.jpg">
+      <publishTime>06/06/2024 08:27:22</publishTime>
     </File>
     <File Include="images/logoctycp.png">
       <publishTime>05/20/2024 13:25:48</publishTime>
@@ -6217,7 +6259,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>06/03/2024 12:13:12</publishTime>
     </File>
     <File Include="Views/HTLTLB/DU.cshtml">
-      <publishTime>06/03/2024 13:25:46</publishTime>
+      <publishTime>06/06/2024 08:04:23</publishTime>
     </File>
     <File Include="Views/HTLTLB/DUpic1.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>
@@ -6233,6 +6275,15 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     </File>
     <File Include="Views/HTLTLB/DUpic5.cshtml">
       <publishTime>06/03/2024 13:29:50</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/DUpic6.cshtml">
+      <publishTime>06/06/2024 08:33:19</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/DUpic7.cshtml">
+      <publishTime>06/06/2024 08:08:16</publishTime>
+    </File>
+    <File Include="Views/HTLTLB/DUpic8.cshtml">
+      <publishTime>06/06/2024 08:08:12</publishTime>
     </File>
     <File Include="Views/MTMCCVB/Index.cshtml">
       <publishTime>05/21/2024 09:54:48</publishTime>
@@ -6268,7 +6319,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>05/20/2024 13:25:46</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>06/03/2024 10:18:53</publishTime>
+      <publishTime>06/06/2024 07:51:32</publishTime>
     </File>
     <File Include="Views/TTDDPC/Index.cshtml">
       <publishTime>05/20/2024 13:25:46</publishTime>

@@ -1,0 +1,92 @@
+﻿@model WSTanHoa.Models.MView
+@{
+    Layout = null;
+    ViewBag.Title = "Đồng Hồ Nước Điện Từ";
+}
+<head>
+    <link rel="shortcut icon" type="image/ico" href="~/Images/logoctycp.png">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/cssNOTMASTER")
+    @Scripts.Render("~/bundles/datepicker")
+</head>
+<body style="background-color:#85d8f3;margin-top:-45px">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            @*<img src="~/Images/logoctycp.png" width="100" />*@
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-auto text-center">
+            <span class="text-primary fw-bold">CÔNG TY CỔ PHẦN CẤP NƯỚC TÂN HÒA</span>
+            <h4 class="text-danger fw-bold">Hotline: 1900.6489</h4>
+        </div>
+    </div>
+    @using (Html.BeginForm("DHNDienTu", "KhachHang", FormMethod.Post))
+    {
+        <div class="row justify-content-center">
+            <div class="col-auto">
+                <div class="card mt-3 rounded-3 shadow-sm">
+                    <div class="card-header">
+                        <h4 class="text-primary">Thông Tin Đồng Hồ Nước Điện Từ</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="row">
+                            <div class="col-3"><input class="form-control" type="text" id="DanhBo" name="DanhBo" placeholder="Danh Bộ" autocomplete="off"></div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-3"><input class="datepicker form-control" type="text" id="TuNgay" name="TuNgay" placeholder="Từ Ngày" autocomplete="off"></div>
+                            <div class="col-3"><input class="datepicker form-control" type="text" id="DenNgay" name="DenNgay" placeholder="Đến Ngày" autocomplete="off"></div>
+                            <div class="col-2"><input class="form-control" type="text" id="Hour" name="Hour" placeholder="Giờ" autocomplete="off"></div>
+                            <div class="col"><button type="submit" class="btn btn-primary" name="function" value="Xem">Xem</button></div>
+                        </div>
+                        <div class="container rounded-3 shadow-sm mt-2">
+                            <div class="row">
+                                <div class="col">Danh Bộ</div>
+                                <div class="col">@Model.DanhBo</div>
+                            </div>
+                            <div class="row">
+                                <div class="col">Khách Hàng</div>
+                                <div class="col">@Model.HoTen</div>
+                            </div>
+                            <div class="row">
+                                <div class="col">Địa Chỉ</div>
+                                <div class="col">@Model.DiaChi</div>
+                            </div>
+                            <div class="row">
+                                <div class="table-responsive mt-2">
+                                    <table id="tblSanLuong" class="table table-bordered text-dark h6 text-center">
+                                        <thead>
+                                            <tr>
+                                                <th>Thời gian</th>
+                                                <th>Chỉ số</th>
+                                                <th>Tiêu thụ</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var item in Model.lst)
+                                            {
+                                                <tr>
+                                                    <td>@item.ThoiGian</td>
+                                                    <td>@item.ChiSo</td>
+                                                    <td>@item.TieuThu</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col"><button type="submit" class="btn btn-primary" name="function" value="Excel">Excel</button></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</body>

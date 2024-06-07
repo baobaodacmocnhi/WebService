@@ -1253,17 +1253,16 @@ namespace WSTanHoa.Controllers
             foreach (DataRow item in dt.Rows)
             {
                 DataTable dtCS = _cDAL_sDHN.ExecuteQuery_DataTable("  declare @date date='" + ngayxems[2] + "-" + ngayxems[1] + "-" + ngayxems[0] + "'"
-                        + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                        + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM [SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
                         + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = CAST(DATEADD(DAY, -1, @date) as date) and DATEPART(HOUR, TimeStamp) = 23 and DATEPART(MINUTE, TimeStamp) = 0"
                         + " union"
-                        + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM[SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                        + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM [SERVER14].[viwater].[dbo].[" + item["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
                         + " FROM [SERVER14].[viwater].[dbo].[" + item["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) = @date and DATEPART(MINUTE, TimeStamp) = 0");
                 for (int i = 1; i < dtCS.Rows.Count; i++)
                     if (dtCS.Rows[i]["ChiSo"].ToString() != "" && dtCS.Rows[i - 1]["ChiSo"].ToString() != "")
                     {
                         dtCS.Rows[i]["TieuThu"] = int.Parse(dtCS.Rows[i]["ChiSo"].ToString()) - int.Parse(dtCS.Rows[i - 1]["ChiSo"].ToString());
                     }
-
                 if (dtCS.Rows.Count == 0)
                 {
                     enKTH.SoLuong = (int.Parse(enKTH.SoLuong) + 1).ToString();

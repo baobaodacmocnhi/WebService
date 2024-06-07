@@ -391,6 +391,20 @@
     <Content Include="images\HTLTLB\DU\pic1\3.jpg" />
     <Content Include="images\HTLTLB\DU\pic2.jpg" />
     <Content Include="images\HTLTLB\DU\pic3.png" />
+    <Content Include="images\HTLTLB\DU\pic5.jpg" />
+    <Content Include="images\HTLTLB\DU\pic5\1.jpg" />
+    <Content Include="images\HTLTLB\DU\pic5\2.jpg" />
+    <Content Include="images\HTLTLB\DU\pic5\3.jpg" />
+    <Content Include="images\HTLTLB\DU\pic5\4.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6\1.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6\2.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6\3.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6\4.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6\5.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6\6.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6\7.jpg" />
+    <Content Include="images\HTLTLB\DU\pic6\8.jpg" />
     <Content Include="images\logoctycp.png" />
     <Content Include="images\MTMCCVB\pic1.jpg" />
     <Content Include="Scripts\bootstrap.js" />
@@ -2188,6 +2202,9 @@
     <Content Include="Views\TTDDPC\pic1.cshtml" />
     <Content Include="Views\TTDDPC\pic2.cshtml" />
     <Content Include="Views\TTDDPC\pic3.cshtml" />
+    <Content Include="Views\HTLTLB\DUpic6.cshtml" />
+    <Content Include="Views\HTLTLB\DUpic7.cshtml" />
+    <Content Include="Views\HTLTLB\DUpic8.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using ClosedXML.Excel;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -417,6 +419,85 @@ namespace WSTanHoa.Controllers
                     }
                 }
             return View(enView);
+        }
+
+        public ActionResult DHNDienTu(string function, FormCollection collection)
+        {
+            MView en = new MView();
+            if (function == "Xem")
+            {
+                if (collection.AllKeys.Contains("DanhBo"))
+                {
+                    DataTable dt_DanhBo = _cDAL_DocSo.ExecuteQuery_DataTable("select a.DanhBo,b.HoTen,DiaChi=b.SoNha+' '+b.TenDuong,a.TableName,a.TableNameNguoc from sDHN.dbo.sDHN_PMAC a,CAPNUOCTANHOA.dbo.TB_DULIEUKHACHHANG b where a.DanhBo=b.DanhBo and a.DanhBo='" + collection["DanhBo"].ToString() + "'");
+                    if (dt_DanhBo != null && dt_DanhBo.Rows.Count > 0)
+                    {
+                        en.DanhBo = dt_DanhBo.Rows[0]["DanhBo"].ToString();
+                        en.HoTen = dt_DanhBo.Rows[0]["HoTen"].ToString();
+                        en.DiaChi = dt_DanhBo.Rows[0]["DiaChi"].ToString();
+                        string[] tungays = DateTime.Now.ToString("dd/MM/yyyy").Split('/');
+                        string[] denngays = DateTime.Now.ToString("dd/MM/yyyy").Split('/');
+                        if (collection != null && collection.AllKeys.Contains("TuNgay") && collection.AllKeys.Contains("DenNgay") && collection.AllKeys.Contains("Hour"))
+                        {
+                            tungays = collection["TuNgay"].ToString().Split('/');
+                            denngays = collection["DenNgay"].ToString().Split('/');
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("", "Thiếu dữ liệu thời gian");
+                        }
+                        DataTable dtCS = _cDAL_DocSo.ExecuteQuery_DataTable("declare @tungay date='" + tungays[2] + "-" + tungays[1] + "-" + tungays[0] + "'"
+                            + " declare @denngay date='" + denngays[2] + "-" + denngays[1] + "-" + denngays[0] + "'"
+                            + " select  ThoiGian = TimeStamp, ChiSo = (select cast(t0.value - (select t2.Value FROM [SERVER14].[viwater].[dbo].[" + dt_DanhBo.Rows[0]["TableNameNguoc"].ToString() + "] t2 where t2.TimeStamp = t0.TimeStamp) as decimal(10, 0))),TieuThu=0"
+                            + " FROM [SERVER14].[viwater].[dbo].[" + dt_DanhBo.Rows[0]["TableName"].ToString() + "] t0 where CAST(TimeStamp as date) >=@tungay and CAST(TimeStamp as date) <=@denngay  and DATEPART(HOUR, TimeStamp) = " + collection["Hour"].ToString() + " and DATEPART(MINUTE, TimeStamp) = 0");
+                        for (int i = 1; i < dtCS.Rows.Count; i++)
+                        {
+                            if (dtCS.Rows[i]["ChiSo"].ToString() != "" && dtCS.Rows[i - 1]["ChiSo"].ToString() != "")
+                            {
+                                dtCS.Rows[i]["TieuThu"] = int.Parse(dtCS.Rows[i]["ChiSo"].ToString()) - int.Parse(dtCS.Rows[i - 1]["ChiSo"].ToString());
+                            }
+                        }
+                        Session["Excel"] = dtCS;
+                        for (int i = 0; i < dtCS.Rows.Count; i++)
+                        {
+                            MView enCT = new MView();
+                            enCT.ThoiGian = dtCS.Rows[i]["ThoiGian"].ToString();
+                            enCT.ChiSo = dtCS.Rows[i]["ChiSo"].ToString();
+                            enCT.TieuThu = dtCS.Rows[i]["TieuThu"].ToString();
+                            en.lst.Add(enCT);
+                        }
+                    }
+                    else
+                    {
+                        en.DanhBo = "Danh Bộ không phải đồng hồ nước điện từ";
+                    }
+                }
+            }
+            else
+                if (function == "Excel")
+            {
+                DataTable dt = (DataTable)Session["Excel"];
+                dt.TableName = "Sheet1";
+                using (XLWorkbook wb = new XLWorkbook())
+                {
+                    wb.Worksheets.Add(dt);
+                    wb.Style.Alignment.Horizontal = XLAlignmentHorizontalValues.Center;
+                    wb.Style.Font.Bold = true;
+                    Response.Clear();
+                    Response.Buffer = true;
+                    Response.Charset = "";
+                    Response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    Response.ContentType = "application/vnd.ms-excel";
+                    Response.AddHeader("content-disposition", "attachment;filename= TanHoa.DHNDT.xlsx");
+                    using (MemoryStream MyMemoryStream = new MemoryStream())
+                    {
+                        wb.SaveAs(MyMemoryStream);
+                        MyMemoryStream.WriteTo(Response.OutputStream);
+                        Response.Flush();
+                        Response.End();
+                    }
+                }
+            }
+            return View(en);
         }
     }
 }

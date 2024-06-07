@@ -2271,6 +2271,7 @@
     <Content Include="Views\BauCu\BCH1_View.cshtml" />
     <Content Include="Views\BauCu\BCH2.cshtml" />
     <Content Include="Views\BauCu\BCH2_View.cshtml" />
+    <Content Include="Views\KhachHang\DHNDienTu.cshtml" />
     <None Include="Web References\wrDHN\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

@@ -39,6 +39,21 @@ namespace HoChiMinhWeb.Controllers
             return View();
         }
 
+        public ActionResult DUpic6()
+        {
+            return View();
+        }
+
+        public ActionResult DUpic7()
+        {
+            return View();
+        }
+
+        public ActionResult DUpic8()
+        {
+            return View();
+        }
+
         public ActionResult CQ()
         {
             return View();
