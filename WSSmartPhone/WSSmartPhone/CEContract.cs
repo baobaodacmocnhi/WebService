@@ -886,7 +886,10 @@ namespace WSSmartPhone
                 var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result.Result.ToString());
                 if (obj["message"] == "ECT-00000000")
                 {
-                    strResponse = obj["object"]["data"][0]["ten"] + " - " + obj["object"]["data"][0]["username"] + " - " + obj["object"]["data"][0]["sdt"];
+                    if (obj["object"]["totalElement"] == 1)
+                        strResponse = obj["object"]["data"][0]["ten"] + " - " + obj["object"]["data"][0]["username"] + " - " + obj["object"]["data"][0]["sdt"];
+                    else
+                        strResponse = "Thông tin chưa đăng ký";
                 }
             }
             catch (Exception ex)
