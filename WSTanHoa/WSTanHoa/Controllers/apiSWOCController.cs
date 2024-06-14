@@ -40,7 +40,10 @@ namespace WSTanHoa.Controllers
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("select * from KTKS_DonKH.dbo.DonTu dt,KTKS_DonKH.dbo.DonTu_ChiTiet dtct
+where CAST(dt.CreateDate as date) >= '20240101' and dt.MaDon = dtct.MaDon
+and(select count(*) from KTKS_DonKH.dbo.DonTu_ChiTiet where KTKS_DonKH.dbo.DonTu_ChiTiet.MaDon = dt.MaDon) = 1 and Name_NhomDon_PKH not like ''
+and(select stuff((select ';' + cast(NameGroup as nvarchar(100)) FROM[KTKS_DonKH].[dbo].[NhomDon] where KhieuNai = 1 group by NameGroup for xml path('')),1,1,'')) like '%' + Name_NhomDon_PKH + '%'");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
