@@ -9,7 +9,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   </PropertyGroup>
   <ItemGroup>
     <File Include="App_Data/XmlDocument.xml">
-      <publishTime>06/17/2024 09:15:46</publishTime>
+      <publishTime>06/17/2024 17:01:21</publishTime>
     </File>
     <File Include="Areas/HelpPage/HelpPage.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -180,10 +180,10 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>12/08/2023 14:49:12</publishTime>
     </File>
     <File Include="bin/WSTanHoa.dll">
-      <publishTime>06/17/2024 09:11:47</publishTime>
+      <publishTime>06/17/2024 17:01:56</publishTime>
     </File>
     <File Include="bin/WSTanHoa.XmlSerializers.dll">
-      <publishTime>06/17/2024 09:11:48</publishTime>
+      <publishTime>06/17/2024 17:01:57</publishTime>
     </File>
     <File Include="Content/bootstrap.css">
       <publishTime>12/08/2023 14:49:10</publishTime>
@@ -416,11 +416,14 @@ by editing this MSBuild file. In order to learn more about this please visit htt
     <File Include="Images/logofull.jpg">
       <publishTime>12/08/2023 14:49:10</publishTime>
     </File>
+    <File Include="Images/NhanVien/204.jpg">
+      <publishTime>05/29/2024 15:37:43</publishTime>
+    </File>
     <File Include="Images/NhanVien/240.jpg">
       <publishTime>12/08/2023 14:49:10</publishTime>
     </File>
     <File Include="Images/NhanVien/312.jpg">
-      <publishTime>12/08/2023 14:49:10</publishTime>
+      <publishTime>09/26/2023 14:05:29</publishTime>
     </File>
     <File Include="Images/QuaySo/0.jpg">
       <publishTime>12/08/2023 14:49:10</publishTime>
