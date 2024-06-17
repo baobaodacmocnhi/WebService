@@ -277,6 +277,7 @@
     <Content Include="Images\gianuoc.png" />
     <Content Include="Images\gianuoc2023.png" />
     <Content Include="Images\gianuoc2022.jpg" />
+    <Content Include="Images\NhanVien\204.jpg" />
     <Content Include="Images\QuaySo\0.jpg" />
     <Content Include="Images\QuaySo\1.png" />
     <Content Include="Images\QuaySo\2.png" />
@@ -288,7 +289,6 @@
     <Content Include="Images\info.announcement.png" />
     <Content Include="Images\Banks\acb.png" />
     <Content Include="Images\Banks\agr.png" />
-    <Content Include="Images\ava240.jpg" />
     <Content Include="Images\Banks\da.png" />
     <Content Include="Images\Banks\kb.png" />
     <Content Include="Images\Banks\mb.png" />
@@ -299,7 +299,7 @@
     <Content Include="Images\info.email.png" />
     <Content Include="Images\giaybaotiennuoc.png" />
     <Content Include="Images\giaybaotiennuoc2021.png" />
-    <Content Include="Images\ava312.jpg" />
+    <Content Include="Images\NhanVien\312.jpg" />
     <Content Include="Images\logoctycp.png" />
     <Content Include="Images\logofull.jpg" />
     <Content Include="Images\info.mobile.png" />
