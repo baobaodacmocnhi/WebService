@@ -84,12 +84,13 @@ namespace WSTanHoa.Controllers
                     + " (select NGAYGIAITRACH, MaNV_DangNgan, GIABAN=case when dc.GIABAN_BD is null then hd.GIABAN else dc.GIABAN_BD end from HOADON_TA.dbo.HOADON hd left join HOADON_TA.dbo.DIEUCHINH_HD dc on dc.FK_HOADON=hd.ID_HOADON where Nam= @year and Ky< @month),"
                     + "   hientai as"
                     + " (select NGAYGIAITRACH, MaNV_DangNgan, GIABAN=case when dc.GIABAN_BD is null then hd.GIABAN else dc.GIABAN_BD end from HOADON_TA.dbo.HOADON hd left join HOADON_TA.dbo.DIEUCHINH_HD dc on dc.FK_HOADON=hd.ID_HOADON where Nam= @year and Ky = @month)"
-                    + "  select ma_don_vi = 'TH', ten_don_vi = N'Tân Hòa',nam = @year,thang = @month,sohd_thu_tn = (select count(*) from hientai where MaNV_DangNgan is not null and YEAR(NGAYGIAITRACH) = @year and month(NGAYGIAITRACH) = @month and day(NGAYGIAITRACH) = @day)"
+                    + " select t1.*,ty_le = t1.tien_thu_tn/ t1.chi_tieu*100 from "
+                    + "  (select ma_don_vi = 'TH', ten_don_vi = N'Tân Hòa',nam = @year,thang = @month,sohd_thu_tn = (select count(*) from hientai where MaNV_DangNgan is not null and YEAR(NGAYGIAITRACH) = @year and month(NGAYGIAITRACH) = @month and day(NGAYGIAITRACH) = @day)"
                     + " , sohd_ton = (select count(*) from hientai where MaNV_DangNgan is null or NGAYGIAITRACH is null),gia_ban_bq = (select GiaBanBinhQuan from HOADON_TA.dbo.TT_GiaBanBinhQuan where Nam = @year and Ky = @month),thang_luy_ke = @month - 1"
                     + " , thu_luy_ke = (select count(*) from luyke where MaNV_DangNgan is not null and YEAR(NGAYGIAITRACH) = @year and month(NGAYGIAITRACH) = @month and day(NGAYGIAITRACH) = @day)"
                     + " , thu_trong_thang = (select count(*) from hientai where MaNV_DangNgan is not null and YEAR(NGAYGIAITRACH) = @year and month(NGAYGIAITRACH) = @month)"
-                    + " , tien_thu_tn = (select sum(giaban) from hientai where MaNV_DangNgan is not null and YEAR(NGAYGIAITRACH) = @year and month(NGAYGIAITRACH) = @month and day(NGAYGIAITRACH) = @day)"
-                    + " , chi_tieu = (select DoanhThu from TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @year),ty_le = (select sum(giaban) from hientai where MaNV_DangNgan is not null and YEAR(NGAYGIAITRACH) = @year and month(NGAYGIAITRACH) = @month and day(NGAYGIAITRACH) = @day)/ (select DoanhThu from TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @year)*100");
+                    + " , tien_thu_tn = (select sum(convert(bigint,GIABAN)) from hientai where MaNV_DangNgan is not null and YEAR(NGAYGIAITRACH) = @year and month(NGAYGIAITRACH) = @month and day(NGAYGIAITRACH) = @day)"
+                    + " , chi_tieu = (select DoanhThu from TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @year))t1");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -225,17 +226,17 @@ namespace WSTanHoa.Controllers
                     + " select t1.*,ty_le_6_2 = t1.khoi_luong_th_6 / t1.khoi_luong_th_nam * 100,ty_le_6_1 = t1.khoi_luong_th_1 / t1.khoi_luong_th_nam * 100 from"
                     + " (select ma_don_vi = 'TH', ten_don_vi = N'Tân Hoà', dvt = 'đồng'"
                     + " , thuc_hien_1 = N'Thực hiện ' + convert(varchar, @month) + N' tháng năm ' + convert(varchar, @year - 1)"
-                    + " , khoi_luong_th_1 = (select sum(GIABAN) from luyke)"
+                    + " , khoi_luong_th_1 = (select sum(convert(bigint,GIABAN) from luyke)"
                     + ", ke_hoach_nam = N'Kế hoạch năm ' + convert(varchar, @year)"
                     + ", khoi_luong_th_nam = (select DoanhThu from TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @year)"
                     + ", thuc_hien_3 = N'Thực hiện tháng ' + convert(varchar, (@month - 1)) + N' năm ' + convert(varchar, @year)"
-                    + ", khoi_Luong_th_3 = (select sum(GIABAN) from hientai where KY = @month - 1)"
+                    + ", khoi_Luong_th_3 = (select sum(convert(bigint,GIABAN)) from hientai where KY = @month - 1)"
                     + ", thuc_hien_4 = N'Thực hiện ' + convert(varchar, (@month - 1)) + N' tháng năm ' + convert(varchar, @year)"
-                    + ", khoi_luong_th_4 = (select sum(GIABAN) from hientai where KY <= @month - 1)"
+                    + ", khoi_luong_th_4 = (select sum(convert(bigint,GIABAN) from hientai where KY <= @month - 1)"
                     + ", thuc_hien_5 = N'Thực hiện tháng ' + convert(varchar, @month) + N' năm ' + convert(varchar, @year)"
-                    + ", khoi_luong_th_5 = (select sum(GIABAN) from hientai where KY = @month)"
+                    + ", khoi_luong_th_5 = (select sum(convert(bigint,GIABAN) from hientai where KY = @month)"
                     + ", thuc_hien_6 = N'Thực hiện ' + convert(varchar, @month) + N' tháng năm ' + convert(varchar, @year)"
-                    + ", khoi_luong_th_6 = (select sum(GIABAN) from hientai where KY <= @month))t1");
+                    + ", khoi_luong_th_6 = (select sum(convert(bigint,GIABAN) from hientai where KY <= @month))t1");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -246,14 +247,33 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_GBBQ")]
         [HttpGet]
         public MResult ThongKe_GBBQ(string Thang, string Nam)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @year int = " + Nam + ";"
+                    + " declare @month int = " + Thang + ";"
+                    + " with luyke as"
+                    + " (select Ky, NGAYGIAITRACH, MaNV_DangNgan, GIABAN=case when dc.GIABAN_BD is null then hd.GIABAN else dc.GIABAN_BD end from HOADON_TA.dbo.HOADON hd left join HOADON_TA.dbo.DIEUCHINH_HD dc on dc.FK_HOADON = hd.ID_HOADON where Nam = @year - 1 and Ky<= @month),"
+                    + " hientai as"
+                    + " (select Ky, NGAYGIAITRACH, MaNV_DangNgan, GIABAN=case when dc.GIABAN_BD is null then hd.GIABAN else dc.GIABAN_BD end from HOADON_TA.dbo.HOADON hd left join HOADON_TA.dbo.DIEUCHINH_HD dc on dc.FK_HOADON = hd.ID_HOADON where Nam = @year and Ky<= @month)"
+                    + " select t1.*,ty_le_6_2 = t1.khoi_luong_th_6 / t1.khoi_luong_th_nam * 100,ty_le_6_1 = t1.khoi_luong_th_1 / t1.khoi_luong_th_nam * 100 from"
+                    + " (select ma_don_vi = 'TH', ten_don_vi = N'Tân Hoà', dvt = 'đồng'"
+                    + " , thuc_hien_1 = N'Thực hiện ' + convert(varchar, @month) + N' tháng năm ' + convert(varchar, @year - 1)"
+                    + " , khoi_luong_th_1 = (select sum(convert(bigint,GIABAN) from luyke)"
+                    + ", ke_hoach_nam = N'Kế hoạch năm ' + convert(varchar, @year)"
+                    + ", khoi_luong_th_nam = (select DoanhThu from TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @year)"
+                    + ", thuc_hien_3 = N'Thực hiện tháng ' + convert(varchar, (@month - 1)) + N' năm ' + convert(varchar, @year)"
+                    + ", khoi_Luong_th_3 = (select sum(convert(bigint,GIABAN)) from hientai where KY = @month - 1)"
+                    + ", thuc_hien_4 = N'Thực hiện ' + convert(varchar, (@month - 1)) + N' tháng năm ' + convert(varchar, @year)"
+                    + ", khoi_luong_th_4 = (select sum(convert(bigint,GIABAN) from hientai where KY <= @month - 1)"
+                    + ", thuc_hien_5 = N'Thực hiện tháng ' + convert(varchar, @month) + N' năm ' + convert(varchar, @year)"
+                    + ", khoi_luong_th_5 = (select sum(convert(bigint,GIABAN) from hientai where KY = @month)"
+                    + ", thuc_hien_6 = N'Thực hiện ' + convert(varchar, @month) + N' tháng năm ' + convert(varchar, @year)"
+                    + ", khoi_luong_th_6 = (select sum(convert(bigint,GIABAN) from hientai where KY <= @month))t1");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -336,14 +356,33 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_HoaDon04")]
         [HttpGet]
         public MResult ThongKe_HoaDon04(string Thang, string Nam)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @year int = " + Nam + ";"
+                     + " declare @month int = " + Thang + ";"
+                     + " with luyke as"
+                     + " (select Ky, NGAYGIAITRACH, MaNV_DangNgan, GIABAN=case when dc.GIABAN_BD is null then hd.GIABAN else dc.GIABAN_BD end from HOADON_TA.dbo.HOADON hd left join HOADON_TA.dbo.DIEUCHINH_HD dc on dc.FK_HOADON = hd.ID_HOADON where Nam = @year - 1 and Ky<= @month),"
+                     + " hientai as"
+                     + " (select Ky, NGAYGIAITRACH, MaNV_DangNgan, GIABAN=case when dc.GIABAN_BD is null then hd.GIABAN else dc.GIABAN_BD end from HOADON_TA.dbo.HOADON hd left join HOADON_TA.dbo.DIEUCHINH_HD dc on dc.FK_HOADON = hd.ID_HOADON where Nam = @year and Ky<= @month)"
+                     + " select t1.*,ty_le_6_2 = t1.khoi_luong_th_6 / t1.khoi_luong_th_nam * 100,ty_le_6_1 = t1.khoi_luong_th_1 / t1.khoi_luong_th_nam * 100 from"
+                     + " (select ma_don_vi = 'TH', ten_don_vi = N'Tân Hoà', dvt = 'đồng'"
+                     + " , thuc_hien_1 = N'Thực hiện ' + convert(varchar, @month) + N' tháng năm ' + convert(varchar, @year - 1)"
+                     + " , khoi_luong_th_1 = (select sum(convert(bigint,GIABAN) from luyke)"
+                     + ", ke_hoach_nam = N'Kế hoạch năm ' + convert(varchar, @year)"
+                     + ", khoi_luong_th_nam = (select DoanhThu from TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @year)"
+                     + ", thuc_hien_3 = N'Thực hiện tháng ' + convert(varchar, (@month - 1)) + N' năm ' + convert(varchar, @year)"
+                     + ", khoi_Luong_th_3 = (select sum(convert(bigint,GIABAN)) from hientai where KY = @month - 1)"
+                     + ", thuc_hien_4 = N'Thực hiện ' + convert(varchar, (@month - 1)) + N' tháng năm ' + convert(varchar, @year)"
+                     + ", khoi_luong_th_4 = (select sum(convert(bigint,GIABAN) from hientai where KY <= @month - 1)"
+                     + ", thuc_hien_5 = N'Thực hiện tháng ' + convert(varchar, @month) + N' năm ' + convert(varchar, @year)"
+                     + ", khoi_luong_th_5 = (select sum(convert(bigint,GIABAN) from hientai where KY = @month)"
+                     + ", thuc_hien_6 = N'Thực hiện ' + convert(varchar, @month) + N' tháng năm ' + convert(varchar, @year)"
+                     + ", khoi_luong_th_6 = (select sum(convert(bigint,GIABAN) from hientai where KY <= @month))t1");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
