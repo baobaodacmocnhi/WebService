@@ -7237,8 +7237,7 @@ namespace WSSmartPhone
             {
                 string url = "https://cskhapi.sawaco.com.vn/api/Login/LoginCSKH";
                 ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                       | SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
@@ -7298,8 +7297,7 @@ namespace WSSmartPhone
                 string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=" + DanhBo + "&sdd=" + CCCD;
                 //string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/TraCuuKhachHangDinhDanh?danhBo=12101905044&sdd=040074001959";
                 ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                       | SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "GET";
                 request.Headers["Authorization"] = "Bearer " + getAccess_token();
@@ -7311,16 +7309,24 @@ namespace WSSmartPhone
                     read.Close();
                     respuesta.Close();
                     var obj = jss.Deserialize<dynamic>(result1);
-                    object[] dulieu = obj["duLieu"];
-                    if (dulieu != null && dulieu.Count() > 0)
+                    if (obj["ketQua"] != null && obj["ketQua"] == 1)
                     {
-                        result = "Đã tồn tại";
-                        return 1;
+                        object[] dulieu = obj["duLieu"];
+                        if (dulieu != null && dulieu.Count() > 0)
+                        {
+                            result = "Đã đăng ký tại Công ty " + obj["duLieu"][0]["branch_name"].ToString() + " - Danh Bộ: " + obj["duLieu"][0]["danhbo"].ToString();
+                            return 1;
+                        }
+                        else
+                        {
+                            result = "Không tồn tại";
+                            return 0;
+                        }
                     }
                     else
                     {
-                        result = "Không tồn tại";
-                        return 0;
+                        result = obj["thongBao"];
+                        return -1;
                     }
                 }
                 else
@@ -7343,8 +7349,7 @@ namespace WSSmartPhone
             {
                 string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/ThemDinhDanh";
                 ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                       | SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
@@ -7403,13 +7408,13 @@ namespace WSSmartPhone
                             if (obj["duLieuKhongHopLe"][0]["ghichu"].ToString() != "")
                                 result = obj["duLieuKhongHopLe"][0]["ghichu"];
                         }
-                        catch{}
+                        catch { }
                         try
                         {
                             if (obj["duLieuTrung"][0]["id"].ToString() != "")
                                 result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " - " + obj["duLieuTrung"][0]["danhbo"].ToString() + " - " + obj["duLieuTrung"][0]["createdDate"].ToString();
                         }
-                        catch {}
+                        catch { }
                         return 0;
                     }
                 }
@@ -7433,8 +7438,7 @@ namespace WSSmartPhone
             {
                 string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/ThemDinhDanh";
                 ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                       | SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
@@ -7493,13 +7497,13 @@ namespace WSSmartPhone
                             if (obj["duLieuKhongHopLe"][0]["ghichu"].ToString() != "")
                                 result = obj["duLieuKhongHopLe"][0]["ghichu"];
                         }
-                        catch{}
+                        catch { }
                         try
                         {
                             if (obj["duLieuTrung"][0]["id"].ToString() != "")
                                 result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " - " + obj["duLieuTrung"][0]["danhbo"].ToString() + " - " + obj["duLieuTrung"][0]["createdDate"].ToString();
                         }
-                        catch{}
+                        catch { }
                         return 0;
                     }
                 }
@@ -7523,8 +7527,7 @@ namespace WSSmartPhone
             {
                 string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/CapNhatDinhDanh";
                 ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                       | SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
@@ -7578,7 +7581,18 @@ namespace WSSmartPhone
                     }
                     else
                     {
-                        result = obj["duLieuKhongHopLe"][0]["ghichu"];
+                        try
+                        {
+                            if (obj["duLieuKhongHopLe"][0]["ghichu"].ToString() != "")
+                                result = obj["duLieuKhongHopLe"][0]["ghichu"];
+                        }
+                        catch { }
+                        try
+                        {
+                            if (obj["duLieuTrung"][0]["id"].ToString() != "")
+                                result = "Dữ liệu trùng: " + obj["duLieuTrung"][0]["branch_name"].ToString() + " - " + obj["duLieuTrung"][0]["danhbo"].ToString() + " - " + obj["duLieuTrung"][0]["createdDate"].ToString();
+                        }
+                        catch { }
                         return 0;
                     }
                 }
@@ -7602,8 +7616,7 @@ namespace WSSmartPhone
             {
                 string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/XoaDinhDanh";
                 ServicePointManager.Expect100Continue = true;
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                       | SecurityProtocolType.Ssl3;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Method = "POST";
                 request.ContentType = "application/json";
@@ -7652,12 +7665,167 @@ namespace WSSmartPhone
                     var obj = jss.Deserialize<dynamic>(result1);
                     if (obj["ketQua"] != null && obj["ketQua"] == 1)
                     {
-                        result = "Thành Công";
+                        result = obj["thongBao"];
                         return 1;
                     }
                     else
                     {
-                        result = "Thất Bại";
+                        result = obj["thongBao"];
+                        return 0;
+                    }
+                }
+                else
+                {
+                    result = "Lỗi kết nối";
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return -1;
+            }
+        }
+
+        public int catChuyen_CCCD(string DanhBoCu, string KyHieuDonViCu, string DanhBoMoi, string KyHieuDonViMoi, string CCCD, string NoiDung, out string result)
+        {
+            result = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/CatChuyenDinhDanh";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                var data = new
+                {
+                    file = "",
+                    danh_bo_cu = DanhBoCu,
+                    danh_bo_moi = DanhBoMoi,
+                    don_vi_cu = KyHieuDonViCu,
+                    don_vi_moi = KyHieuDonViMoi,
+                    ds_dinh_danh = CCCD,
+                    noi_dung = NoiDung,
+                };
+                var serializer = new JavaScriptSerializer();
+                var json = serializer.Serialize(data);
+                json = "[" + json + "]";
+                Byte[] byteArray = Encoding.UTF8.GetBytes(json);
+                request.ContentLength = byteArray.Length;
+                //gắn data post
+                Stream dataStream = request.GetRequestStream();
+                dataStream.Write(byteArray, 0, byteArray.Length);
+                dataStream.Close();
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result1 = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result1);
+                    if (obj["ketQua"] != null && obj["ketQua"] == 1)
+                    {
+                        result = obj["thongBao"];
+                        return 1;
+                    }
+                    else
+                    {
+                        result = obj["thongBao"];
+                        return 0;
+                    }
+                }
+                else
+                {
+                    result = "Lỗi kết nối";
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return -1;
+            }
+        }
+
+        public int getCatChuyenChuaCapNhat_CCCD(out string result)
+        {
+            result = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/GetCatChuyenChuaCapNhat?donvi=TH";
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "GET";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result1 = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result1);
+                    if (obj["ketQua"] != null && obj["ketQua"] == 1)
+                    {
+                        object[] dulieu = obj["duLieu"];
+                        if (dulieu != null && dulieu.Count() > 0)
+                            result = obj["duLieu"][0];
+                        else
+                            result = "";
+                        return 1;
+                    }
+                    else
+                    {
+                        result = obj["thongBao"];
+                        return 0;
+                    }
+                }
+                else
+                {
+                    result = "Lỗi kết nối";
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+                return -1;
+            }
+        }
+
+        public int capNhatCatChuyen_CCCD(string ID, out string result)
+        {
+            result = "";
+            try
+            {
+                string url = "https://cskhapi.sawaco.com.vn/api/KhachHangDinhDanh/CapNhatCatChuyen?id=" + ID;
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.Method = "POST";
+                request.ContentType = "application/json";
+                request.Headers["Authorization"] = "Bearer " + getAccess_token();
+                HttpWebResponse respuesta = (HttpWebResponse)request.GetResponse();
+                if (respuesta.StatusCode == HttpStatusCode.Accepted || respuesta.StatusCode == HttpStatusCode.OK || respuesta.StatusCode == HttpStatusCode.Created)
+                {
+                    StreamReader read = new StreamReader(respuesta.GetResponseStream());
+                    string result1 = read.ReadToEnd();
+                    read.Close();
+                    respuesta.Close();
+                    var obj = jss.Deserialize<dynamic>(result1);
+                    if (obj["ketQua"] != null && obj["ketQua"] == 1)
+                    {
+                        result = obj["thongBao"];
+                        return 1;
+                    }
+                    else
+                    {
+                        result = obj["thongBao"];
                         return 0;
                     }
                 }
