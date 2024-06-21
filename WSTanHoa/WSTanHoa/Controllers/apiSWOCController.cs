@@ -11,20 +11,40 @@ using WSTanHoa.Providers;
 
 namespace WSTanHoa.Controllers
 {
-    //[Authorize(Roles = "SWOC")]
+    [Authorize(Roles = "SWOC")]
     [RoutePrefix("api/SWOC")]
     public class apiSWOCController : ApiController
     {
         private CConnection _cDAL_DHN = new CConnection(CGlobalVariable.DHN);
 
-        [Route("")]
+        [Route("ThongKe_GanMoiDHNNho")]
         [HttpGet]
         public MResult ThongKe_GanMoiDHNNho(string CreateDate)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                string[] dates = CreateDate.Split('/');
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @ngay date = '" + dates[2] + dates[1] + dates[0] + "'"
+                    + " declare @chitieu int = (SELECT GanMoi FROM TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = year(@ngay))"
+                    + " select"
+                    + " ma_don_vi = 'TH'"
+                    + " , ten_don_vi = N'Tân Hoà'"
+                    + " , nam_thong_ke = year(@ngay)"
+                    + " , thang_thong_ke = month(@ngay)"
+                    + " , gan_moi_tn = count(case when NGAYTHICONG = @ngay then 1 end)"
+                    + " , ho_so_nhan_trong_ngay = count(case when t1.NGAYNHAN = @ngay then 1 end)"
+                    + " , thang_luy_ke = month(@ngay)"
+                    + " , hoso_nhan_trong_thang = count(case when month(t1.NGAYNHAN) = month(@ngay) then 1 end)"
+                    + " , ho_so_tro_ngai_trong_thang = count(case when month(t1.NGAYNHAN) = month(@ngay) and(t1.TRONGAITHIETKE = 1 or t2.TRONGAI = 1) then 1 end)"
+                    + " , ho_so_tro_ngai_luy_ke = count(case when t1.TRONGAITHIETKE = 1 or t2.TRONGAI = 1 then 1 end)"
+                    + " , ho_so_luy_ke = count(case when year(NGAYTHICONG) = year(@ngay) then 1 end)"
+                    + " , chi_tieu = @chitieu"
+                    + " , ty_le = round(count(case when year(NGAYTHICONG) = year(@ngay) then 1 end) * 100.0 / @chitieu, 2)"
+                    + " from TANHOA_WATER.dbo.DON_KHACHHANG t1"
+                    + " left join TANHOA_WATER.dbo.KH_HOSOKHACHHANG t2 on t1.SHS = t2.SHS"
+                    + " left join TANHOA_WATER.dbo.KH_XINPHEPDAODUONG t3 on t2.MADOTDD = t3.MADOT"
+                    + " where t1.LOAIHOSO = 'GM' and(year(NGAYTHICONG) = year(@ngay) or year(t1.NGAYNHAN) = year(@ngay))");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -101,14 +121,33 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_SuaBe")]
         [HttpGet]
         public MResult ThongKe_SuaBe(string CreateDate)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                string[] dates = CreateDate.Split('/');
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @ngay date = '" + dates[2] + dates[1] + dates[0] + "'"
+                    + " SELECT"
+                    + " 'TH' ma_don_vi"
+                    + " , N'Tân Hoà' ten_don_vi"
+                    + " , year(@ngay) nam_thong_ke"
+                    + " , month(@ngay) thang_thong_ke"
+                    + " , day(@ngay) ngay_thong_ke"
+                    + " , count(case when NgayBao = @ngay then 1 end) ho_so_nhan_trong_ngay"
+                    + " , count(case when NgaySua = @ngay then 1 end) so_luong_sua_trong_ngay"
+                    + " , count(case when month(NgayBao) = month(@ngay) then 1 end) ho_so_nhan_trong_thang"
+                    + " , count(case when month(NgaySua) = month(@ngay) then 1 end) so_luong_sua_trong_thang"
+                    + " , month(@ngay) thang_luy_ke"
+                    + " , count(case when year(NgaySua) = year(@ngay) then 1 end) so_luong_sua_luy_ke"
+                    + " , count(case when year(NgayBao) = year(@ngay) then 1 end) so_luong_nhan_luy_ke"
+                    + " , null chi_tieu"
+                    + " , null con_lai"
+                    + " , null ty_le"
+                    + " FROM server5.tanhoa.dbo.w_BaoBe"
+                    + " where year(NgayBao) = year(@ngay) or year(NgaySua) = year(@ngay)");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -126,6 +165,7 @@ namespace WSTanHoa.Controllers
             MResult result = new MResult();
             try
             {
+                string[] dates = CreateDate.Split('/');
                 DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
@@ -137,14 +177,31 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_ThayDHNNho")]
         [HttpGet]
         public MResult ThongKe_ThayDHNNho(string CreateDate)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                string[] dates = CreateDate.Split('/');
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @ngay date = '" + dates[2] + dates[1] + dates[0] + "'"
+                    + " declare @chitieu int = (SELECT ThayDHNNho FROM TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = year(@ngay))"
+                    + " select"
+                    + " 'TH' ma_don_vi"
+                    + " , N'Tân Hoà' ten_don_vi"
+                    + " , year(@ngay) nam"
+                    + " , month(@ngay) thang"
+                    + " , (select count(*) from TB_THAYDHN where DHN_CODH < 40 and HCT_NGAYGAN is null) so_dh_can_thay"
+                    + " , count(case when HCT_NGAYGAN = @ngay then 1 end) thay_trong_ngay"
+                    + " , count(case when month(HCT_NGAYGAN) = month(@ngay) then 1 end) so_dh_thay_trong_thang"
+                    + " , month(@ngay) thang_luy_ke"
+                    + " ,count(*) so_dh_thay_luy_ke"
+                    + " , @chitieu - count(*) con_lai"
+                    + " , @chitieu chi_tieu"
+                    + " , round(count(*) * 100.0 / @chitieu, 2) ty_le"
+                    + " from CAPNUOCTANHOA.dbo.TB_THAYDHN"
+                    + " where year(HCT_NGAYGAN) = year(@ngay) and isnull(HCT_TRONGAI,0)= 0 and HCT_CODHNGAN< 40");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -155,14 +212,31 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_ThayDHNLon")]
         [HttpGet]
         public MResult ThongKe_ThayDHNLon(string CreateDate)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                string[] dates = CreateDate.Split('/');
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @ngay date = '" + dates[2] + dates[1] + dates[0] + "'"
+                    + " declare @chitieu int = (SELECT ThayDHNLon FROM TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = year(@ngay))"
+                    + " select"
+                    + " 'TH' ma_don_vi"
+                    + " , N'Tân Hoà' ten_don_vi"
+                    + " , year(@ngay) nam"
+                    + " , month(@ngay) thang"
+                    + " , (select count(*) from TB_THAYDHN where DHN_CODH >= 40 and HCT_NGAYGAN is null) so_dh_can_thay"
+                    + " , count(case when HCT_NGAYGAN = @ngay then 1 end) thay_trong_ngay"
+                    + " , count(case when month(HCT_NGAYGAN) = month(@ngay) then 1 end) so_dh_thay_trong_thang"
+                    + " , month(@ngay) thang_luy_ke"
+                    + " ,count(*) so_dh_thay_luy_ke"
+                    + " , @chitieu - count(*) con_lai"
+                    + " , @chitieu chi_tieu"
+                    + " , round(count(*) * 100.0 / @chitieu, 2) ty_le"
+                    + " from CAPNUOCTANHOA.dbo.TB_THAYDHN"
+                    + " where year(HCT_NGAYGAN) = year(@ngay) and isnull(HCT_TRONGAI,0)= 0 and HCT_CODHNGAN>= 40");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -284,14 +358,39 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_GanMoiDHNNho")]
         [HttpGet]
         public MResult ThongKe_GanMoiDHNNho(string Thang, string Nam)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @thang int = " + Thang
+                    + " declare @nam int = " + Nam
+                    + " declare @chitieu int = (SELECT GanMoi FROM TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @nam)"
+                    + " select"
+                    + "  ma_don_vi = 'TH'"
+                    + " , ten_don_vi = N'Tân Hoà'"
+                    + " , dvt = N'đhn'"
+                    + " , thuc_hien_1 = N'Thực hiện ' + convert(varchar, @thang) + N' tháng năm ' + convert(varchar, @nam - 1)"
+                    + " , khoi_luong_th_1 = count(case when year(NGAYTHICONG) = @nam - 1 and month(NGAYTHICONG) <= @thang then 1 end)"
+                    + " , ke_hoach_nam = N'Kế hoạch năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_nam = @chitieu"
+                    + " ,thuc_hien_3 = N'Thực hiện tháng ' + convert(varchar, @thang - 1) + N' năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_3 = count(case when year(NGAYTHICONG) = @nam and month(NGAYTHICONG) = @thang - 1 then 1 end)"
+                    + " , thuc_hien_4 = N'Thực hiện ' + convert(varchar, @thang - 1) + N' tháng năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_4 = count(case when year(NGAYTHICONG) = @nam and month(NGAYTHICONG) <= @thang - 1 then 1 end)"
+                    + " , thuc_hien_5 = N'Thực hiện tháng ' + convert(varchar, @thang) + N' năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_5 = count(case when year(NGAYTHICONG) = @nam and month(NGAYTHICONG) = @thang then 1 end)"
+                    + " , thuc_hien_6 = N'Thực hiện ' + convert(varchar, @thang) + N' tháng năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_6 = count(case when year(NGAYTHICONG) = @nam and month(NGAYTHICONG) <= @thang then 1 end)"
+                    + " , ty_le_6_2 = round(count(case when year(NGAYTHICONG) = @nam and month(NGAYTHICONG) <= @thang then 1 end) * 100.0 / @chitieu, 2)"
+                    + " , ty_le_6_1 = round(count(case when year(NGAYTHICONG) = @nam and month(NGAYTHICONG) <= @thang then 1 end) * 100.0 / count(case when year(NGAYTHICONG) = @nam - 1 and month(NGAYTHICONG) <= @thang then 1 end), 2)"
+                    + " , nam_thong_ke = @nam"
+                    + " , thang_thong_ke = @thang"
+                    + " from TANHOA_WATER.dbo.DON_KHACHHANG t1"
+                    + " left join TANHOA_WATER.dbo.KH_HOSOKHACHHANG t2 on t1.SHS = t2.SHS"
+                    + " where t1.LOAIHOSO = 'GM' and(year(NGAYTHICONG) >= @nam - 1)");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -302,14 +401,38 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_ThayDHNNho")]
         [HttpGet]
         public MResult ThongKe_ThayDHNNho(string Thang, string Nam)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @thang int = " + Thang
+                    + " declare @nam int = " + Nam
+                    + " declare @chitieu int = (SELECT ThayDHNNho FROM TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @nam)"
+                    + " select"
+                    + "  ma_don_vi = 'TH'"
+                    + " , ten_don_vi = N'Tân Hoà'"
+                    + " , dvt = N'đhn'"
+                    + " , thuc_hien_1 = N'Thực hiện ' + convert(varchar, @thang) + N' tháng năm ' + convert(varchar, @nam - 1)"
+                    + " , khoi_luong_th_1 = count(case when year(HCT_NGAYGAN) = @nam - 1 and month(HCT_NGAYGAN) <= @thang then 1 end)"
+                    + " , ke_hoach_nam = N'Kế hoạch năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_nam = @chitieu"
+                    + " ,thuc_hien_3 = N'Thực hiện tháng ' + convert(varchar, @thang - 1) + N' năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_3 = count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) = @thang - 1 then 1 end)"
+                    + " , thuc_hien_4 = N'Thực hiện ' + convert(varchar, @thang - 1) + N' tháng năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_4 = count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) <= @thang - 1 then 1 end)"
+                    + " , thuc_hien_5 = N'Thực hiện tháng ' + convert(varchar, @thang) + N' năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_5 = count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) = @thang then 1 end)"
+                    + " ,thuc_hien_6 = N'Thực hiện ' + convert(varchar, @thang) + N' tháng năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_6 = count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) <= @thang then 1 end)"
+                    + " , ty_le_6_2 = round(count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) <= @thang then 1 end) * 100.0 / @chitieu, 2)"
+                    + " , ty_le_6_1 = round(count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) <= @thang then 1 end) * 100.0 / count(case when year(HCT_NGAYGAN) = @nam - 1 and month(HCT_NGAYGAN) <= @thang then 1 end), 2)"
+                    + " , nam_thong_ke = @nam"
+                    + " , thang_thong_ke = @thang"
+                    + " from CAPNUOCTANHOA.dbo.TB_THAYDHN"
+                    + " where HCT_CODHNGAN < 40 and isnull(HCT_TRONGAI,0)= 0");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -320,14 +443,38 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_ThayDHNLon")]
         [HttpGet]
         public MResult ThongKe_ThayDHNLon(string Thang, string Nam)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @thang int = " + Thang
+                    + " declare @nam int = " + Nam
+                    + " declare @chitieu int = (SELECT ThayDHNLon FROM TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @nam)"
+                    + " select"
+                    + "  ma_don_vi = 'TH'"
+                    + " , ten_don_vi = N'Tân Hoà'"
+                    + " , dvt = N'đhn'"
+                    + " , thuc_hien_1 = N'Thực hiện ' + convert(varchar, @thang) + N' tháng năm ' + convert(varchar, @nam - 1)"
+                    + " , khoi_luong_th_1 = count(case when year(HCT_NGAYGAN) = @nam - 1 and month(HCT_NGAYGAN) <= @thang then 1 end)"
+                    + " , ke_hoach_nam = N'Kế hoạch năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_nam = @chitieu"
+                    + " , thuc_hien_3 = N'Thực hiện tháng ' + convert(varchar, @thang - 1) + N' năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_3 = count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) = @thang - 1 then 1 end)"
+                    + " , thuc_hien_4 = N'Thực hiện ' + convert(varchar, @thang - 1) + N' tháng năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_4 = count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) <= @thang - 1 then 1 end)"
+                    + " , thuc_hien_5 = N'Thực hiện tháng ' + convert(varchar, @thang) + N' năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_5 = count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) = @thang then 1 end)"
+                    + " , thuc_hien_6 = N'Thực hiện ' + convert(varchar, @thang) + N' tháng năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_6 = count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) <= @thang then 1 end)"
+                    + " , ty_le_6_2 = round(count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) <= @thang then 1 end) * 100.0 / @chitieu, 2)"
+                    + " , ty_le_6_1 = round(count(case when year(HCT_NGAYGAN) = @nam and month(HCT_NGAYGAN) <= @thang then 1 end) * 100.0 / count(case when year(HCT_NGAYGAN) = @nam - 1 and month(HCT_NGAYGAN) <= @thang then 1 end), 2)"
+                    + " , nam_thong_ke = @nam"
+                    + " , thang_thong_ke = @thang"
+                    + " from CAPNUOCTANHOA.dbo.TB_THAYDHN"
+                    + " where HCT_CODHNGAN >= 40 and isnull(HCT_TRONGAI,0)= 0");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
@@ -338,14 +485,38 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
+        [Route("ThongKe_ThatThoatNuoc")]
         [HttpGet]
         public MResult ThongKe_ThatThoatNuoc(string Thang, string Nam)
         {
             MResult result = new MResult();
             try
             {
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("declare @thang int = " + Thang
+                    + " declare @nam int = " + Nam
+                    + " declare @chitieu float = (SELECT TyLeThatThoatNuoc FROM TRUNGTAMKHACHHANG.dbo.BC_KeHoach where Nam = @nam)"
+                    + " select"
+                    + "  ma_don_vi = 'TH'"
+                    + " , ten_don_vi = N'Tân Hoà'"
+                    + " , dvt = N'đhn'"
+                    + " , thuc_hien_1 = N'Thực hiện ' + convert(varchar, @thang) + N' tháng năm ' + convert(varchar, @nam - 1)"
+                    + " , khoi_luong_th_1 = avg(case when Nam = @nam - 1 and Ky <= @thang then TyLe end)"
+                    + " , ke_hoach_nam = N'Kế hoạch năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_nam = @chitieu"
+                    + " , thuc_hien_3 = N'Thực hiện tháng ' + convert(varchar, @thang - 1) + N' năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_3 = avg(case when Nam = @nam and Ky = @thang - 1 then TyLe end)"
+                    + " , thuc_hien_4 = N'Thực hiện ' + convert(varchar, @thang - 1) + N' tháng năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_4 = avg(case when Nam = @nam and Ky <= @thang - 1 then TyLe end)"
+                    + " , thuc_hien_5 = N'Thực hiện tháng ' + convert(varchar, @thang) + N' năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_5 = avg(case when Nam = @nam and Ky = @thang then TyLe end)"
+                    + " , thuc_hien_6 = N'Thực hiện ' + convert(varchar, @thang) + N' tháng năm ' + convert(varchar, @nam)"
+                    + " , khoi_luong_th_6 = avg(case when Nam = @nam and Ky <= @thang then TyLe end)"
+                    + " , ty_le_6_2 = round(avg(case when Nam = @nam and Ky <= @thang then TyLe end) * 100 / @chitieu, 2)"
+                    + " , ty_le_6_1 = round(avg(case when Nam = @nam and Ky <= @thang then TyLe end) * 100 / avg(case when Nam = @nam - 1 and Ky <= @thang then TyLe end), 2)"
+                    + " , nam_thong_ke = @nam"
+                    + " , thang_thong_ke = @thang"
+                    + " from SERVER5.tanhoa.dbo.g_ThatThoatMangLuoi"
+                    + " where Nam >= @nam - 1");
                 result.data = JsonConvert.SerializeObject(dt);
                 result.success = true;
             }
