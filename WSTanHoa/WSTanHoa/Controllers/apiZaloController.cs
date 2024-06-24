@@ -9,7 +9,6 @@ using System.Net.Http;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web.Http;
-using System.Web.Script.Serialization;
 using WSTanHoa.Models;
 using WSTanHoa.Providers;
 
@@ -53,17 +52,13 @@ namespace WSTanHoa.Controllers
                 {
                     string data = "app_id=3904851815439759378&grant_type=refresh_token&refresh_token=" + getRefresh_token();
                     ServicePointManager.Expect100Continue = true;
-                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                           | SecurityProtocolType.Tls11
-                           | SecurityProtocolType.Tls12
-                           | SecurityProtocolType.Ssl3;
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
                     using (WebClient client = new WebClient())
                     {
                         client.Headers[HttpRequestHeader.ContentType] = "application/x-www-form-urlencoded";
                         client.Headers["secret_key"] = "cCBBIsEx7UDj42KA1N5Y";
                         string result = client.UploadString("https://oauth.zaloapp.com/v4/oa/access_token", data);
-                        JavaScriptSerializer jss = new JavaScriptSerializer();
-                        var obj = jss.Deserialize<dynamic>(result);
+                        var obj = CGlobalVariable.jsSerializer.Deserialize<dynamic>(result);
                         bool a = _cDAL_TrungTam.ExecuteNonQuery("update Access_token set access_token='" + obj["access_token"] + "',refresh_token='" + obj["refresh_token"] + "',expires_in='" + obj["expires_in"] + "',CreateDate=getdate() where ID='zalo'");
                         strResponse = a.ToString();
                     }
@@ -839,8 +834,7 @@ namespace WSTanHoa.Controllers
                     recipient = new { user_id = IDZalo },
                     message = new { text = message }
                 };
-                var serializer = new JavaScriptSerializer();
-                var json = serializer.Serialize(data);
+                var json = CGlobalVariable.jsSerializer.Serialize(data);
                 Byte[] byteArray = Encoding.UTF8.GetBytes(json);
                 request.ContentLength = byteArray.Length;
                 //gắn data post

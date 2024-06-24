@@ -4,17 +4,17 @@
     <file relUrl="Images/cccd2.png" publishTime="12/08/2023 14:49:10" />
     <file relUrl="Images/face.png" publishTime="12/08/2023 14:49:10" />
     <file relUrl="Images/cccd1.png" publishTime="12/08/2023 14:49:10" />
-    <file relUrl="bin/WSSmartPhone.dll" publishTime="06/21/2024 09:05:32" />
-    <file relUrl="wsEContract.asmx" publishTime="12/08/2023 14:49:10" />
-    <file relUrl="wsDHN.asmx" publishTime="12/08/2023 14:49:10" />
+    <file relUrl="bin/WSSmartPhone.dll" publishTime="06/24/2024 11:18:32" />
     <file relUrl="bin/System.Net.Http.dll" publishTime="12/08/2023 14:49:10" />
     <file relUrl="Service.asmx" publishTime="12/08/2023 14:49:10" />
     <file relUrl="wsBilling.asmx" publishTime="12/08/2023 14:49:10" />
     <file relUrl="wsThuongVu.asmx" publishTime="12/08/2023 14:49:10" />
-    <file relUrl="WSSmartPhone.Publish.xml" publishTime="06/19/2024 15:10:54" />
+    <file relUrl="WSSmartPhone.Publish.xml" publishTime="06/24/2024 11:18:33" />
+    <file relUrl="wsDHN.asmx" publishTime="12/08/2023 14:49:10" />
     <file relUrl="wsThuTien.asmx" publishTime="12/08/2023 14:49:10" />
     <file relUrl="Web.config" publishTime="06/19/2024 14:38:50" />
-    <file relUrl="bin/WSSmartPhone.pdb" publishTime="06/21/2024 09:05:32" />
+    <file relUrl="wsEContract.asmx" publishTime="12/08/2023 14:49:10" />
+    <file relUrl="bin/WSSmartPhone.pdb" publishTime="06/24/2024 11:18:32" />
     <file relUrl="Library/System.Net.Http.dll" publishTime="12/08/2023 14:49:10" />
   </publishProfile>
 </publishData>

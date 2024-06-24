@@ -23,14 +23,21 @@ namespace WSTanHoa.Controllers
             {
                 if (CGlobalVariable.checksum == checksum)
                 {
-                    DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select * from ChungTu_ChiTiet where len(MaCT)=12 and malct=15 and Cat=0 and mact not in(select CCCD from CCCD_Temp) and DanhBo is not null and DanhBo not like '' and LEN(DanhBo)=11");
+                    DataTable dt = _cDAL_ThuongVu.ExecuteQuery_DataTable("select ls.DanhBo,MaCT,ls.CreateDate,ls.Loai from ChungTu_LichSu ls left join CCCD_Temp t on (t.DanhBo=ls.DanhBo and t.CCCD=ls.MaCT and t.Loai=ls.Loai) where t.CCCD is null and ls.Loai=N'Thêm' and len(MaCT)=12 and malct=15 and Cat=0 and ls.DanhBo is not null and ls.DanhBo not like '' and LEN(ls.DanhBo)=11"
+                        + " union all"
+                        + " select ls.DanhBo, MaCT, CreateDate = NgayThucHien, ls.Loai from ChungTu_LichSu ls left join CCCD_Temp t on (t.DanhBo = ls.DanhBo and t.CCCD = ls.MaCT and t.Loai = ls.Loai) where t.CCCD is null and ls.Loai = N'Xóa' and len(MaCT) = 12 and malct = 15 and Cat = 0 and ls.DanhBo is not null and ls.DanhBo not like '' and LEN(ls.DanhBo) = 11"
+                        + " order by CreateDate");
                     foreach (DataRow item in dt.Rows)
                     {
                         try
                         {
                             string result = "";
-                            _wsThuongVu.them_CCCD(item["DanhBo"].ToString(), item["MaCT"].ToString(), out result);
-                            _cDAL_ThuongVu.ExecuteNonQuery("insert into CCCD_Temp(CCCD,DanhBo,Result,ModifyDate)values('" + item["MaCT"].ToString() + "','" + item["DanhBo"].ToString() + "',N'" + result + "',getdate())");
+                            if (item["Loai"].ToString() == "Thêm")
+                                _wsThuongVu.them_CCCD(item["DanhBo"].ToString(), item["MaCT"].ToString(), out result);
+                            else
+                                if (item["Loai"].ToString() == "Xóa")
+                                _wsThuongVu.xoa_CCCD(item["DanhBo"].ToString(), item["MaCT"].ToString(), out result);
+                            _cDAL_ThuongVu.ExecuteNonQuery("insert into CCCD_Temp(CCCD,DanhBo,Result,ModifyDate,Loai)values('" + item["MaCT"].ToString() + "','" + item["DanhBo"].ToString() + "',N'" + result + "',getdate(),N'" + item["Loai"].ToString() + "')");
                         }
                         catch
                         {

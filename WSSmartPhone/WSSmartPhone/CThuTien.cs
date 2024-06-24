@@ -7621,8 +7621,7 @@ namespace WSSmartPhone
                 request.Method = "POST";
                 request.ContentType = "application/json";
                 request.Headers["Authorization"] = "Bearer " + getAccess_token();
-                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select HoTen"
-                + " from ChungTu a,ChungTu_ChiTiet b where a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "'");
+                DataTable dt = _cDAL_KinhDoanh.ExecuteQuery_DataTable("select top 1 HoTen from ChungTu a,ChungTu_LichSu b where Loai=N'Xóa' and a.MaCT=b.MaCT and a.MaLCT=b.MaLCT and DanhBo='" + DanhBo + "' and b.MaCT='" + CCCD + "' order by NgayThucHien desc");
                 if (dt != null && dt.Rows.Count > 0)
                 {
                     var data = new
