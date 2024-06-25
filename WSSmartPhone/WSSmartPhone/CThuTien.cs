@@ -7266,7 +7266,7 @@ namespace WSSmartPhone
                     var obj = jss.Deserialize<dynamic>(result);
                     if (obj["ketQua"] == 1)
                     {
-                        bool flag = _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["duLieu"]["token"] + "',expires_in='" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + " days',CreateDate=getdate() where ID='cskhapi'");
+                        bool flag = _cDAL_TTKH.ExecuteNonQuery("update Access_token set access_token='" + obj["duLieu"]["token"] + "',expires_in='" + obj["duLieu"]["limitDayExpiresLoginAppStore"] + " days',CreateDate=getdate() where ID='sawacocntt'");
                         strResponse = flag.ToString();
                     }
                     else
@@ -7286,7 +7286,7 @@ namespace WSSmartPhone
 
         private string getAccess_token()
         {
-            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='cskhapi'").ToString();
+            return _cDAL_TTKH.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='sawacocntt'").ToString();
         }
 
         public int checkExists_CCCD(string DanhBo, string CCCD, out string result)

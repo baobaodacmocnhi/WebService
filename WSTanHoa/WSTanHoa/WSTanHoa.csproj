@@ -228,7 +228,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
-    <Compile Include="Controllers\apiCSKHController.cs" />
+    <Compile Include="Controllers\apiSawacoController.cs" />
     <Compile Include="Controllers\apiDocSoController.cs" />
     <Compile Include="Controllers\apiSWOCController.cs" />
     <Compile Include="Controllers\apiThuHoController.cs" />

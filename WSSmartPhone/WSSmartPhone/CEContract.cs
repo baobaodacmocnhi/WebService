@@ -14,7 +14,7 @@ namespace WSSmartPhone
     public class CEContract
     {
         private string urlApi = "https://api-econtract.cskhtanhoa.com.vn:1443";
-        CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
+        private CConnection _cDAL_TTKH = new CConnection(CGlobalVariable.TTKH);
 
         private string getAccess_token_Client()
         {
