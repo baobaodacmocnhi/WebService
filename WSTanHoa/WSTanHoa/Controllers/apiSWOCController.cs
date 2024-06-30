@@ -158,24 +158,24 @@ namespace WSTanHoa.Controllers
             return result;
         }
 
-        [Route("")]
-        [HttpGet]
-        public MResult ThongKe_ThatThoatNuoc(string CreateDate)
-        {
-            MResult result = new MResult();
-            try
-            {
-                string[] dates = CreateDate.Split('/');
-                DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
-                result.data = JsonConvert.SerializeObject(dt);
-                result.success = true;
-            }
-            catch (Exception ex)
-            {
-                result.error = ex.Message;
-            }
-            return result;
-        }
+        //[Route("")]
+        //[HttpGet]
+        //public MResult ThongKe_ThatThoatNuoc(string CreateDate)
+        //{
+        //    MResult result = new MResult();
+        //    try
+        //    {
+        //        string[] dates = CreateDate.Split('/');
+        //        DataTable dt = _cDAL_DHN.ExecuteQuery_DataTable("");
+        //        result.data = JsonConvert.SerializeObject(dt);
+        //        result.success = true;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        result.error = ex.Message;
+        //    }
+        //    return result;
+        //}
 
         [Route("ThongKe_ThayDHNNho")]
         [HttpGet]
