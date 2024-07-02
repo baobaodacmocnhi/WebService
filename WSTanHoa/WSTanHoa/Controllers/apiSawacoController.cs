@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using WSTanHoa.Models;
 using WSTanHoa.Providers;
 
 namespace WSTanHoa.Controllers
@@ -55,6 +57,40 @@ namespace WSTanHoa.Controllers
         private string getAccess_token()
         {
             return _cDAL_TrungTam.ExecuteQuery_ReturnOneValue("select access_token from Access_token where ID='sawacocskh'").ToString();
+        }
+
+        [Route("createTicket")]
+        [HttpPost]
+        public MResult createTicket()
+        {
+            MResult result = new MResult();
+            try
+            {
+                
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.error = ex.Message;
+            }
+            return result;
+        }
+
+        [Route("updateTicket")]
+        [HttpPost]
+        public MResult updateTicket()
+        {
+            MResult result = new MResult();
+            try
+            {
+
+                result.success = true;
+            }
+            catch (Exception ex)
+            {
+                result.error = ex.Message;
+            }
+            return result;
         }
     }
 }
